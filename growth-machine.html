@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>All Inclusive Growth Machine • 1CoastMedia</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="./assets/1coastmedia_logo_B_badge_2048.jpg" />
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="All Inclusive Growth Machine – 1CoastMedia" />
+  <meta property="og:description" content="The definitive engine for revenue revolution. Choose your tier and watch objections dissolve." />
+  <meta property="og:image" content="./assets/1coastmedia_logo_A_primary_mark_2048.jpg" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Analytics tag for GA4 (Gtag) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K54J9FPE7N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K54J9FPE7N');
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="growthMachine()">
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="./index.html" class="flex items-center space-x-3 text-2xl font-extrabold tracking-wide hover:opacity-80 transition">
+        <img src="./assets/1coastmedia_logo_A_primary_mark_2048.jpg" alt="1CoastMedia logo" class="h-8 w-8 object-contain" />
+        <span>1CoastMedia</span>
+      </a>
+      <div class="flex items-center space-x-4">
+        <a href="./index.html" class="text-gray-300 hover:text-white transition">Services</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-md hover:opacity-90 transition">Book a Call</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Spacer to offset fixed header -->
+  <div class="pt-20"></div>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-6">
+    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
+      All Inclusive Growth Machine
+    </h1>
+    <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+      The definitive engine for revenue revolution. Envision a future where your Gulf Coast business operates like a well-oiled machine—customers streaming in consistently, revenue curves trending upward, and your time liberated from endless marketing trials.
+    </p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+      <button @click="scrollToPackages()" class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:opacity-90 transition text-lg">
+        🚀 View Growth Packages
+      </button>
+      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="px-8 py-4 rounded-full bg-white/10 border border-white/20 text-indigo-300 hover:bg-white/20 transition text-lg">
+        Book Free 30-Min Call
+      </a>
+    </div>
+  </section>
+
+  <!-- Why Choose Growth Machine -->
+  <section class="max-w-7xl mx-auto px-4 py-16 space-y-12">
+    <h2 class="text-3xl font-bold text-center">Why the Growth Machine Transforms Doubt into Decisive Action</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-2xl mb-4">💰</div>
+        <h3 class="text-xl font-semibold mb-3">Budget-Smart Scalability</h3>
+        <p class="text-gray-300">Tiers start accessible and build value incrementally, saving you 40-60% versus hiring separate experts for web, content, UGC, events, PR, and more.</p>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-2xl mb-4">📊</div>
+        <h3 class="text-xl font-semibold mb-3">Guaranteed, Trackable Impact</h3>
+        <p class="text-gray-300">Every tier includes custom KPI tracking with real-time dashboards and adjustments—proving ROI from the start with UGC guarantees and PR placements.</p>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-2xl mb-4">🎯</div>
+        <h3 class="text-xl font-semibold mb-3">Perfect Alignment for Your Stage</h3>
+        <p class="text-gray-300">Whether you're a startup retailer testing digital waters or an established venue seeking national spotlight, tiers adapt seamlessly.</p>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-2xl mb-4">🛡️</div>
+        <h3 class="text-xl font-semibold mb-3">Zero-Risk Commitment</h3>
+        <p class="text-gray-300">With our performance pledge—if customer growth doesn't materialize, get an extra month free—plus handcrafted UGC and PR expertise.</p>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-2xl mb-4">🤖</div>
+        <h3 class="text-xl font-semibold mb-3">Comprehensive, Hands-Off Mastery</h3>
+        <p class="text-gray-300">We execute every digital task—web updates, content calendars, influencer enforcement, event pages, media outreach, and emerging needs.</p>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-2xl mb-4">⚡</div>
+        <h3 class="text-xl font-semibold mb-3">E-commerce at Every Tier</h3>
+        <p class="text-gray-300">Start monetizing immediately with e-commerce integration across all tiers—basic setup in Starter, enhanced in higher levels.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Growth Packages -->
+  <section id="packages" class="max-w-7xl mx-auto px-4 py-16 space-y-12">
+    <h2 class="text-3xl font-bold text-center">Choose Your Growth Tier</h2>
+    <p class="text-center text-gray-300 max-w-2xl mx-auto">
+      Tailored pathways to your revenue goals. Each tier builds upon the previous, ensuring you get exactly what you need without paying for what you don't.
+    </p>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Growth Starter -->
+      <div class="relative p-8 rounded-2xl bg-gradient-to-br from-blue-900/20 to-purple-900/20 backdrop-blur-lg border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 hover:scale-105">
+        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <span class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-full">Most Popular</span>
+        </div>
+        <div class="text-center space-y-6">
+          <h3 class="text-2xl font-bold">Growth Starter</h3>
+          <div class="text-4xl font-bold text-blue-400">$4,500<span class="text-lg text-gray-400">/month</span></div>
+          <p class="text-gray-300">Essential momentum for foundational wins</p>
+          
+          <div class="space-y-4 text-left">
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Website & E-commerce:</strong> Custom design, mobile optimization, SEO setup, basic e-commerce integration
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>15 Content Pieces/Month:</strong> Professional photos, videos, reels, stories, graphics
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>UGC Campaigns:</strong> Up to 2 campaigns (50k min impressions)
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Events:</strong> Bi-quarterly event coordination with ticket sales
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Local PR:</strong> Free local PR (1-2 releases/quarter)
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Support:</strong> Dedicated account manager, bi-weekly strategy calls
+              </div>
+            </div>
+          </div>
+          
+          <div class="pt-4">
+            <button @click="addToCart('growth-starter')" class="w-full py-3 px-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:opacity-90 transition">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Machine -->
+      <div class="relative p-8 rounded-2xl bg-gradient-to-br from-purple-900/20 to-pink-900/20 backdrop-blur-lg border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:scale-105">
+        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <span class="px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-full">Best Value</span>
+        </div>
+        <div class="text-center space-y-6">
+          <h3 class="text-2xl font-bold">Growth Machine</h3>
+          <div class="text-4xl font-bold text-purple-400">$6,500<span class="text-lg text-gray-400">/month</span></div>
+          <p class="text-gray-300">Optimized power for steady acceleration</p>
+          
+          <div class="space-y-4 text-left">
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Everything in Starter +</strong>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Enhanced E-commerce:</strong> Payment gateways, advanced features
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>20-30 Content Pieces:</strong> Higher volume for consistent engagement
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>UGC Campaigns:</strong> Up to 3 campaigns (100k min impressions)
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Automations:</strong> Email/text automation sequences
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Events:</strong> Quarterly events with amplified promotion
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>National PR:</strong> 1 release/month via PRNewswire
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Support:</strong> Weekly strategy calls for agile pivots
+              </div>
+            </div>
+          </div>
+          
+          <div class="pt-4">
+            <button @click="addToCart('growth-machine')" class="w-full py-3 px-6 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:opacity-90 transition">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Accelerator -->
+      <div class="relative p-8 rounded-2xl bg-gradient-to-br from-pink-900/20 to-red-900/20 backdrop-blur-lg border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:scale-105">
+        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <span class="px-4 py-2 bg-pink-600 text-white text-sm font-semibold rounded-full">Elite Tier</span>
+        </div>
+        <div class="text-center space-y-6">
+          <h3 class="text-2xl font-bold">Growth Accelerator</h3>
+          <div class="text-4xl font-bold text-pink-400">$9,000<span class="text-lg text-gray-400">/month</span></div>
+          <p class="text-gray-300">Elite mastery for unparalleled dominance</p>
+          
+          <div class="space-y-4 text-left">
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Everything in Machine +</strong>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Advanced E-commerce:</strong> Inventory sync, custom checkouts
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>30-40 Content Pieces:</strong> Including premium productions
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>UGC Campaigns:</strong> Up to 4 campaigns (150k min impressions)
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Full Automations:</strong> A/B testing and retargeting
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Events:</strong> Monthly events for ongoing revenue
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Global PR:</strong> 2+ releases/month for worldwide exposure
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="text-green-400 mt-1">✓</div>
+              <div>
+                <strong>Support:</strong> Twice-weekly calls + priority revisions
+              </div>
+            </div>
+          </div>
+          
+          <div class="pt-4">
+            <button @click="addToCart('growth-accelerator')" class="w-full py-3 px-6 rounded-full bg-gradient-to-r from-pink-600 to-red-600 text-white font-medium hover:opacity-90 transition">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Stories -->
+  <section class="max-w-7xl mx-auto px-4 py-16 space-y-8">
+    <h2 class="text-3xl font-bold text-center">Echoes of Success: Real Gulf Coast Transformations</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <p class="text-gray-200 italic mb-4">"Starter's e-com and local PR kickstarted our online sales—up 40% in three months, no headaches."</p>
+        <div class="text-sm text-gray-400">– Small Retailer, Pascagoula</div>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <p class="text-gray-200 italic mb-4">"Machine tier's UGC and automations filled our calendar—revenue climbed 55%, all hands-off."</p>
+        <div class="text-sm text-gray-400">– Hospitality Business, Gulfport</div>
+      </div>
+      <div class="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <p class="text-gray-200 italic mb-4">"Accelerator's global PR and events positioned us nationally—bookings soared 70%. Game-changer."</p>
+        <div class="text-sm text-gray-400">– Tourism Operator, Biloxi</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-6">
+    <h2 class="text-3xl font-bold">Seal the Decision: Your Growth Awaits</h2>
+    <p class="text-gray-300 max-w-3xl mx-auto">
+      The lingering question—"Is this the right move?"—answers itself: With tiers that empower revenue from e-com and PR at every level, comprehensive coverage that handles everything, and safeguards that minimize risk, the Growth Machine is the strategic imperative your business deserves.
+    </p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:opacity-90 transition text-lg">
+        Book a Free 30-Min Call
+      </a>
+      <button @click="scrollToPackages()" class="px-8 py-4 rounded-full bg-white/10 border border-white/20 text-indigo-300 hover:bg-white/20 transition text-lg">
+        View Packages Again
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/20 py-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="text-gray-400">© 2025 1CoastMedia. All rights reserved.</p>
+      <div class="mt-4 space-x-4">
+        <a href="./index.html" class="text-gray-400 hover:text-white transition">Services</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="text-gray-400 hover:text-white transition">Book a Call</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div class="fixed top-0 right-0 w-80 max-w-full h-full bg-gray-900/95 backdrop-blur-lg shadow-xl z-50 transform transition-transform duration-300 flex flex-col"
+       :class="cartOpen ? 'translate-x-0' : 'translate-x-full'">
+    <div class="p-4 border-b border-white/20 flex justify-between items-center">
+      <h2 class="text-lg font-bold">Your Growth Cart</h2>
+      <button @click="cartOpen = false" class="text-gray-400 text-2xl leading-none hover:text-gray-200">&times;</button>
+    </div>
+    <div class="flex-1 p-4 overflow-y-auto">
+      <div x-show="cartItems.length === 0" class="text-gray-400 text-sm">Your cart is empty.</div>
+      <template x-for="item in cartItems" :key="item.key">
+        <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
+          <div>
+            <div class="font-semibold" x-text="item.name"></div>
+            <div class="text-xs text-gray-400" x-text="item.description"></div>
+          </div>
+          <div class="text-right">
+            <div class="font-semibold" x-text="fmtUSD(item.price) + ' / mo'"></div>
+            <button @click="removeFromCart(item.key)" class="text-xs text-red-400 hover:underline mt-1">Remove</button>
+          </div>
+        </div>
+      </template>
+    </div>
+    <div class="p-4 border-t border-white/20">
+      <div class="flex justify-between font-semibold mb-3">
+        <span>Total</span>
+        <span x-text="fmtUSD(cartTotal())"></span>
+      </div>
+      <button
+        @click="checkout()"
+        :disabled="cartItems.length === 0"
+        class="w-full py-2 rounded-lg text-center font-medium transition"
+        :class="cartItems.length === 0
+          ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+          : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white'"
+      >
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating cart button -->
+  <button
+    @click="cartOpen = !cartOpen"
+    x-show="cartItems.length > 0"
+    class="fixed bottom-5 right-5 px-4 py-3 rounded-full shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90 transition"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h14l-1.35 4.03a2 2 0 01-1.92 1.42H9.27a2 2 0 01-1.92-1.42L5 6H3" />
+    </svg>
+    <span x-text="cartItems.length"></span>
+  </button>
+
+  <script>
+    function growthMachine() {
+      return {
+        cartOpen: false,
+        cartItems: [],
+        
+        addToCart(key) {
+          const packages = {
+            'growth-starter': {
+              name: 'Growth Starter',
+              description: 'Essential momentum for foundational wins',
+              price: 4500,
+              key: 'growth-starter'
+            },
+            'growth-machine': {
+              name: 'Growth Machine',
+              description: 'Optimized power for steady acceleration',
+              price: 6500,
+              key: 'growth-machine'
+            },
+            'growth-accelerator': {
+              name: 'Growth Accelerator',
+              description: 'Elite mastery for unparalleled dominance',
+              price: 9000,
+              key: 'growth-accelerator'
+            }
+          };
+          
+          const package = packages[key];
+          if (package && !this.cartItems.find(item => item.key === key)) {
+            this.cartItems.push(package);
+            this.cartOpen = true;
+          }
+        },
+        
+        removeFromCart(key) {
+          this.cartItems = this.cartItems.filter(item => item.key !== key);
+        },
+        
+        cartTotal() {
+          return this.cartItems.reduce((total, item) => total + item.price, 0);
+        },
+        
+        fmtUSD(amount) {
+          return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
+        },
+        
+        scrollToPackages() {
+          document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+        },
+        
+        checkout() {
+          // Redirect to main site checkout or implement custom checkout
+          window.location.href = './index.html#services';
+        }
+      };
+    }
+  </script>
+</body>
+</html>
