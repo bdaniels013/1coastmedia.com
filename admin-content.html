@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { font-family: 'Inter', sans-serif; }
     [x-cloak] { display: none !important; }
@@ -111,6 +112,13 @@
           :class="activeTab === 'navigation' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
         >
           Navigation
+        </button>
+        <button 
+          @click="activeTab = 'analytics'" 
+          class="px-4 py-2 rounded-md transition-colors"
+          :class="activeTab === 'analytics' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
+        >
+          📊 Analytics
         </button>
       </div>
 
@@ -368,6 +376,100 @@
         </div>
       </div>
 
+      <!-- Analytics Dashboard -->
+      <div x-show="activeTab === 'analytics'" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6">
+          <h2 class="text-2xl font-bold mb-6">📊 Google Analytics Dashboard</h2>
+          
+          <!-- Real-time Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-blue-400" x-text="analytics.realtime?.activeUsers || '—'"></div>
+              <div class="text-sm text-gray-300">Active Users</div>
+            </div>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-green-400" x-text="analytics.realtime?.pageViews || '—'"></div>
+              <div class="text-sm text-gray-300">Page Views</div>
+            </div>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-purple-400" x-text="analytics.realtime?.sessions || '—'"></div>
+              <div class="text-sm text-gray-300">Sessions</div>
+            </div>
+          </div>
+
+          <!-- Summary Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-xl font-bold text-blue-400" x-text="analytics.summary?.totalUsers || '—'"></div>
+              <div class="text-xs text-gray-300">Total Users (28d)</div>
+            </div>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-xl font-bold text-green-400" x-text="analytics.summary?.totalSessions || '—'"></div>
+              <div class="text-xs text-gray-300">Total Sessions</div>
+            </div>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-xl font-bold text-purple-400" x-text="analytics.summary?.totalPageViews || '—'"></div>
+              <div class="text-xs text-gray-300">Page Views</div>
+            </div>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-xl font-bold text-yellow-400" x-text="analytics.summary?.bounceRate ? analytics.summary.bounceRate + '%' : '—'"></div>
+              <div class="text-xs text-gray-300">Bounce Rate</div>
+            </div>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-center">
+              <div class="text-xl font-bold text-pink-400" x-text="analytics.summary?.avgSessionDuration ? Math.round(analytics.summary.avgSessionDuration / 60) + 'm' : '—'"></div>
+              <div class="text-xs text-gray-300">Avg Session</div>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Traffic Chart -->
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4">
+              <h3 class="text-lg font-semibold mb-4">Traffic Trends (28 days)</h3>
+              <canvas id="trafficChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Top Pages -->
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4">
+              <h3 class="text-lg font-semibold mb-4">Top Pages</h3>
+              <div class="space-y-2">
+                <template x-for="(page, index) in analytics.summary?.topPages || []" :key="index">
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-300" x-text="page.path"></span>
+                    <span class="text-sm font-semibold text-blue-400" x-text="page.views"></span>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <!-- Traffic Sources -->
+          <div class="bg-white/10 border border-white/20 rounded-lg p-4">
+            <h3 class="text-lg font-semibold mb-4">Traffic Sources</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <template x-for="(source, index) in analytics.summary?.topSources || []" :key="index">
+                <div class="text-center">
+                  <div class="text-lg font-bold text-blue-400" x-text="source.sessions"></div>
+                  <div class="text-sm text-gray-300" x-text="source.source"></div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Refresh Button -->
+          <div class="flex justify-center mt-6">
+            <button 
+              @click="refreshAnalytics" 
+              class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              :disabled="isRefreshingAnalytics"
+            >
+              <span x-show="!isRefreshingAnalytics">🔄 Refresh Analytics</span>
+              <span x-show="isRefreshingAnalytics">Refreshing...</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Save Button -->
       <div class="flex justify-center">
         <button 
@@ -382,6 +484,15 @@
     </main>
   </div>
 
+  <!-- Google Analytics tag for GA4 (Gtag) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K54J9FPE7N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K54J9FPE7N');
+  </script>
+  
   <script src="./admin-content.js"></script>
 </body>
 </html>

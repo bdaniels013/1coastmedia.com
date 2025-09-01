@@ -8,6 +8,13 @@ STRIPE_PUBLISHABLE_KEY=pk_test_your_test_publishable_key_here
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=1coastmedia2024!
 
+# Google Analytics 4 (GA4) Configuration
+# Get these from Google Cloud Console: https://console.cloud.google.com/
+GA4_PROPERTY_ID=G-K54J9FPE7N
+GA4_PROJECT_ID=your_project_id_here
+GA4_CLIENT_EMAIL=your_service_account_email@project.iam.gserviceaccount.com
+GA4_PRIVATE_KEY=path_to_your_private_key.json
+
 # Environment
 NODE_ENV=production
 PORT=3000

@@ -15,6 +15,14 @@ function contentManager() {
     saveStatus: null,
     isSaving: false,
     
+    // Analytics
+    analytics: {
+      realtime: null,
+      summary: null
+    },
+    isRefreshingAnalytics: false,
+    trafficChart: null,
+    
     // API base URL
     apiBase: window.location.origin,
     
@@ -24,6 +32,9 @@ function contentManager() {
       
       // Load content data
       await this.loadContent();
+      
+      // Load analytics data
+      await this.loadAnalytics();
     },
     
     // Authentication methods
@@ -362,6 +373,94 @@ function contentManager() {
           this.saveStatus = null;
         }, 5000);
       }
+    },
+    
+    // Analytics methods
+    async loadAnalytics() {
+      try {
+        // Load real-time data
+        const realtimeResponse = await fetch(`${this.apiBase}/api/analytics/realtime`);
+        if (realtimeResponse.ok) {
+          this.analytics.realtime = await realtimeResponse.json();
+        }
+        
+        // Load summary data
+        const summaryResponse = await fetch(`${this.apiBase}/api/analytics/summary`);
+        if (summaryResponse.ok) {
+          this.analytics.summary = await summaryResponse.json();
+          this.createTrafficChart();
+        }
+        
+        console.log('✅ Analytics loaded successfully');
+      } catch (error) {
+        console.error('Error loading analytics:', error);
+      }
+    },
+    
+    async refreshAnalytics() {
+      this.isRefreshingAnalytics = true;
+      await this.loadAnalytics();
+      this.isRefreshingAnalytics = false;
+    },
+    
+    createTrafficChart() {
+      if (!this.analytics.summary?.timeseries) return;
+      
+      const ctx = document.getElementById('trafficChart');
+      if (!ctx) return;
+      
+      // Destroy existing chart if it exists
+      if (this.trafficChart) {
+        this.trafficChart.destroy();
+      }
+      
+      const labels = this.analytics.summary.timeseries.map(d => d.date);
+      const users = this.analytics.summary.timeseries.map(d => d.totalUsers);
+      const sessions = this.analytics.summary.timeseries.map(d => d.totalSessions);
+      
+      this.trafficChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Users',
+              data: users,
+              borderColor: '#60a5fa',
+              backgroundColor: 'rgba(96, 165, 250, 0.1)',
+              tension: 0.3
+            },
+            {
+              label: 'Sessions',
+              data: sessions,
+              borderColor: '#34d399',
+              backgroundColor: 'rgba(52, 211, 153, 0.1)',
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#cbd5e1'
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#cbd5e1' },
+              grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            y: {
+              ticks: { color: '#cbd5e1' },
+              grid: { color: 'rgba(255,255,255,0.1)' }
+            }
+          }
+        }
+      });
     }
   };
 }
