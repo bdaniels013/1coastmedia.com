@@ -3,6 +3,11 @@
 STRIPE_SECRET_KEY=sk_test_your_test_secret_key_here
 STRIPE_PUBLISHABLE_KEY=pk_test_your_test_publishable_key_here
 
+# Admin Authentication
+# Change these to secure credentials for production
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=1coastmedia2024!
+
 # Environment
 NODE_ENV=production
 PORT=3000

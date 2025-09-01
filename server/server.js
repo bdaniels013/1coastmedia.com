@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const Stripe = require('stripe');
+const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +14,13 @@ const PORT = process.env.PORT || 3000;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_your_test_key_here', {
   apiVersion: '2023-10-16'
 });
+
+// Admin authentication
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '1coastmedia2024!';
+
+// Simple session storage (in production, use Redis or database)
+const adminSessions = new Map();
 
 // Log environment variables for debugging
 console.log('🔍 Environment variables:');
@@ -24,6 +33,7 @@ console.log('RENDER_EXTERNAL_HOSTNAME:', process.env.RENDER_EXTERNAL_HOSTNAME);
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Force HTTPS in production
 app.use((req, res, next) => {
@@ -93,8 +103,8 @@ app.get('/api/services', (req, res) => {
   }
 });
 
-// Save services
-app.post('/api/services', (req, res) => {
+// Save services (protected by admin auth)
+app.post('/api/services', requireAuth, (req, res) => {
   try {
     const services = req.body;
     
@@ -111,6 +121,94 @@ app.post('/api/services', (req, res) => {
   } catch (error) {
     console.error('❌ Error saving services:', error);
     res.status(500).json({ error: 'Failed to save services' });
+  }
+});
+
+// Admin authentication middleware
+function requireAuth(req, res, next) {
+  const sessionToken = req.headers.authorization?.replace('Bearer ', '') || 
+                      req.cookies?.adminSession;
+  
+  if (!sessionToken || !adminSessions.has(sessionToken)) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  
+  // Check if session is expired (24 hours)
+  const session = adminSessions.get(sessionToken);
+  if (Date.now() - session.created > 24 * 60 * 60 * 1000) {
+    adminSessions.delete(sessionToken);
+    return res.status(401).json({ error: 'Session expired' });
+  }
+  
+  next();
+}
+
+// Admin login endpoint
+app.post('/api/admin/login', (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      // Generate secure session token
+      const sessionToken = crypto.randomBytes(32).toString('hex');
+      const session = {
+        username,
+        created: Date.now(),
+        lastActivity: Date.now()
+      };
+      
+      adminSessions.set(sessionToken, session);
+      
+      // Clean up old sessions (older than 24 hours)
+      for (const [token, sess] of adminSessions.entries()) {
+        if (Date.now() - sess.created > 24 * 60 * 60 * 1000) {
+          adminSessions.delete(token);
+        }
+      }
+      
+      console.log('✅ Admin login successful:', username);
+      
+      // Set secure cookie for session
+      res.cookie('adminSession', sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      });
+      
+      res.json({ 
+        success: true, 
+        sessionToken,
+        message: 'Login successful' 
+      });
+    } else {
+      console.log('❌ Admin login failed: Invalid credentials');
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  } catch (error) {
+    console.error('❌ Admin login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Admin logout endpoint
+app.post('/api/admin/logout', requireAuth, (req, res) => {
+  try {
+    const sessionToken = req.headers.authorization?.replace('Bearer ', '') || 
+                        req.cookies?.adminSession;
+    
+    if (sessionToken) {
+      adminSessions.delete(sessionToken);
+      console.log('✅ Admin logout successful');
+    }
+    
+    // Clear the session cookie
+    res.clearCookie('adminSession');
+    
+    res.json({ success: true, message: 'Logout successful' });
+  } catch (error) {
+    console.error('❌ Admin logout error:', error);
+    res.status(500).json({ error: 'Logout failed' });
   }
 });
 

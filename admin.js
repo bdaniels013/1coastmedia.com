@@ -1,6 +1,14 @@
 // Simple admin dashboard logic for the 1CoastMedia site
 function adminApp() {
   return {
+    // Authentication state
+    isLoggedIn: false,
+    currentUser: '',
+    sessionToken: '',
+    loginForm: { username: '', password: '' },
+    loginError: '',
+    isLoggingIn: false,
+    
     serviceCategories: {},
     flatServices: [],
     flatAddons: [],
@@ -74,6 +82,119 @@ function adminApp() {
       // initialise form categories with first category key if available
       const firstCat = Object.keys(this.serviceCategories)[0] || '';
       if (!this.newService.category) this.newService.category = firstCat;
+      
+      // Check if user is already logged in (check localStorage for session)
+      this.checkExistingSession();
+    },
+    
+    // Authentication methods
+    async login() {
+      this.isLoggingIn = true;
+      this.loginError = '';
+      
+      try {
+        const response = await fetch(`${this.apiBase}/api/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(this.loginForm)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          this.sessionToken = data.sessionToken;
+          this.currentUser = this.loginForm.username;
+          this.isLoggedIn = true;
+          
+          // Store session in localStorage
+          localStorage.setItem('adminSession', this.sessionToken);
+          localStorage.setItem('adminUser', this.currentUser);
+          
+          // Clear login form
+          this.loginForm = { username: '', password: '' };
+          
+          console.log('✅ Login successful');
+        } else {
+          this.loginError = data.error || 'Login failed';
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        this.loginError = 'Network error. Please try again.';
+      } finally {
+        this.isLoggingIn = false;
+      }
+    },
+    
+    async logout() {
+      try {
+        // Call logout endpoint
+        await fetch(`${this.apiBase}/api/admin/logout`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.sessionToken}`
+          }
+        });
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+      
+      // Clear local state
+      this.isLoggedIn = false;
+      this.currentUser = '';
+      this.sessionToken = '';
+      this.loginError = '';
+      
+      // Clear localStorage
+      localStorage.removeItem('adminSession');
+      localStorage.removeItem('adminUser');
+      
+      console.log('✅ Logout successful');
+    },
+    
+    checkExistingSession() {
+      const savedSession = localStorage.getItem('adminSession');
+      const savedUser = localStorage.getItem('adminUser');
+      
+      if (savedSession && savedUser) {
+        // Verify session is still valid by making a test request
+        this.verifySession(savedSession, savedUser);
+      }
+    },
+    
+    async verifySession(sessionToken, username) {
+      try {
+        // Try to make a request to a protected endpoint
+        const response = await fetch(`${this.apiBase}/api/services`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionToken}`
+          },
+          body: JSON.stringify({ test: true })
+        });
+        
+        if (response.status === 401) {
+          // Session expired, clear it
+          this.clearSession();
+        } else {
+          // Session is valid
+          this.sessionToken = sessionToken;
+          this.currentUser = username;
+          this.isLoggedIn = true;
+        }
+      } catch (error) {
+        console.error('Session verification error:', error);
+        this.clearSession();
+      }
+    },
+    
+    clearSession() {
+      localStorage.removeItem('adminSession');
+      localStorage.removeItem('adminUser');
+      this.isLoggedIn = false;
+      this.currentUser = '';
+      this.sessionToken = '';
     },
     
     /**
@@ -344,6 +465,7 @@ function adminApp() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.sessionToken}`
           },
           body: JSON.stringify(window.serviceData)
         });
