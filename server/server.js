@@ -126,6 +126,25 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// URL Rewriting - Clean URLs without .html extension
+app.get('/growth-machine', (req, res) => {
+  const growthMachinePath = path.join(__dirname, '..', 'growth-machine.html');
+  if (fs.existsSync(growthMachinePath)) {
+    res.sendFile(growthMachinePath);
+  } else {
+    res.status(404).json({ error: 'Growth Machine page not found' });
+  }
+});
+
+app.get('/admin', (req, res) => {
+  const adminPath = path.join(__dirname, '..', 'admin.html');
+  if (fs.existsSync(adminPath)) {
+    res.sendFile(adminPath);
+  } else {
+    res.status(404).json({ error: 'Admin panel not found' });
+  }
+});
+
 // Root endpoint - serve index.html
 app.get('/', (req, res) => {
   const indexPath = path.join(__dirname, '..', 'index.html');
@@ -144,7 +163,7 @@ app.get('/', (req, res) => {
 // Serve static files from parent directory (root of project)
 app.use(express.static(path.join(__dirname, '..')));
 
-// Specific route for index.html
+// Specific route for index.html (fallback)
 app.get('/index.html', (req, res) => {
   const indexPath = path.join(__dirname, '..', 'index.html');
   if (fs.existsSync(indexPath)) {
@@ -158,7 +177,7 @@ app.get('/index.html', (req, res) => {
   }
 });
 
-// Specific route for admin.html
+// Specific route for admin.html (fallback)
 app.get('/admin.html', (req, res) => {
   const adminPath = path.join(__dirname, '..', 'admin.html');
   if (fs.existsSync(adminPath)) {
@@ -168,6 +187,20 @@ app.get('/admin.html', (req, res) => {
       error: 'admin.html not found',
       path: adminPath,
       exists: fs.existsSync(adminPath)
+    });
+  }
+});
+
+// Specific route for growth-machine.html (fallback)
+app.get('/growth-machine.html', (req, res) => {
+  const growthMachinePath = path.join(__dirname, '..', 'growth-machine.html');
+  if (fs.existsSync(growthMachinePath)) {
+    res.sendFile(growthMachinePath);
+  } else {
+    res.status(404).json({ 
+      error: 'growth-machine.html not found',
+      path: growthMachinePath,
+      exists: fs.existsSync(growthMachinePath)
     });
   }
 });
@@ -196,12 +229,14 @@ app.listen(PORT, () => {
   console.log(`📍 Port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔒 HTTPS Redirect: ${process.env.NODE_ENV === 'production' ? 'Enabled' : 'Disabled'}`);
+  console.log(`🔗 Clean URLs: /growth-machine, /admin, /`);
   console.log(`📁 Working directory: ${process.cwd()}`);
   console.log(`📁 Services data file: ${SERVICES_FILE}`);
   console.log(`📁 Root directory: ${path.join(__dirname, '..')}`);
   console.log(`📁 Available files: ${fs.readdirSync(path.join(__dirname, '..')).join(', ')}`);
-  console.log(`📱 Admin panel: http://localhost:${PORT}/admin.html`);
-  console.log(`🌐 Main site: http://localhost:${PORT}/index.html`);
+  console.log(`📱 Admin panel: http://localhost:${PORT}/admin`);
+  console.log(`🌐 Main site: http://localhost:${PORT}/`);
+  console.log(`🚀 Growth Machine: http://localhost:${PORT}/growth-machine`);
   console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
   console.log('');
   console.log('Press Ctrl+C to stop the server');
