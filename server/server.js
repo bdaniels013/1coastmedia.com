@@ -7,10 +7,37 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Log environment variables for debugging
+console.log('🔍 Environment variables:');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('PORT:', process.env.PORT);
+console.log('RENDER:', process.env.RENDER);
+console.log('RENDER_EXTERNAL_HOSTNAME:', process.env.RENDER_EXTERNAL_HOSTNAME);
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Force HTTPS in production
+app.use((req, res, next) => {
+  console.log(`🔒 Request: ${req.method} ${req.url} - Protocol: ${req.protocol} - Secure: ${req.secure} - Forwarded: ${req.get('x-forwarded-proto')}`);
+  
+  if (process.env.NODE_ENV === 'production' && !req.secure && req.get('x-forwarded-proto') !== 'https') {
+    console.log(`🔄 Redirecting to HTTPS: ${req.get('host')}${req.url}`);
+    return res.redirect(`https://${req.get('host')}${req.url}`);
+  }
+  next();
+});
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
 
 // Path to the services data file
 const SERVICES_FILE = path.join(__dirname, 'services-data.json');
@@ -89,7 +116,13 @@ app.get('/api/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development',
     port: PORT,
     workingDirectory: process.cwd(),
-    files: fs.readdirSync('.')
+    files: fs.readdirSync('.'),
+    protocol: req.protocol,
+    secure: req.secure,
+    host: req.get('host'),
+    forwardedProto: req.get('x-forwarded-proto'),
+    render: process.env.RENDER,
+    renderExternalHostname: process.env.RENDER_EXTERNAL_HOSTNAME
   });
 });
 
@@ -162,6 +195,7 @@ app.listen(PORT, () => {
   console.log('🚀 1CoastMedia server running!');
   console.log(`📍 Port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔒 HTTPS Redirect: ${process.env.NODE_ENV === 'production' ? 'Enabled' : 'Disabled'}`);
   console.log(`📁 Working directory: ${process.cwd()}`);
   console.log(`📁 Services data file: ${SERVICES_FILE}`);
   console.log(`📁 Root directory: ${path.join(__dirname, '..')}`);
