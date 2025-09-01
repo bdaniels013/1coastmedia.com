@@ -87,17 +87,57 @@ app.get('/api/health', (req, res) => {
     status: 'ok', 
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    port: PORT
+    port: PORT,
+    workingDirectory: process.cwd(),
+    files: fs.readdirSync('.')
   });
 });
 
-// Root endpoint
+// Root endpoint - serve index.html
 app.get('/', (req, res) => {
-  res.redirect('/index.html');
+  const indexPath = path.join(__dirname, '..', 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({ 
+      error: 'index.html not found',
+      path: indexPath,
+      exists: fs.existsSync(indexPath),
+      files: fs.readdirSync(path.join(__dirname, '..'))
+    });
+  }
 });
 
-// Serve static files from parent directory
+// Serve static files from parent directory (root of project)
 app.use(express.static(path.join(__dirname, '..')));
+
+// Specific route for index.html
+app.get('/index.html', (req, res) => {
+  const indexPath = path.join(__dirname, '..', 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({ 
+      error: 'index.html not found',
+      path: indexPath,
+      exists: fs.existsSync(indexPath)
+    });
+  }
+});
+
+// Specific route for admin.html
+app.get('/admin.html', (req, res) => {
+  const adminPath = path.join(__dirname, '..', 'admin.html');
+  if (fs.existsSync(adminPath)) {
+    res.sendFile(adminPath);
+  } else {
+    res.status(404).json({ 
+      error: 'admin.html not found',
+      path: adminPath,
+      exists: fs.existsSync(adminPath)
+    });
+  }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -107,7 +147,12 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
+  res.status(404).json({ 
+    error: 'Not found',
+    path: req.path,
+    method: req.method,
+    availableFiles: fs.readdirSync(path.join(__dirname, '..'))
+  });
 });
 
 // Initialize the services file when server starts
@@ -117,7 +162,10 @@ app.listen(PORT, () => {
   console.log('🚀 1CoastMedia server running!');
   console.log(`📍 Port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📁 Working directory: ${process.cwd()}`);
   console.log(`📁 Services data file: ${SERVICES_FILE}`);
+  console.log(`📁 Root directory: ${path.join(__dirname, '..')}`);
+  console.log(`📁 Available files: ${fs.readdirSync(path.join(__dirname, '..')).join(', ')}`);
   console.log(`📱 Admin panel: http://localhost:${PORT}/admin.html`);
   console.log(`🌐 Main site: http://localhost:${PORT}/index.html`);
   console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
