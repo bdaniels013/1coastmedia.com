@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Content Manager • 1CoastMedia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    [x-cloak] { display: none !important; }
+    .content-editor { min-height: 100px; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="contentManager()" x-init="init()">
+  <!-- Login Form -->
+  <div x-show="!isLoggedIn" class="min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-4">
+      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-8 shadow-xl">
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-white mb-2">1CoastMedia Content Manager</h1>
+          <p class="text-gray-300">Sign in to manage your site content</p>
+        </div>
+        
+        <form @submit.prevent="login" class="space-y-6">
+          <div>
+            <label for="username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              x-model="loginForm.username"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter username"
+              required
+            >
+          </div>
+          
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              x-model="loginForm.password"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter password"
+              required
+            >
+          </div>
+          
+          <div x-show="loginError" class="text-red-400 text-sm text-center bg-red-900/20 p-3 rounded-lg" x-text="loginError"></div>
+          
+          <button 
+            type="submit" 
+            class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            :disabled="isLoggingIn"
+          >
+            <span x-show="!isLoggingIn">Sign In</span>
+            <span x-show="isLoggingIn">Signing In...</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Manager (shown after login) -->
+  <div x-show="isLoggedIn" x-cloak>
+    <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-bold">1CoastMedia Content Manager</h1>
+        <div class="flex items-center space-x-4">
+          <span class="text-sm text-gray-400">Welcome, <span x-text="currentUser"></span></span>
+          <button 
+            @click="logout" 
+            class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Spacer below fixed header -->
+    <div class="pt-20"></div>
+
+    <main class="max-w-7xl mx-auto p-4 space-y-8">
+      <!-- Save Status -->
+      <div x-show="saveStatus" class="p-4 rounded-lg" :class="saveStatus.type === 'success' ? 'bg-green-900/20 text-green-400' : 'bg-red-900/20 text-red-400'">
+        <span x-text="saveStatus.message"></span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex space-x-1 bg-white/10 rounded-lg p-1">
+        <button 
+          @click="activeTab = 'mainPage'" 
+          class="px-4 py-2 rounded-md transition-colors"
+          :class="activeTab === 'mainPage' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
+        >
+          Main Page
+        </button>
+        <button 
+          @click="activeTab = 'growthMachine'" 
+          class="px-4 py-2 rounded-md transition-colors"
+          :class="activeTab === 'growthMachine' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
+        >
+          Growth Machine
+        </button>
+        <button 
+          @click="activeTab = 'navigation'" 
+          class="px-4 py-2 rounded-md transition-colors"
+          :class="activeTab === 'navigation' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
+        >
+          Navigation
+        </button>
+      </div>
+
+      <!-- Main Page Content Editor -->
+      <div x-show="activeTab === 'mainPage'" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6">
+          <h2 class="text-2xl font-bold mb-6">Main Page Content</h2>
+          
+          <!-- Hero Section -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Hero Section</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                <input x-model="content.mainPage.hero.title" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Subtitle</label>
+                <input x-model="content.mainPage.hero.subtitle" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea x-model="content.mainPage.hero.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">CTA Button Text</label>
+                <input x-model="content.mainPage.hero.ctaButton" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">CTA Button Link</label>
+                <input x-model="content.mainPage.hero.ctaLink" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Growth Machine Button Text</label>
+                <input x-model="content.mainPage.hero.growthMachineButton" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Growth Machine Button Link</label>
+                <input x-model="content.mainPage.hero.growthMachineLink" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+          </div>
+
+          <!-- Growth Machine Highlight Section -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Growth Machine Highlight</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                <input x-model="content.mainPage.growthMachineHighlight.title" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Subtitle</label>
+                <input x-model="content.mainPage.growthMachineHighlight.subtitle" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea x-model="content.mainPage.growthMachineHighlight.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">CTA Button Text</label>
+                <input x-model="content.mainPage.growthMachineHighlight.ctaButton" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">CTA Button Link</label>
+                <input x-model="content.mainPage.growthMachineHighlight.ctaLink" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Machine Content Editor -->
+      <div x-show="activeTab === 'growthMachine'" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6">
+          <h2 class="text-2xl font-bold mb-6">Growth Machine Content</h2>
+          
+          <!-- Hero Section -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Hero Section</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                <input x-model="content.growthMachine.hero.title" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Subtitle</label>
+                <input x-model="content.growthMachine.hero.subtitle" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea x-model="content.growthMachine.hero.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+            </div>
+          </div>
+
+          <!-- Packages -->
+          <div class="space-y-6 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Packages</h3>
+            
+            <template x-for="(package, key) in content.growthMachine.packages" :key="key">
+              <div class="border border-white/20 rounded-lg p-4 bg-white/5">
+                <h4 class="text-lg font-semibold mb-4" x-text="package.name"></h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                    <input x-model="package.name" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Price</label>
+                    <input x-model.number="package.price" type="number" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                  <input x-model="package.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mt-4">
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Features (one per line)</label>
+                  <textarea x-model="package.features.join('\n')" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor" rows="6"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">CTA Button Text</label>
+                    <input x-model="package.ctaButton" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Secondary CTA Text</label>
+                    <input x-model="package.ctaSecondary" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Why Choose Section -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Why Choose Section</h3>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+              <input x-model="content.growthMachine.whyChoose.title" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea x-model="content.growthMachine.whyChoose.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+            </div>
+            
+            <div class="space-y-4">
+              <h4 class="text-lg font-semibold">Benefits</h4>
+              <template x-for="(benefit, index) in content.growthMachine.whyChoose.benefits" :key="index">
+                <div class="border border-white/20 rounded-lg p-4 bg-white/5">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                      <input x-model="benefit.title" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                    <textarea x-model="benefit.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Testimonials -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Testimonials</h3>
+            <template x-for="(testimonial, index) in content.growthMachine.testimonials" :key="index">
+              <div class="border border-white/20 rounded-lg p-4 bg-white/5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Quote</label>
+                    <textarea x-model="testimonial.quote" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Author</label>
+                    <input x-model="testimonial.author" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Final CTA -->
+          <div class="space-y-4">
+            <h3 class="text-xl font-semibold text-blue-300">Final CTA Section</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                <input x-model="content.growthMachine.finalCta.title" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Button Text</label>
+                <input x-model="content.growthMachine.finalCta.buttonText" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea x-model="content.growthMachine.finalCta.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 content-editor"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Button Link</label>
+              <input x-model="content.growthMachine.finalCta.buttonLink" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Editor -->
+      <div x-show="activeTab === 'navigation'" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6">
+          <h2 class="text-2xl font-bold mb-6">Navigation & Links</h2>
+          
+          <!-- Main Menu -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Main Menu</h3>
+            <template x-for="(item, index) in content.navigation.mainMenu" :key="index">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Text</label>
+                  <input x-model="item.text" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Link</label>
+                  <input x-model="item.link" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Footer Links -->
+          <div class="space-y-4">
+            <h3 class="text-xl font-semibold text-blue-300">Footer Links</h3>
+            <template x-for="(item, index) in content.navigation.footerLinks" :key="index">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Text</label>
+                  <input x-model="item.text" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Link</label>
+                  <input x-model="item.link" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="flex justify-center">
+        <button 
+          @click="saveContent" 
+          class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors text-lg font-semibold"
+          :disabled="isSaving"
+        >
+          <span x-show="!isSaving">💾 Save All Changes</span>
+          <span x-show="isSaving">Saving...</span>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script src="./admin-content.js"></script>
+</body>
+</html>

@@ -57,6 +57,8 @@ app.use((req, res, next) => {
 
 // Path to the services data file
 const SERVICES_FILE = path.join(__dirname, 'services-data.json');
+// Path to the content management file
+const CONTENT_FILE = path.join(__dirname, 'content-data.json');
 
 // Initialize services data file if it doesn't exist
 function initializeServicesFile() {
@@ -121,6 +123,51 @@ app.post('/api/services', requireAuth, (req, res) => {
   } catch (error) {
     console.error('❌ Error saving services:', error);
     res.status(500).json({ error: 'Failed to save services' });
+  }
+});
+
+// Get content data
+app.get('/api/content', (req, res) => {
+  try {
+    if (!fs.existsSync(CONTENT_FILE)) {
+      // Return default content if file doesn't exist
+      const defaultContent = require('./content-data.json');
+      res.json(defaultContent);
+      return;
+    }
+    const data = fs.readFileSync(CONTENT_FILE, 'utf8');
+    const content = JSON.parse(data);
+    res.json(content);
+  } catch (error) {
+    console.error('❌ Error reading content:', error);
+    res.status(500).json({ error: 'Failed to read content' });
+  }
+});
+
+// Save content data (protected by admin auth)
+app.post('/api/content', requireAuth, (req, res) => {
+  try {
+    const content = req.body;
+    
+    // Validate the data structure
+    if (!content || typeof content !== 'object') {
+      return res.status(400).json({ error: 'Invalid content data' });
+    }
+    
+    // Update timestamp
+    content.meta = {
+      ...content.meta,
+      lastUpdated: new Date().toISOString()
+    };
+    
+    // Save to file
+    fs.writeFileSync(CONTENT_FILE, JSON.stringify(content, null, 2));
+    
+    console.log('✅ Content saved successfully');
+    res.json({ success: true, message: 'Content saved successfully' });
+  } catch (error) {
+    console.error('❌ Error saving content:', error);
+    res.status(500).json({ error: 'Failed to save content' });
   }
 });
 
@@ -344,6 +391,15 @@ app.get('/admin', (req, res) => {
   }
 });
 
+app.get('/content-manager', (req, res) => {
+  const contentManagerPath = path.join(__dirname, '..', 'admin-content.html');
+  if (fs.existsSync(contentManagerPath)) {
+    res.sendFile(contentManagerPath);
+  } else {
+    res.status(404).json({ error: 'Content manager not found' });
+  }
+});
+
 // Root endpoint - serve index.html
 app.get('/', (req, res) => {
   const indexPath = path.join(__dirname, '..', 'index.html');
@@ -404,6 +460,20 @@ app.get('/growth-machine.html', (req, res) => {
   }
 });
 
+// Specific route for admin-content.html (fallback)
+app.get('/admin-content.html', (req, res) => {
+  const contentManagerPath = path.join(__dirname, '..', 'admin-content.html');
+  if (fs.existsSync(contentManagerPath)) {
+    res.sendFile(contentManagerPath);
+  } else {
+    res.status(404).json({ 
+      error: 'admin-content.html not found',
+      path: contentManagerPath,
+      exists: fs.existsSync(contentManagerPath)
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('❌ Server error:', err);
@@ -428,12 +498,14 @@ app.listen(PORT, () => {
   console.log(`📍 Port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔒 HTTPS Redirect: ${process.env.NODE_ENV === 'production' ? 'Enabled' : 'Disabled'}`);
-  console.log(`🔗 Clean URLs: /growth-machine, /admin, /`);
+  console.log(`🔗 Clean URLs: /growth-machine, /admin, /content-manager`);
   console.log(`📁 Working directory: ${process.cwd()}`);
   console.log(`📁 Services data file: ${SERVICES_FILE}`);
+  console.log(`📁 Content data file: ${CONTENT_FILE}`);
   console.log(`📁 Root directory: ${path.join(__dirname, '..')}`);
   console.log(`📁 Available files: ${fs.readdirSync(path.join(__dirname, '..')).join(', ')}`);
   console.log(`📱 Admin panel: http://localhost:${PORT}/admin`);
+  console.log(`🎨 Content manager: http://localhost:${PORT}/content-manager`);
   console.log(`🌐 Main site: http://localhost:${PORT}/`);
   console.log(`🚀 Growth Machine: http://localhost:${PORT}/growth-machine`);
   console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
