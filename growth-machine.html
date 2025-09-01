@@ -456,9 +456,38 @@
           document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
         },
         
-        checkout() {
-          // Redirect to main site checkout or implement custom checkout
-          window.location.href = './#services';
+        async checkout() {
+          if (this.cartItems.length === 0) {
+            alert('Your cart is empty.');
+            return;
+          }
+          
+          try {
+            const response = await fetch('/api/checkout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                cart: this.cartItems.map(item => ({
+                  name: item.name,
+                  description: item.description,
+                  price: { monthly: item.price }
+                })), 
+                contact: {} // You can add contact form data here later
+              })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success && data.url) {
+              // Redirect to Stripe Checkout
+              window.location.href = data.url;
+            } else {
+              alert(data?.error || 'Unable to initiate checkout.');
+            }
+          } catch (err) {
+            console.error('Checkout error:', err);
+            alert('Checkout error. Please try again.');
+          }
         }
       };
     }

@@ -146,59 +146,59 @@ function app() {
     
     // Checkout via Stripe
     async checkout() {
-      // Build cart items with names and prices for Stripe.
-      // Determine if any monthly items are present to set the session mode accordingly.
+      // Build cart items with names and prices for Stripe
       const items = [];
-      let hasMonthly = false;
+      
       // Base services
       this.cartServices.forEach(key => {
         const svc = this.getServiceByKey(key);
         if (svc && svc.price) {
-          let price = 0;
-          if (svc.price.oneTime && svc.price.oneTime > 0) {
-            price = svc.price.oneTime;
-          } else if (svc.price.monthly && svc.price.monthly > 0) {
-            price = svc.price.monthly;
-            hasMonthly = true;
-          }
-          if (price > 0) {
-            items.push({ type: 'service', name: svc.name, price });
-          }
+          items.push({
+            name: svc.name,
+            description: svc.outcome,
+            price: svc.price
+          });
         }
       });
+      
       // Add-ons
       this.cartAddons.forEach(key => {
         const addon = this.getAddonByKey(key);
         if (addon && addon.price) {
-          let price = 0;
-          if (addon.price.oneTime && addon.price.oneTime > 0) {
-            price = addon.price.oneTime;
-          } else if (addon.price.monthly && addon.price.monthly > 0) {
-            price = addon.price.monthly;
-            hasMonthly = true;
-          }
-          if (price > 0) {
-            items.push({ type: 'addon', name: addon.name, price });
-          }
+          items.push({
+            name: addon.name,
+            description: addon.description,
+            price: addon.price
+          });
         }
       });
-      if (items.length === 0) return;
-      const planType = hasMonthly ? 'monthly' : 'one-time';
+      
+      if (items.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
+      
       try {
         const response = await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ plan: planType, cart: items, contact: {} })
+          body: JSON.stringify({ 
+            cart: items, 
+            contact: {} // You can add contact form data here later
+          })
         });
+        
         const data = await response.json();
-        if (data && data.url) {
-          window.location = data.url;
+        
+        if (data.success && data.url) {
+          // Redirect to Stripe Checkout
+          window.location.href = data.url;
         } else {
           alert(data?.error || 'Unable to initiate checkout.');
         }
       } catch (err) {
-        console.error(err);
-        alert('Checkout error.');
+        console.error('Checkout error:', err);
+        alert('Checkout error. Please try again.');
       }
     },
 

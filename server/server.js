@@ -3,9 +3,15 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const Stripe = require('stripe');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize Stripe
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_your_test_key_here', {
+  apiVersion: '2023-10-16'
+});
 
 // Log environment variables for debugging
 console.log('🔍 Environment variables:');
@@ -105,6 +111,101 @@ app.post('/api/services', (req, res) => {
   } catch (error) {
     console.error('❌ Error saving services:', error);
     res.status(500).json({ error: 'Failed to save services' });
+  }
+});
+
+// Stripe Checkout endpoint
+app.post('/api/checkout', async (req, res) => {
+  try {
+    const { cart, contact = {} } = req.body;
+    
+    if (!cart || !Array.isArray(cart) || cart.length === 0) {
+      return res.status(400).json({ error: 'Cart is empty' });
+    }
+
+    // Determine if this is a subscription (monthly) or one-time payment
+    const hasMonthlyItems = cart.some(item => item.price && item.price.monthly && item.price.monthly > 0);
+    const mode = hasMonthlyItems ? 'subscription' : 'payment';
+    
+    const lineItems = [];
+    
+    for (const item of cart) {
+      let price = 0;
+      let interval = null;
+      
+      if (mode === 'subscription' && item.price && item.price.monthly && item.price.monthly > 0) {
+        price = item.price.monthly;
+        interval = 'month';
+      } else if (item.price && item.price.oneTime && item.price.oneTime > 0) {
+        price = item.price.oneTime;
+      } else if (item.price && typeof item.price === 'number') {
+        price = item.price;
+      }
+      
+      if (price > 0) {
+        const lineItem = {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: item.name || 'Service',
+              description: item.description || item.outcome || ''
+            },
+            unit_amount: Math.round(price * 100), // Convert to cents
+            ...(interval && { recurring: { interval } })
+          },
+          quantity: 1
+        };
+        lineItems.push(lineItem);
+      }
+    }
+    
+    if (lineItems.length === 0) {
+      return res.status(400).json({ error: 'No billable items in cart' });
+    }
+
+    // Get the origin for success/cancel URLs
+    const origin = req.headers.origin || `https://${req.headers.host}`;
+    
+    const session = await stripe.checkout.sessions.create({
+      mode,
+      line_items: lineItems,
+      success_url: `${origin}/?success=1&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/?canceled=1`,
+      metadata: {
+        email: contact.email || '',
+        name: contact.name || '',
+        company: contact.company || '',
+        phone: contact.phone || '',
+        notes: contact.notes || '',
+        cart_items: JSON.stringify(cart.map(item => ({ name: item.name, price: item.price })))
+      },
+      allow_promotion_codes: true,
+      automatic_tax: { enabled: true },
+      customer_email: contact.email,
+      billing_address_collection: 'required',
+      ...(mode === 'subscription' && {
+        subscription_data: {
+          metadata: {
+            plan_type: 'growth_machine',
+            contact_info: JSON.stringify(contact)
+          }
+        }
+      })
+    });
+
+    console.log('✅ Stripe checkout session created:', session.id);
+    res.json({ 
+      success: true, 
+      sessionId: session.id, 
+      url: session.url 
+    });
+    
+  } catch (error) {
+    console.error('❌ Stripe checkout error:', error);
+    res.status(500).json({ 
+      error: 'Failed to create checkout session',
+      details: error.message 
+    });
   }
 });
 
