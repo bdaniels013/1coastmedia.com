@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1CoastMedia Services</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="./assets/1coastmedia_logo_B_badge_2048.jpg" />
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="1CoastMedia – Services and Growth Packages" />
+  <meta property="og:description" content="Your Gulf Coast growth partner. Fast, clear, and measurable marketing services and signature programs." />
+  <meta property="og:image" content="./assets/1coastmedia_logo_A_primary_mark_2048.jpg" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Analytics tag for GA4 (Gtag) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K54J9FPE7N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K54J9FPE7N');
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Load service data and app logic -->
+  <script src="./data/services.js"></script>
+  <script src="./app.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="app()" x-init="init()">
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="flex items-center space-x-3 text-2xl font-extrabold tracking-wide">
+        <img src="./assets/1coastmedia_logo_A_primary_mark_2048.jpg" alt="1CoastMedia logo" class="h-8 w-8 object-contain" />
+        <span>1CoastMedia</span>
+      </h1>
+      <!-- Optional inline cart button in the header -->
+      <button @click="cartOpen = !cartOpen" class="relative px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        Cart (<span x-text="cartCount()"></span>)
+      </button>
+    </div>
+  </header>
+
+  <!-- Spacer to offset fixed header -->
+  <div class="pt-20"></div>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-6">
+    <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Your Gulf Coast Growth Partner — Fast, Clear, Measurable.</h2>
+    <p class="text-lg text-gray-300 max-w-3xl mx-auto">We launch websites, campaigns, and content that actually move the needle. One‑time for quick wins. Monthly for momentum. Transparent pricing, fast turnarounds, zero fluff.</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+      <button @click="scrollToServices(); cartOpen = true" class="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:opacity-90 focus:outline-none">👉 Build Your Package</button>
+      <a href="#services" class="flex items-center justify-center px-6 py-3 rounded-full bg-white/10 border border-white/20 text-indigo-300 hover:bg-white/20">See Services →</a>
+    </div>
+  </section>
+
+  <!-- Trust / Proof Strip -->
+  <section class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+    <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+      <div class="text-2xl font-bold">3–7 day</div>
+      <div class="text-sm text-gray-400">website turnarounds</div>
+    </div>
+    <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+      <div class="text-2xl font-bold">30k+</div>
+      <div class="text-sm text-gray-400">UGC views per campaign</div>
+    </div>
+    <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+      <div class="text-2xl font-bold">100%</div>
+      <div class="text-sm text-gray-400">upfront pricing clarity</div>
+    </div>
+  </section>
+
+  <!-- Who We Serve -->
+  <section class="max-w-7xl mx-auto px-4 py-12 text-center space-y-6">
+    <h3 class="text-3xl font-bold">Built for brands that need results yesterday.</h3>
+    <div class="flex flex-wrap justify-center gap-4 mt-4">
+      <span class="px-4 py-2 bg-white/5 backdrop-blur-lg border border-white/20 rounded-full">Tourism & Events</span>
+      <span class="px-4 py-2 bg-white/5 backdrop-blur-lg border border-white/20 rounded-full">Real Estate Professionals</span>
+      <span class="px-4 py-2 bg-white/5 backdrop-blur-lg border border-white/20 rounded-full">Local Businesses & Retailers</span>
+      <span class="px-4 py-2 bg-white/5 backdrop-blur-lg border border-white/20 rounded-full">Creators & Influencers</span>
+    </div>
+  </section>
+
+  <!-- Value Proposition -->
+  <section class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+    <h3 class="text-3xl font-bold text-center">Why 1CoastMedia?</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-xl font-semibold">⚡ Speed Sprints</div>
+        <p class="text-sm text-gray-400 mt-2">Funnels in 48h, sites in a week.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-xl font-semibold">📍 Local SEO Authority</div>
+        <p class="text-sm text-gray-400 mt-2">GBP, citations, geo‑pages.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-xl font-semibold">🎥 Creator Content Engine</div>
+        <p class="text-sm text-gray-400 mt-2">UGC + short‑form video.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-xl font-semibold">🎉 Event Surge Kits</div>
+        <p class="text-sm text-gray-400 mt-2">Fill seats, capture leads, boost revenue.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <div class="text-xl font-semibold">✅ Risk‑Free Guarantees</div>
+        <p class="text-sm text-gray-400 mt-2">QA pass or we fix it. KPI lift or extra month free.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Signature Offers -->
+  <section class="max-w-7xl mx-auto px-4 py-12 space-y-6">
+    <h3 class="text-3xl font-bold text-center">Signature Programs</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20 flex flex-col justify-between">
+        <div>
+          <h4 class="text-lg font-semibold mb-1">48‑Hour Launch Funnel</h4>
+          <p class="text-sm text-gray-400">A tracked lead‑gen system live in 2 days.</p>
+        </div>
+        <a href="#services" class="mt-3 text-indigo-300 hover:underline text-sm">Learn more →</a>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20 flex flex-col justify-between">
+        <div>
+          <h4 class="text-lg font-semibold mb-1">Local Authority Sprint</h4>
+          <p class="text-sm text-gray-400">Your business everywhere it counts in 7 days.</p>
+        </div>
+        <a href="#services" class="mt-3 text-indigo-300 hover:underline text-sm">Learn more →</a>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20 flex flex-col justify-between">
+        <div>
+          <h4 class="text-lg font-semibold mb-1">Site‑in‑a‑Week</h4>
+          <p class="text-sm text-gray-400">Six responsive pages, live and optimized in 7 days.</p>
+        </div>
+        <a href="#services" class="mt-3 text-indigo-300 hover:underline text-sm">Learn more →</a>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20 flex flex-col justify-between">
+        <div>
+          <h4 class="text-lg font-semibold mb-1">Event Surge Kit</h4>
+          <p class="text-sm text-gray-400">Flyers, page, promos, and ads — event‑ready in a week.</p>
+        </div>
+        <a href="#services" class="mt-3 text-indigo-300 hover:underline text-sm">Learn more →</a>
+      </div>
+    </div>
+    <div class="text-center mt-6">
+      <a href="#services" class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:opacity-90">Explore Signature Programs</a>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="max-w-7xl mx-auto px-4 py-12 space-y-6">
+    <h3 class="text-3xl font-bold text-center">Success Stories</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <p class="text-gray-200 italic">“We needed a site live before our event — they delivered in 5 days. Bookings doubled.”</p>
+        <div class="mt-2 text-sm text-gray-400">— Local Venue Owner, Biloxi MS</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <p class="text-gray-200 italic">“Their Local Authority Sprint put us on the map. Our search inquiries tripled.”</p>
+        <div class="mt-2 text-sm text-gray-400">— Real Estate Agent, Gulfport MS</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
+        <p class="text-gray-200 italic">“The UGC content engine blew up our social presence. 40k views in the first week.”</p>
+        <div class="mt-2 text-sm text-gray-400">— Influencer, Mobile AL</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Block -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-6">
+    <h3 class="text-3xl font-bold">Ready to grow your brand?</h3>
+    <p class="text-gray-300">Pick a base service, stack add‑ons, or build from scratch.</p>
+    <button @click="scrollToServices(); cartOpen = true" class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:opacity-90">👉 Build My Package</button>
+  </section>
+
+  <!-- Calendly CTA -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-4">
+    <h3 class="text-3xl font-bold">Book a Free 30‑Minute Call</h3>
+    <p class="text-gray-300">Have questions or need guidance? Let's talk.</p>
+    <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium shadow-lg hover:opacity-90">Book a Call</a>
+  </section>
+
+  <!-- Services Listing -->
+  <main id="services" class="max-w-7xl mx-auto px-4 py-8 space-y-12">
+    <!-- Iterate over categories -->
+    <template x-for="(category, catKey) in serviceCategories" :key="catKey">
+      <section class="space-y-4">
+        <!-- Category heading and description -->
+        <div>
+          <h2 class="text-2xl font-bold" x-text="formatCategoryTitle(catKey)"></h2>
+          <p class="text-sm text-slate-600 mt-1" x-text="category.description"></p>
+        </div>
+        <!-- Services in category -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <template x-for="svc in category.services" :key="svc.key">
+            <div class="p-4 rounded-xl shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg flex flex-col justify-between">
+              <div>
+                <h3 class="font-semibold text-lg" x-text="svc.name"></h3>
+                <p class="text-sm text-gray-300 mt-1" x-text="svc.outcome"></p>
+                <!-- Details toggle -->
+                <button @click="toggleDetails(svc.key)" class="mt-2 text-xs text-indigo-300 hover:underline focus:outline-none">
+                  <span x-text="detailsOpen[svc.key] ? 'Hide details' : 'View details'"></span>
+                </button>
+                <div x-show="detailsOpen[svc.key]" x-transition class="mt-2 text-sm text-gray-200">
+                  <ul class="list-disc list-inside space-y-1">
+                    <template x-for="item in svc.deliverables" :key="item"><li x-text="item"></li></template>
+                  </ul>
+                  <p class="mt-1 text-xs text-gray-400" x-show="svc.sla">SLA: <span x-text="svc.sla"></span></p>
+                </div>
+              </div>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="font-semibold">
+                  <!-- Show one-time price if present, else show monthly price with /mo suffix -->
+                  <span x-show="svc.price && svc.price.oneTime && svc.price.oneTime > 0" x-text="fmtUSD(svc.price.oneTime)"></span>
+                  <span x-show="(!svc.price.oneTime || svc.price.oneTime === 0) && svc.price && svc.price.monthly && svc.price.monthly > 0" x-text="fmtUSD(svc.price.monthly) + ' / mo'"></span>
+                </div>
+                <button @click="toggleService(svc.key)"
+                        class="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                        :class="cartServices.includes(svc.key) ? 'bg-red-600 text-white' : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'">
+                  <span x-text="cartServices.includes(svc.key) ? 'Remove' : 'Add'"></span>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </template>
+  </main>
+
+  <!-- Cart Sidebar -->
+  <div class="fixed top-0 right-0 w-80 max-w-full h-full bg-gray-900/95 backdrop-blur-lg shadow-xl z-50 transform transition-transform duration-300 flex flex-col"
+       :class="cartOpen ? 'translate-x-0' : 'translate-x-full'">
+    <div class="p-4 border-b border-white/20 flex justify-between items-center">
+      <h2 class="text-lg font-bold">Your Cart</h2>
+      <button @click="cartOpen = false" class="text-gray-400 text-2xl leading-none hover:text-gray-200">&times;</button>
+    </div>
+    <div class="flex-1 p-4 overflow-y-auto">
+      <div x-show="cartServices.length === 0" class="text-gray-400 text-sm">Your cart is empty.</div>
+      <template x-for="svcKey in cartServices" :key="svcKey">
+        <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
+          <div>
+            <div class="font-semibold" x-text="getServiceByKey(svcKey)?.name"></div>
+            <div class="text-xs text-gray-400" x-text="getServiceByKey(svcKey)?.outcome"></div>
+          </div>
+          <div class="text-right">
+            <div class="font-semibold">
+              <span x-show="getServiceByKey(svcKey)?.price && getServiceByKey(svcKey)?.price.oneTime && getServiceByKey(svcKey).price.oneTime > 0" x-text="fmtUSD(getServiceByKey(svcKey).price.oneTime)"></span>
+              <span x-show="(!getServiceByKey(svcKey)?.price.oneTime || getServiceByKey(svcKey).price.oneTime === 0) && getServiceByKey(svcKey)?.price && getServiceByKey(svcKey).price.monthly && getServiceByKey(svcKey).price.monthly > 0" x-text="fmtUSD(getServiceByKey(svcKey).price.monthly) + ' / mo'"></span>
+            </div>
+            <button @click="toggleService(svcKey)" class="text-xs text-red-400 hover:underline mt-1">Remove</button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Add-ons section -->
+      <div x-show="oneTimeAddons.length > 0" class="mt-6">
+        <h3 class="font-semibold mb-2">One‑Time Add‑ons</h3>
+        <template x-for="addon in oneTimeAddons" :key="addon.key">
+          <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
+            <div>
+              <div class="font-medium" x-text="addon.name"></div>
+              <div class="text-xs text-gray-400" x-text="addon.description"></div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm">
+                <span x-show="addon.price && addon.price.oneTime && addon.price.oneTime > 0" x-text="fmtUSD(addon.price.oneTime)"></span>
+                <span x-show="(!addon.price.oneTime || addon.price.oneTime === 0) && addon.price && addon.price.monthly && addon.price.monthly > 0" x-text="fmtUSD(addon.price.monthly) + ' / mo'"></span>
+              </div>
+              <button @click="toggleAddon(addon.key)"
+                      class="text-xs mt-1 hover:underline"
+                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-indigo-300'">
+                <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div x-show="monthlyAddons.length > 0" class="mt-6">
+        <h3 class="font-semibold mb-2">Monthly Add‑ons</h3>
+        <template x-for="addon in monthlyAddons" :key="addon.key">
+          <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
+            <div>
+              <div class="font-medium" x-text="addon.name"></div>
+              <div class="text-xs text-gray-400" x-text="addon.description"></div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm">
+                <span x-show="addon.price && addon.price.oneTime && addon.price.oneTime > 0" x-text="fmtUSD(addon.price.oneTime)"></span>
+                <span x-show="(!addon.price.oneTime || addon.price.oneTime === 0) && addon.price && addon.price.monthly && addon.price.monthly > 0" x-text="fmtUSD(addon.price.monthly) + ' / mo'"></span>
+              </div>
+              <button @click="toggleAddon(addon.key)"
+                      class="text-xs mt-1 hover:underline"
+                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-indigo-300'">
+                <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class="p-4 border-t border-white/20">
+      <div class="flex justify-between font-semibold mb-3">
+        <span>Total</span>
+        <span x-text="fmtUSD(cartTotal())"></span>
+      </div>
+      <button
+        @click="checkout()"
+        :disabled="cartServices.length === 0 && cartAddons.length === 0"
+        class="w-full py-2 rounded-lg text-center font-medium transition"
+        :class="(cartServices.length === 0 && cartAddons.length === 0)
+          ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+          : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white'"
+      >
+        Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating cart button (bottom right) -->
+  <button
+    @click="cartOpen = !cartOpen"
+    x-show="cartServices.length > 0"
+    class="fixed bottom-5 right-5 px-4 py-3 rounded-full shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90"
+    x-transition
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h14l-1.35 4.03a2 2 0 01-1.92 1.42H9.27a2 2 0 01-1.92-1.42L5 6H3" />
+    </svg>
+    <span x-text="cartServices.length"></span>
+  </button>
+</body>
+</html>

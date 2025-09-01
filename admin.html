@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard • 1CoastMedia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS for quick styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js for interactivity -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="adminApp()" x-init="init()">
+  <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">1CoastMedia Admin</h1>
+      <span class="text-sm text-gray-400">Dashboard</span>
+    </div>
+  </header>
+
+  <!-- Spacer below fixed header -->
+  <div class="pt-20"></div>
+
+  <main class="max-w-7xl mx-auto p-4 space-y-8">
+    <!-- KPI section -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg">
+        <div class="text-xs text-gray-400">Services</div>
+        <div class="text-2xl font-bold" x-text="servicesCount"></div>
+      </div>
+      <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg">
+        <div class="text-xs text-gray-400">Add-ons</div>
+        <div class="text-2xl font-bold" x-text="addonsCount"></div>
+      </div>
+      <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg">
+        <div class="text-xs text-gray-400">Cart Sales (session)</div>
+        <div class="text-2xl font-bold" x-text="fmtUSD(totalSales)"></div>
+      </div>
+      <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg">
+        <div class="text-xs text-gray-400">Visitors (placeholder)</div>
+        <div class="text-2xl font-bold">—</div>
+      </div>
+    </section>
+
+    <!-- GA4 Quick Analytics Widget -->
+    <section class="mt-8 max-w-3xl space-y-4 p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg">
+      <h2 class="text-lg font-bold">Quick Analytics</h2>
+      <div class="text-sm text-gray-300">Realtime users: <strong id="rtUsers">–</strong></div>
+      <div class="mt-4">
+        <canvas id="gaChart" width="800" height="300"></canvas>
+      </div>
+      <div class="mt-4">
+        <h3 class="text-sm font-semibold mb-2">Top pages (last 7 days)</h3>
+        <ol id="topPages" class="list-decimal ml-5 space-y-1 text-sm text-gray-300"></ol>
+      </div>
+    </section>
+
+    <!-- Services management -->
+    <section class="rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg p-4" x-data="{ open: true }">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold">Services</h2>
+        <button @click="open = !open" class="text-sm text-indigo-300 hover:underline">
+          <span x-text="open ? 'Hide' : 'Show'"></span>
+        </button>
+      </div>
+      <div x-show="open" x-transition>
+        <!-- Desktop table view -->
+        <div class="overflow-x-auto hidden sm:block">
+        <table class="min-w-full text-sm">
+          <thead class="bg-white/5 border-b border-white/20">
+            <tr>
+              <th class="p-2 text-left">Key</th>
+              <th class="p-2 text-left">Name</th>
+              <th class="p-2 text-left">Outcome</th>
+              <th class="p-2 text-left">Deliverables</th>
+              <th class="p-2 text-right">One‑time</th>
+              <th class="p-2 text-right">Monthly</th>
+              <th class="p-2 text-left">Category</th>
+              <th class="p-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="(svc, index) in flatServices" :key="svc.key">
+              <tr class="border-b border-white/20" draggable="true"
+                  @dragstart="handleServiceDragStart($event, index)"
+                  @dragover.prevent
+                  @drop="handleServiceDrop($event, index)">
+                <td class="p-2">
+                  <input x-model="svc.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </td>
+                <td class="p-2">
+                  <input x-model="svc.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </td>
+                <td class="p-2">
+                  <input x-model="svc.outcome" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" placeholder="Outcome" />
+                </td>
+                <td class="p-2">
+                  <input x-model="svc.deliverables" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" placeholder="Comma-separated" />
+                </td>
+                <td class="p-2 text-right">
+                  <input x-model.number="svc.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                </td>
+                <td class="p-2 text-right">
+                  <input x-model.number="svc.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                </td>
+                <td class="p-2">
+                  <input x-model="svc.category" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </td>
+                <td class="p-2 text-right">
+                  <div class="flex items-center justify-end space-x-2">
+                    <button @click="moveServiceUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+                    <button @click="moveServiceDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+                    <button @click="deleteService(svc.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <tr x-show="flatServices.length === 0"><td colspan="8" class="p-2 text-center text-gray-400">No services.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <!-- Mobile card view -->
+        <div class="sm:hidden space-y-4">
+          <template x-for="(svc, index) in flatServices" :key="svc.key">
+            <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
+                 @dragstart="handleServiceDragStart($event, index)" @dragover.prevent @drop="handleServiceDrop($event, index)">
+              <div class="flex justify-between items-center">
+                <input x-model="svc.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
+                <div class="flex space-x-2">
+                  <button @click="moveServiceUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+                  <button @click="moveServiceDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+                  <button @click="deleteService(svc.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs text-gray-400">Key</label>
+                  <input x-model="svc.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400">Category</label>
+                  <input x-model="svc.category" list="categoryList" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-xs text-gray-400">Outcome</label>
+                  <input x-model="svc.outcome" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-xs text-gray-400">Deliverables (comma‑separated)</label>
+                  <input x-model="svc.deliverables" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400">One‑time</label>
+                  <input x-model.number="svc.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400">Monthly</label>
+                  <input x-model.number="svc.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                </div>
+              </div>
+            </div>
+          </template>
+          <div x-show="flatServices.length === 0" class="p-4 text-center text-gray-400">No services.</div>
+        </div>
+        <!-- Save changes button -->
+        <div class="mt-4 flex justify-end">
+          <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
+        </div>
+        <!-- Add service form -->
+        <form @submit.prevent="addService" class="mt-4 grid grid-cols-6 gap-2 items-end">
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">Category</label>
+            <input x-model="newService.category" list="categoryList" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="e.g. signature" />
+            <!-- datalist of existing category keys -->
+            <datalist id="categoryList">
+              <template x-for="(cat, key) in serviceCategories" :key="key">
+                <option :value="key" x-text="formatCategoryTitle(key)"></option>
+              </template>
+            </datalist>
+          </div>
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">Key</label>
+            <input x-model="newService.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="unique-key" />
+          </div>
+          <div class="col-span-2">
+            <label class="block text-xs text-gray-400">Name</label>
+            <input x-model="newService.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="Service name" />
+          </div>
+          <div class="col-span-2">
+            <label class="block text-xs text-gray-400">Outcome</label>
+            <input x-model="newService.outcome" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="e.g. Website live in 7 days" />
+          </div>
+          <div class="col-span-3">
+            <label class="block text-xs text-gray-400">Deliverables (comma‑separated)</label>
+            <input x-model="newService.deliverables" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="page, SEO setup, ..." />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">One‑time</label>
+            <input x-model="newService.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="$" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">Monthly</label>
+            <input x-model="newService.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="$" />
+          </div>
+          <div class="col-span-6">
+            <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Service</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Add-ons management -->
+    <section class="rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg p-4" x-data="{ openAddon: true }">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold">Add-ons</h2>
+        <button @click="openAddon = !openAddon" class="text-sm text-indigo-300 hover:underline">
+          <span x-text="openAddon ? 'Hide' : 'Show'"></span>
+        </button>
+      </div>
+      <div x-show="openAddon" x-transition>
+        <!-- Desktop add-ons table -->
+        <div class="overflow-x-auto hidden sm:block">
+        <table class="min-w-full text-sm">
+          <thead class="bg-white/5 border-b border-white/20">
+            <tr>
+              <th class="p-2 text-left">Key</th>
+              <th class="p-2 text-left">Name</th>
+              <th class="p-2 text-left">Description</th>
+              <th class="p-2 text-right">Price</th>
+              <th class="p-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="(addon, index) in flatAddons" :key="addon.key">
+              <tr class="border-b border-white/20" draggable="true"
+                  @dragstart="handleAddonDragStart($event, index)"
+                  @dragover.prevent
+                  @drop="handleAddonDrop($event, index)">
+                <td class="p-2">
+                  <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </td>
+                <td class="p-2">
+                  <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </td>
+                <td class="p-2">
+                  <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </td>
+                <td class="p-2 text-right">
+                  <div class="flex flex-col items-end space-y-1">
+                    <input x-model.number="addon.priceOneTime" type="number" step="1" placeholder="One‑time" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                    <input x-model.number="addon.priceMonthly" type="number" step="1" placeholder="Monthly" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                  </div>
+                </td>
+                <td class="p-2 text-right">
+                  <div class="flex items-center justify-end space-x-2">
+                    <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+                    <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+                    <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <tr x-show="flatAddons.length === 0"><td colspan="5" class="p-2 text-center text-gray-400">No add-ons.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <!-- Mobile add-ons card view -->
+        <div class="sm:hidden space-y-4">
+          <template x-for="(addon, index) in flatAddons" :key="addon.key">
+            <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
+                 @dragstart="handleAddonDragStart($event, index)" @dragover.prevent @drop="handleAddonDrop($event, index)">
+              <div class="flex justify-between items-center">
+                <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
+                <div class="flex space-x-2">
+                  <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+                  <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+                  <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs text-gray-400">Key</label>
+                  <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400">Description</label>
+                  <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400">One‑time</label>
+                  <input x-model.number="addon.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400">Monthly</label>
+                  <input x-model.number="addon.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+                </div>
+              </div>
+            </div>
+          </template>
+          <div x-show="flatAddons.length === 0" class="p-4 text-center text-gray-400">No add‑ons.</div>
+        </div>
+        <!-- Save changes button -->
+        <div class="mt-4 flex justify-end">
+          <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
+        </div>
+        <!-- Add add-on form -->
+        <form @submit.prevent="addAddon" class="mt-4 grid grid-cols-6 gap-2 items-end">
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">Key</label>
+            <input x-model="newAddon.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">Name</label>
+            <input x-model="newAddon.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+          </div>
+          <div class="col-span-2">
+            <label class="block text-xs text-gray-400">Description</label>
+            <input x-model="newAddon.description" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">One‑time</label>
+            <input x-model="newAddon.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-xs text-gray-400">Monthly</label>
+            <input x-model="newAddon.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+          </div>
+          <div class="col-span-6">
+            <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Add-on</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Load data and admin logic -->
+  <!-- Chart.js for analytics widget -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  (async function() {
+    // If your API is on another origin, replace with its full URL, e.g. https://api.1coastmedia.com
+    const API_BASE = location.origin;
+    // Realtime users
+    try {
+      const rt = await fetch(`${API_BASE}/api/ga/realtime`).then(r => r.json());
+      document.getElementById("rtUsers").textContent = rt.activeUsers ?? "0";
+    } catch {
+      document.getElementById("rtUsers").textContent = "0";
+    }
+    // Summary
+    let data = null;
+    try {
+      data = await fetch(`${API_BASE}/api/ga/summary`).then(r => r.json());
+    } catch {}
+    if (!data) return;
+    // Timeseries chart for 28‑day users
+    const labels = data.timeseries.map(d => d.date);
+    const users = data.timeseries.map(d => d.totalUsers);
+    const ctx = document.getElementById("gaChart").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{ label: "Users (28 days)", data: users, tension: 0.3, borderColor: "#818cf8", backgroundColor: "rgba(129,140,248,0.2)" }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+          y: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+        }
+      }
+    });
+    // Top pages list
+    const list = document.getElementById("topPages");
+    data.topPages.forEach(p => {
+      const li = document.createElement("li");
+      li.textContent = `${p.path} — ${p.views} views`;
+      list.appendChild(li);
+    });
+  })();
+  </script>
+  <script src="./data/services.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>
