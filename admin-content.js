@@ -15,6 +15,16 @@ function contentManager() {
     saveStatus: null,
     isSaving: false,
     
+    // Tab switching with analytics loading
+    switchTab(tabName) {
+      this.activeTab = tabName;
+      
+      // Load analytics only when Analytics tab is clicked
+      if (tabName === 'analytics' && this.isLoggedIn) {
+        this.loadAnalytics();
+      }
+    },
+    
     // Analytics
     analytics: {
       realtime: null,
@@ -33,8 +43,8 @@ function contentManager() {
       // Load content data
       await this.loadContent();
       
-      // Load analytics data
-      await this.loadAnalytics();
+      // Don't auto-load analytics - only load when user clicks Analytics tab
+      // await this.loadAnalytics();
     },
     
     // Authentication methods
@@ -377,6 +387,14 @@ function contentManager() {
     
     // Analytics methods
     async loadAnalytics() {
+      // Only load if we're on the analytics tab and not already loading
+      if (this.activeTab !== 'analytics' || this.isRefreshingAnalytics) {
+        return;
+      }
+      
+      this.isRefreshingAnalytics = true;
+      console.log('📊 Loading analytics data...');
+      
       try {
         // Load real-time data
         const realtimeResponse = await fetch(`${this.apiBase}/api/analytics/realtime`);
@@ -394,13 +412,16 @@ function contentManager() {
         console.log('✅ Analytics loaded successfully');
       } catch (error) {
         console.error('Error loading analytics:', error);
+      } finally {
+        this.isRefreshingAnalytics = false;
       }
     },
     
     async refreshAnalytics() {
-      this.isRefreshingAnalytics = true;
-      await this.loadAnalytics();
-      this.isRefreshingAnalytics = false;
+      // Only refresh if we're on the analytics tab
+      if (this.activeTab === 'analytics') {
+        await this.loadAnalytics();
+      }
     },
     
     createTrafficChart() {

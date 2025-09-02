@@ -93,28 +93,28 @@
       <!-- Navigation Tabs -->
       <div class="flex space-x-1 bg-white/10 rounded-lg p-1">
         <button 
-          @click="activeTab = 'mainPage'" 
+          @click="switchTab('mainPage')" 
           class="px-4 py-2 rounded-md transition-colors"
           :class="activeTab === 'mainPage' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
         >
           Main Page
         </button>
         <button 
-          @click="activeTab = 'growthMachine'" 
+          @click="switchTab('growthMachine')" 
           class="px-4 py-2 rounded-md transition-colors"
           :class="activeTab === 'growthMachine' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
         >
           Growth Machine
         </button>
         <button 
-          @click="activeTab = 'navigation'" 
+          @click="switchTab('navigation')" 
           class="px-4 py-2 rounded-md transition-colors"
           :class="activeTab === 'navigation' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
         >
           Navigation
         </button>
         <button 
-          @click="activeTab = 'analytics'" 
+          @click="switchTab('analytics')" 
           class="px-4 py-2 rounded-md transition-colors"
           :class="activeTab === 'analytics' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
         >
