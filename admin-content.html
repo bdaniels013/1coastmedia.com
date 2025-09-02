@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     body { font-family: 'Inter', sans-serif; }
     [x-cloak] { display: none !important; }
@@ -429,22 +429,106 @@
             </div>
           </div>
 
-          <!-- Charts Section -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Traffic Chart -->
-            <div class="bg-white/10 border border-white/20 rounded-lg p-4">
-              <h3 class="text-lg font-semibold mb-4">Traffic Trends (28 days)</h3>
-              <canvas id="trafficChart" width="400" height="200"></canvas>
+          <!-- Date Range Selector -->
+          <div class="bg-white/10 border border-white/20 rounded-lg p-4 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">📅 Date Range</h3>
+              <div class="flex space-x-2">
+                <button 
+                  @click="setDateRange('today')" 
+                  class="px-3 py-1 rounded-md text-sm transition-colors"
+                  :class="dateRange === 'today' ? 'bg-blue-600 text-white' : 'bg-white/10 text-gray-300 hover:bg-white/20'"
+                >
+                  Today
+                </button>
+                <button 
+                  @click="setDateRange('week')" 
+                  class="px-3 py-1 rounded-md text-sm transition-colors"
+                  :class="dateRange === 'week' ? 'bg-blue-600 text-white' : 'bg-white/10 text-gray-300 hover:bg-white/20'"
+                >
+                  This Week
+                </button>
+                <button 
+                  @click="setDateRange('month')" 
+                  class="px-3 py-1 rounded-md text-sm transition-colors"
+                  :class="dateRange === 'month' ? 'bg-blue-600 text-white' : 'bg-white/10 text-gray-300 hover:bg-white/20'"
+                >
+                  This Month
+                </button>
+                <button 
+                  @click="setDateRange('28days')" 
+                  class="px-3 py-1 rounded-md text-sm transition-colors"
+                  :class="dateRange === '28days' ? 'bg-blue-600 text-white' : 'bg-white/10 text-gray-300 hover:bg-white/20'"
+                >
+                  Last 28 Days
+                </button>
+              </div>
             </div>
+            <div class="text-sm text-gray-400">
+              <span x-text="getDateRangeText()"></span>
+            </div>
+          </div>
 
+          <!-- Traffic Overview -->
+          <div class="bg-white/10 border border-white/20 rounded-lg p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4">📈 Traffic Overview</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="text-center p-4 bg-white/5 rounded-lg">
+                <div class="text-2xl font-bold text-blue-400" x-text="analytics.summary?.totalUsers || '—'"></div>
+                <div class="text-sm text-gray-400">Total Users</div>
+              </div>
+              <div class="text-center p-4 bg-white/5 rounded-lg">
+                <div class="text-2xl font-bold text-green-400" x-text="analytics.summary?.totalSessions || '—'"></div>
+                <div class="text-sm text-gray-400">Total Sessions</div>
+              </div>
+              <div class="text-center p-4 bg-white/5 rounded-lg">
+                <div class="text-2xl font-bold text-purple-400" x-text="analytics.summary?.totalPageViews || '—'"></div>
+                <div class="text-sm text-gray-400">Page Views</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Pages & Sources -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <!-- Top Pages -->
             <div class="bg-white/10 border border-white/20 rounded-lg p-4">
-              <h3 class="text-lg font-semibold mb-4">Top Pages</h3>
-              <div class="space-y-2">
+              <h3 class="text-lg font-semibold mb-4">🔥 Top Pages</h3>
+              <div class="space-y-3">
                 <template x-for="(page, index) in analytics.summary?.topPages || []" :key="index">
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-300" x-text="page.path"></span>
-                    <span class="text-sm font-semibold text-blue-400" x-text="page.views"></span>
+                  <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold" x-text="index + 1"></div>
+                      <div>
+                        <div class="font-medium text-white" x-text="page.path"></div>
+                        <div class="text-xs text-gray-400">Page</div>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <div class="text-lg font-bold text-blue-400" x-text="page.views"></div>
+                      <div class="text-xs text-gray-400">Views</div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Top Traffic Sources -->
+            <div class="bg-white/10 border border-white/20 rounded-lg p-4">
+              <h3 class="text-lg font-semibold mb-4">🌐 Traffic Sources</h3>
+              <div class="space-y-3">
+                <template x-for="(source, index) in analytics.summary?.topSources || []" :key="index">
+                  <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold" x-text="index + 1"></div>
+                      <div>
+                        <div class="font-medium text-white" x-text="source.source"></div>
+                        <div class="text-xs text-gray-400">Source</div>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <div class="text-lg font-bold text-green-400" x-text="source.sessions"></div>
+                      <div class="text-xs text-gray-400">Sessions</div>
+                    </div>
                   </div>
                 </template>
               </div>

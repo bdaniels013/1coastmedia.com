@@ -61,13 +61,41 @@ function contentManager() {
       }
     },
     
+    // Date range functions
+    setDateRange(range) {
+      this.dateRange = range;
+      // Reload analytics with new date range
+      if (this.activeTab === 'analytics') {
+        this.loadAnalytics();
+      }
+    },
+    
+    getDateRangeText() {
+      const now = new Date();
+      switch (this.dateRange) {
+        case 'today':
+          return `Today: ${now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}`;
+        case 'week':
+          const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+          const weekEnd = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+          return `This Week: ${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
+        case 'month':
+          return `This Month: ${now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+        case '28days':
+          const daysAgo = new Date(now.getTime() - (28 * 24 * 60 * 60 * 1000));
+          return `Last 28 Days: ${daysAgo.toLocaleDateString()} - ${now.toLocaleDateString()}`;
+        default:
+          return 'Last 28 Days';
+      }
+    },
+    
     // Analytics
     analytics: {
       realtime: null,
       summary: null
     },
     isRefreshingAnalytics: false,
-    trafficChart: null,
+    dateRange: '28days', // Default to 28 days
     
     // API base URL
     apiBase: window.location.origin,
@@ -442,7 +470,6 @@ function contentManager() {
         const summaryResponse = await fetch(`${this.apiBase}/api/analytics/summary`);
         if (summaryResponse.ok) {
           this.analytics.summary = await summaryResponse.json();
-          this.createTrafficChart();
         }
         
         console.log('✅ Analytics loaded successfully');
@@ -465,64 +492,6 @@ function contentManager() {
       }
     },
     
-    createTrafficChart() {
-      if (!this.analytics.summary?.timeseries) return;
-      
-      const ctx = document.getElementById('trafficChart');
-      if (!ctx) return;
-      
-      // Destroy existing chart if it exists
-      if (this.trafficChart) {
-        this.trafficChart.destroy();
-      }
-      
-      const labels = this.analytics.summary.timeseries.map(d => d.date);
-      const users = this.analytics.summary.timeseries.map(d => d.totalUsers);
-      const sessions = this.analytics.summary.timeseries.map(d => d.totalSessions);
-      
-      this.trafficChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Users',
-              data: users,
-              borderColor: '#60a5fa',
-              backgroundColor: 'rgba(96, 165, 250, 0.1)',
-              tension: 0.3
-            },
-            {
-              label: 'Sessions',
-              data: sessions,
-              borderColor: '#34d399',
-              backgroundColor: 'rgba(52, 211, 153, 0.1)',
-              tension: 0.3
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: {
-                color: '#cbd5e1'
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: '#cbd5e1' },
-              grid: { color: 'rgba(255,255,255,0.1)' }
-            },
-            y: {
-              ticks: { color: '#cbd5e1' },
-              grid: { color: 'rgba(255,255,255,0.1)' }
-            }
-          }
-        }
-      });
-    }
+    // Chart creation removed - no more infinite scrolling issues
   };
 }
