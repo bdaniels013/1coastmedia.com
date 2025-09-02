@@ -386,22 +386,43 @@
       <!-- Admin Services Tab -->
       <div x-show="activeTab === 'adminServices'" class="space-y-6">
         <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6">
-          <h2 class="text-2xl font-bold mb-6">⚙️ Admin Services Management</h2>
+          <h2 class="text-2xl font-bold mb-6">⚙️ Professional Services Management</h2>
           
           <!-- Service Categories -->
           <div class="space-y-6 mb-8">
-            <h3 class="text-xl font-semibold text-blue-300">Service Categories</h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-semibold text-blue-300">Service Categories</h3>
+              <button 
+                @click="showAddCategoryModal = true"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center gap-2"
+              >
+                <span>➕</span>
+                <span>Add Category</span>
+              </button>
+            </div>
             
             <template x-for="(category, categoryKey) in services.serviceCategories" :key="categoryKey">
               <div class="bg-white/5 border border-white/20 rounded-lg p-4">
-                <div class="flex items-center justify-between mb-4">
-                  <h4 class="text-lg font-semibold text-white" x-text="category.name"></h4>
-                  <button 
-                    @click="deleteServiceCategory(categoryKey)"
-                    class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
-                  >
-                    🗑️ Delete
-                  </button>
+                <!-- Category Header -->
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center gap-3">
+                    <h4 class="text-xl font-semibold text-white" x-text="category.name"></h4>
+                    <span class="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full" x-text="category.services.length + ' services'"></span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button 
+                      @click="editCategory(categoryKey)"
+                      class="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-sm"
+                    >
+                      ✏️ Edit
+                    </button>
+                    <button 
+                      @click="deleteServiceCategory(categoryKey)"
+                      class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
+                    >
+                      🗑️ Delete
+                    </button>
+                  </div>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -416,38 +437,191 @@
                 </div>
                 
                 <!-- Services in this category -->
-                <div class="space-y-3">
-                  <h5 class="text-md font-medium text-gray-300">Services</h5>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <h5 class="text-lg font-medium text-gray-300">Services</h5>
+                    <button 
+                      @click="addServiceToCategory(categoryKey)"
+                      class="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors text-sm flex items-center gap-2"
+                    >
+                      <span>➕</span>
+                      <span>Add Service</span>
+                    </button>
+                  </div>
                   <template x-for="(service, serviceIndex) in category.services" :key="serviceIndex">
-                    <div class="bg-white/10 border border-white/20 rounded-lg p-3">
-                      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-                        <div>
-                          <label class="block text-sm font-medium text-gray-300 mb-1">Service Name</label>
-                          <input x-model="service.name" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <div class="bg-white/10 border border-white/20 rounded-lg p-6">
+                      <!-- Service Header -->
+                      <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                          <h6 class="text-lg font-semibold text-white" x-text="service.name || 'New Service'"></h6>
+                          <span x-show="service.badge" class="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full" x-text="service.badge"></span>
                         </div>
-                        <div>
-                          <label class="block text-sm font-medium text-gray-300 mb-1">Price</label>
-                          <input x-model="service.price" type="number" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        </div>
-                        <div>
-                          <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                          <input x-model="service.description" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        </div>
-                      </div>
-                      <div class="flex justify-between items-center">
                         <button 
                           @click="deleteService(categoryKey, serviceIndex)"
-                          class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-xs"
+                          class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
                         >
-                          🗑️ Delete Service
-                        </button>
-                        <button 
-                          @click="addServiceToCategory(categoryKey)"
-                          class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-xs"
-                        >
-                          ➕ Add Service
+                          🗑️ Delete
                         </button>
                       </div>
+                      
+                      <!-- Service Key & Basic Info -->
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-2">
+                            🔑 Service Key <span class="text-red-400">*</span>
+                          </label>
+                          <input 
+                            x-model="service.key" 
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                            placeholder="e.g., 48-hour-launch"
+                            required
+                          >
+                          <p class="text-xs text-gray-400 mt-1">Unique identifier for Stripe integration</p>
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-2">
+                            📝 Service Name <span class="text-red-400">*</span>
+                          </label>
+                          <input 
+                            x-model="service.name" 
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            placeholder="e.g., 48-Hour Launch Funnel"
+                            required
+                          >
+                        </div>
+                      </div>
+                      
+                      <!-- Outcome & SLA -->
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-2">
+                            🎯 Outcome <span class="text-red-400">*</span>
+                          </label>
+                          <input 
+                            x-model="service.outcome" 
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            placeholder="e.g., Complete funnel live and converting in 48 hours"
+                            required
+                          >
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-2">
+                            ⏱️ SLA (Timeline) <span class="text-red-400">*</span>
+                          </label>
+                          <input 
+                            x-model="service.sla" 
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            placeholder="e.g., 48 hours"
+                            required
+                          >
+                        </div>
+                      </div>
+                      
+                      <!-- Stripe Pricing Configuration -->
+                      <div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4 mb-4">
+                        <h6 class="text-sm font-semibold text-blue-300 mb-3 flex items-center gap-2">
+                          💳 Stripe Pricing Configuration
+                        </h6>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                              💰 One-time Price ($)
+                            </label>
+                            <input 
+                              x-model="service.price.oneTime" 
+                              type="number" 
+                              min="0"
+                              step="0.01"
+                              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                              placeholder="0.00"
+                            >
+                            <p class="text-xs text-gray-400 mt-1">Set to 0 if monthly only</p>
+                          </div>
+                          <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                              🔄 Monthly Price ($)
+                            </label>
+                            <input 
+                              x-model="service.price.monthly" 
+                              type="number" 
+                              min="0"
+                              step="0.01"
+                              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                              placeholder="0.00"
+                            >
+                            <p class="text-xs text-gray-400 mt-1">Set to 0 if one-time only</p>
+                          </div>
+                          <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                              📅 Min Term (months)
+                            </label>
+                            <input 
+                              x-model="service.minTerm" 
+                              type="number" 
+                              min="0"
+                              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                              placeholder="0"
+                            >
+                            <p class="text-xs text-gray-400 mt-1">Required for monthly services</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Deliverables -->
+                      <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                          📋 Deliverables <span class="text-red-400">*</span>
+                        </label>
+                        <textarea 
+                          x-model="service.deliverablesText" 
+                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                          rows="4" 
+                          placeholder="Landing page + thank-you page&#10;GA4/pixels setup&#10;3 ad creatives&#10;1 welcome email"
+                          required
+                        ></textarea>
+                        <p class="text-xs text-gray-400 mt-1">One deliverable per line</p>
+                      </div>
+                      
+                      <!-- Acceptance Criteria & Badge -->
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-2">
+                            ✅ Acceptance Criteria <span class="text-red-400">*</span>
+                          </label>
+                          <input 
+                            x-model="service.acceptance" 
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                            placeholder="e.g., Test lead captured, analytics events firing"
+                            required
+                          >
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-2">
+                            🏆 Badge (optional)
+                          </label>
+                          <input 
+                            x-model="service.badge" 
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                            placeholder="e.g., Fastest ROI"
+                          >
+                          <p class="text-xs text-gray-400 mt-1">Displayed on frontend</p>
+                        </div>
+                      </div>
+                      
+                      <!-- Service Preview -->
+                      <div class="bg-white/5 border border-white/20 rounded-lg p-3 mb-4">
+                        <h6 class="text-sm font-medium text-gray-300 mb-2">👁️ Frontend Preview</h6>
+                        <div class="text-xs text-gray-400 space-y-1">
+                          <div><strong>Name:</strong> <span x-text="service.name || 'Not set'"></span></div>
+                          <div><strong>Price:</strong> 
+                            <span x-show="service.price.oneTime > 0" x-text="'$' + service.price.oneTime + ' (one-time)'"></span>
+                            <span x-show="service.price.monthly > 0" x-text="'$' + service.price.monthly + '/month'"></span>
+                            <span x-show="service.price.oneTime === 0 && service.price.monthly === 0" class="text-red-400">No price set</span>
+                          </div>
+                          <div><strong>Timeline:</strong> <span x-text="service.sla || 'Not set'"></span></div>
+                        </div>
+                      </div>
+                        
                     </div>
                   </template>
                   
@@ -483,9 +657,18 @@
             </div>
           </div>
           
-          <!-- Add-ons -->
+          <!-- Add-ons Section -->
           <div class="space-y-4">
-            <h3 class="text-xl font-semibold text-blue-300">Add-ons</h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-semibold text-blue-300">Add-ons & Extras</h3>
+              <button 
+                @click="showAddAddonModal = true"
+                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors flex items-center gap-2"
+              >
+                <span>➕</span>
+                <span>Add Add-on</span>
+              </button>
+            </div>
             
             <template x-for="(addon, addonIndex) in services.addons" :key="addonIndex">
               <div class="bg-white/5 border border-white/20 rounded-lg p-3">
@@ -540,14 +723,29 @@
             </div>
           </div>
           
-          <!-- Save Services Button -->
-          <div class="flex justify-center mt-8">
+          <!-- Save & Status -->
+          <div class="flex flex-col items-center mt-8 space-y-4">
+            <!-- Status Messages -->
+            <div x-show="saveStatus" class="w-full max-w-md">
+              <div x-show="saveStatus.type === 'success'" class="bg-green-500/20 border border-green-500/30 text-green-300 px-4 py-3 rounded-lg text-center">
+                <span x-text="saveStatus.message"></span>
+              </div>
+              <div x-show="saveStatus.type === 'error'" class="bg-green-500/20 border border-green-500/30 text-red-300 px-4 py-3 rounded-lg text-center">
+                <span x-text="saveStatus.message"></span>
+              </div>
+            </div>
+            
+            <!-- Save Button -->
             <button 
               @click="saveServices" 
-              class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-lg font-semibold"
+              class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-12 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 text-lg font-semibold shadow-lg"
             >
-              💾 Save All Services
+              💾 Save All Services & Update Frontend
             </button>
+            
+            <p class="text-sm text-gray-400 text-center">
+              Changes are automatically synced with your live website
+            </p>
           </div>
         </div>
       </div>
