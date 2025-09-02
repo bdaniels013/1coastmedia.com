@@ -183,7 +183,13 @@ app.post('/api/content', requireAuth, (req, res) => {
 // Google Analytics 4 Analytics Endpoints
 app.get('/api/analytics/realtime', async (req, res) => {
   try {
+    console.log('🔍 GA4 Realtime Request - Checking credentials...');
+    console.log('📧 GA4_CLIENT_EMAIL:', GA4_CLIENT_EMAIL);
+    console.log('🏗️ GA4_PROJECT_ID:', GA4_PROJECT_ID);
+    console.log('📁 GA4_CREDENTIALS_FILE:', GA4_CREDENTIALS_FILE);
+    
     if (!GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
+      console.log('❌ Missing GA4 credentials - returning mock data');
       // Return mock data if GA4 credentials not configured
       return res.json({
         activeUsers: Math.floor(Math.random() * 50) + 10,
@@ -191,6 +197,8 @@ app.get('/api/analytics/realtime', async (req, res) => {
         sessions: Math.floor(Math.random() * 100) + 20
       });
     }
+    
+    console.log('✅ GA4 credentials found - attempting real API call');
 
     // Initialize GA4 client
     const auth = new google.auth.GoogleAuth({
@@ -227,6 +235,11 @@ app.get('/api/analytics/realtime', async (req, res) => {
 
   } catch (error) {
     console.error('❌ GA4 realtime error:', error);
+    console.error('🔍 Error details:', error.message);
+    console.error('📁 Credentials file path:', GA4_CREDENTIALS_FILE);
+    console.error('📧 Client email:', GA4_CLIENT_EMAIL);
+    console.error('🏗️ Project ID:', GA4_PROJECT_ID);
+    
     // Return mock data on error
     res.json({
       activeUsers: Math.floor(Math.random() * 50) + 10,
