@@ -20,6 +20,10 @@ function contentManager() {
     newCategory: { name: '', description: '' },
     newAddon: { name: '', price: '', description: '' },
     
+    // Modal states
+    showAddCategoryModal: false,
+    showAddAddonModal: false,
+    
     // Tab switching with analytics loading
     switchTab(tabName) {
       this.activeTab = tabName;
@@ -156,6 +160,12 @@ function contentManager() {
         delete this.services.serviceCategories[categoryKey];
         this.saveServices();
       }
+    },
+    
+    editCategory(categoryKey) {
+      // For now, just focus on the category name input
+      // You can enhance this with a dedicated edit modal later
+      console.log('Editing category:', categoryKey);
     },
     
     addServiceToCategory(categoryKey) {
