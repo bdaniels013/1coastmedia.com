@@ -25,6 +25,42 @@ function contentManager() {
       }
     },
     
+    // Test GA4 connection manually
+    async testGA4Connection() {
+      console.log('🧪 Testing GA4 connection...');
+      alert('🧪 Testing GA4 connection... Check console and Render logs!');
+      
+      try {
+        // Test realtime endpoint
+        console.log('📡 Testing /api/analytics/realtime...');
+        const realtimeResponse = await fetch(`${this.apiBase}/api/analytics/realtime`);
+        console.log('📡 Realtime response status:', realtimeResponse.status);
+        
+        if (realtimeResponse.ok) {
+          const realtimeData = await realtimeResponse.json();
+          console.log('📊 Realtime data:', realtimeData);
+        } else {
+          console.error('❌ Realtime failed:', realtimeResponse.statusText);
+        }
+        
+        // Test summary endpoint
+        console.log('📡 Testing /api/analytics/summary...');
+        const summaryResponse = await fetch(`${this.apiBase}/api/analytics/summary`);
+        console.log('📡 Summary response status:', summaryResponse.status);
+        
+        if (summaryResponse.ok) {
+          const summaryData = await summaryResponse.json();
+          console.log('📊 Summary data:', summaryData);
+        } else {
+          console.error('❌ Summary failed:', summaryResponse.statusText);
+        }
+        
+      } catch (error) {
+        console.error('❌ Test failed:', error);
+        alert('❌ Test failed: ' + error.message);
+      }
+    },
+    
     // Analytics
     analytics: {
       realtime: null,
