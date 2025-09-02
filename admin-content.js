@@ -457,22 +457,22 @@ function contentManager() {
       }
       
       this.isRefreshingAnalytics = true;
-      console.log('📊 Loading analytics data...');
+      console.log('📊 Loading analytics data for date range:', this.dateRange);
       
       try {
-        // Load real-time data
-        const realtimeResponse = await fetch(`${this.apiBase}/api/analytics/realtime`);
+        // Load real-time data with date range parameter
+        const realtimeResponse = await fetch(`${this.apiBase}/api/analytics/realtime?range=${this.dateRange}`);
         if (realtimeResponse.ok) {
           this.analytics.realtime = await realtimeResponse.json();
         }
         
-        // Load summary data
-        const summaryResponse = await fetch(`${this.apiBase}/api/analytics/summary`);
+        // Load summary data with date range parameter
+        const summaryResponse = await fetch(`${this.apiBase}/api/analytics/summary?range=${this.dateRange}`);
         if (summaryResponse.ok) {
           this.analytics.summary = await summaryResponse.json();
         }
         
-        console.log('✅ Analytics loaded successfully');
+        console.log('✅ Analytics loaded successfully for', this.dateRange);
       } catch (error) {
         console.error('Error loading analytics:', error);
       } finally {

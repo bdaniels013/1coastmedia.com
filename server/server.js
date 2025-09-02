@@ -99,6 +99,64 @@ function initializeServicesFile() {
   }
 }
 
+// Helper function to get date range based on selection
+function getDateRange(range) {
+  const endDate = new Date();
+  const startDate = new Date();
+  
+  switch (range) {
+    case 'today':
+      startDate.setHours(0, 0, 0, 0);
+      break;
+    case 'week':
+      startDate.setDate(startDate.getDate() - startDate.getDay());
+      startDate.setHours(0, 0, 0, 0);
+      break;
+    case 'month':
+      startDate.setDate(1);
+      startDate.setHours(0, 0, 0, 0);
+      break;
+    case '28days':
+    default:
+      startDate.setDate(startDate.getDate() - 28);
+      break;
+  }
+  
+  return { startDate, endDate };
+}
+
+// Helper function to generate mock data based on date range
+function generateMockData(range) {
+  const { startDate, endDate } = getDateRange(range);
+  const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+  
+  return {
+    totalUsers: Math.floor(Math.random() * 1000) + 500,
+    totalSessions: Math.floor(Math.random() * 2000) + 1000,
+    totalPageViews: Math.floor(Math.random() * 5000) + 2500,
+    bounceRate: Math.floor(Math.random() * 30) + 40,
+    avgSessionDuration: Math.floor(Math.random() * 120) + 60,
+    timeseries: Array.from({ length: daysDiff }, (_, i) => ({
+      date: new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      totalUsers: Math.floor(Math.random() * 1000) + 20,
+      totalSessions: Math.floor(Math.random() * 150) + 30,
+      totalPageViews: Math.floor(Math.random() * 300) + 60
+    })),
+    topPages: [
+      { path: '/', views: Math.floor(Math.random() * 500) + 200 },
+      { path: '/growth-machine', views: Math.floor(Math.random() * 300) + 150 },
+      { path: '/admin', views: Math.floor(Math.random() * 100) + 50 },
+      { path: '/content-manager', views: Math.floor(Math.random() * 100) + 30 }
+    ],
+    topSources: [
+      { source: 'Direct', sessions: Math.floor(Math.random() * 400) + 200 },
+      { source: 'Google', sessions: Math.floor(Math.random() * 300) + 150 },
+      { source: 'Social Media', sessions: Math.floor(Math.random() * 200) + 100 },
+      { source: 'Referral', sessions: Math.floor(Math.random() * 150) + 75 }
+    ]
+  };
+}
+
 // Get all services
 app.get('/api/services', (req, res) => {
   try {
@@ -183,10 +241,14 @@ app.post('/api/content', requireAuth, (req, res) => {
 // Google Analytics 4 Analytics Endpoints
 app.get('/api/analytics/realtime', async (req, res) => {
   try {
+    // Get date range from query parameters
+    const dateRange = req.query.range || '28days';
+    
     console.log('🔍 GA4 Realtime Request - Checking credentials...');
     console.log('📧 GA4_CLIENT_EMAIL:', GA4_CLIENT_EMAIL);
     console.log('🏗️ GA4_PROJECT_ID:', GA4_PROJECT_ID);
     console.log('📁 GA4_CREDENTIALS_FILE:', GA4_CREDENTIALS_FILE);
+    console.log('📅 Date Range:', dateRange);
     
     if (!GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
       console.log('❌ Missing GA4 credentials - returning mock data');
@@ -250,33 +312,12 @@ app.get('/api/analytics/realtime', async (req, res) => {
 
 app.get('/api/analytics/summary', async (req, res) => {
   try {
+    // Get date range from query parameters
+    const dateRange = req.query.range || '28days';
+    
     if (!GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
       // Return mock data if GA4 credentials not configured
-      const mockData = {
-        totalUsers: Math.floor(Math.random() * 1000) + 500,
-        totalSessions: Math.floor(Math.random() * 2000) + 1000,
-        totalPageViews: Math.floor(Math.random() * 5000) + 2500,
-        bounceRate: Math.floor(Math.random() * 30) + 40,
-        avgSessionDuration: Math.floor(Math.random() * 120) + 60,
-        timeseries: Array.from({ length: 28 }, (_, i) => ({
-          date: new Date(Date.now() - (27 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          totalUsers: Math.floor(Math.random() * 100) + 20,
-          totalSessions: Math.floor(Math.random() * 150) + 30,
-          totalPageViews: Math.floor(Math.random() * 300) + 60
-        })),
-        topPages: [
-          { path: '/', views: Math.floor(Math.random() * 500) + 200 },
-          { path: '/growth-machine', views: Math.floor(Math.random() * 300) + 150 },
-          { path: '/admin', views: Math.floor(Math.random() * 100) + 50 },
-          { path: '/content-manager', views: Math.floor(Math.random() * 80) + 30 }
-        ],
-        topSources: [
-          { source: 'Direct', sessions: Math.floor(Math.random() * 400) + 200 },
-          { source: 'Google', sessions: Math.floor(Math.random() * 300) + 150 },
-          { source: 'Social Media', sessions: Math.floor(Math.random() * 200) + 100 },
-          { source: 'Referral', sessions: Math.floor(Math.random() * 150) + 75 }
-        ]
-      };
+      const mockData = generateMockData(dateRange);
       return res.json(mockData);
     }
 
@@ -291,10 +332,8 @@ app.get('/api/analytics/summary', async (req, res) => {
       auth: auth
     });
 
-    // Get date range (last 28 days)
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 28);
+    // Get date range based on parameter
+    const { startDate, endDate } = getDateRange(dateRange);
 
     // Get summary data
     // Get summary data - Fixed dimensions & metrics compatibility
