@@ -456,6 +456,11 @@ function contentManager() {
     async refreshAnalytics() {
       // Only refresh if we're on the analytics tab
       if (this.activeTab === 'analytics') {
+        // Clear existing data to force fresh load
+        this.analytics.realtime = null;
+        this.analytics.summary = null;
+        
+        // Force reload
         await this.loadAnalytics();
       }
     },
