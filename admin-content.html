@@ -114,6 +114,13 @@
           Navigation
         </button>
         <button 
+          @click="switchTab('adminServices')" 
+          class="px-4 py-2 rounded-md transition-colors"
+          :class="activeTab === 'adminServices' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
+        >
+          ⚙️ Admin Services
+        </button>
+        <button 
           @click="switchTab('analytics')" 
           class="px-4 py-2 rounded-md transition-colors"
           :class="activeTab === 'analytics' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'"
@@ -372,6 +379,175 @@
                 </div>
               </div>
             </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Services Tab -->
+      <div x-show="activeTab === 'adminServices'" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6">
+          <h2 class="text-2xl font-bold mb-6">⚙️ Admin Services Management</h2>
+          
+          <!-- Service Categories -->
+          <div class="space-y-6 mb-8">
+            <h3 class="text-xl font-semibold text-blue-300">Service Categories</h3>
+            
+            <template x-for="(category, categoryKey) in services.serviceCategories" :key="categoryKey">
+              <div class="bg-white/5 border border-white/20 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-4">
+                  <h4 class="text-lg font-semibold text-white" x-text="category.name"></h4>
+                  <button 
+                    @click="deleteServiceCategory(categoryKey)"
+                    class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
+                  >
+                    🗑️ Delete
+                  </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Category Name</label>
+                    <input x-model="category.name" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Category Description</label>
+                    <input x-model="category.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                </div>
+                
+                <!-- Services in this category -->
+                <div class="space-y-3">
+                  <h5 class="text-md font-medium text-gray-300">Services</h5>
+                  <template x-for="(service, serviceIndex) in category.services" :key="serviceIndex">
+                    <div class="bg-white/10 border border-white/20 rounded-lg p-3">
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-1">Service Name</label>
+                          <input x-model="service.name" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-1">Price</label>
+                          <input x-model="service.price" type="number" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                          <input x-model="service.description" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        </div>
+                      </div>
+                      <div class="flex justify-between items-center">
+                        <button 
+                          @click="deleteService(categoryKey, serviceIndex)"
+                          class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-xs"
+                        >
+                          🗑️ Delete Service
+                        </button>
+                        <button 
+                          @click="addServiceToCategory(categoryKey)"
+                          class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-xs"
+                        >
+                          ➕ Add Service
+                        </button>
+                      </div>
+                    </div>
+                  </template>
+                  
+                  <button 
+                    @click="addServiceToCategory(categoryKey)"
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                  >
+                    ➕ Add New Service to Category
+                  </button>
+                </div>
+              </div>
+            </template>
+            
+            <!-- Add New Category -->
+            <div class="bg-white/5 border border-white/20 rounded-lg p-4">
+              <h4 class="text-lg font-semibold text-white mb-4">➕ Add New Service Category</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Category Name</label>
+                  <input x-model="newCategory.name" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Category Description</label>
+                  <input x-model="newCategory.description" class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+              <button 
+                @click="addServiceCategory"
+                class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+              >
+                ➕ Add New Category
+              </button>
+            </div>
+          </div>
+          
+          <!-- Add-ons -->
+          <div class="space-y-4">
+            <h3 class="text-xl font-semibold text-blue-300">Add-ons</h3>
+            
+            <template x-for="(addon, addonIndex) in services.addons" :key="addonIndex">
+              <div class="bg-white/5 border border-white/20 rounded-lg p-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Add-on Name</label>
+                    <input x-model="addon.name" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Price</label>
+                    <input x-model="addon.price" type="number" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                  <input x-model="addon.description" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                </div>
+                <div class="flex justify-between items-center mt-3">
+                  <button 
+                    @click="deleteAddon(addonIndex)"
+                    class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-xs"
+                  >
+                    🗑️ Delete Add-on
+                  </button>
+                </div>
+              </div>
+            </template>
+            
+            <!-- Add New Add-on -->
+            <div class="bg-white/5 border border-white/20 rounded-lg p-3">
+              <h4 class="text-lg font-semibold text-white mb-3">➕ Add New Add-on</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-1">Add-on Name</label>
+                  <input x-model="newAddon.name" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-1">Price</label>
+                  <input x-model="newAddon.price" type="number" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                <input x-model="newAddon.description" class="w-full px-2 py-1 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              </div>
+              <button 
+                @click="addAddon"
+                class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+              >
+                ➕ Add New Add-on
+              </button>
+            </div>
+          </div>
+          
+          <!-- Save Services Button -->
+          <div class="flex justify-center mt-8">
+            <button 
+              @click="saveServices" 
+              class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-lg font-semibold"
+            >
+              💾 Save All Services
+            </button>
           </div>
         </div>
       </div>

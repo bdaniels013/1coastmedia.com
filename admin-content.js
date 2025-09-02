@@ -15,6 +15,11 @@ function contentManager() {
     saveStatus: null,
     isSaving: false,
     
+    // Services management
+    services: {},
+    newCategory: { name: '', description: '' },
+    newAddon: { name: '', price: '', description: '' },
+    
     // Tab switching with analytics loading
     switchTab(tabName) {
       this.activeTab = tabName;
@@ -22,6 +27,11 @@ function contentManager() {
       // Load analytics only when Analytics tab is clicked
       if (tabName === 'analytics' && this.isLoggedIn) {
         this.loadAnalytics();
+      }
+      
+      // Load services when Admin Services tab is clicked
+      if (tabName === 'adminServices' && this.isLoggedIn) {
+        this.loadServices();
       }
     },
     
@@ -58,6 +68,103 @@ function contentManager() {
       } catch (error) {
         console.error('❌ Test failed:', error);
         alert('❌ Test failed: ' + error.message);
+      }
+    },
+    
+    // Services management functions
+    async loadServices() {
+      try {
+        const response = await fetch(`${this.apiBase}/api/services`);
+        if (response.ok) {
+          this.services = await response.json();
+        }
+      } catch (error) {
+        console.error('Error loading services:', error);
+      }
+    },
+    
+    async saveServices() {
+      try {
+        const response = await fetch(`${this.apiBase}/api/services`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.sessionToken}`
+          },
+          body: JSON.stringify(this.services)
+        });
+        
+        if (response.ok) {
+          this.saveStatus = { type: 'success', message: 'Services saved successfully!' };
+        } else {
+          this.saveStatus = { type: 'error', message: 'Failed to save services' };
+        }
+      } catch (error) {
+        console.error('Error saving services:', error);
+        this.saveStatus = { type: 'error', message: 'Error saving services' };
+      }
+    },
+    
+    addServiceCategory() {
+      if (this.newCategory.name && this.newCategory.description) {
+        const categoryKey = 'category_' + Date.now();
+        this.services.serviceCategories[categoryKey] = {
+          name: this.newCategory.name,
+          description: this.newCategory.description,
+          services: []
+        };
+        
+        // Clear form
+        this.newCategory = { name: '', description: '' };
+        
+        // Save automatically
+        this.saveServices();
+      }
+    },
+    
+    deleteServiceCategory(categoryKey) {
+      if (confirm('Are you sure you want to delete this category?')) {
+        delete this.services.serviceCategories[categoryKey];
+        this.saveServices();
+      }
+    },
+    
+    addServiceToCategory(categoryKey) {
+      this.services.serviceCategories[categoryKey].services.push({
+        name: 'New Service',
+        price: 0,
+        description: 'Service description'
+      });
+      this.saveServices();
+    },
+    
+    deleteService(categoryKey, serviceIndex) {
+      if (confirm('Are you sure you want to delete this service?')) {
+        this.services.serviceCategories[categoryKey].services.splice(serviceIndex, 1);
+        this.saveServices();
+      }
+    },
+    
+    addAddon() {
+      if (this.newAddon.name && this.newAddon.price && this.newAddon.description) {
+        this.services.addons.push({
+          name: this.newAddon.name,
+          price: parseFloat(this.newAddon.price),
+          description: this.newAddon.description
+        });
+        
+        // Clear form
+        this.newAddon = { name: '', price: '', description: '' };
+        
+        // Save automatically
+        this.saveServices();
+      }
+    },
+    
+    deleteAddon(addonIndex) {
+      if (confirm('Are you sure you want to delete this add-on?')) {
+        this.services.addons.splice(addonIndex, 1);
+        this.saveServices();
       }
     },
     
