@@ -85,6 +85,7 @@ function contentManager() {
     
     async saveServices() {
       try {
+        // Save to services API (this updates the frontend)
         const response = await fetch(`${this.apiBase}/api/services`, {
           method: 'POST',
           headers: { 
@@ -95,7 +96,24 @@ function contentManager() {
         });
         
         if (response.ok) {
-          this.saveStatus = { type: 'success', message: 'Services saved successfully!' };
+          this.saveStatus = { type: 'success', message: 'Services saved successfully! Frontend updated in real-time!' };
+          
+          // Also save to content-data.json for backup
+          try {
+            await fetch(`${this.apiBase}/api/content`, {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.sessionToken}`
+              },
+              body: JSON.stringify({
+                ...this.content,
+                services: this.services
+              })
+            });
+          } catch (contentError) {
+            console.warn('Could not save to content backup:', contentError);
+          }
         } else {
           this.saveStatus = { type: 'error', message: 'Failed to save services' };
         }
@@ -333,8 +351,15 @@ function contentManager() {
       try {
         const response = await fetch(`${this.apiBase}/api/content`);
         if (response.ok) {
-          this.content = await response.json();
-          console.log('✅ Content loaded successfully');
+          const data = await response.json();
+          this.content = data;
+          
+          // Also load services if they exist in the content
+          if (data.services) {
+            this.services = data.services;
+          }
+          
+          console.log('✅ Content and services loaded successfully');
         } else {
           console.warn('Failed to load content from server, using default data');
           this.loadDefaultContent();
@@ -517,13 +542,19 @@ function contentManager() {
           }
         });
         
+        // Save content and services together
+        const fullContent = {
+          ...this.content,
+          services: this.services
+        };
+        
         const response = await fetch(`${this.apiBase}/api/content`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.sessionToken}`
           },
-          body: JSON.stringify(this.content)
+          body: JSON.stringify(fullContent)
         });
         
         const data = await response.json();
