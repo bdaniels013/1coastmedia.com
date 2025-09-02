@@ -25,9 +25,11 @@ const adminSessions = new Map();
 
 // Google Analytics 4 Configuration
 const GA4_PROPERTY_ID = process.env.GA4_PROPERTY_ID || 'G-K54J9FPE7N';
-const GA4_PRIVATE_KEY = process.env.GA4_PRIVATE_KEY || '';
 const GA4_CLIENT_EMAIL = process.env.GA4_CLIENT_EMAIL || '';
 const GA4_PROJECT_ID = process.env.GA4_PROJECT_ID || '';
+
+// Path to GA4 credentials secret file
+const GA4_CREDENTIALS_FILE = '/etc/secrets/indigo-history-470903-u1-1767a89d48ba.json';
 
 // Log environment variables for debugging
 console.log('🔍 Environment variables:');
@@ -181,7 +183,7 @@ app.post('/api/content', requireAuth, (req, res) => {
 // Google Analytics 4 Analytics Endpoints
 app.get('/api/analytics/realtime', async (req, res) => {
   try {
-    if (!GA4_PRIVATE_KEY || !GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
+    if (!GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
       // Return mock data if GA4 credentials not configured
       return res.json({
         activeUsers: Math.floor(Math.random() * 50) + 10,
@@ -192,7 +194,7 @@ app.get('/api/analytics/realtime', async (req, res) => {
 
     // Initialize GA4 client
     const auth = new google.auth.GoogleAuth({
-      keyFile: GA4_PRIVATE_KEY,
+      keyFile: GA4_CREDENTIALS_FILE,
       scopes: ['https://www.googleapis.com/auth/analytics.readonly']
     });
 
@@ -236,7 +238,7 @@ app.get('/api/analytics/realtime', async (req, res) => {
 
 app.get('/api/analytics/summary', async (req, res) => {
   try {
-    if (!GA4_PRIVATE_KEY || !GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
+    if (!GA4_CLIENT_EMAIL || !GA4_PROJECT_ID) {
       // Return mock data if GA4 credentials not configured
       const mockData = {
         totalUsers: Math.floor(Math.random() * 1000) + 500,
@@ -268,7 +270,7 @@ app.get('/api/analytics/summary', async (req, res) => {
 
     // Initialize GA4 client
     const auth = new google.auth.GoogleAuth({
-      keyFile: GA4_PRIVATE_KEY,
+      keyFile: GA4_CREDENTIALS_FILE,
       scopes: ['https://www.googleapis.com/auth/analytics.readonly']
     });
 

@@ -407,7 +407,7 @@
     const API_BASE = location.origin;
     // Realtime users
     try {
-      const rt = await fetch(`${API_BASE}/api/ga/realtime`).then(r => r.json());
+      const rt = await fetch(`${API_BASE}/api/analytics/realtime`).then(r => r.json());
       document.getElementById("rtUsers").textContent = rt.activeUsers ?? "0";
     } catch {
       document.getElementById("rtUsers").textContent = "0";
@@ -415,7 +415,7 @@
     // Summary
     let data = null;
     try {
-      data = await fetch(`${API_BASE}/api/ga/summary`).then(r => r.json());
+      data = await fetch(`${API_BASE}/api/analytics/summary`).then(r => r.json());
     } catch {}
     if (!data) return;
     // Timeseries chart for 28‑day users
