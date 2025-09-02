@@ -77,14 +77,25 @@ function contentManager() {
         const response = await fetch(`${this.apiBase}/api/services`);
         if (response.ok) {
           this.services = await response.json();
+          console.log('✅ Services loaded successfully');
+          
+          // Ensure all services have the required structure
+          this.ensureServiceStructure();
+        } else {
+          console.warn('Failed to load services from server, using default data');
+          this.loadDefaultServices();
         }
       } catch (error) {
-        console.error('Error loading services:', error);
+        console.warn('Could not load services from server, using default data', error);
+        this.loadDefaultServices();
       }
     },
     
     async saveServices() {
       try {
+        // Sync deliverables before saving
+        this.syncAllDeliverables();
+        
         // Save to services API (this updates the frontend)
         const response = await fetch(`${this.apiBase}/api/services`, {
           method: 'POST',
@@ -149,9 +160,16 @@ function contentManager() {
     
     addServiceToCategory(categoryKey) {
       this.services.serviceCategories[categoryKey].services.push({
+        key: 'new-service-' + Date.now(),
         name: 'New Service',
-        price: 0,
-        description: 'Service description'
+        outcome: 'Service outcome description',
+        price: { oneTime: 0, monthly: 0 },
+        sla: 'Timeline',
+        deliverables: ['Deliverable 1', 'Deliverable 2'],
+        deliverablesText: 'Deliverable 1\nDeliverable 2',
+        acceptance: 'Acceptance criteria',
+        badge: '',
+        minTerm: 0
       });
       this.saveServices();
     },
@@ -184,6 +202,65 @@ function contentManager() {
         this.services.addons.splice(addonIndex, 1);
         this.saveServices();
       }
+    },
+    
+    // Ensure all services have the required structure
+    ensureServiceStructure() {
+      Object.values(this.services.serviceCategories).forEach(category => {
+        category.services.forEach(service => {
+          // Ensure price structure
+          if (!service.price || typeof service.price === 'number') {
+            service.price = { oneTime: service.price || 0, monthly: 0 };
+          }
+          
+          // Ensure deliverables structure
+          if (!service.deliverablesText && service.deliverables) {
+            service.deliverablesText = service.deliverables.join('\n');
+          } else if (!service.deliverables && service.deliverablesText) {
+            service.deliverables = service.deliverablesText.split('\n').filter(d => d.trim());
+          }
+          
+          // Set defaults for missing fields
+          service.key = service.key || 'service-' + Date.now();
+          service.outcome = service.outcome || service.description || '';
+          service.sla = service.sla || '';
+          service.acceptance = service.acceptance || '';
+          service.badge = service.badge || '';
+          service.minTerm = service.minTerm || 0;
+        });
+      });
+    },
+    
+    // Load default services structure
+    loadDefaultServices() {
+      this.services = {
+        serviceCategories: {
+          signature: {
+            name: 'Signature Programs',
+            description: 'Our standout, lead offers designed for maximum impact',
+            services: []
+          }
+        },
+        addons: []
+      };
+    },
+    
+    // Sync deliverables between text and array
+    syncDeliverables(service) {
+      if (service.deliverablesText) {
+        service.deliverables = service.deliverablesText.split('\n').filter(d => d.trim());
+      } else if (service.deliverables) {
+        service.deliverablesText = service.deliverables.join('\n');
+      }
+    },
+    
+    // Sync deliverables when saving
+    syncAllDeliverables() {
+      Object.values(this.services.serviceCategories).forEach(category => {
+        category.services.forEach(service => {
+          this.syncDeliverables(service);
+        });
+      });
     },
     
     // Date range functions
