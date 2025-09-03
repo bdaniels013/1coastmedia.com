@@ -154,16 +154,22 @@
       transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 1.5rem;
       overflow: hidden;
+      pointer-events: none;
     }
     
     .package-card:hover::before {
       left: 100%;
     }
     
-    .package-card:hover {
+    /* Only trigger hover effects when hovering over the card content, not background */
+    .package-card:hover .card-content {
       transform: translateY(-16px) scale(1.04);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.4),
-                  0 15px 30px rgba(0,0,0,0.2);
+    }
+    
+    .package-card .card-content {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 5;
     }
     
     /* Premium 3D Badge Effects */
@@ -179,10 +185,16 @@
       filter: drop-shadow(0 12px 24px rgba(0,0,0,0.6));
     }
     
-    /* Background Effect Containment */
+    /* Background Effect Containment - Make them non-interactive */
     .package-card .absolute.inset-0 {
       border-radius: 1.5rem;
       overflow: hidden;
+      pointer-events: none;
+    }
+    
+    /* Ensure background effects don't interfere with hover detection */
+    .package-card .bg-gradient-to-r {
+      pointer-events: none;
     }
     
     /* Premium Button Effects */
@@ -405,12 +417,12 @@
     
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
       <!-- Growth Starter -->
-      <div class="group relative p-8 pt-16 rounded-3xl bg-gradient-to-br from-blue-900/25 via-indigo-900/25 to-purple-900/25 backdrop-blur-2xl border border-blue-500/40 hover:border-blue-400/80 transition-all duration-500 hover:scale-105 package-card premium-border">
+      <div class="group relative p-8 pt-16 rounded-3xl bg-gradient-to-br from-blue-900/25 via-indigo-900/25 to-purple-900/25 backdrop-blur-2xl border border-blue-500/40 hover:border-blue-400/80 transition-all duration-500 package-card premium-border">
         <div class="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-indigo-600/0 to-purple-600/0 group-hover:from-blue-600/5 group-hover:via-indigo-600/5 group-hover:to-purple-600/5 transition-all duration-700 rounded-3xl"></div>
         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 z-30">
           <span class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold rounded-full shadow-2xl animate-pulse border-2 border-blue-400/30 badge-3d">Most Popular</span>
         </div>
-        <div class="relative text-center space-y-6">
+        <div class="card-content relative text-center space-y-6">
           <div class="space-y-3">
             <h3 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Growth Starter</h3>
             <div class="text-5xl font-bold text-blue-400 group-hover:scale-110 transition-transform duration-300">$4,500<span class="text-xl text-gray-400">/month</span></div>
@@ -465,12 +477,12 @@
       </div>
 
       <!-- Growth Machine -->
-      <div class="group relative p-8 pt-16 rounded-3xl bg-gradient-to-br from-purple-900/25 via-pink-900/25 to-rose-900/25 backdrop-blur-2xl border border-purple-500/40 hover:border-purple-400/80 transition-all duration-500 hover:scale-105 package-card premium-border">
+      <div class="group relative p-8 pt-16 rounded-3xl bg-gradient-to-br from-purple-900/25 via-pink-900/25 to-rose-900/25 backdrop-blur-2xl border border-purple-500/40 hover:border-purple-400/80 transition-all duration-500 package-card premium-border">
         <div class="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-pink-600/0 to-rose-600/0 group-hover:from-purple-600/5 group-hover:via-pink-600/5 group-hover:to-rose-600/5 transition-all duration-700 rounded-3xl"></div>
         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 z-30">
           <span class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-bold rounded-full shadow-2xl animate-pulse border-2 border-purple-400/30 badge-3d">Best Value</span>
         </div>
-        <div class="relative text-center space-y-6">
+        <div class="card-content relative text-center space-y-6">
           <div class="space-y-3">
             <h3 class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Growth Machine</h3>
             <div class="text-5xl font-bold text-purple-400 group-hover:scale-110 transition-transform duration-300">$6,500<span class="text-xl text-gray-400">/month</span></div>
@@ -537,12 +549,12 @@
       </div>
 
       <!-- Growth Accelerator -->
-      <div class="group relative p-8 pt-16 rounded-3xl bg-gradient-to-br from-pink-900/25 via-rose-900/25 to-red-900/25 backdrop-blur-2xl border border-pink-500/40 hover:border-pink-400/80 transition-all duration-500 hover:scale-105 package-card premium-border">
-        <div class="absolute inset-0 bg-gradient-to-r from-pink-600/0 via-rose-600/0 to-red-600/0 group-hover:from-pink-600/5 group-hover:via-rose-600/5 group-hover:to-red-600/5 transition-all duration-700 rounded-3xl"></div>
+      <div class="group relative p-8 pt-16 rounded-3xl bg-gradient-to-br from-pink-900/25 via-rose-900/25 to-red-900/25 backdrop-blur-2xl border border-pink-500/40 hover:border-pink-400/80 transition-all duration-500 package-card premium-border">
+        <div class="absolute inset-0 bg-gradient-to-r from-pink-600/0 via-rose-600/0 to-red-600/0 group-hover:from-pink-600/5 group-hover:via-pink-600/5 group-hover:to-red-600/5 transition-all duration-700 rounded-3xl"></div>
         <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 z-30">
           <span class="px-6 py-2 bg-gradient-to-r from-pink-600 to-rose-600 text-white text-sm font-bold rounded-full shadow-2xl animate-pulse border-2 border-pink-400/30 badge-3d">Elite Tier</span>
         </div>
-        <div class="relative text-center space-y-6">
+        <div class="card-content relative text-center space-y-6">
           <div class="space-y-3">
             <h3 class="text-3xl font-bold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">Growth Accelerator</h3>
             <div class="text-5xl font-bold text-pink-400 group-hover:scale-110 transition-transform duration-300">$9,000<span class="text-xl text-gray-400">/month</span></div>
