@@ -317,6 +317,18 @@
     </div>
   </section>
 
+  <!-- Stripe Setup Note -->
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-blue-900/20 to-indigo-900/20 backdrop-blur-lg border border-blue-500/30 rounded-xl p-4 text-center">
+      <p class="text-blue-200 text-sm">
+        <span class="font-semibold">💳 Stripe Integration Ready:</span> 
+        These packages are connected to Stripe for secure monthly billing. 
+        <span class="text-blue-300">Create the corresponding products in your Stripe dashboard</span> 
+        to enable checkout functionality.
+      </p>
+    </div>
+  </div>
+
   <!-- Why Choose Growth Machine -->
   <section class="max-w-7xl mx-auto px-4 py-20 space-y-12">
     <div class="text-center mb-16">
@@ -728,14 +740,26 @@
     <div class="flex-1 p-4 overflow-y-auto">
       <div x-show="cartItems.length === 0" class="text-gray-400 text-sm">Your cart is empty.</div>
       <template x-for="item in cartItems" :key="item.key">
-        <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-          <div>
-            <div class="font-semibold" x-text="item.name"></div>
-            <div class="text-xs text-gray-400" x-text="item.description"></div>
-          </div>
-          <div class="text-right">
-            <div class="font-semibold" x-text="fmtUSD(item.price) + ' / mo'"></div>
-            <button @click="removeFromCart(item.key)" class="text-xs text-red-400 hover:underline mt-1">Remove</button>
+        <div class="border border-white/20 rounded-lg p-3 mb-3 bg-white/5">
+          <div class="flex justify-between items-start mb-2">
+            <div class="flex-1">
+              <div class="font-semibold text-white" x-text="item.name"></div>
+              <div class="text-xs text-gray-300 mb-2" x-text="item.description"></div>
+              
+              <!-- Features list -->
+              <div class="space-y-1">
+                <template x-for="feature in item.features" :key="feature">
+                  <div class="flex items-start gap-2">
+                    <span class="text-green-400 text-xs mt-0.5">✓</span>
+                    <span class="text-xs text-gray-300" x-text="feature"></span>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <div class="text-right ml-3">
+              <div class="font-semibold text-white" x-text="fmtUSD(item.price) + ' / mo'"></div>
+              <button @click="removeFromCart(item.key)" class="text-xs text-red-400 hover:underline mt-1">Remove</button>
+            </div>
           </div>
         </div>
       </template>
@@ -758,6 +782,16 @@
     </div>
   </div>
 
+  <!-- Success Message Overlay -->
+  <div x-show="showSuccessMessage" x-transition class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-gradient-to-br from-green-900/90 to-emerald-900/90 backdrop-blur-xl border border-green-500/30 rounded-2xl p-8 max-w-md mx-4 text-center">
+      <div class="text-6xl mb-4">🎉</div>
+      <h3 class="text-2xl font-bold text-white mb-4">Checkout Created!</h3>
+      <p class="text-green-200 mb-6" x-text="successMessage"></p>
+      <div class="w-16 h-16 border-4 border-green-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+    </div>
+  </div>
+
   <!-- Floating cart button -->
   <button
     @click="cartOpen = !cartOpen"
@@ -775,6 +809,8 @@
       return {
         cartOpen: false,
         cartItems: [],
+        showSuccessMessage: false,
+        successMessage: '',
         
         addToCart(key) {
           const packages = {
@@ -782,19 +818,50 @@
               name: 'Growth Starter',
               description: 'Essential momentum for foundational wins',
               price: 4500,
-              key: 'growth-starter'
+              key: 'growth-starter',
+              features: [
+                'Custom website with basic e-commerce',
+                '15 content pieces monthly',
+                'UGC campaigns (50k+ impressions)',
+                'Bi-quarterly events',
+                'Local PR (free)',
+                'Dedicated account manager, bi-weekly calls'
+              ],
+              stripePriceId: 'price_growth_starter_monthly' // You'll need to create this in Stripe
             },
             'growth-machine': {
               name: 'Growth Machine',
               description: 'Optimized power for steady acceleration',
               price: 6500,
-              key: 'growth-machine'
+              key: 'growth-machine',
+              features: [
+                'Everything in Starter +',
+                'Enhanced e-commerce (payment gateways)',
+                '20-30 content pieces monthly',
+                'UGC campaigns (100k+ impressions)',
+                'Email/text automation sequences',
+                'Quarterly events with amplified promotion',
+                'National PR (1 release/month via PRNewswire)',
+                'Weekly strategy calls for agile pivots'
+              ],
+              stripePriceId: 'price_growth_machine_monthly' // You'll need to create this in Stripe
             },
             'growth-accelerator': {
               name: 'Growth Accelerator',
               description: 'Elite mastery for unparalleled dominance',
               price: 9000,
-              key: 'growth-accelerator'
+              key: 'growth-accelerator',
+              features: [
+                'Everything in Machine +',
+                'Advanced e-commerce (inventory sync, custom checkouts)',
+                '30-40 content pieces (including premium productions)',
+                'UGC campaigns (150k+ impressions)',
+                'Full automations with A/B testing and retargeting',
+                'Monthly events for ongoing revenue',
+                'Global PR (2+ releases/month for worldwide exposure)',
+                'Twice-weekly calls + priority revisions'
+              ],
+              stripePriceId: 'price_growth_accelerator_monthly' // You'll need to create this in Stripe
             }
           };
           
@@ -828,6 +895,13 @@
           }
           
           try {
+            // Show loading state
+            const checkoutBtn = document.querySelector('[x-text="Proceed to Checkout"]');
+            if (checkoutBtn) {
+              checkoutBtn.textContent = 'Creating Checkout...';
+              checkoutBtn.disabled = true;
+            }
+            
             const response = await fetch('/api/checkout', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -835,23 +909,39 @@
                 cart: this.cartItems.map(item => ({
                   name: item.name,
                   description: item.description,
-                  price: { monthly: item.price }
+                  price: { monthly: item.price },
+                  features: item.features,
+                  stripePriceId: item.stripePriceId
                 })), 
-                contact: {} // You can add contact form data here later
+                contact: {},
+                packageType: 'growth-machine-monthly'
               })
             });
             
             const data = await response.json();
             
             if (data.success && data.url) {
-              // Redirect to Stripe Checkout
-              window.location.href = data.url;
+              // Show success message before redirect
+              this.successMessage = `Redirecting to secure checkout for ${this.cartItems.length} package${this.cartItems.length > 1 ? 's' : ''}...`;
+              this.showSuccessMessage = true;
+              
+              // Redirect to Stripe Checkout after a brief delay
+              setTimeout(() => {
+                window.location.href = data.url;
+              }, 2000);
             } else {
               alert(data?.error || 'Unable to initiate checkout.');
             }
           } catch (err) {
             console.error('Checkout error:', err);
             alert('Checkout error. Please try again.');
+          } finally {
+            // Reset button state
+            const checkoutBtn = document.querySelector('[x-text="Creating Checkout..."]');
+            if (checkoutBtn) {
+              checkoutBtn.textContent = 'Proceed to Checkout';
+              checkoutBtn.disabled = false;
+            }
           }
         }
       };
