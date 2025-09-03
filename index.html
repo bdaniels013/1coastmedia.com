@@ -503,6 +503,10 @@
           <template x-for="svc in category.services" :key="svc.key">
             <div class="p-4 rounded-xl shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg flex flex-col justify-between">
               <div>
+                <!-- Badge display -->
+                <div x-show="svc.badge" class="mb-2">
+                  <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white" x-text="svc.badge"></span>
+                </div>
                 <h3 class="font-semibold text-lg" x-text="svc.name"></h3>
                 <p class="text-sm text-gray-300 mt-1" x-text="svc.outcome"></p>
                 <!-- Details toggle -->
@@ -514,6 +518,7 @@
                     <template x-for="item in svc.deliverables" :key="item"><li x-text="item"></li></template>
                   </ul>
                   <p class="mt-1 text-xs text-gray-400" x-show="svc.sla">SLA: <span x-text="svc.sla"></span></p>
+                  <p class="mt-1 text-xs text-gray-400" x-show="svc.acceptance">Acceptance: <span x-text="svc.acceptance"></span></p>
                 </div>
               </div>
               <div class="mt-4 flex items-center justify-between">

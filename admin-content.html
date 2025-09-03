@@ -594,6 +594,7 @@
                             placeholder="e.g., Test lead captured, analytics events firing"
                             required
                           >
+                          <p class="text-xs text-gray-400 mt-1">Specific conditions that must be met for service completion. Displayed to clients on frontend.</p>
                         </div>
                         <div>
                           <label class="block text-sm font-medium text-gray-300 mb-2">
@@ -619,6 +620,7 @@
                             <span x-show="service.price.oneTime === 0 && service.price.monthly === 0" class="text-red-400">No price set</span>
                           </div>
                           <div><strong>Timeline:</strong> <span x-text="service.sla || 'Not set'"></span></div>
+                          <div x-show="service.badge"><strong>Badge:</strong> <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white" x-text="service.badge"></span></div>
                         </div>
                       </div>
                         
