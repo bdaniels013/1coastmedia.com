@@ -197,6 +197,13 @@
       pointer-events: none;
     }
     
+    /* Ensure buttons are always clickable */
+    .package-card button {
+      pointer-events: auto !important;
+      position: relative;
+      z-index: 20;
+    }
+    
     /* Premium Button Effects */
     .premium-btn {
       position: relative;
@@ -815,9 +822,15 @@
         init() {
           console.log('🚀 Growth Machine initialized');
           // Initialize any necessary data or event listeners
+          
+          // Test if Alpine.js is working
+          document.addEventListener('click', (e) => {
+            console.log('🖱️ Click detected on:', e.target);
+          });
         },
         
         addToCart(key) {
+          console.log('🛒 Add to Cart clicked for:', key);
           const packages = {
             'growth-starter': {
               name: 'Growth Starter',
