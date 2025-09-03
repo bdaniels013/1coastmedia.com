@@ -2,6 +2,7 @@
 window.serviceData = {
   serviceCategories: {
     launches: {
+      name: "🚀 Launches",
       description: "🚀 Launches (One-Time Projects) - Get your business off the ground with these proven, fast-delivery services",
       services: [
         {
@@ -117,6 +118,7 @@ window.serviceData = {
       ]
     },
     engines: {
+      name: "⚙️ Engines",
       description: "⚙️ Engines (Monthly Services) - Keep your business running smoothly with these ongoing, results-driven services",
       services: [
         {
@@ -231,6 +233,7 @@ window.serviceData = {
       ]
     },
     boosts: {
+      name: "⚡ Boosts",
       description: "⚡ Boosts (Add-Ons) - Enhance your existing services or add specialized capabilities when you need them",
       services: [
         {
