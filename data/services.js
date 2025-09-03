@@ -1,579 +1,390 @@
 // 1CoastMedia Full Service Catalog (2025)
 window.serviceData = {
   serviceCategories: {
-    signature: {
-      description: "★ Signature Programs - Our standout, lead offers designed for maximum impact",
+    launches: {
+      description: "🚀 Launches (One-Time Projects) - Get your business off the ground with these proven, fast-delivery services",
       services: [
         {
-          key: '48-hour-launch',
-          name: '48-Hour Launch Funnel',
-          outcome: 'Complete funnel live and converting in 48 hours',
+          key: 'website-launch',
+          name: 'Website Launch',
+          outcome: 'A professional, mobile-friendly website that looks great, loads fast, and turns visitors into paying customers',
           deliverables: [
-            'Landing page + thank-you page',
-            'GA4/pixels setup',
-            '3 ad creatives',
-            '1 welcome email'
-          ],
-          price: { oneTime: 1950, monthly: 0 },
-          sla: '48 hours',
-          acceptance: 'Test lead captured, analytics events firing, QA report provided',
-          badge: 'Fastest ROI'
-        },
-        {
-          key: 'local-authority',
-          name: 'Local Authority Sprint',
-          outcome: 'Dominate local search in your area',
-          deliverables: [
-            'GBP overhaul',
-            'Top-20 citation cleanup',
-            'Local schema implementation',
-            '4 GBP posts + 10 geo-photos',
-            '1 local landing page'
-          ],
-          price: { oneTime: 1500, monthly: 0 },
-          sla: '7 days',
-          acceptance: 'Schema validates, posts live, citations log provided',
-          badge: 'Local Favorite'
-        },
-        {
-          key: 'event-surge',
-          name: 'Event Surge Kit',
-          outcome: 'Complete event marketing system ready to drive attendance',
-          deliverables: [
-            'Event page/ticket embed',
-            '2 short promo videos',
-            '3 flyer sizes (print + digital)',
-            'GBP Event setup',
-            'Geo ad setup + email blast'
-          ],
-          price: { oneTime: 1200, monthly: 0 },
-          sla: '5-7 days',
-          acceptance: 'Page live, test opt-in fires',
-          badge: 'Event-Ready'
-        },
-        {
-          key: 'brand-intensive',
-          name: 'Brand-in-a-Day Intensive',
-          outcome: 'Complete brand identity in one intensive day',
-          deliverables: [
-            'Logo (2 concepts + 1 revision)',
-            'Color palette + typography',
-            'Mini brand guide',
-            '6 social media templates',
-            '1 motion bumper video'
-          ],
-          price: { oneTime: 1750, monthly: 0 },
-          sla: '1 day',
-          acceptance: 'All brand assets delivered'
-        },
-        {
-          key: 'site-in-week',
-          name: 'Site-in-a-Week (6pp)',
-          outcome: 'Professional 6-page website live in one week',
-          deliverables: [
-            '6 responsive pages',
-            'Design system',
-            'Basic SEO optimization',
-            'CRM/lead handoff setup',
-            'Analytics + training'
+            'Up to 6 custom-designed pages (Home, About, Services/Products, Contact, etc.)',
+            'Contact form or booking calendar that sends leads straight to your inbox',
+            'Basic SEO so people can find you on Google',
+            'Built-in analytics so you can see who\'s visiting your site',
+            'Quick-edit guide so you can update text or photos anytime'
           ],
           price: { oneTime: 3500, monthly: 0 },
-          sla: '1 week',
-          acceptance: 'Lighthouse ≥90, forms working',
-          badge: 'Best Seller'
+          sla: '7-10 business days',
+          acceptance: 'Site works on phones and computers, contact form works, and all promised pages are published',
+          badge: 'Fast Launch'
         },
         {
-          key: 'creator-concierge',
-          name: 'Creator Concierge',
-          outcome: 'Professional creator content management',
+          key: 'funnel-launch',
+          name: 'Funnel Launch (Lead Magnet + Nurture System)',
+          outcome: 'A simple system that collects leads, delivers a freebie (guide, checklist, or quiz), and automatically follows up until they\'re ready to buy',
           deliverables: [
-            '8 short videos monthly',
-            '12 social posts',
-            'Engagement 30min/day',
-            '2 UGC assets',
-            'Monthly insights report'
+            'Lead magnet design (ebook, checklist, or quiz)',
+            'Landing page with clear call-to-action',
+            'Automated thank-you and delivery email',
+            '5-part follow-up email series to warm leads',
+            'Dashboard that shows how many leads you\'ve collected'
           ],
-          price: { oneTime: 0, monthly: 1800 },
+          price: { oneTime: 2500, monthly: 0 },
+          sla: '5-7 business days',
+          acceptance: 'Test leads flow correctly from form → email list → nurture sequence',
+          badge: 'Lead Machine'
+        },
+        {
+          key: 'automation-launch',
+          name: 'Automation Launch',
+          outcome: 'Replace manual tasks with automations so nothing falls through the cracks',
+          deliverables: [
+            'Automatic lead notifications to your phone or email',
+            'Instant replies to new inquiries with FAQs answered by AI',
+            'CRM setup so leads are organized and tagged automatically',
+            'Integration between your website, email, and payment system'
+          ],
+          price: { oneTime: 2000, monthly: 0 },
+          sla: '7-10 business days',
+          acceptance: 'At least 5 test leads flow through the system without errors',
+          badge: 'Efficiency Boost'
+        },
+        {
+          key: 'ugc-launch',
+          name: 'UGC Launch (Creator Content Pack)',
+          outcome: 'A bank of authentic short videos from real people that you can post to TikTok, Instagram, and YouTube Shorts to get massive organic reach',
+          deliverables: [
+            '15 short-form videos created by vetted content creators',
+            'Captions and hashtags written for each video',
+            'A simple posting plan so you know when to post for best results',
+            'Rights cleared for you to repost anywhere'
+          ],
+          price: { oneTime: 3000, monthly: 0 },
+          sla: '14 days',
+          acceptance: 'At least 15 edited, ready-to-post videos delivered in correct format',
+          badge: 'Viral Ready'
+        },
+        {
+          key: 'pr-launch',
+          name: 'PR Launch',
+          outcome: 'Get your business media-ready and start earning press coverage',
+          deliverables: [
+            'Professional press kit (bio, logo, product photos, company story)',
+            '6 unique press angles to pitch',
+            'Contact list of 30+ relevant local or industry media outlets',
+            'First outreach email campaign sent to media',
+            '1 media training session (how to answer questions confidently)'
+          ],
+          price: { oneTime: 4000, monthly: 0 },
+          sla: '14 days',
+          acceptance: 'Press kit complete and 30+ pitches sent',
+          badge: 'Media Ready'
+        },
+        {
+          key: 'event-launch',
+          name: 'Event Launch',
+          outcome: 'Everything you need to plan, promote, and execute a successful event',
+          deliverables: [
+            'Event concept and run-of-show plan',
+            'Sponsor deck to secure funding or vendors',
+            'Online ticketing/RSVP page with automated reminders',
+            '3 custom graphics and 2 promo videos for social media',
+            'On-site content capture plan for photos/videos'
+          ],
+          price: { oneTime: 3500, monthly: 0 },
+          sla: '10-14 days',
+          acceptance: 'Ticket page live and functional, sponsor deck ready, at least one promo posted',
+          badge: 'Event Master'
+        },
+        {
+          key: 'commercial-launch',
+          name: 'Commercial Launch (Streaming-Ready Ad)',
+          outcome: 'A high-quality 30–60 second commercial built for platforms like Hulu or Amazon Prime',
+          deliverables: [
+            'Concept, script, and storyboard',
+            'Professional video shoot (crew, gear, location)',
+            'Main 30–60 second ad + shorter cutdowns',
+            'Licensed music, voiceover, and closed captions',
+            'Ready-to-upload files for streaming platforms'
+          ],
+          price: { oneTime: 8000, monthly: 0 },
+          sla: '21-30 days',
+          acceptance: 'Final ad approved and ready for upload with no technical errors',
+          badge: 'Premium Quality'
+        }
+      ]
+    },
+    engines: {
+      description: "⚙️ Engines (Monthly Services) - Keep your business running smoothly with these ongoing, results-driven services",
+      services: [
+        {
+          key: 'webcare-engine',
+          name: 'WebCare Engine',
+          outcome: 'Keep your website fast, secure, and converting visitors into customers',
+          deliverables: [
+            'Regular updates and security checks',
+            '1 A/B test to improve conversion each month',
+            'Small content/offer updates',
+            'Monthly performance report (traffic, conversions, improvements)'
+          ],
+          price: { oneTime: 0, monthly: 500 },
           minTerm: '3 months',
-          sla: 'Weekly deliveries',
-          acceptance: 'All content delivered on schedule'
+          sla: 'Monthly report delivered; site uptime and form tracking verified',
+          acceptance: 'Monthly report delivered; site uptime and form tracking verified',
+          badge: 'Website Care'
         },
         {
-          key: 'cannabis-kit',
-          name: 'Compliance-Safe Cannabis/Hemp Kit',
-          outcome: 'Compliant cannabis/hemp marketing system',
+          key: 'pipeline-engine',
+          name: 'Pipeline Engine',
+          outcome: 'Keep your calendar full with new leads and customers each month',
           deliverables: [
-            '2 SEO articles monthly',
-            'Compliant directory placement',
-            'Email/SMS flows setup',
-            'GBP hygiene maintenance'
+            '1 new lead-generation campaign (landing page + emails)',
+            '2 new promotional offers/content pieces',
+            'CRM cleanup and lead organization',
+            'Dashboard tracking pipeline health'
           ],
-          price: { oneTime: 0, monthly: 1400 },
+          price: { oneTime: 0, monthly: 800 },
           minTerm: '3 months',
-          sla: 'Monthly deliveries',
-          acceptance: 'All compliance requirements met'
+          sla: 'At least one new campaign live and pipeline report delivered monthly',
+          acceptance: 'At least one new campaign live and pipeline report delivered monthly',
+          badge: 'Lead Generator'
         },
         {
-          key: 'review-rocket',
-          name: 'Review Rocket',
-          outcome: 'Automated review generation system',
+          key: 'automation-engine',
+          name: 'Automation Engine',
+          outcome: 'Keep your business running smoothly with continuous automation improvements',
           deliverables: [
-            'Review landing page',
-            'Automation (100 invites)',
-            'Email/SMS templates',
-            'Signage file'
+            '1–3 new automations or system improvements',
+            'Monitoring and fixing automation failures',
+            'Quarterly audit of all workflows with recommendations'
           ],
-          price: { oneTime: 350, monthly: 0 },
-          sla: '3-5 days',
-          acceptance: 'System live and sending invites'
-        },
-        {
-          key: 'roi-guard-ppc',
-          name: 'ROI-Guard PPC Management',
-          outcome: 'Profitable ad campaigns with conversion guarantee',
-          deliverables: [
-            'Campaign build + creatives',
-            'Weekly optimization',
-            'Performance reporting',
-            'Conversion guarantee'
-          ],
-          price: { oneTime: 800, monthly: 0 }, // 12% of ad spend (min $700/mo)
+          price: { oneTime: 0, monthly: 600 },
           minTerm: '3 months',
-          sla: 'Weekly optimization',
-          acceptance: 'Campaigns live and tracking conversions',
-          guarantee: 'No conversions by day 45 → 2 free A/B tests'
+          sla: 'Automations tested monthly with error rate <2%',
+          acceptance: 'Automations tested monthly with error rate <2%',
+          badge: 'Efficiency Expert'
         },
         {
-          key: 'ugc-lab',
-          name: 'UGC Lab (Starter)',
-          outcome: 'Authentic user-generated content from micro-creators',
+          key: 'ugc-engine',
+          name: 'UGC Engine',
+          outcome: 'Fresh, authentic content every month that grows your reach organically',
           deliverables: [
-            '4 UGC videos monthly',
-            'Hook library updates',
-            'Creator coordination',
-            'Content optimization'
+            '24 short-form videos from creators',
+            'Captions, hashtags, and posting plan',
+            'Performance report and recommendations'
           ],
           price: { oneTime: 0, monthly: 1200 },
-          minTerm: '2 months',
-          sla: 'Monthly deliveries',
-          acceptance: 'All UGC content delivered'
-        }
-      ]
-    },
-    core: {
-      description: "Core Packages - Optimized base services every business needs",
-      services: [
-        {
-          key: 'website-launch-pro',
-          name: 'Website Launch — Pro',
-          outcome: 'Professional website that converts visitors to customers',
-          deliverables: [
-            '6 responsive pages',
-            'Design system',
-            'SEO basics',
-            'CRM/pixel handoff',
-            'GA4 goals + training'
-          ],
-          price: { oneTime: 2800, monthly: 0 },
-          sla: '3-4 weeks',
-          acceptance: 'Site live and fully functional'
+          minTerm: '3 months',
+          sla: '24 videos delivered monthly and report provided',
+          acceptance: '24 videos delivered monthly and report provided',
+          badge: 'Content Creator'
         },
         {
-          key: 'brand-essentials',
-          name: 'Brand Essentials Kit',
-          outcome: 'Complete brand identity foundation',
+          key: 'content-studio-engine',
+          name: 'Content Studio Engine',
+          outcome: 'Keep your brand looking professional with premium visuals every month',
           deliverables: [
-            'Logo (3 concepts, 2 revisions)',
-            'Color palette + typography',
-            'Mini brand guide',
-            'Social avatars/banners'
-          ],
-          price: { oneTime: 1200, monthly: 0 },
-          sla: '1-2 weeks',
-          acceptance: 'All brand assets delivered'
-        },
-        {
-          key: 'content-sprint',
-          name: 'Content Sprint — 30 Days',
-          outcome: 'Month of professional content ready to publish',
-          deliverables: [
-            '12 social posts',
-            '2 short videos',
-            '20 professional photos',
-            'Content calendar'
-          ],
-          price: { oneTime: 1950, monthly: 0 },
-          sla: '4 weeks',
-          acceptance: 'All content delivered with calendar'
-        },
-        {
-          key: 'local-growth',
-          name: 'Local Growth Kit',
-          outcome: 'Local search optimization foundation',
-          deliverables: [
-            'GBP optimization',
-            'Citations cleanup',
-            'Local schema setup',
-            'Review system implementation'
-          ],
-          price: { oneTime: 1000, monthly: 0 },
-          sla: '2-3 weeks',
-          acceptance: 'All local SEO elements live'
-        }
-      ]
-    },
-    oneTime: {
-      description: "One-Time Add-Ons - Project boosts for immediate impact",
-      services: [
-        {
-          key: 'logo-design',
-          name: 'Logo Design',
-          outcome: 'Professional logo with full file set',
-          deliverables: [
-            '3 logo concepts',
-            '2 revision rounds',
-            'Full file set (AI, PNG, SVG, etc.)'
-          ],
-          price: { oneTime: 400, monthly: 0 },
-          sla: '5 days',
-          acceptance: 'Final logo files delivered'
-        },
-        {
-          key: 'style-guide',
-          name: 'Brand Style Guide Mini',
-          outcome: 'Brand consistency guidelines',
-          deliverables: [
-            'Fonts and colors guide',
-            '2 template covers',
-            'Usage guidelines'
-          ],
-          price: { oneTime: 350, monthly: 0 },
-          sla: '4 days',
-          acceptance: 'Style guide delivered'
-        },
-        {
-          key: 'copywriting-sprint',
-          name: 'Copywriting Sprint (≤6pp)',
-          outcome: 'Professional copy for up to 6 pages',
-          deliverables: [
-            'Page copy for up to 6 pages',
-            'SEO optimization',
-            'Call-to-action optimization'
-          ],
-          price: { oneTime: 500, monthly: 0 },
-          sla: '5 days',
-          acceptance: 'All copy delivered and approved'
-        },
-        {
-          key: 'landing-page',
-          name: 'Landing Page (Design+Build)',
-          outcome: 'High-converting landing page',
-          deliverables: [
-            'Custom design + build',
-            'Mobile optimization',
-            'QA testing'
-          ],
-          price: { oneTime: 1200, monthly: 0 },
-          sla: '7 days',
-          acceptance: 'QA ≥90 desktop score'
-        },
-        {
-          key: 'promo-video',
-          name: 'Promo Video (30-45s)',
-          outcome: 'Professional promotional video',
-          deliverables: [
-            '30-45 second video',
-            '2 aspect ratios',
-            'Captions included'
-          ],
-          price: { oneTime: 800, monthly: 0 },
-          sla: '6 days',
-          acceptance: 'Final video in all formats'
-        },
-        {
-          key: 'event-flyer',
-          name: 'Event Flyer',
-          outcome: 'Professional event marketing materials',
-          deliverables: [
-            'Print-ready flyer',
-            'Instagram story version'
-          ],
-          price: { oneTime: 200, monthly: 0 },
-          sla: '3 days',
-          acceptance: 'Files delivered in both formats'
-        },
-        {
-          key: 'email-campaign',
-          name: 'Email Campaign Setup',
-          outcome: 'Professional email campaign ready to send',
-          deliverables: [
-            'Email design + copy',
-            'List segmentation',
-            'Send scheduling'
-          ],
-          price: { oneTime: 300, monthly: 0 },
-          sla: '3 days',
-          acceptance: 'Campaign ready to send'
-        },
-        {
-          key: 'seo-audit',
-          name: 'SEO Starter Audit & Fix (10 items)',
-          outcome: 'Improved search rankings and site performance',
-          deliverables: [
-            'Technical SEO audit',
-            '10 priority fixes implemented',
-            'Performance report'
-          ],
-          price: { oneTime: 600, monthly: 0 },
-          sla: '7 days',
-          acceptance: 'All 10 items fixed and documented'
-        },
-        {
-          key: 'photography-pack',
-          name: 'Photography Pack (20 edits)',
-          outcome: 'Professional photos ready for marketing',
-          deliverables: [
-            '20 professionally edited photos',
-            'Multiple format exports',
-            'Usage rights included'
-          ],
-          price: { oneTime: 450, monthly: 0 },
-          sla: '7 days',
-          acceptance: 'All photos delivered in requested formats'
-        },
-        {
-          key: 'checkout-integration',
-          name: 'Checkout/Booking Integration',
-          outcome: 'Seamless payment and booking system',
-          deliverables: [
-            'Payment gateway setup',
-            'Booking system integration',
-            'Testing and QA'
-          ],
-          price: { oneTime: 350, monthly: 0 },
-          sla: '4 days',
-          acceptance: 'System live and processing transactions'
-        }
-      ]
-    },
-    monthly: {
-      description: "Monthly Add-Ons - Recurring services with minimum terms",
-      services: [
-        {
-          key: 'social-starter',
-          name: 'Social Media Starter',
-          outcome: 'Consistent social presence that builds your brand',
-          deliverables: [
-            '1 platform management',
-            '12 posts monthly',
-            'Engagement 15min/day',
-            'Monthly report'
+            '8 reels professionally edited',
+            '24 branded photos for social, web, or print',
+            'Monthly content calendar and hook ideas'
           ],
           price: { oneTime: 0, monthly: 900 },
           minTerm: '3 months',
-          sla: 'Weekly posting',
-          acceptance: 'All posts published on schedule'
+          sla: 'Assets delivered in required formats and calendar published',
+          acceptance: 'Assets delivered in required formats and calendar published',
+          badge: 'Visual Expert'
         },
         {
-          key: 'social-growth',
-          name: 'Social Media Growth',
-          outcome: 'Multi-platform growth with video content',
+          key: 'pr-authority-engine',
+          name: 'PR & Authority Engine',
+          outcome: 'Build credibility and trust through ongoing press and reputation management',
           deliverables: [
-            '2 platforms management',
-            '16 posts + 2 reels monthly',
-            'Engagement 30min/day',
-            'Insights report'
+            'At least 20 media pitches sent',
+            '1 thought-leadership article or op-ed written',
+            'Review and reputation management',
+            'Media tracker updated monthly'
           ],
-          price: { oneTime: 0, monthly: 1400 },
+          price: { oneTime: 0, monthly: 1000 },
           minTerm: '3 months',
-          sla: 'Weekly deliveries',
-          acceptance: 'All content delivered with performance insights'
+          sla: 'Outreach log delivered and at least 1 long-form article drafted monthly',
+          acceptance: 'Outreach log delivered and at least 1 long-form article drafted monthly',
+          badge: 'Authority Builder'
         },
         {
-          key: 'website-maintenance',
-          name: 'Website Maintenance',
-          outcome: 'Website always updated and secure',
+          key: 'event-engine',
+          name: 'Event Engine',
+          outcome: 'A dependable program to plan and promote events year-round',
           deliverables: [
-            'Weekly updates',
-            '3 hours edits monthly',
-            'Uptime monitoring',
-            'Monthly report'
+            '1 anchor event per quarter or smaller monthly events',
+            'Sponsor outreach and vendor coordination',
+            'On-site run-of-show management',
+            'Post-event recap with content assets'
           ],
-          price: { oneTime: 0, monthly: 300 },
+          price: { oneTime: 0, monthly: 1500 },
           minTerm: '3 months',
-          sla: 'Weekly maintenance',
-          acceptance: 'Site maintained and report delivered'
+          sla: 'Event plan approved in advance, recap delivered within 7 days post-event',
+          acceptance: 'Event plan approved in advance, recap delivered within 7 days post-event',
+          badge: 'Event Master'
+        }
+      ]
+    },
+    boosts: {
+      description: "⚡ Boosts (Add-Ons) - Enhance your existing services or add specialized capabilities when you need them",
+      services: [
+        {
+          key: 'drone-gimbal-video',
+          name: 'Drone/Gimbal Video Day',
+          outcome: 'Capture cinematic shots for events or ads',
+          deliverables: [
+            'Full day of drone/gimbal video capture',
+            'Professional equipment and operator',
+            'Edited footage in multiple formats',
+            'Rights-cleared for commercial use'
+          ],
+          price: { oneTime: 800, monthly: 0 },
+          sla: '1 day shoot + 3 days editing',
+          acceptance: 'Footage delivered in requested formats with no technical issues',
+          badge: 'Cinematic'
         },
         {
-          key: 'seo-standard',
-          name: 'SEO Retainer Standard',
-          outcome: 'Steady organic growth and visibility',
+          key: 'geo-expansion-pages',
+          name: 'Geo Expansion Pages',
+          outcome: 'Add 5 city/region pages to rank in local searches',
           deliverables: [
-            '2 SEO articles monthly',
-            'Keyword planning',
-            'On-page fixes',
-            'Performance report'
+            '5 custom city/region landing pages',
+            'Local SEO optimization',
+            'Local content and imagery',
+            'Citation building for each location'
           ],
-          price: { oneTime: 0, monthly: 1200 },
-          minTerm: '4 months',
-          sla: 'Monthly deliveries',
-          acceptance: 'All SEO work completed with report'
+          price: { oneTime: 1200, monthly: 0 },
+          sla: '10 business days',
+          acceptance: 'All 5 pages live and optimized for local search',
+          badge: 'Local SEO'
         },
         {
-          key: 'seo-growth',
-          name: 'SEO Retainer Growth',
-          outcome: 'Aggressive SEO growth and technical optimization',
+          key: 'review-boost',
+          name: 'Review Boost',
+          outcome: 'Automate asking for and responding to reviews',
           deliverables: [
-            '4 SEO articles monthly',
-            'Technical fixes',
-            'Citation building',
-            'Growth roadmap'
+            'Automated review request system',
+            'Review response templates',
+            'Review monitoring dashboard',
+            'Monthly review performance report'
           ],
-          price: { oneTime: 0, monthly: 1800 },
-          minTerm: '4 months',
-          sla: 'Monthly deliveries',
-          acceptance: 'All deliverables completed with roadmap'
+          price: { oneTime: 500, monthly: 0 },
+          sla: '5 business days setup',
+          acceptance: 'System tested and working, dashboard accessible',
+          badge: 'Review Master'
         },
         {
-          key: 'paid-ads',
-          name: 'Paid Ads Management',
-          outcome: 'Profitable ad campaigns with ongoing optimization',
+          key: 'quiz-funnel',
+          name: 'Quiz Funnel',
+          outcome: 'Interactive quiz to qualify leads and collect emails',
           deliverables: [
-            'Campaign management',
-            'Creative optimization',
-            'Performance reporting',
-            'ROI tracking'
+            'Custom quiz design and questions',
+            'Lead capture and scoring system',
+            'Automated email sequences',
+            'Results dashboard and analytics'
           ],
-          price: { oneTime: 800, monthly: 0 }, // 12% of ad spend (min $700/mo)
-          minTerm: '3 months',
-          sla: 'Weekly optimization',
-          acceptance: 'Campaigns optimized and reporting delivered'
+          price: { oneTime: 1500, monthly: 0 },
+          sla: '7 business days',
+          acceptance: 'Quiz live, test leads flowing, emails sending correctly',
+          badge: 'Lead Qualifier'
         },
         {
-          key: 'email-standard',
-          name: 'Email Marketing Standard',
-          outcome: 'Regular email communication with your audience',
+          key: 'vip-launch-day',
+          name: 'VIP Launch Day',
+          outcome: 'All-hands-on-deck day where our team works in real time with you to maximize launch results',
           deliverables: [
-            '2 email sends monthly',
-            'List hygiene',
-            'Performance report'
+            'Full team dedicated to your launch',
+            'Real-time optimization and adjustments',
+            'Live performance monitoring',
+            'Post-launch analysis and recommendations'
           ],
-          price: { oneTime: 0, monthly: 700 },
-          minTerm: '2 months',
-          sla: 'Bi-weekly sends',
-          acceptance: 'Emails sent and report delivered'
+          price: { oneTime: 2500, monthly: 0 },
+          sla: '1 full day (8 hours)',
+          acceptance: 'Launch day completed with all deliverables met',
+          badge: 'VIP Service'
         },
         {
-          key: 'email-growth',
-          name: 'Email Marketing Growth',
-          outcome: 'Advanced email marketing with automation',
+          key: 'rush-upgrade',
+          name: 'Rush Upgrade',
+          outcome: 'Priority 72-hour delivery for urgent needs',
           deliverables: [
-            '4 email sends monthly',
-            'A/B testing',
-            'Automation setup',
-            'Insights report'
+            'Priority scheduling and resources',
+            'Expedited delivery timeline',
+            'Dedicated project manager',
+            'Rush fee applied to any service'
           ],
-          price: { oneTime: 0, monthly: 1200 },
-          minTerm: '3 months',
-          sla: 'Weekly sends',
-          acceptance: 'All emails sent with automation active'
+          price: { oneTime: 500, monthly: 0 },
+          sla: '72 hours from project start',
+          acceptance: 'Service delivered within 72-hour timeline',
+          badge: 'Rush Service'
         },
         {
-          key: 'content-lite',
-          name: 'Content Retainer Lite',
-          outcome: 'Regular professional content creation',
+          key: 'brand-refresh',
+          name: 'Brand Refresh',
+          outcome: 'Update your logo, colors, fonts, and templates for consistency',
           deliverables: [
-            'Half-day photo shoot',
-            '30 edited photos',
-            '2 short videos'
+            'Logo redesign (2 concepts + 1 revision)',
+            'Updated color palette and typography',
+            'Brand style guide',
+            'Template updates for all materials'
           ],
-          price: { oneTime: 0, monthly: 1300 },
-          minTerm: '3 months',
-          sla: 'Monthly shoot',
-          acceptance: 'All content delivered monthly'
+          price: { oneTime: 2000, monthly: 0 },
+          sla: '10 business days',
+          acceptance: 'All brand assets updated and style guide delivered',
+          badge: 'Brand Expert'
         },
         {
-          key: 'content-pro',
-          name: 'Content Retainer Pro',
-          outcome: 'Comprehensive content creation package',
+          key: 'data-dashboard',
+          name: 'Data Dashboard',
+          outcome: 'Custom dashboard with all your sales/marketing numbers in one place',
           deliverables: [
-            'Full-day photo shoot',
-            '50 edited photos',
-            '4 short videos'
+            'Custom dashboard design',
+            'Data integration and automation',
+            'Real-time reporting',
+            'Monthly insights and recommendations'
           ],
-          price: { oneTime: 0, monthly: 2100 },
-          minTerm: '3 months',
-          sla: 'Monthly shoot',
-          acceptance: 'All content delivered monthly'
+          price: { oneTime: 1500, monthly: 0 },
+          sla: '14 business days',
+          acceptance: 'Dashboard live with all requested data sources connected',
+          badge: 'Data Expert'
         },
         {
-          key: 'analytics-cro',
-          name: 'Analytics & CRO',
-          outcome: 'Data-driven optimization and conversion improvement',
+          key: 'compliance-pack',
+          name: 'Compliance Pack',
+          outcome: 'Cookie banner, privacy policies, and opt-in rules set up',
           deliverables: [
-            'Custom dashboard',
-            'Event tracking setup',
-            '1 A/B test monthly'
+            'GDPR/CCPA compliant cookie banner',
+            'Privacy policy and terms of service',
+            'Email opt-in compliance setup',
+            'Compliance audit and recommendations'
           ],
-          price: { oneTime: 0, monthly: 450 },
-          minTerm: '2 months',
-          sla: 'Monthly optimization',
-          acceptance: 'Dashboard updated and test results delivered'
+          price: { oneTime: 800, monthly: 0 },
+          sla: '7 business days',
+          acceptance: 'All compliance elements live and tested',
+          badge: 'Compliance Ready'
         }
       ]
     }
   },
-
-  bundles: [
-    {
-      key: 'local-dominator',
-      name: 'Local Dominator',
-      description: 'Complete local market domination package',
-      includes: ['Local Authority Sprint', 'GBP posts', 'Review Rocket'],
-      price: { oneTime: 1000, monthly: 300 },
-      savings: 'Save $750 vs individual services'
-    },
-    {
-      key: 'growth-wave',
-      name: 'Growth Wave (Quarterly)',
-      description: 'Quarterly growth acceleration package',
-      includes: ['Campaign refresh', 'LP refresh', '6 graphics', '2 shorts', 'Email/GBP'],
-      price: { oneTime: 2500, monthly: 0 },
-      billing: 'Quarterly + media costs',
-      savings: 'Save $1200 vs individual services'
-    },
-    {
-      key: 'launch-ads',
-      name: 'Launch + Ads',
-      description: 'Complete website launch with advertising setup',
-      includes: ['Website Launch Pro', 'ROI-Guard PPC', '1 A/B test'],
-      price: { oneTime: 2800, monthly: 0 },
-      note: 'Plus PPC management fees',
-      savings: 'Save $1000 vs individual services'
-    }
-  ],
-
   addons: [
     {
-      key: 'rush-delivery',
-      name: 'Rush Delivery (50% surcharge)',
-      description: 'Expedited delivery for urgent projects',
-      price: { oneTime: 0, monthly: 0 }, // 50% of base service price
+      key: 'rush-upgrade',
+      name: 'Rush Upgrade',
+      description: 'Priority 72-hour delivery for any service',
+      price: { oneTime: 500, monthly: 0 },
       applicableServices: ['all']
     },
     {
-      key: 'extra-revisions',
-      name: 'Extra Revisions ($75/hour)',
-      description: 'Additional revisions beyond included rounds',
-      price: { oneTime: 75, monthly: 0 }, // Per hour
+      key: 'premium-support',
+      name: 'Premium Support',
+      description: 'Priority support with 4-hour response time',
+      price: { oneTime: 0, monthly: 200 },
       applicableServices: ['all']
-    },
-    {
-      key: 'print-qr',
-      name: 'Print QR Code',
-      description: 'Physical QR code for Review Rocket',
-      price: { oneTime: 50, monthly: 0 },
-      applicableServices: ['review-rocket']
     }
   ]
 };
