@@ -256,7 +256,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="growthMachine()">
+<body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="growthMachine()" x-init="init()">
   <!-- Header -->
   <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -811,6 +811,11 @@
         cartItems: [],
         showSuccessMessage: false,
         successMessage: '',
+        
+        init() {
+          console.log('🚀 Growth Machine initialized');
+          // Initialize any necessary data or event listeners
+        },
         
         addToCart(key) {
           const packages = {
