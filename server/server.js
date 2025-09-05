@@ -16,6 +16,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_your_test_ke
   apiVersion: '2023-10-16'
 });
 
+// Stripe webhook secret
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_FUBMZjl2349yrR6MxMNlCPw5SvztQmot';
+
 // Admin authentication
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '1coastmedia2024!';
@@ -277,7 +280,7 @@ app.get('/api/analytics/realtime', async (req, res) => {
     const response = await analyticsData.properties.runRealtimeReport({
       property: `properties/${GA4_PROPERTY_ID}`,
       requestBody: {
-        metrics: [
+      metrics: [
           { name: 'activeUsers' },
           { name: 'screenPageViews' }
         ]
@@ -359,7 +362,7 @@ app.get('/api/analytics/summary', async (req, res) => {
     const totalUsers = result.rows?.[0]?.metricValues?.[0]?.value || 0;
     const totalSessions = result.rows?.[0]?.metricValues?.[1]?.value || 0;
     const totalPageViews = result.rows?.[0]?.metricValues?.[2]?.value || 0;
-    
+
     res.json({
       totalUsers: parseInt(totalUsers),
       totalSessions: parseInt(totalSessions),
@@ -598,6 +601,77 @@ app.post('/api/checkout', async (req, res) => {
       error: 'Failed to create checkout session',
       details: error.message 
     });
+  }
+});
+
+// Stripe Webhook Endpoint
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    // Verify webhook signature
+    event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WEBHOOK_SECRET);
+    console.log('✅ Webhook signature verified');
+  } catch (err) {
+    console.error('❌ Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook signature verification failed: ${err.message}`);
+  }
+
+  console.log('🔔 Webhook event received:', event.type);
+
+  // Handle the event
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed':
+        const session = event.data.object;
+        console.log('💳 Checkout session completed:', session.id);
+        
+        // Update your database or perform other actions
+        // You can access session.metadata for custom data
+        console.log('📊 Session metadata:', session.metadata);
+        
+        // Send confirmation email, update database, etc.
+        break;
+        
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object;
+        console.log('💰 Payment succeeded:', paymentIntent.id);
+        break;
+        
+      case 'customer.subscription.created':
+        const subscription = event.data.object;
+        console.log('🔄 Subscription created:', subscription.id);
+        break;
+        
+      case 'customer.subscription.updated':
+        const updatedSubscription = event.data.object;
+        console.log('🔄 Subscription updated:', updatedSubscription.id);
+        break;
+        
+      case 'customer.subscription.deleted':
+        const deletedSubscription = event.data.object;
+        console.log('🔄 Subscription deleted:', deletedSubscription.id);
+        break;
+        
+      case 'invoice.payment_succeeded':
+        const invoice = event.data.object;
+        console.log('📄 Invoice payment succeeded:', invoice.id);
+        break;
+        
+      case 'invoice.payment_failed':
+        const failedInvoice = event.data.object;
+        console.log('❌ Invoice payment failed:', failedInvoice.id);
+        break;
+        
+      default:
+        console.log(`🤷 Unhandled event type: ${event.type}`);
+    }
+
+    res.json({ received: true });
+  } catch (error) {
+    console.error('❌ Error processing webhook:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
   }
 });
 
