@@ -43,9 +43,88 @@ console.log('RENDER_EXTERNAL_HOSTNAME:', process.env.RENDER_EXTERNAL_HOSTNAME);
 
 // Middleware
 app.use(cors());
+app.use(cookieParser());
+
+// Stripe webhook endpoint needs raw body - must be before JSON parser
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  console.log('🔔 Webhook request received');
+  console.log('📋 Headers:', req.headers);
+  console.log('🔑 Signature:', req.headers['stripe-signature']);
+  console.log('📦 Body length:', req.body ? req.body.length : 'No body');
+  
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  if (!sig) {
+    console.error('❌ No Stripe signature found in headers');
+    return res.status(400).send('No Stripe signature found');
+  }
+
+  try {
+    // Verify webhook signature
+    event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WEBHOOK_SECRET);
+    console.log('✅ Webhook signature verified');
+  } catch (err) {
+    console.error('❌ Webhook signature verification failed:', err.message);
+    console.error('🔍 Webhook secret being used:', STRIPE_WEBHOOK_SECRET ? 'Present' : 'Missing');
+    return res.status(400).send(`Webhook signature verification failed: ${err.message}`);
+  }
+
+  console.log('🔔 Webhook event received:', event.type);
+
+  // Handle the event
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed':
+        const session = event.data.object;
+        console.log('💳 Checkout session completed:', session.id);
+        console.log('📊 Session metadata:', session.metadata);
+        break;
+        
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object;
+        console.log('💰 Payment succeeded:', paymentIntent.id, 'Amount:', paymentIntent.amount);
+        break;
+        
+      case 'customer.subscription.created':
+        const subscription = event.data.object;
+        console.log('🔄 Subscription created:', subscription.id);
+        break;
+        
+      case 'customer.subscription.updated':
+        const updatedSubscription = event.data.object;
+        console.log('🔄 Subscription updated:', updatedSubscription.id);
+        break;
+        
+      case 'customer.subscription.deleted':
+        const deletedSubscription = event.data.object;
+        console.log('🔄 Subscription deleted:', deletedSubscription.id);
+        break;
+        
+      case 'invoice.payment_succeeded':
+        const invoice = event.data.object;
+        console.log('📄 Invoice payment succeeded:', invoice.id);
+        break;
+        
+      case 'invoice.payment_failed':
+        const failedInvoice = event.data.object;
+        console.log('❌ Invoice payment failed:', failedInvoice.id);
+        break;
+        
+      default:
+        console.log(`🤷 Unhandled event type: ${event.type}`);
+    }
+
+    res.json({ received: true });
+  } catch (error) {
+    console.error('❌ Error processing webhook:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
+  }
+});
+
+// JSON body parser for other endpoints
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 // Force HTTPS in production
 app.use((req, res, next) => {
@@ -601,77 +680,6 @@ app.post('/api/checkout', async (req, res) => {
       error: 'Failed to create checkout session',
       details: error.message 
     });
-  }
-});
-
-// Stripe Webhook Endpoint
-app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
-
-  try {
-    // Verify webhook signature
-    event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WEBHOOK_SECRET);
-    console.log('✅ Webhook signature verified');
-  } catch (err) {
-    console.error('❌ Webhook signature verification failed:', err.message);
-    return res.status(400).send(`Webhook signature verification failed: ${err.message}`);
-  }
-
-  console.log('🔔 Webhook event received:', event.type);
-
-  // Handle the event
-  try {
-    switch (event.type) {
-      case 'checkout.session.completed':
-        const session = event.data.object;
-        console.log('💳 Checkout session completed:', session.id);
-        
-        // Update your database or perform other actions
-        // You can access session.metadata for custom data
-        console.log('📊 Session metadata:', session.metadata);
-        
-        // Send confirmation email, update database, etc.
-        break;
-        
-      case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object;
-        console.log('💰 Payment succeeded:', paymentIntent.id);
-        break;
-        
-      case 'customer.subscription.created':
-        const subscription = event.data.object;
-        console.log('🔄 Subscription created:', subscription.id);
-        break;
-        
-      case 'customer.subscription.updated':
-        const updatedSubscription = event.data.object;
-        console.log('🔄 Subscription updated:', updatedSubscription.id);
-        break;
-        
-      case 'customer.subscription.deleted':
-        const deletedSubscription = event.data.object;
-        console.log('🔄 Subscription deleted:', deletedSubscription.id);
-        break;
-        
-      case 'invoice.payment_succeeded':
-        const invoice = event.data.object;
-        console.log('📄 Invoice payment succeeded:', invoice.id);
-        break;
-        
-      case 'invoice.payment_failed':
-        const failedInvoice = event.data.object;
-        console.log('❌ Invoice payment failed:', failedInvoice.id);
-        break;
-        
-      default:
-        console.log(`🤷 Unhandled event type: ${event.type}`);
-    }
-
-    res.json({ received: true });
-  } catch (error) {
-    console.error('❌ Error processing webhook:', error);
-    res.status(500).json({ error: 'Webhook processing failed' });
   }
 });
 
