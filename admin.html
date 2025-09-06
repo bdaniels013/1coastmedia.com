@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin Dashboard • 1CoastMedia</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="./assets/favicon.jpg" />
+  <link rel="apple-touch-icon" href="./assets/favicon.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <!-- Tailwind CSS for quick styling -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -68,7 +71,10 @@
   <div x-show="isLoggedIn" x-cloak>
     <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 class="text-xl font-bold">1CoastMedia Admin</h1>
+        <h1 class="flex items-center space-x-3 text-xl font-bold">
+          <img src="./assets/1coastmedia_logo_A_primary_mark_2048.jpg" alt="1CoastMedia logo" class="h-8 w-8 object-contain" />
+          <span>1CoastMedia Admin</span>
+        </h1>
         <div class="flex items-center space-x-4">
           <span class="text-sm text-gray-400">Welcome, <span x-text="currentUser"></span></span>
           <button 
