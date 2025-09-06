@@ -879,7 +879,7 @@
                 <span>Build My Package</span>
                 <span class="group-hover:translate-x-1 transition-transform duration-300">→</span>
               </span>
-              <div class="absolute inset-0 bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="absolute inset-0 bg-gradient-to-r from-yellow-700 via-amber-700 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
           </div>
         </div>
@@ -911,12 +911,12 @@
               <div>
                 <!-- Badge display -->
                 <div x-show="svc.badge" class="mb-2">
-                  <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white" x-text="svc.badge"></span>
+                  <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black" x-text="svc.badge"></span>
                 </div>
                 <h3 class="font-semibold text-lg" x-text="svc.name"></h3>
                 <p class="text-sm text-gray-300 mt-1" x-text="svc.outcome"></p>
                 <!-- Details toggle -->
-                <button @click="toggleDetails(svc.key)" class="mt-2 text-xs text-indigo-300 hover:underline focus:outline-none">
+                <button @click="toggleDetails(svc.key)" class="mt-2 text-xs text-yellow-300 hover:underline focus:outline-none">
                   <span x-text="detailsOpen[svc.key] ? 'Hide details' : 'View details'"></span>
                 </button>
                 <div x-show="detailsOpen[svc.key]" x-transition class="mt-2 text-sm text-gray-200">
@@ -933,8 +933,8 @@
                   <span x-show="(!svc.price.oneTime || svc.price.oneTime === 0) && svc.price && svc.price.monthly && svc.price.monthly > 0" x-text="fmtUSD(svc.price.monthly) + ' / mo'"></span>
                 </div>
                 <button @click="toggleService(svc.key)"
-                        class="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-                        :class="cartServices.includes(svc.key) ? 'bg-red-600 text-white' : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'">
+                        class="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+                        :class="cartServices.includes(svc.key) ? 'bg-red-600 text-white' : 'bg-gradient-to-r from-yellow-600 to-amber-600 text-black'">
                   <span x-text="cartServices.includes(svc.key) ? 'Remove' : 'Add'"></span>
                 </button>
               </div>
@@ -986,7 +986,7 @@
               </div>
               <button @click="toggleAddon(addon.key)"
                       class="text-xs mt-1 hover:underline"
-                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-indigo-300'">
+                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-yellow-300'">
                 <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
               </button>
             </div>
@@ -1008,7 +1008,7 @@
               </div>
               <button @click="toggleAddon(addon.key)"
                       class="text-xs mt-1 hover:underline"
-                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-indigo-300'">
+                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-yellow-300'">
                 <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
               </button>
             </div>
@@ -1027,7 +1027,7 @@
         class="w-full py-2 rounded-lg text-center font-medium transition"
         :class="(cartServices.length === 0 && cartAddons.length === 0)
           ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-          : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white'"
+          : 'bg-gradient-to-r from-yellow-600 to-amber-600 hover:opacity-90 text-black'"
       >
         Checkout
       </button>
@@ -1038,7 +1038,7 @@
   <button
     @click="cartOpen = !cartOpen"
     x-show="cartServices.length > 0"
-    class="fixed bottom-5 right-5 px-4 py-3 rounded-full shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90"
+    class="fixed bottom-5 right-5 px-4 py-3 rounded-full shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gradient-to-r from-yellow-600 to-amber-600 text-black hover:opacity-90"
     x-transition
   >
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
