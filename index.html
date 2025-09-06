@@ -481,7 +481,7 @@
         <span>1CoastMedia</span>
       </h1>
       <!-- Optional inline cart button in the header -->
-      <button @click="cartOpen = !cartOpen" class="relative px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <button @click="cartOpen = !cartOpen" class="relative px-4 py-2 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-cyan-500">
         Cart (<span x-text="cartCount()"></span>)
       </button>
     </div>
@@ -500,10 +500,10 @@
     <div class="relative z-10 space-y-8">
       <!-- Main heading with enhanced typography -->
       <div class="space-y-6">
-        <h2 class="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent gradient-text-animate">
+        <h2 class="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-teal-400 bg-clip-text text-transparent gradient-text-animate">
           1CoastMedia: Built for the Coast. Made for Real Results.
         </h2>
-        <div class="w-32 h-1 bg-gradient-to-r from-blue-400 to-pink-400 mx-auto rounded-full animate-pulse"></div>
+        <div class="w-32 h-1 bg-gradient-to-r from-cyan-400 to-teal-400 mx-auto rounded-full animate-pulse"></div>
       </div>
       
       <!-- Enhanced subtitle -->
@@ -513,28 +513,41 @@
       
       <!-- Enhanced CTA buttons -->
       <div class="flex flex-col sm:flex-row justify-center gap-6 mt-8">
-        <button @click="scrollToServices(); cartOpen = true" class="group relative px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105 overflow-hidden">
+        <button @click="scrollToServices(); cartOpen = true" class="group relative px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 hover:scale-105 overflow-hidden">
           <span class="relative z-10 flex items-center gap-3">
             <span class="text-2xl group-hover:scale-110 transition-transform duration-300">👉</span>
             <span>Build Your Package</span>
           </span>
-          <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-cyan-700 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </button>
         
-        <a href="#services" class="group px-8 py-4 rounded-2xl bg-white/10 border border-white/20 text-indigo-300 hover:bg-white/20 hover:border-indigo-400/40 transition-all duration-300 hover:scale-105 backdrop-blur-sm">
+        <a href="#services" class="group px-8 py-4 rounded-2xl bg-white/10 border border-white/20 text-cyan-300 hover:bg-white/20 hover:border-cyan-400/40 transition-all duration-300 hover:scale-105 backdrop-blur-sm">
           <span class="flex items-center gap-3">
             <span>See Services</span>
             <span class="group-hover:translate-x-1 transition-transform duration-300">→</span>
           </span>
         </a>
         
-        <a href="./growth-machine" class="group px-8 py-4 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-lg shadow-2xl hover:shadow-pink-500/25 transition-all duration-300 hover:scale-105">
+        <a href="./growth-machine" class="group px-8 py-4 rounded-2xl bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-bold text-lg shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 hover:scale-105">
           <span class="flex items-center gap-3">
             <span class="text-2xl group-hover:scale-110 transition-transform duration-300">🚀</span>
             <span>Growth Machine</span>
           </span>
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- Prominent Logo Section -->
+  <section class="py-16 relative z-10">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="mb-8">
+        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia Logo" class="h-32 w-32 mx-auto object-contain drop-shadow-2xl animate-float" />
+      </div>
+      <h3 class="text-3xl font-bold text-white mb-4">Your Gulf Coast Growth Partner</h3>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        Where creativity meets strategy, and brands become cultural forces.
+      </p>
     </div>
   </section>
 
@@ -556,16 +569,16 @@
 
   <!-- What Sets Us Apart -->
   <section class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">What Sets Us Apart</h3>
+    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">What Sets Us Apart</h3>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-xl border border-white/20 hover:border-blue-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-purple-600/0 to-pink-600/0 group-hover:from-blue-600/10 group-hover:via-purple-600/10 group-hover:to-pink-600/10 transition-all duration-700"></div>
+      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-teal-500/10 backdrop-blur-xl border border-white/20 hover:border-cyan-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-600/0 via-blue-600/0 to-teal-600/0 group-hover:from-cyan-600/10 group-hover:via-blue-600/10 group-hover:to-teal-600/10 transition-all duration-700"></div>
         <div class="relative p-8">
           <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
               <span class="text-2xl">⭐</span>
             </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Real Experience, Real Results</h4>
+            <h4 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real Experience, Real Results</h4>
           </div>
           <p class="text-gray-300 leading-relaxed">Fifteen years building brands that matter. Ten of those at the highest level of entertainment, working alongside global superstars, A-list talent, and culture-defining influencers. We've cracked the code on what makes audiences obsess, engage, and convert—on every scale from local to worldwide.</p>
           <div class="mt-6 flex items-center text-sm text-blue-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
