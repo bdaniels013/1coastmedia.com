@@ -29,6 +29,60 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     
+    /* Mobile Performance Optimization */
+    @media (max-width: 768px) {
+      /* Reduce animations on mobile */
+      .animate-float,
+      .animate-glow,
+      .animate-pulse-glow,
+      .shimmer-bg,
+      .gradient-text-animate {
+        animation: none !important;
+      }
+      
+      /* Disable heavy blur effects on mobile */
+      .liquid-blob-1,
+      .liquid-blob-2,
+      .liquid-blob-3,
+      .liquid-blob-4,
+      .liquid-blob-5,
+      .liquid-blob-6,
+      .liquid-blob-7,
+      .liquid-blob-8,
+      .liquid-blob-9,
+      .liquid-blob-10 {
+        display: none !important;
+      }
+      
+      /* Reduce backdrop blur on mobile */
+      .package-card {
+        backdrop-filter: none !important;
+      }
+      
+      /* Simplify hover effects on mobile */
+      .card-hover:hover {
+        transform: none !important;
+        filter: none !important;
+      }
+      
+      .package-card:hover .card-content {
+        transform: none !important;
+      }
+      
+      .premium-btn:hover {
+        transform: none !important;
+      }
+    }
+    
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    
     /* Premium Custom Animations */
     @keyframes float {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -1150,9 +1204,15 @@
         },
 
         initLiquidBlobs() {
+          // Skip heavy animations on mobile devices
+          if (window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            console.log('🚀 Skipping liquid blob animations for mobile performance');
+            return;
+          }
+          
           const blobs = document.querySelectorAll('[class*="liquid-blob-"]');
           
-          // Mouse interaction for liquid blobs
+          // Mouse interaction for liquid blobs (desktop only)
           document.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX / window.innerWidth;
             const mouseY = e.clientY / window.innerHeight;
@@ -1165,7 +1225,7 @@
             });
           });
 
-          // Enhanced blob animations
+          // Enhanced blob animations (desktop only)
           function animateBlobs() {
             const time = Date.now() * 0.001;
             
@@ -1184,7 +1244,7 @@
           
           animateBlobs();
 
-          // Scroll-based blob movement
+          // Scroll-based blob movement (desktop only)
           window.addEventListener('scroll', () => {
             const scrollOffset = window.pageYOffset * 0.1;
             
