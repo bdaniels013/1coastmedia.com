@@ -241,16 +241,10 @@ function contentManager() {
       });
     },
     
-    // Load default services structure
+    // Load default services structure (empty catalog)
     loadDefaultServices() {
       this.services = {
-        serviceCategories: {
-          signature: {
-            name: 'Signature Programs',
-            description: 'Our standout, lead offers designed for maximum impact',
-            services: []
-          }
-        },
+        serviceCategories: {},
         addons: []
       };
     },
@@ -400,21 +394,14 @@ function contentManager() {
     
     async verifySession(sessionToken, username) {
       try {
-        // Try to make a request to a protected endpoint
-        const response = await fetch(`${this.apiBase}/api/services`, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${sessionToken}`
-          },
-          body: JSON.stringify({ test: true })
+        const response = await fetch(`${this.apiBase}/api/admin/session`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${sessionToken}` }
         });
-        
+
         if (response.status === 401) {
-          // Session expired, clear it
           this.clearSession();
         } else {
-          // Session is valid
           this.sessionToken = sessionToken;
           this.currentUser = username;
           this.isLoggedIn = true;

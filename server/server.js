@@ -146,38 +146,20 @@ app.use((req, res, next) => {
   next();
 });
 
+// Use DATA_DIR for persistence; default to current server directory
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname);
+
 // Path to the services data file
-const SERVICES_FILE = path.join(__dirname, 'services-data.json');
+const SERVICES_FILE = path.join(DATA_DIR, 'services-data.json');
 // Path to the content management file
-const CONTENT_FILE = path.join(__dirname, 'content-data.json');
+const CONTENT_FILE = path.join(DATA_DIR, 'content-data.json');
 
 // Initialize services data file if it doesn't exist
 function initializeServicesFile() {
   if (!fs.existsSync(SERVICES_FILE)) {
-    // Copy the default services from the data/services.js file
-    const defaultServicesPath = path.join(__dirname, '..', 'data', 'services.js');
-    if (fs.existsSync(defaultServicesPath)) {
-      try {
-        // Read the services.js file and extract the serviceData
-        const servicesContent = fs.readFileSync(defaultServicesPath, 'utf8');
-        // Simple regex to extract the serviceData object
-        const match = servicesContent.match(/window\.serviceData\s*=\s*({[\s\S]*});/);
-        if (match) {
-          const serviceData = eval('(' + match[1] + ')');
-          fs.writeFileSync(SERVICES_FILE, JSON.stringify(serviceData, null, 2));
-          console.log('✅ Initialized services data file with default data');
-        }
-      } catch (error) {
-        console.error('❌ Error initializing services file:', error);
-        // Create empty structure if extraction fails
-        const emptyData = { serviceCategories: {}, addons: [] };
-        fs.writeFileSync(SERVICES_FILE, JSON.stringify(emptyData, null, 2));
-      }
-    } else {
-      // Create empty structure if no default file exists
-      const emptyData = { serviceCategories: {}, addons: [] };
-      fs.writeFileSync(SERVICES_FILE, JSON.stringify(emptyData, null, 2));
-    }
+    const emptyData = { serviceCategories: {}, addons: [] };
+    fs.writeFileSync(SERVICES_FILE, JSON.stringify(emptyData, null, 2));
+    console.log('✅ Initialized services data file (empty catalog)');
   }
 }
 
@@ -258,15 +240,19 @@ app.get('/api/services', (req, res) => {
 app.post('/api/services', requireAuth, (req, res) => {
   try {
     const services = req.body;
-    
-    // Validate the data structure
-    if (!services || typeof services !== 'object') {
-      return res.status(400).json({ error: 'Invalid services data' });
+
+    // Strict schema validation
+    if (
+      !services ||
+      typeof services !== 'object' ||
+      !services.serviceCategories ||
+      typeof services.serviceCategories !== 'object' ||
+      !Array.isArray(services.addons)
+    ) {
+      return res.status(400).json({ error: 'Invalid services schema' });
     }
-    
-    // Save to file
+
     fs.writeFileSync(SERVICES_FILE, JSON.stringify(services, null, 2));
-    
     console.log('✅ Services saved successfully');
     res.json({ success: true, message: 'Services saved successfully' });
   } catch (error) {
@@ -565,6 +551,11 @@ app.post('/api/admin/login', (req, res) => {
     console.error('❌ Admin login error:', error);
     res.status(500).json({ error: 'Login failed' });
   }
+});
+
+// Protected, non-mutating session check
+app.get('/api/admin/session', requireAuth, (req, res) => {
+  res.json({ success: true });
 });
 
 // Admin logout endpoint
