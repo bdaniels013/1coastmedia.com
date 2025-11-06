@@ -149,7 +149,7 @@
   })()"
   :key="svc.key"
   >
-  <div :id="'svc-' + svc.key" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20 p-6 flex flex-col justify-between">
+  <div :id="'svc-' + svc.key" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
   <div>
   <div x-show="svc.badge" class="mb-2">
   <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black" x-text="svc.badge"></span>
@@ -195,4 +195,121 @@
   x-show="cartServices.length > 0 || cartAddons.length > 0"
   class="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-semibold shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
   Checkout
-</button>
+
+  <!-- Call Now CTA (below Specials) -->
+  <section class="max-w-7xl mx-auto px-4 py-10 text-center">
+    <a href="tel:+12283571897"
+       class="inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold shadow-2xl hover:opacity-90">
+      CALL NOW FOR A FREE CONSULTATION
+    </a>
+    <p class="mt-2 text-sm text-gray-400">Or dial (228) 357-1897</p>
+  </section>
+
+  <!-- The 1CoastMedia Promise -->
+  <section class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">The 1CoastMedia Promise</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-amber-500/10 to-red-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-amber-600/0 to-red-600/0 group-hover:from-yellow-600/10 group-hover:via-amber-600/10 group-hover:to-red-600/10 transition-all duration-700"></div>
+        <div class="relative p-8">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-2xl">🎨</span>
+            </div>
+            <h4 class="text-xl font-bold bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">No Templated Solutions</h4>
+          </div>
+          <p class="text-gray-300 leading-relaxed">Your business is unique. Your strategy should be too. Every campaign, every creative brief, every execution is built specifically for your goals, your audience, your vision.</p>
+          <div class="mt-6 flex items-center text-sm text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="mr-2">→</span>
+            <span>100% custom</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-gray-400/20 hover:border-gray-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-500/20">
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-gray-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
+        <div class="relative p-8">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-2xl">💬</span>
+            </div>
+            <h4 class="text-xl font-bold bg-gradient-to-r from-gray-300 to-yellow-400 bg-clip-text text-transparent">Direct Access, Always</h4>
+          </div>
+          <p class="text-gray-300 leading-relaxed">You work directly with decision-makers. No account coordinators reading from scripts. No layers of bureaucracy. Just straight talk, creative collaboration, and immediate action.</p>
+          <div class="mt-6 flex items-center text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="mr-2">→</span>
+            <span>Direct to decision-makers</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-red-400/20 hover:border-red-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
+        <div class="absolute inset-0 bg-gradient-to-r from-red-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-red-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
+        <div class="relative p-8">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-2xl">🎯</span>
+            </div>
+            <h4 class="text-xl font-bold bg-gradient-to-r from-red-400 to-yellow-400 bg-clip-text text-transparent">Results-Driven Partnership</h4>
+          </div>
+          <p class="text-gray-300 leading-relaxed">We succeed when you succeed. If something isn't working, we fix it fast. If targets aren't met, we keep working until they are. Fifteen years in business, zero unhappy clients walking away.</p>
+          <div class="mt-6 flex items-center text-sm text-red-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="mr-2">→</span>
+            <span>Zero unhappy clients</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Now? Why Us? -->
+  <section class="max-w-7xl mx-auto px-4 py-16 space-y-8">
+    <div class="text-center mb-12">
+      <h3 class="text-4xl font-bold bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent mb-4">Why Now? Why Us?</h3>
+      <div class="w-24 h-1 bg-gradient-to-r from-yellow-300 to-red-400 mx-auto rounded-full"></div>
+    </div>
+    
+    <div class="relative">
+      <div class="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-amber-500/5 to-red-500/5 rounded-3xl"></div>
+      <div class="absolute top-0 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/4 w-40 h-40 bg-red-400/10 rounded-full blur-3xl"></div>
+      
+      <div class="relative max-w-5xl mx-auto p-12 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/20">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+          <div class="text-center lg:text-left">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center mx-auto lg:mx-0 mb-4">
+              <span class="text-3xl">⚡</span>
+            </div>
+            <h4 class="text-xl font-bold text-yellow-300 mb-3">The Gulf Coast Moment</h4>
+            <p class="text-gray-300">New energy, new opportunities, new money flowing in. But too many local businesses are still marketing like it's 2010—competing on price instead of value, blending in instead of standing out.</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-600 to-red-700 flex items-center justify-center mx-auto mb-4">
+              <span class="text-3xl">🎯</span>
+            </div>
+            <h4 class="text-xl font-bold text-gray-300 mb-3">15+ Years of Learning</h4>
+            <p class="text-gray-300">We've spent over a decade learning what separates the winners from everyone else. We've seen brands go from unknown to unavoidable.</p>
+          </div>
+          
+          <div class="text-center lg:text-right">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-amber-700 flex items-center justify-center mx-auto lg:mx-0 mb-4">
+              <span class="text-3xl">🚀</span>
+            </div>
+            <h4 class="text-xl font-bold text-red-300 mb-3">Ready for Transformation?</h4>
+            <p class="text-gray-300 font-semibold">The question isn't whether we can deliver results—it's whether you're ready for what happens when your business becomes the one everyone's talking about.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Book a Free Call CTA (below Why Now? Why Us?) -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-4">
+    <h3 class="text-3xl font-bold">Book a Free 30‑Minute Call</h3>
+    <p class="text-gray-300">Have questions or need guidance? Let's talk.</p>
+    <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-lg hover:opacity-90">Book a Call</a>
+  </section>
+
+  // ... existing code ...
+</main>
