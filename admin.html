@@ -15,6 +15,19 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     [x-cloak] { display: none !important; }
+    /* Expanding textareas for better editing */
+    textarea.expand-on-focus {
+      min-height: 2.5rem; /* compact by default */
+      transition: min-height 0.2s ease;
+    }
+    textarea.expand-on-focus:focus {
+      min-height: 12rem; /* expands when focused */
+    }
+    @media (max-width: 640px) {
+      textarea.expand-on-focus {
+        min-height: 6rem; /* more room on mobile */
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="adminApp()" x-init="init()">
@@ -148,6 +161,7 @@
               <th class="p-2 text-right">Actions</th>
             </tr>
           </thead>
+          <!-- Services management (desktop table row edits) -->
           <tbody>
             <template x-for="(svc, index) in flatServices" :key="svc.key">
               <tr class="border-b border-white/20" draggable="true"
@@ -160,11 +174,21 @@
                 <td class="p-2">
                   <input x-model="svc.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
                 </td>
+                <!-- Outcome: input -> textarea with expand + auto-grow -->
                 <td class="p-2">
-                  <input x-model="svc.outcome" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" placeholder="Outcome" />
+                  <textarea x-model="svc.outcome"
+                            rows="2"
+                            class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Outcome"
+                            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
                 </td>
+                <!-- Deliverables: input -> textarea with expand + auto-grow -->
                 <td class="p-2">
-                  <input x-model="svc.deliverables" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" placeholder="Comma-separated" />
+                  <textarea x-model="svc.deliverables"
+                            rows="2"
+                            class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Comma-separated"
+                            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
                 </td>
                 <td class="p-2 text-right">
                   <input x-model.number="svc.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
@@ -189,6 +213,7 @@
         </table>
         </div>
         <!-- Mobile card view -->
+        <!-- Services management (mobile card edits) -->
         <div class="sm:hidden space-y-4">
           <template x-for="(svc, index) in flatServices" :key="svc.key">
             <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
@@ -210,13 +235,21 @@
                   <label class="block text-xs text-gray-400">Category</label>
                   <input x-model="svc.category" list="categoryList" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
                 </div>
+                <!-- Outcome textarea (expand-on-focus) -->
                 <div class="col-span-2">
                   <label class="block text-xs text-gray-400">Outcome</label>
-                  <input x-model="svc.outcome" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                  <textarea x-model="svc.outcome"
+                            rows="2"
+                            class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
                 </div>
+                <!-- Deliverables textarea (expand-on-focus) -->
                 <div class="col-span-2">
                   <label class="block text-xs text-gray-400">Deliverables (comma‑separated)</label>
-                  <input x-model="svc.deliverables" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+                  <textarea x-model="svc.deliverables"
+                            rows="2"
+                            class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
                 </div>
                 <div>
                   <label class="block text-xs text-gray-400">One‑time</label>
@@ -232,175 +265,274 @@
           <div x-show="flatServices.length === 0" class="p-4 text-center text-gray-400">No services.</div>
         </div>
         <!-- Save changes button -->
-        <div class="mt-4 flex justify-end">
-          <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
-        </div>
-        <!-- Add service form -->
+        <!-- Add service form: Outcome + Deliverables as expanding textareas -->
         <form @submit.prevent="addService" class="mt-4 grid grid-cols-6 gap-2 items-end">
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">Category</label>
-            <input x-model="newService.category" list="categoryList" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="e.g. signature" />
-            <!-- datalist of existing category keys -->
-            <datalist id="categoryList">
-              <template x-for="(cat, key) in serviceCategories" :key="key">
-                <option :value="key" x-text="formatCategoryTitle(key)"></option>
-              </template>
-            </datalist>
-          </div>
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">Key</label>
-            <input x-model="newService.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="unique-key" />
-          </div>
-          <div class="col-span-2">
-            <label class="block text-xs text-gray-400">Name</label>
-            <input x-model="newService.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="Service name" />
-          </div>
-          <div class="col-span-2">
-            <label class="block text-xs text-gray-400">Outcome</label>
-            <input x-model="newService.outcome" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="e.g. Website live in 7 days" />
-          </div>
-          <div class="col-span-3">
-            <label class="block text-xs text-gray-400">Deliverables (comma‑separated)</label>
-            <input x-model="newService.deliverables" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="page, SEO setup, ..." />
-          </div>
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">One‑time</label>
-            <input x-model="newService.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="$" />
-          </div>
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">Monthly</label>
-            <input x-model="newService.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="$" />
-          </div>
-          <div class="col-span-6">
-            <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Service</button>
-          </div>
+        <div class="col-span-1">
+        <label class="block text-xs text-gray-400">Category</label>
+        <input x-model="newService.category" list="categoryList" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="e.g. signature" />
+        <!-- datalist of existing category keys -->
+        <datalist id="categoryList">
+        <template x-for="(cat, key) in serviceCategories" :key="key">
+        <option :value="key" x-text="formatCategoryTitle(key)"></option>
+        </template>
+        </datalist>
+        </div>
+        <div class="col-span-1">
+        <label class="block text-xs text-gray-400">Key</label>
+        <input x-model="newService.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="unique-key" />
+        </div>
+        <div class="col-span-2">
+        <label class="block text-xs text-gray-400">Name</label>
+        <input x-model="newService.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="Service name" />
+        </div>
+        <div class="col-span-2">
+        <label class="block text-xs text-gray-400">Outcome</label>
+        <textarea x-model="newService.outcome"
+        rows="2"
+        class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="e.g. Website live in 7 days"
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+        <div class="col-span-3">
+        <label class="block text-xs text-gray-400">Deliverables (comma‑separated)</label>
+        <textarea x-model="newService.deliverables"
+        rows="2"
+        class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="page, SEO setup, ..."
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        </div>
+        <div class="col-span-1">
+        <label class="block text-xs text-gray-400">One‑time</label>
+        <input x-model="newService.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="$" />
+        </div>
+        <div class="col-span-1">
+        <label class="block text-xs text-gray-400">Monthly</label>
+        <input x-model="newService.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" placeholder="$" />
+        </div>
+        <div class="col-span-6">
+        <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Service</button>
+        </div>
         </form>
       </div>
     </section>
 
-    <!-- Add-ons management -->
-    <section class="rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg p-4" x-data="{ openAddon: true }">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-bold">Add-ons</h2>
-        <button @click="openAddon = !openAddon" class="text-sm text-indigo-300 hover:underline">
-          <span x-text="openAddon ? 'Hide' : 'Show'"></span>
-        </button>
-      </div>
-      <div x-show="openAddon" x-transition>
-        <!-- Desktop add-ons table -->
-        <div class="overflow-x-auto hidden sm:block">
-        <table class="min-w-full text-sm">
-          <thead class="bg-white/5 border-b border-white/20">
-            <tr>
-              <th class="p-2 text-left">Key</th>
-              <th class="p-2 text-left">Name</th>
-              <th class="p-2 text-left">Description</th>
-              <th class="p-2 text-right">Price</th>
-              <th class="p-2 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <template x-for="(addon, index) in flatAddons" :key="addon.key">
-              <tr class="border-b border-white/20" draggable="true"
-                  @dragstart="handleAddonDragStart($event, index)"
-                  @dragover.prevent
-                  @drop="handleAddonDrop($event, index)">
-                <td class="p-2">
-                  <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-                </td>
-                <td class="p-2">
-                  <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-                </td>
-                <td class="p-2">
-                  <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-                </td>
-                <td class="p-2 text-right">
-                  <div class="flex flex-col items-end space-y-1">
-                    <input x-model.number="addon.priceOneTime" type="number" step="1" placeholder="One‑time" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-                    <input x-model.number="addon.priceMonthly" type="number" step="1" placeholder="Monthly" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-                  </div>
-                </td>
-                <td class="p-2 text-right">
-                  <div class="flex items-center justify-end space-x-2">
-                    <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
-                    <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
-                    <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
-                  </div>
-                </td>
-              </tr>
-            </template>
-            <tr x-show="flatAddons.length === 0"><td colspan="5" class="p-2 text-center text-gray-400">No add-ons.</td></tr>
-          </tbody>
-        </table>
-        </div>
-        <!-- Mobile add-ons card view -->
-        <div class="sm:hidden space-y-4">
-          <template x-for="(addon, index) in flatAddons" :key="addon.key">
-            <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
-                 @dragstart="handleAddonDragStart($event, index)" @dragover.prevent @drop="handleAddonDrop($event, index)">
-              <div class="flex justify-between items-center">
-                <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
-                <div class="flex space-x-2">
-                  <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
-                  <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
-                  <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs text-gray-400">Key</label>
-                  <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-                </div>
-                <div>
-                  <label class="block text-xs text-gray-400">Description</label>
-                  <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-                </div>
-                <div>
-                  <label class="block text-xs text-gray-400">One‑time</label>
-                  <input x-model.number="addon.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-                </div>
-                <div>
-                  <label class="block text-xs text-gray-400">Monthly</label>
-                  <input x-model.number="addon.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-                </div>
-              </div>
+    <!-- Add-ons management (desktop description textarea) -->
+    <tbody>
+      <template x-for="(addon, index) in flatAddons" :key="addon.key">
+        <tr class="border-b border-white/20" draggable="true"
+            @dragstart="handleAddonDragStart($event, index)"
+            @dragover.prevent
+            @drop="handleAddonDrop($event, index)">
+          <td class="p-2">
+            <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+          </td>
+          <td class="p-2">
+            <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+          </td>
+          <!-- Description: input -> textarea -->
+          <td class="p-2">
+            <textarea x-model="addon.description"
+                      rows="2"
+                      class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+          </td>
+          <td class="p-2 text-right">
+            <div class="flex flex-col items-end space-y-1">
+              <input x-model.number="addon.priceOneTime" type="number" step="1" placeholder="One‑time" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+              <input x-model.number="addon.priceMonthly" type="number" step="1" placeholder="Monthly" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
             </div>
-          </template>
-          <div x-show="flatAddons.length === 0" class="p-4 text-center text-gray-400">No add‑ons.</div>
+          </td>
+          <td class="p-2 text-right">
+            <div class="flex items-center justify-end space-x-2">
+              <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+              <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+              <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </template>
+    <tr x-show="flatAddons.length === 0"><td colspan="5" class="p-2 text-center text-gray-400">No add-ons.</td></tr>
+    </tbody>
+    <!-- Mobile add-ons card view -->
+    <!-- Add-ons management (mobile description textarea) -->
+    <div class="sm:hidden space-y-4">
+      <template x-for="(addon, index) in flatAddons" :key="addon.key">
+        <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
+             @dragstart="handleAddonDragStart($event, index)" @dragover.prevent @drop="handleAddonDrop($event, index)">
+          <div class="flex justify-between items-center">
+            <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
+            <div class="flex space-x-2">
+              <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+              <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+              <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs text-gray-400">Key</label>
+              <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400">Description</label>
+              <textarea x-model="addon.description"
+                        rows="2"
+                        class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400">One‑time</label>
+              <input x-model.number="addon.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400">Monthly</label>
+              <input x-model.number="addon.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+            </div>
+          </div>
         </div>
-        <!-- Save changes button -->
-        <div class="mt-4 flex justify-end">
-          <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
-        </div>
-        <!-- Add add-on form -->
-        <form @submit.prevent="addAddon" class="mt-4 grid grid-cols-6 gap-2 items-end">
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">Key</label>
-            <input x-model="newAddon.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-          </div>
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">Name</label>
-            <input x-model="newAddon.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-          </div>
-          <div class="col-span-2">
-            <label class="block text-xs text-gray-400">Description</label>
-            <input x-model="newAddon.description" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-          </div>
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">One‑time</label>
-            <input x-model="newAddon.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-          </div>
-          <div class="col-span-1">
-            <label class="block text-xs text-gray-400">Monthly</label>
-            <input x-model="newAddon.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-          </div>
-          <div class="col-span-6">
-            <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Add-on</button>
-          </div>
-        </form>
+      </template>
+      <div x-show="flatAddons.length === 0" class="p-4 text-center text-gray-400">No add‑ons.</div>
+    </div>
+    <!-- Save changes button -->
+    <div class="mt-4 flex justify-end">
+      <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
+    </div>
+    <!-- Add add-on form: Description textarea -->
+    <form @submit.prevent="addAddon" class="mt-4 grid grid-cols-6 gap-2 items-end">
+      <div class="col-span-1">
+        <label class="block text-xs text-gray-400">Key</label>
+        <input x-model="newAddon.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
       </div>
-    </section>
-  </main>
+      <div class="col-span-1">
+        <label class="block text-xs text-gray-400">Name</label>
+        <input x-model="newAddon.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+      </div>
+      <div class="col-span-2">
+        <label class="block text-xs text-gray-400">Description</label>
+        <textarea x-model="newAddon.description"
+                  rows="2"
+                  class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      </div>
+      <div class="col-span-1">
+        <label class="block text-xs text-gray-400">One‑time</label>
+        <input x-model="newAddon.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+      </div>
+      <div class="col-span-1">
+        <label class="block text-xs text-gray-400">Monthly</label>
+        <input x-model="newAddon.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+      </div>
+      <div class="col-span-6">
+        <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Add-on</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Add-ons management (desktop description textarea) -->
+<tbody>
+  <template x-for="(addon, index) in flatAddons" :key="addon.key">
+    <tr class="border-b border-white/20" draggable="true"
+        @dragstart="handleAddonDragStart($event, index)"
+        @dragover.prevent
+        @drop="handleAddonDrop($event, index)">
+      <td class="p-2">
+        <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+      </td>
+      <td class="p-2">
+        <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+      </td>
+      <!-- Description: input -> textarea -->
+      <td class="p-2">
+        <textarea x-model="addon.description"
+                  rows="2"
+                  class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      </td>
+      <td class="p-2 text-right">
+        <div class="flex flex-col items-end space-y-1">
+          <input x-model.number="addon.priceOneTime" type="number" step="1" placeholder="One‑time" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+          <input x-model.number="addon.priceMonthly" type="number" step="1" placeholder="Monthly" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+        </div>
+      </td>
+      <td class="p-2 text-right">
+        <div class="flex items-center justify-end space-x-2">
+          <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+          <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+          <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </template>
+<tr x-show="flatAddons.length === 0"><td colspan="5" class="p-2 text-center text-gray-400">No add-ons.</td></tr>
+</tbody>
+<!-- Mobile add-ons card view -->
+<div class="sm:hidden space-y-4">
+  <template x-for="(addon, index) in flatAddons" :key="addon.key">
+    <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
+         @dragstart="handleAddonDragStart($event, index)" @dragover.prevent @drop="handleAddonDrop($event, index)">
+      <div class="flex justify-between items-center">
+        <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
+        <div class="flex space-x-2">
+          <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
+          <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
+          <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-xs text-gray-400">Key</label>
+          <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400">Description</label>
+          <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400">One‑time</label>
+          <input x-model.number="addon.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400">Monthly</label>
+          <input x-model.number="addon.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
+        </div>
+      </div>
+    </div>
+  </template>
+  <div x-show="flatAddons.length === 0" class="p-4 text-center text-gray-400">No add‑ons.</div>
+</div>
+<!-- Save changes button -->
+<div class="mt-4 flex justify-end">
+  <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
+</div>
+<!-- Add add-on form -->
+<form @submit.prevent="addAddon" class="mt-4 grid grid-cols-6 gap-2 items-end">
+  <div class="col-span-1">
+    <label class="block text-xs text-gray-400">Key</label>
+    <input x-model="newAddon.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+  </div>
+  <div class="col-span-1">
+    <label class="block text-xs text-gray-400">Name</label>
+    <input x-model="newAddon.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+  </div>
+  <div class="col-span-2">
+    <label class="block text-xs text-gray-400">Description</label>
+    <input x-model="newAddon.description" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+  </div>
+  <div class="col-span-1">
+    <label class="block text-xs text-gray-400">One‑time</label>
+    <input x-model="newAddon.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+  </div>
+  <div class="col-span-1">
+    <label class="block text-xs text-gray-400">Monthly</label>
+    <input x-model="newAddon.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
+  </div>
+  <div class="col-span-6">
+    <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Add-on</button>
+  </div>
+</form>
+</div>
+</section>
+</main>
     </div> <!-- Close admin panel div -->
   </div> <!-- Close main container -->
 

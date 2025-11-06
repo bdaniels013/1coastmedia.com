@@ -73,11 +73,8 @@ function app() {
           this.$set ? this.$set(this.detailsOpen, svc.key, false) : (this.detailsOpen[svc.key] = false);
         }
       }
-      // Show Special Offer popup on first visit (until dismissed or clicked)
-      const dismissed = localStorage.getItem('specialOfferDismissed');
-      if (dismissed !== 'true') {
-        setTimeout(() => { this.showSpecialOffer = true; }, 250);
-      }
+      // Always show Special Offer popup on each visit
+      setTimeout(() => { this.showSpecialOffer = true; }, 250);
     },
     
     // Format a number as USD
@@ -241,14 +238,12 @@ function app() {
     // Handle SPECIAL OFFER click: close modal and jump to target service
     handleSpecialOfferClick() {
       this.showSpecialOffer = false;
-      localStorage.setItem('specialOfferDismissed', 'true');
       this.scrollToSpecialOffer();
     },
 
     // Close the modal without navigating
     dismissSpecialOffer() {
       this.showSpecialOffer = false;
-      localStorage.setItem('specialOfferDismissed', 'true');
     },
 
     // Find the target service (by key) and scroll to it; fallback to last service

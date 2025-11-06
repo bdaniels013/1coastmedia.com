@@ -15,6 +15,19 @@
     body { font-family: 'Inter', sans-serif; }
     [x-cloak] { display: none !important; }
     .content-editor { min-height: 100px; }
+    /* Expanding textareas for Admin Services */
+    textarea.expand-on-focus {
+      min-height: 2.5rem;
+      transition: min-height 0.2s ease;
+    }
+    textarea.expand-on-focus:focus {
+      min-height: 12rem;
+    }
+    @media (max-width: 640px) {
+      textarea.expand-on-focus {
+        min-height: 6rem;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-gray-100" x-data="contentManager()" x-init="init()">
@@ -503,12 +516,14 @@
                           <label class="block text-sm font-medium text-gray-300 mb-2">
                             🎯 Outcome <span class="text-red-400">*</span>
                           </label>
-                          <input 
+                          <textarea 
                             x-model="service.outcome" 
-                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            rows="2"
+                            class="expand-on-focus w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-y"
                             placeholder="e.g., Complete funnel live and converting in 48 hours"
+                            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
                             required
-                          >
+                          ></textarea>
                         </div>
                         <div>
                           <label class="block text-sm font-medium text-gray-300 mb-2">
@@ -516,7 +531,7 @@
                           </label>
                           <input 
                             x-model="service.sla" 
-                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
                             placeholder="e.g., 48 hours"
                             required
                           >
@@ -580,9 +595,10 @@
                         </label>
                         <textarea 
                           x-model="service.deliverablesText" 
-                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
+                          class="expand-on-focus w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-y" 
                           rows="4" 
                           placeholder="Landing page + thank-you page&#10;GA4/pixels setup&#10;3 ad creatives&#10;1 welcome email"
+                          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
                           required
                         ></textarea>
                         <p class="text-xs text-gray-400 mt-1">One deliverable per line</p>
