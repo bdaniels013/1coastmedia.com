@@ -95,11 +95,11 @@
     <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-amber-500/10 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
   
     <div class="relative z-10 space-y-6">
+      <img src="./assets/1coastmedia logo.jpg"
+           alt="1CoastMedia logo"
+           class="h-64 w-64 sm:h-80 sm:w-80 mx-auto object-contain drop-shadow-2xl animate-float" />
       <h2 class="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-200 bg-clip-text text-transparent gradient-text-animate">
-        <span class="inline-flex items-center gap-3 justify-center">
-          <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-20 w-20 sm:h-24 sm:w-24 object-contain" />
-          Your Gulf Coast Growth Partner
-        </span>
+        Your Gulf Coast Growth Partner
       </h2>
     </div>
   </section>
@@ -128,7 +128,7 @@
   <!-- OUR SPECIALS -->
   <main id="services" class="max-w-7xl mx-auto px-4 py-8 space-y-8">
   <div>
-  <h2 class="text-3xl font-extrabold">OUR SPECIALS</h2>
+  <h2 class="text-3xl font-extrabold">CURRENT SPECIALS</h2>
   <p class="text-sm text-gray-300 mt-1"
      x-text="(() => {
      const cats = serviceCategories || {};
@@ -189,3 +189,10 @@
 </body>
 <script src="./app.js"></script>
 </html>
+<!-- Floating Checkout button -->
+<button
+  @click="checkout()"
+  x-show="cartServices.length > 0 || cartAddons.length > 0"
+  class="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-semibold shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+  Checkout
+</button>

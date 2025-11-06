@@ -264,7 +264,12 @@
           </template>
           <div x-show="flatServices.length === 0" class="p-4 text-center text-gray-400">No services.</div>
         </div>
-        <!-- Save changes button -->
+        <!-- Save changes button (kept inside Services) -->
+        <div class="mt-4 flex justify-end">
+          <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">
+            Save All Changes
+          </button>
+        </div>
         <!-- Services add form -->
         <form @submit.prevent="addService" class="mt-4 grid grid-cols-6 gap-2 items-end">
         <div class="col-span-1">
@@ -317,216 +322,15 @@
     </section>
 
     <!-- Add-ons management (desktop description textarea) -->
-    <tbody>
-      <template x-for="(addon, index) in flatAddons" :key="addon.key">
-        <tr class="border-b border-white/20" draggable="true"
-            @dragstart="handleAddonDragStart($event, index)"
-            @dragover.prevent
-            @drop="handleAddonDrop($event, index)">
-          <td class="p-2">
-            <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-          </td>
-          <td class="p-2">
-            <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-          </td>
-          <!-- Description: input -> textarea -->
-          <td class="p-2">
-            <textarea x-model="addon.description"
-                      rows="2"
-                      class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-          </td>
-          <td class="p-2 text-right">
-            <div class="flex flex-col items-end space-y-1">
-              <input x-model.number="addon.priceOneTime" type="number" step="1" placeholder="One‑time" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-              <input x-model.number="addon.priceMonthly" type="number" step="1" placeholder="Monthly" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-            </div>
-          </td>
-          <td class="p-2 text-right">
-            <div class="flex items-center justify-end space-x-2">
-              <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
-              <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
-              <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
-            </div>
-          </td>
-        </tr>
-      </template>
-    <tr x-show="flatAddons.length === 0"><td colspan="5" class="p-2 text-center text-gray-400">No add-ons.</td></tr>
-    </tbody>
+    <div x-cloak x-show="false"></div>
     <!-- Mobile add-ons card view -->
-    <!-- Add-ons management (mobile description textarea) -->
-    <div class="sm:hidden space-y-4">
-      <template x-for="(addon, index) in flatAddons" :key="addon.key">
-        <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
-             @dragstart="handleAddonDragStart($event, index)" @dragover.prevent @drop="handleAddonDrop($event, index)">
-          <div class="flex justify-between items-center">
-            <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
-            <div class="flex space-x-2">
-              <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
-              <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
-              <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-xs text-gray-400">Key</label>
-              <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-            </div>
-            <div>
-              <label class="block text-xs text-gray-400">Description</label>
-              <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-            </div>
-            <div>
-              <label class="block text-xs text-gray-400">One‑time</label>
-              <input x-model.number="addon.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-            </div>
-            <div>
-              <label class="block text-xs text-gray-400">Monthly</label>
-              <input x-model.number="addon.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-            </div>
-          </div>
-        </div>
-      </template>
-      <div x-show="flatAddons.length === 0" class="p-4 text-center text-gray-400">No add‑ons.</div>
-    </div>
+    <div x-cloak x-show="false"></div>
     <!-- Save changes button -->
-    <div class="mt-4 flex justify-end">
-      <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
+    <div x-cloak x-show="false"></div>
+    <!-- Add add-on form -->
+    <div x-cloak x-show="false"></div>
+    </main>
     </div>
-    <!-- Add add-on form: Description textarea -->
-    <form @submit.prevent="addAddon" class="mt-4 grid grid-cols-6 gap-2 items-end">
-      <div class="col-span-1">
-        <label class="block text-xs text-gray-400">Key</label>
-        <input x-model="newAddon.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-      </div>
-      <div class="col-span-1">
-        <label class="block text-xs text-gray-400">Name</label>
-        <input x-model="newAddon.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-      </div>
-      <div class="col-span-2">
-        <label class="block text-xs text-gray-400">Description</label>
-        <textarea x-model="newAddon.description"
-                  rows="2"
-                  class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-      </div>
-      <div class="col-span-1">
-        <label class="block text-xs text-gray-400">One‑time</label>
-        <input x-model="newAddon.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-      </div>
-      <div class="col-span-1">
-        <label class="block text-xs text-gray-400">Monthly</label>
-        <input x-model="newAddon.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-      </div>
-      <div class="col-span-6">
-        <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Add-on</button>
-      </div>
-    </form>
-  </div>
-</section>
-
-<!-- Add-ons management (desktop description textarea) -->
-<tbody>
-  <template x-for="(addon, index) in flatAddons" :key="addon.key">
-    <tr class="border-b border-white/20" draggable="true"
-        @dragstart="handleAddonDragStart($event, index)"
-        @dragover.prevent
-        @drop="handleAddonDrop($event, index)">
-      <td class="p-2">
-        <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-      </td>
-      <td class="p-2">
-        <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-      </td>
-      <!-- Description: input -> textarea -->
-      <td class="p-2">
-        <textarea x-model="addon.description"
-                  rows="2"
-                  class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-      </td>
-      <td class="p-2 text-right">
-        <div class="flex flex-col items-end space-y-1">
-          <input x-model.number="addon.priceOneTime" type="number" step="1" placeholder="One‑time" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-          <input x-model.number="addon.priceMonthly" type="number" step="1" placeholder="Monthly" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-        </div>
-      </td>
-      <td class="p-2 text-right">
-        <div class="flex items-center justify-end space-x-2">
-          <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
-          <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
-          <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
-        </div>
-      </td>
-    </tr>
-  </template>
-<tr x-show="flatAddons.length === 0"><td colspan="5" class="p-2 text-center text-gray-400">No add-ons.</td></tr>
-</tbody>
-<!-- Mobile add-ons card view -->
-<div class="sm:hidden space-y-4">
-  <template x-for="(addon, index) in flatAddons" :key="addon.key">
-    <div class="p-4 rounded shadow-lg border border-white/20 bg-white/10 backdrop-blur-lg space-y-2" draggable="true"
-         @dragstart="handleAddonDragStart($event, index)" @dragover.prevent @drop="handleAddonDrop($event, index)">
-      <div class="flex justify-between items-center">
-        <input x-model="addon.name" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm font-semibold" />
-        <div class="flex space-x-2">
-          <button @click="moveAddonUp(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▲</button>
-          <button @click="moveAddonDown(index)" class="text-xs text-indigo-300 hover:text-indigo-500">▼</button>
-          <button @click="deleteAddon(addon.key)" class="text-xs text-red-400 hover:underline">Delete</button>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <div>
-          <label class="block text-xs text-gray-400">Key</label>
-          <input x-model="addon.key" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-        </div>
-        <div>
-          <label class="block text-xs text-gray-400">Description</label>
-          <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
-        </div>
-        <div>
-          <label class="block text-xs text-gray-400">One‑time</label>
-          <input x-model.number="addon.priceOneTime" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-        </div>
-        <div>
-          <label class="block text-xs text-gray-400">Monthly</label>
-          <input x-model.number="addon.priceMonthly" type="number" step="1" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm text-right" />
-        </div>
-      </div>
-    </div>
-  </template>
-  <div x-show="flatAddons.length === 0" class="p-4 text-center text-gray-400">No add‑ons.</div>
-</div>
-<!-- Save changes button -->
-<div class="mt-4 flex justify-end">
-  <button @click="saveChanges()" class="px-4 py-2 rounded bg-green-600 hover:opacity-90 text-white text-sm">Save All Changes</button>
-</div>
-<!-- Add add-on form -->
-<form @submit.prevent="addAddon" class="mt-4 grid grid-cols-6 gap-2 items-end">
-  <div class="col-span-1">
-    <label class="block text-xs text-gray-400">Key</label>
-    <input x-model="newAddon.key" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-  </div>
-  <div class="col-span-1">
-    <label class="block text-xs text-gray-400">Name</label>
-    <input x-model="newAddon.name" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-  </div>
-  <div class="col-span-2">
-    <label class="block text-xs text-gray-400">Description</label>
-    <input x-model="newAddon.description" type="text" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-  </div>
-  <div class="col-span-1">
-    <label class="block text-xs text-gray-400">One‑time</label>
-    <input x-model="newAddon.oneTime" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-  </div>
-  <div class="col-span-1">
-    <label class="block text-xs text-gray-400">Monthly</label>
-    <input x-model="newAddon.monthly" type="number" min="0" class="bg-transparent border-b border-white/30 focus:outline-none px-2 py-1 w-full text-sm" />
-  </div>
-  <div class="col-span-6">
-    <button type="submit" class="mt-2 px-3 py-1.5 rounded bg-indigo-600 hover:opacity-90 text-white text-sm">Add Add-on</button>
-  </div>
-</form>
 </div>
 </section>
 </main>
