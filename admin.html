@@ -374,10 +374,7 @@
             </div>
             <div>
               <label class="block text-xs text-gray-400">Description</label>
-              <textarea x-model="addon.description"
-                        rows="2"
-                        class="expand-on-focus w-full text-sm bg-white/5 border border-white/20 rounded-md px-2 py-1 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+              <input x-model="addon.description" class="bg-transparent border-b border-white/30 focus:outline-none w-full text-sm" />
             </div>
             <div>
               <label class="block text-xs text-gray-400">One‑time</label>

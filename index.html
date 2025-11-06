@@ -64,7 +64,7 @@
   <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center" x-data="{ menuOpen: false }">
       <h1 class="flex items-center space-x-3 text-2xl font-extrabold tracking-wide">
-        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-10 w-10 object-contain" />
+        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-12 w-12 object-contain" />
         <span>1CoastMedia</span>
       </h1>
       <div class="flex items-center gap-3">
@@ -77,9 +77,21 @@
             <a href="./enterprise-solutions.html" class="block px-3 py-2 rounded hover:bg-white/10">Enterprise Solutions</a>
           </div>
         </div>
-      </div>
+      <!-- Cart button in header -->
+      <button
+        @click="cartOpen = true"
+        class="relative px-4 py-2 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+      >
+        Cart
+        <span
+          x-show="cartCount() > 0"
+          class="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold rounded-full bg-black text-white"
+          x-text="cartCount()"
+        ></span>
+      </button>
     </div>
-  </header>
+  </div>
+</header>
 
   <!-- Offset for fixed header -->
   <div class="pt-20"></div>
@@ -93,7 +105,7 @@
     <div class="relative z-10 space-y-6">
       <h2 class="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-200 bg-clip-text text-transparent gradient-text-animate">
         <span class="inline-flex items-center gap-3 justify-center">
-          <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-12 w-12 object-contain" />
+          <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-20 w-20 sm:h-24 sm:w-24 object-contain" />
           Your Gulf Coast Growth Partner
         </span>
       </h2>
@@ -120,23 +132,32 @@
     <div class="liquid-blob-5" style="top: 45%; left: 15%; animation-delay: -7s;"></div>
   </div>
   <!--OUR SPECIALS: show only the Specials category -->
+  <!-- OUR SPECIALS: robust match for category name/key containing “special” -->
   <main id="services" class="max-w-7xl mx-auto px-4 py-8 space-y-8">
     <div>
       <h2 class="text-3xl font-extrabold">OUR SPECIALS</h2>
       <p class="text-sm text-gray-300 mt-1"
-         x-text="(serviceCategories.specials?.description)
-           || (Object.entries(serviceCategories).find(([k, cat]) => (cat.name || '').toLowerCase() === 'specials')?.[1]?.description)
-           || ''">
+         x-text="(() => {
+           const byKey = serviceCategories.specials;
+           if (byKey) return byKey.description || '';
+           const byName = Object.values(serviceCategories).find(cat => (cat.name || '').toLowerCase().includes('special'));
+           if (byName) return byName.description || '';
+           const byKeyContains = Object.entries(serviceCategories).find(([k]) => String(k).toLowerCase().includes('special'))?.[1];
+           return byKeyContains?.description || '';
+         })()">
       </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <template
-        x-for="svc in (
-          serviceCategories.specials?.services
-          || (Object.entries(serviceCategories).find(([k, cat]) => (cat.name || '').toLowerCase() === 'specials')?.[1]?.services)
-          || []
-        )"
+        x-for="svc in (() => {
+          const byKey = serviceCategories.specials;
+          if (byKey) return byKey.services || [];
+          const byName = Object.entries(serviceCategories).find(([_, cat]) => (cat.name || '').toLowerCase().includes('special'))?.[1];
+          if (byName) return byName.services || [];
+          const byKeyContains = Object.entries(serviceCategories).find(([k]) => String(k).toLowerCase().includes('special'))?.[1];
+          return byKeyContains?.services || [];
+        })()"
         :key="svc.key"
       >
         <div :id="'svc-' + svc.key" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20 p-6 flex flex-col justify-between">
@@ -172,15 +193,11 @@
     </div>
   </main>
 
-  <script src="./app.js"></script>
-</body>
-</html>
-
-<!-- Cart Sidebar (moved inside body for Alpine bindings) -->
-<div
-  class="fixed top-0 right-0 w-80 max-w-full h-full bg-gray-900/95 backdrop-blur-lg shadow-xl z-50 transform transition-transform duration-300 flex flex-col"
-  :class="cartOpen ? 'translate-x-0' : 'translate-x-full'"
->
+  <!-- Cart Sidebar (inside body) -->
+  <div
+    class="fixed top-0 right-0 w-80 max-w-full h-full bg-gray-900/95 backdrop-blur-lg shadow-xl z-50 transform transition-transform duration-300 flex flex-col"
+    :class="cartOpen ? 'translate-x-0' : 'translate-x-full'"
+  >
   <div class="p-4 border-b border-white/20 flex justify-between items-center">
     <h2 class="text-lg font-bold">Your Cart</h2>
     <button @click="cartOpen = false" class="text-gray-400 text-2xl leading-none hover:text-gray-200">&times;</button>
@@ -293,3 +310,5 @@
   </button>
 
 </body>
+<script src="./app.js"></script>
+</html>
