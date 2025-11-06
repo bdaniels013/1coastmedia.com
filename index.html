@@ -44,7 +44,9 @@
     .liquid-blob-10 { position: absolute; width: 450px; height: 450px; background: linear-gradient(60deg, rgba(107,114,128,0.1), rgba(245,158,11,0.1)); animation: liquid-flow-1 42s ease-in-out infinite; filter: blur(65px); z-index: 1; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-gray-100" x-data="app()" x-init="init()">
+<!-- Body: ensure cart stays closed -->
+<body class="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-gray-100"
+      x-data="app()" x-init="init(); cartOpen = false">
   <!-- Special Offer Modal -->
   <div x-show="showSpecialOffer" x-transition
        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
@@ -61,6 +63,7 @@
     </div>
   </div>
   <!-- Header with dropdown -->
+  <!-- Header: remove Cart button so nothing toggles the cart -->
   <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center" x-data="{ menuOpen: false }">
       <h1 class="flex items-center space-x-3 text-2xl font-extrabold tracking-wide">
@@ -77,21 +80,10 @@
             <a href="./enterprise-solutions.html" class="block px-3 py-2 rounded hover:bg-white/10">Enterprise Solutions</a>
           </div>
         </div>
-      <!-- Cart button in header -->
-      <button
-        @click="cartOpen = true"
-        class="relative px-4 py-2 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-      >
-        Cart
-        <span
-          x-show="cartCount() > 0"
-          class="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold rounded-full bg-black text-white"
-          x-text="cartCount()"
-        ></span>
-      </button>
+        <!-- Cart button removed -->
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
   <!-- Offset for fixed header -->
   <div class="pt-20"></div>
@@ -132,182 +124,67 @@
     <div class="liquid-blob-5" style="top: 45%; left: 15%; animation-delay: -7s;"></div>
   </div>
   <!--OUR SPECIALS: show only the Specials category -->
-  <!-- OUR SPECIALS: robust match for category name/key containing “special” -->
+  <!-- OUR SPECIALS: robust matching by key containing 'special' -->
+  <!-- OUR SPECIALS -->
   <main id="services" class="max-w-7xl mx-auto px-4 py-8 space-y-8">
-    <div>
-      <h2 class="text-3xl font-extrabold">OUR SPECIALS</h2>
-      <p class="text-sm text-gray-300 mt-1"
-         x-text="(() => {
-           const byKey = serviceCategories.specials;
-           if (byKey) return byKey.description || '';
-           const byName = Object.values(serviceCategories).find(cat => (cat.name || '').toLowerCase().includes('special'));
-           if (byName) return byName.description || '';
-           const byKeyContains = Object.entries(serviceCategories).find(([k]) => String(k).toLowerCase().includes('special'))?.[1];
-           return byKeyContains?.description || '';
-         })()">
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template
-        x-for="svc in (() => {
-          const byKey = serviceCategories.specials;
-          if (byKey) return byKey.services || [];
-          const byName = Object.entries(serviceCategories).find(([_, cat]) => (cat.name || '').toLowerCase().includes('special'))?.[1];
-          if (byName) return byName.services || [];
-          const byKeyContains = Object.entries(serviceCategories).find(([k]) => String(k).toLowerCase().includes('special'))?.[1];
-          return byKeyContains?.services || [];
-        })()"
-        :key="svc.key"
-      >
-        <div :id="'svc-' + svc.key" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20 p-6 flex flex-col justify-between">
-          <div>
-            <div x-show="svc.badge" class="mb-2">
-              <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black" x-text="svc.badge"></span>
-            </div>
-            <h3 class="font-semibold text-lg" x-text="svc.name"></h3>
-            <p class="text-sm text-gray-300 mt-1" x-text="svc.outcome"></p>
-            <button @click="toggleDetails(svc.key)" class="mt-2 text-xs text-yellow-300 hover:underline focus:outline-none">
-              <span x-text="detailsOpen[svc.key] ? 'Hide details' : 'View details'"></span>
-            </button>
-            <div x-show="detailsOpen[svc.key]" x-transition class="mt-2 text-sm text-gray-200">
-              <ul class="list-disc list-inside space-y-1">
-                <template x-for="item in svc.deliverables" :key="item"><li x-text="item"></li></template>
-              </ul>
-              <p class="mt-1 text-xs text-gray-400" x-show="svc.sla">SLA: <span x-text="svc.sla"></span></p>
-            </div>
-          </div>
-          <div class="mt-4 flex items-center justify-between">
-            <div class="font-semibold">
-              <span x-show="svc.price && svc.price.oneTime && svc.price.oneTime > 0" x-text="fmtUSD(svc.price.oneTime)"></span>
-              <span x-show="(!svc.price?.oneTime || svc.price.oneTime === 0) && svc.price?.monthly && svc.price.monthly > 0" x-text="fmtUSD(svc.price.monthly) + ' / mo'"></span>
-            </div>
-            <button @click="toggleService(svc.key)"
-                    class="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
-                    :class="cartServices.includes(svc.key) ? 'bg-red-600 text-white' : 'bg-gradient-to-r from-yellow-600 to-amber-600 text-black'">
-              <span x-text="cartServices.includes(svc.key) ? 'Remove' : 'Add'"></span>
-            </button>
-          </div>
-        </div>
-      </template>
-    </div>
-  </main>
-
-  <!-- Cart Sidebar (inside body) -->
-  <div
-    class="fixed top-0 right-0 w-80 max-w-full h-full bg-gray-900/95 backdrop-blur-lg shadow-xl z-50 transform transition-transform duration-300 flex flex-col"
-    :class="cartOpen ? 'translate-x-0' : 'translate-x-full'"
+  <div>
+  <h2 class="text-3xl font-extrabold">OUR SPECIALS</h2>
+  <p class="text-sm text-gray-300 mt-1"
+     x-text="(() => {
+     const cats = serviceCategories || {};
+     if (cats.specials) return cats.specials.description || '';
+     const byKeyContains = Object.entries(cats).find(([k]) => (k || '').toLowerCase().includes('special'))?.[1];
+     return byKeyContains?.description || '';
+     })()">
+  </p>
+  </div>
+  
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <template
+  x-for="svc in (() => {
+  const cats = serviceCategories || {};
+  if (cats.specials?.services) return cats.specials.services;
+  const byKeyContains = Object.entries(cats).find(([k]) => (k || '').toLowerCase().includes('special'))?.[1];
+  return byKeyContains?.services || [];
+  })()"
+  :key="svc.key"
   >
-  <div class="p-4 border-b border-white/20 flex justify-between items-center">
-    <h2 class="text-lg font-bold">Your Cart</h2>
-    <button @click="cartOpen = false" class="text-gray-400 text-2xl leading-none hover:text-gray-200">&times;</button>
+  <div :id="'svc-' + svc.key" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20 p-6 flex flex-col justify-between">
+  <div>
+  <div x-show="svc.badge" class="mb-2">
+  <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 text-black" x-text="svc.badge"></span>
   </div>
-  <div class="flex-1 p-4 overflow-y-auto">
-    <!-- Empty state -->
-    <div x-show="cartServices.length === 0 && cartAddons.length === 0" class="text-gray-400 text-sm">
-      Your cart is empty.
-    </div>
-
-    <!-- Services in cart -->
-    <template x-for="svcKey in cartServices" :key="svcKey">
-      <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-        <div>
-          <div class="font-semibold" x-text="getServiceByKey(svcKey)?.name"></div>
-          <div class="text-xs text-gray-400" x-text="getServiceByKey(svcKey)?.outcome"></div>
-        </div>
-        <div class="text-right">
-          <div class="font-semibold">
-            <span x-show="getServiceByKey(svcKey)?.price && getServiceByKey(svcKey)?.price.oneTime && getServiceByKey(svcKey).price.oneTime > 0" x-text="fmtUSD(getServiceByKey(svcKey).price.oneTime)"></span>
-            <span x-show="(!getServiceByKey(svcKey)?.price.oneTime || getServiceByKey(svcKey).price.oneTime === 0) && getServiceByKey(svcKey)?.price && getServiceByKey(svcKey).price.monthly && getServiceByKey(svcKey).price.monthly > 0" x-text="fmtUSD(getServiceByKey(svcKey).price.monthly) + ' / mo'"></span>
-          </div>
-          <button @click="toggleService(svcKey)" class="text-xs text-red-400 hover:underline mt-1">Remove</button>
-        </div>
-      </div>
-    </template>
-
-    <!-- One‑Time Add‑ons -->
-    <div x-show="oneTimeAddons.length > 0" class="mt-6">
-      <h3 class="font-semibold mb-2">One‑Time Add‑ons</h3>
-      <template x-for="addon in oneTimeAddons" :key="addon.key">
-        <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-          <div>
-            <div class="font-medium" x-text="addon.name"></div>
-            <div class="text-xs text-gray-400" x-text="addon.description"></div>
-          </div>
-          <div class="text-right">
-            <div class="text-sm">
-              <span x-show="addon.price && addon.price.oneTime && addon.price.oneTime > 0" x-text="fmtUSD(addon.price.oneTime)"></span>
-              <span x-show="(!addon.price.oneTime || addon.price.oneTime === 0) && addon.price && addon.price.monthly && addon.price.monthly > 0" x-text="fmtUSD(addon.price.monthly) + ' / mo'"></span>
-            </div>
-            <button
-              @click="toggleAddon(addon.key)"
-              class="text-xs mt-1 hover:underline"
-              :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-yellow-300'"
-            >
-              <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
-            </button>
-          </div>
-        </div>
-      </template>
-    </div>
-
-    <!-- Monthly Add‑ons -->
-    <div x-show="monthlyAddons.length > 0" class="mt-6">
-      <h3 class="font-semibold mb-2">Monthly Add‑ons</h3>
-      <template x-for="addon in monthlyAddons" :key="addon.key">
-        <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-          <div>
-            <div class="font-medium" x-text="addon.name"></div>
-            <div class="text-xs text-gray-400" x-text="addon.description"></div>
-          </div>
-          <div class="text-right">
-            <div class="text-sm">
-              <span x-show="addon.price && addon.price.oneTime && addon.price.oneTime > 0" x-text="fmtUSD(addon.price.oneTime)"></span>
-              <span x-show="(!addon.price.oneTime || addon.price.oneTime === 0) && addon.price && addon.price.monthly && addon.price.monthly > 0" x-text="fmtUSD(addon.price.monthly) + ' / mo'"></span>
-            </div>
-            <button
-              @click="toggleAddon(addon.key)"
-              class="text-xs mt-1 hover:underline"
-              :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-yellow-300'"
-            >
-              <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
-            </button>
-          </div>
-        </div>
-      </template>
-    </div>
-  </div>
-
-  <!-- Cart footer: total + checkout -->
-  <div class="p-4 border-t border-white/20" :class="cartOpen ? 'fixed right-0 bottom-0 w-80 bg-gray-900/95 z-[51]' : 'hidden'">
-    <div class="flex justify-between font-semibold mb-3">
-      <span>Total</span>
-      <span x-text="fmtUSD(cartTotal())"></span>
-    </div>
-    <button
-      @click="checkout()"
-      :disabled="cartServices.length === 0 && cartAddons.length === 0"
-      class="w-full py-2 rounded-lg text-center font-medium transition"
-      :class="(cartServices.length === 0 && cartAddons.length === 0)
-        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-        : 'bg-gradient-to-r from-yellow-600 to-amber-600 hover:opacity-90 text-black'"
-    >
-      Checkout
-    </button>
-  </div>
-
-  <!-- Floating cart button -->
-  <button
-    @click="cartOpen = !cartOpen"
-    x-show="cartServices.length > 0 || cartAddons.length > 0"
-    class="fixed bottom-5 right-5 px-4 py-3 rounded-full shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gradient-to-r from-yellow-600 to-amber-600 text-black hover:opacity-90"
-    x-transition
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h14l-1.35 4.03a2 2 0 01-1.92 1.42H9.27a2 2 0 01-1.92-1.42L5 6H3" />
-    </svg>
-    <span x-text="cartServices.length + cartAddons.length"></span>
+  <h3 class="font-semibold text-lg" x-text="svc.name"></h3>
+  <p class="text-sm text-gray-300 mt-1" x-text="svc.outcome"></p>
+  <button @click="toggleDetails(svc.key)" class="mt-2 text-xs text-yellow-300 hover:underline focus:outline-none">
+  <span x-text="detailsOpen[svc.key] ? 'Hide details' : 'View details'"></span>
   </button>
+  <div x-show="detailsOpen[svc.key]" x-transition class="mt-2 text-sm text-gray-200">
+  <ul class="list-disc list-inside space-y-1">
+  <template x-for="item in svc.deliverables" :key="item"><li x-text="item"></li></template>
+  </ul>
+  <p class="mt-1 text-xs text-gray-400" x-show="svc.sla">SLA: <span x-text="svc.sla"></span></p>
+  </div>
+  </div>
+  <div class="mt-4 flex items-center justify-between">
+  <div class="font-semibold">
+  <span x-show="svc.price && svc.price.oneTime && svc.price.oneTime > 0" x-text="fmtUSD(svc.price.oneTime)"></span>
+  <span x-show="(!svc.price?.oneTime || svc.price.oneTime === 0) && svc.price?.monthly && svc.price.monthly > 0" x-text="fmtUSD(svc.price.monthly) + ' / mo'"></span>
+  </div>
+  <button @click="toggleService(svc.key)"
+  class="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+  :class="cartServices.includes(svc.key) ? 'bg-red-600 text-white' : 'bg-gradient-to-r from-yellow-600 to-amber-600 text-black'">
+  <span x-text="cartServices.includes(svc.key) ? 'Remove' : 'Add'"></span>
+  </button>
+  </div>
+  </div>
+  </template>
+  </div>
+  <!-- After the Specials section, remove cart UI entirely -->
+  </main>
+  <!-- Cart Sidebar removed -->
+  <!-- Cart footer removed -->
+  <!-- Floating cart button removed -->
 
 </body>
 <script src="./app.js"></script>
