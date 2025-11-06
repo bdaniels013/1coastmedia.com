@@ -356,20 +356,5 @@
     .liquid-blob-9 { position: absolute; width: 280px; height: 280px; background: linear-gradient(120deg, rgba(239,68,68,0.19), rgba(217,119,6,0.19)); animation: liquid-ripple 10s ease-in-out infinite; filter: blur(35px); z-index: 1; }
     .liquid-blob-10 { position: absolute; width: 450px; height: 450px; background: linear-gradient(60deg, rgba(107,114,128,0.1), rgba(245,158,11,0.1)); animation: liquid-flow-1 42s ease-in-out infinite; filter: blur(65px); z-index: 1; }
   </style>
-  
-  /* Performance: reduce animations on low-power devices */
-  @media (prefers-reduced-motion: reduce) {
-    .animate-float,
-    .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
-    .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
-    .liquid-blob-9, .liquid-blob-10 { animation: none !important; }
-    .backdrop-blur-xl, .backdrop-blur-lg { backdrop-filter: none !important; filter: none !important; }
-  }
-  
-  /* Mobile: disable heavy animated background blobs for snappier load */
-  @media (max-width: 640px) {
-    .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
-    .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
-    .liquid-blob-9, .liquid-blob-10 { display: none !important; }
-  }
+
 </head>
