@@ -181,13 +181,25 @@
   </div>
   </template>
   </div>
+  <!-- Book a Free Call CTA (below Why Now? Why Us?) -->
+  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-4">
+    <h3 class="text-3xl font-bold">Book a Free 30‑Minute Call</h3>
+    <p class="text-gray-300">Have questions or need guidance? Let's talk.</p>
+    <a href="https://calendly.com/bdaniels013/30min" target="_blank"
+       class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl bg-yellow-500 text-black font-bold shadow-2xl hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+      <span>📅</span>
+      <span>Book a Call</span>
+    </a>
+  </section>
+  
   <!-- Call Now CTA (below Specials) -->
   <section class="max-w-7xl mx-auto px-4 py-10 text-center">
-    <a href="tel:+12283571897"
-       class="inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold shadow-2xl hover:opacity-90">
-      CALL NOW FOR A FREE CONSULTATION
+    <a href="tel:+12283571897" rel="nofollow"
+       class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-green-500 text-black font-bold shadow-2xl hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 active:scale-[0.99]">
+      <span>📞</span>
+      <span>CALL NOW FOR A FREE CONSULTATION</span>
     </a>
-    <p class="mt-2 text-sm text-gray-400">Or dial (228) 357-1897</p>
+    <p class="mt-2 text-sm text-gray-300">Or dial (228) 357-1897</p>
   </section>
 
   <!-- The 1CoastMedia Promise -->
@@ -308,3 +320,57 @@
 <script src="./app.js"></script>
 </body>
 </html>
+
+<head>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    [x-cloak] { display: none !important; }
+    /* Enhanced UX animations and liquid background (mirrored from enterprise-solutions.html) */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .gradient-text-animate { background-size: 200% 200%; animation: gradient-shift 3s ease infinite; }
+
+    @keyframes liquid-flow-1 {  /* shortened for brevity */ }
+    @keyframes liquid-flow-2 {  /* shortened for brevity */ }
+    @keyframes liquid-flow-3 {  /* shortened for brevity */ }
+    @keyframes liquid-wave {    /* shortened for brevity */ }
+    @keyframes liquid-splash {  /* shortened for brevity */ }
+    @keyframes liquid-ripple {  /* shortened for brevity */ }
+
+    .liquid-blob-1 { position: absolute; width: 300px; height: 300px; background: linear-gradient(45deg, rgba(234,179,8,0.25), rgba(217,119,6,0.25)); animation: liquid-flow-1 18s ease-in-out infinite; filter: blur(35px); z-index: 1; }
+    .liquid-blob-2 { position: absolute; width: 400px; height: 400px; background: linear-gradient(135deg, rgba(107,114,128,0.2), rgba(234,179,8,0.2)); animation: liquid-wave 22s ease-in-out infinite; filter: blur(45px); z-index: 1; }
+    .liquid-blob-3 { position: absolute; width: 250px; height: 250px; background: linear-gradient(225deg, rgba(239,68,68,0.22), rgba(234,179,8,0.22)); animation: liquid-splash 26s ease-in-out infinite; filter: blur(30px); z-index: 1; }
+    .liquid-blob-4 { position: absolute; width: 350px; height: 350px; background: linear-gradient(315deg, rgba(217,119,6,0.18), rgba(107,114,128,0.18)); animation: liquid-ripple 6s ease-in-out infinite; filter: blur(40px); z-index: 1; }
+    .liquid-blob-5 { position: absolute; width: 200px; height: 200px; background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2)); animation: liquid-flow-2 32s ease-in-out infinite reverse; filter: blur(25px); z-index: 1; }
+    .liquid-blob-6 { position: absolute; width: 500px; height: 500px; background: linear-gradient(180deg, rgba(107,114,128,0.12), rgba(217,119,6,0.12)); animation: liquid-flow-3 38s ease-in-out infinite; filter: blur(55px); z-index: 1; }
+    .liquid-blob-7 { position: absolute; width: 180px; height: 180px; background: linear-gradient(45deg, rgba(107,114,128,0.24), rgba(245,158,11,0.24)); animation: liquid-wave 20s ease-in-out infinite; filter: blur(20px); z-index: 1; }
+    .liquid-blob-8 { position: absolute; width: 320px; height: 320px; background: linear-gradient(270deg, rgba(217,119,6,0.16), rgba(107,114,128,0.16)); animation: liquid-splash 14s ease-in-out infinite; filter: blur(50px); z-index: 1; }
+    .liquid-blob-9 { position: absolute; width: 280px; height: 280px; background: linear-gradient(120deg, rgba(239,68,68,0.19), rgba(217,119,6,0.19)); animation: liquid-ripple 10s ease-in-out infinite; filter: blur(35px); z-index: 1; }
+    .liquid-blob-10 { position: absolute; width: 450px; height: 450px; background: linear-gradient(60deg, rgba(107,114,128,0.1), rgba(245,158,11,0.1)); animation: liquid-flow-1 42s ease-in-out infinite; filter: blur(65px); z-index: 1; }
+  </style>
+</head>
+
+/* Performance: reduce animations on low-power devices */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
+  .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
+  .liquid-blob-9, .liquid-blob-10 { animation: none !important; }
+  .backdrop-blur-xl, .backdrop-blur-lg { backdrop-filter: none !important; filter: none !important; }
+}
+
+/* Mobile: disable heavy animated background blobs for snappier load */
+@media (max-width: 640px) {
+  .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
+  .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
+  .liquid-blob-9, .liquid-blob-10 { display: none !important; }
+}
+</head>
