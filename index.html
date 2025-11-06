@@ -90,9 +90,9 @@
 
   <!-- Hero -->
   <section class="max-w-7xl mx-auto px-4 py-20 text-center space-y-8 relative overflow-hidden">
-    <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-500/10 rounded-full blur-xl animate-float"></div>
-    <div class="absolute top-20 right-20 w-16 h-16 bg-gray-400/10 rounded-full blur-xl animate-float" style="animation-delay: 1s;"></div>
-    <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-amber-500/10 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-500/10 rounded-full blur-xl animate-float hidden sm:block"></div>
+    <div class="absolute top-20 right-20 w-16 h-16 bg-gray-400/10 rounded-full blur-xl animate-float hidden sm:block" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-amber-500/10 rounded-full blur-xl animate-float hidden sm:block" style="animation-delay: 2s;"></div>
   
     <div class="relative z-10 space-y-6">
       <img src="./assets/1coastmedia logo.jpg"
@@ -105,7 +105,7 @@
   </section>
 
   <!-- Enhanced Liquid Flowy Background -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none" style="z-index: 0;">
+  <div class="fixed inset-0 overflow-hidden pointer-events-none hidden sm:block" style="z-index: 0;">
     <div class="liquid-blob-1" style="top: 10%; left: 10%;"></div>
     <div class="liquid-blob-2" style="top: 20%; right: 15%;"></div>
     <div class="liquid-blob-3" style="top: 60%; left: 5%;"></div>
@@ -356,21 +356,20 @@
     .liquid-blob-9 { position: absolute; width: 280px; height: 280px; background: linear-gradient(120deg, rgba(239,68,68,0.19), rgba(217,119,6,0.19)); animation: liquid-ripple 10s ease-in-out infinite; filter: blur(35px); z-index: 1; }
     .liquid-blob-10 { position: absolute; width: 450px; height: 450px; background: linear-gradient(60deg, rgba(107,114,128,0.1), rgba(245,158,11,0.1)); animation: liquid-flow-1 42s ease-in-out infinite; filter: blur(65px); z-index: 1; }
   </style>
-</head>
-
-/* Performance: reduce animations on low-power devices */
-@media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
-  .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
-  .liquid-blob-9, .liquid-blob-10 { animation: none !important; }
-  .backdrop-blur-xl, .backdrop-blur-lg { backdrop-filter: none !important; filter: none !important; }
-}
-
-/* Mobile: disable heavy animated background blobs for snappier load */
-@media (max-width: 640px) {
-  .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
-  .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
-  .liquid-blob-9, .liquid-blob-10 { display: none !important; }
-}
+  
+  /* Performance: reduce animations on low-power devices */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
+    .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
+    .liquid-blob-9, .liquid-blob-10 { animation: none !important; }
+    .backdrop-blur-xl, .backdrop-blur-lg { backdrop-filter: none !important; filter: none !important; }
+  }
+  
+  /* Mobile: disable heavy animated background blobs for snappier load */
+  @media (max-width: 640px) {
+    .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
+    .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
+    .liquid-blob-9, .liquid-blob-10 { display: none !important; }
+  }
 </head>
