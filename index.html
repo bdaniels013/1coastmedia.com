@@ -180,22 +180,6 @@
   </div>
   </template>
   </div>
-  <!-- After the Specials section, remove cart UI entirely -->
-  </main>
-  <!-- Cart Sidebar removed -->
-  <!-- Cart footer removed -->
-  <!-- Floating cart button removed -->
-
-</body>
-<script src="./app.js"></script>
-</html>
-<!-- Floating Checkout button -->
-<button
-  @click="checkout()"
-  x-show="cartServices.length > 0 || cartAddons.length > 0"
-  class="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-semibold shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-  Checkout
-
   <!-- Call Now CTA (below Specials) -->
   <section class="max-w-7xl mx-auto px-4 py-10 text-center">
     <a href="tel:+12283571897"
@@ -310,6 +294,16 @@
     <p class="text-gray-300">Have questions or need guidance? Let's talk.</p>
     <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-lg hover:opacity-90">Book a Call</a>
   </section>
-
-  // ... existing code ...
 </main>
+
+<!-- Floating Checkout button (inside body, visible when items are added) -->
+<button
+  @click="checkout()"
+  x-show="cartServices.length > 0 || cartAddons.length > 0"
+  class="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-semibold shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+  Checkout
+</button>
+
+<script src="./app.js"></script>
+</body>
+</html>
