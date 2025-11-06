@@ -12,6 +12,9 @@ function app() {
     cartAddons: [],
     oneTimeAddons: [],
     monthlyAddons: [],
+    // Popup state and target
+    showSpecialOffer: false,
+    specialOfferKey: 'simple-website',
     // API base URL
     apiBase: window.location.origin,
     
@@ -69,6 +72,11 @@ function app() {
         for (const svc of category.services) {
           this.$set ? this.$set(this.detailsOpen, svc.key, false) : (this.detailsOpen[svc.key] = false);
         }
+      }
+      // Show Special Offer popup on first visit (until dismissed or clicked)
+      const dismissed = localStorage.getItem('specialOfferDismissed');
+      if (dismissed !== 'true') {
+        setTimeout(() => { this.showSpecialOffer = true; }, 250);
       }
     },
     
@@ -228,6 +236,44 @@ function app() {
       if (el && typeof el.scrollIntoView === 'function') {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    },
+
+    // Handle SPECIAL OFFER click: close modal and jump to target service
+    handleSpecialOfferClick() {
+      this.showSpecialOffer = false;
+      localStorage.setItem('specialOfferDismissed', 'true');
+      this.scrollToSpecialOffer();
+    },
+
+    // Close the modal without navigating
+    dismissSpecialOffer() {
+      this.showSpecialOffer = false;
+      localStorage.setItem('specialOfferDismissed', 'true');
+    },
+
+    // Find the target service (by key) and scroll to it; fallback to last service
+    scrollToSpecialOffer() {
+      this.scrollToServices();
+      setTimeout(() => {
+        let targetKey = this.specialOfferKey;
+        const allKeys = [];
+        for (const category of Object.values(this.serviceCategories)) {
+          (category.services || []).forEach(s => allKeys.push(s.key));
+        }
+        if (!allKeys.includes(targetKey) && allKeys.length > 0) {
+          targetKey = allKeys[allKeys.length - 1];
+        }
+        this.scrollToServiceByKey(targetKey);
+      }, 300);
+    },
+
+    // Precise scroll and open details for emphasis
+    scrollToServiceByKey(key) {
+      const elem = document.getElementById(`svc-${key}`);
+      if (elem && typeof elem.scrollIntoView === 'function') {
+        elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      this.detailsOpen[key] = true;
     }
   };
 }
