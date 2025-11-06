@@ -766,13 +766,23 @@ app.get('/admin.html', (req, res) => {
   }
 });
 
+// NEW: Enterprise Solutions clean URL
+app.get('/enterprise-solutions', (req, res) => {
+  const enterpriseSolutionsPath = path.join(__dirname, '..', 'enterprise-solutions.html');
+  if (fs.existsSync(enterpriseSolutionsPath)) {
+    res.sendFile(enterpriseSolutionsPath);
+  } else {
+    res.status(404).json({ error: 'Enterprise Solutions page not found' });
+  }
+});
+
 // Specific route for growth-machine.html (fallback)
 app.get('/growth-machine.html', (req, res) => {
   const growthMachinePath = path.join(__dirname, '..', 'growth-machine.html');
   if (fs.existsSync(growthMachinePath)) {
     res.sendFile(growthMachinePath);
   } else {
-    res.status(404).json({ 
+    res.status(404).json({
       error: 'growth-machine.html not found',
       path: growthMachinePath,
       exists: fs.existsSync(growthMachinePath)
