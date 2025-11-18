@@ -449,12 +449,48 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
+    /* Performance: reduce animations on low-power devices */
+    @media (prefers-reduced-motion: reduce) {
+      .animate-float,
+      .animate-glow,
+      .animate-pulse-glow,
+      .gradient-text-animate,
+      .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
+      .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
+      .liquid-blob-9, .liquid-blob-10 {
+        animation: none !important;
+      }
+    }
+
+    /* Mobile: simplify visuals and disable heavy effects */
+    @media (max-width: 640px) {
+      /* Hide decorative background blobs entirely */
+      .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
+      .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
+      .liquid-blob-9, .liquid-blob-10 {
+        display: none !important;
+      }
+
+      /* Remove expensive blur on cards */
+      .backdrop-blur-xl, .backdrop-blur-lg, .backdrop-blur-md {
+        backdrop-filter: none !important;
+        filter: none !important;
+      }
+
+      /* Neutralize hover transitions on mobile */
+      .group:hover {
+        transform: none !important;
+        filter: none !important;
+        box-shadow: none !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-gray-100" x-data="app()" x-init="init()">
   <!-- BEGIN: Site Content -->
   <!-- Enhanced Liquid Flowy Background -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none" style="z-index: 0;">
+  <div class="fixed inset-0 overflow-hidden pointer-events-none hidden sm:block" style="z-index: 0;">
     <div class="liquid-blob-1" style="top: 10%; left: 10%;"></div>
     <div class="liquid-blob-2" style="top: 20%; right: 15%;"></div>
     <div class="liquid-blob-3" style="top: 60%; left: 5%;"></div>
