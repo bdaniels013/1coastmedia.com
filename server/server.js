@@ -776,6 +776,31 @@ app.get('/enterprise-solutions', (req, res) => {
   }
 });
 
+// NEW: Services clean URL
+app.get('/services', (req, res) => {
+  const servicesPath = path.join(__dirname, '..', 'services.html');
+  if (fs.existsSync(servicesPath)) {
+    res.sendFile(servicesPath);
+  } else {
+    res.status(404).json({ error: 'Services page not found' });
+  }
+});
+
+// NEW: Compare Offers clean URL
+app.get('/offer-comparison', (req, res) => {
+  const comparePath = path.join(__dirname, '..', 'offer-comparison.html');
+  if (fs.existsSync(comparePath)) {
+    res.sendFile(comparePath);
+  } else {
+    res.status(404).json({ error: 'Offer Comparison page not found' });
+  }
+});
+
+// Alias route for convenience
+app.get('/compare-offers', (req, res) => {
+  res.redirect(301, '/offer-comparison');
+});
+
 // Specific route for growth-machine.html (fallback)
 app.get('/growth-machine.html', (req, res) => {
   const growthMachinePath = path.join(__dirname, '..', 'growth-machine.html');
@@ -786,6 +811,34 @@ app.get('/growth-machine.html', (req, res) => {
       error: 'growth-machine.html not found',
       path: growthMachinePath,
       exists: fs.existsSync(growthMachinePath)
+    });
+  }
+});
+
+// Specific route for services.html (fallback)
+app.get('/services.html', (req, res) => {
+  const servicesPath = path.join(__dirname, '..', 'services.html');
+  if (fs.existsSync(servicesPath)) {
+    res.sendFile(servicesPath);
+  } else {
+    res.status(404).json({ 
+      error: 'services.html not found',
+      path: servicesPath,
+      exists: fs.existsSync(servicesPath)
+    });
+  }
+});
+
+// Specific route for offer-comparison.html (fallback)
+app.get('/offer-comparison.html', (req, res) => {
+  const comparePath = path.join(__dirname, '..', 'offer-comparison.html');
+  if (fs.existsSync(comparePath)) {
+    res.sendFile(comparePath);
+  } else {
+    res.status(404).json({
+      error: 'offer-comparison.html not found',
+      path: comparePath,
+      exists: fs.existsSync(comparePath)
     });
   }
 });
@@ -838,6 +891,7 @@ app.listen(PORT, () => {
   console.log(`🎨 Content manager: http://localhost:${PORT}/content-manager`);
   console.log(`🌐 Main site: http://localhost:${PORT}/`);
   console.log(`🚀 Growth Machine: http://localhost:${PORT}/growth-machine`);
+  console.log(`🧭 Services: http://localhost:${PORT}/services`);
   console.log(`🔍 Health check: http://localhost:${PORT}/api/health`);
   console.log('');
   console.log('Press Ctrl+C to stop the server');

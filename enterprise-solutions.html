@@ -521,9 +521,12 @@
         </a>
       </h1>
       <!-- Optional inline cart button in the header -->
-      <button @click="cartOpen = !cartOpen" class="relative px-4 py-2 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-        Cart (<span x-text="cartCount()"></span>)
-      </button>
+      <div class="flex items-center gap-3">
+        <a href="/offer-comparison" class="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20">Compare Offers</a>
+        <button @click="cartOpen = !cartOpen" class="relative px-4 py-2 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+          Cart (<span x-text="cartCount()"></span>)
+        </button>
+      </div>
     </div>
   </header>
 
@@ -811,6 +814,101 @@
         </a>
       </div>
         </div>
+
+    <!-- The 1 Coast Economic Impact Initiative (Enterprise) -->
+    <div class="max-w-5xl mx-auto mb-10">
+      <div class="group card-hover relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-gray-500/10 via-yellow-500/10 to-red-500/10 backdrop-blur-xl border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
+        <div class="relative space-y-3" x-data="{ open: false }">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-700 flex items-center justify-center">
+              <span class="text-2xl">🌊</span>
+            </div>
+            <h4 class="text-xl font-bold">The 1 Coast Economic Impact Initiative</h4>
+          </div>
+          <p class="text-gray-300 italic">“Growing the Mississippi Gulf Coast Together.”</p>
+          <div class="text-sm text-gray-300">Price Tiers: <span class="font-semibold text-yellow-300">$5,000 • $12,000 • $25,000 • $50,000 per month</span></div>
+          <ul class="space-y-1 text-gray-200">
+            <li>Coast-wide monthly UGC campaigns</li>
+            <li>10–20 business spotlights per month</li>
+            <li>Quarterly cinematic tourism videos</li>
+            <li>Seasonal regional campaigns</li>
+            <li>Creator network development</li>
+            <li>Cross-city collaboration</li>
+            <li>Tourism + economic impact reporting</li>
+          </ul>
+          <div class="text-xs text-gray-400">Audience: Cities, counties, tourism boards, chambers, casinos, foundations, economic development organizations.</div>
+          <button @click="open = !open" class="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm">More info</button>
+          <div x-show="open" x-transition class="mt-4 space-y-4 bg-white/5 border border-white/10 rounded-xl p-4 text-gray-200">
+            <h5 class="font-semibold">What You Get</h5>
+            <p class="font-medium">Monthly Coast-Wide UGC Campaigns</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Guaranteed view delivery via your UGC budget (city‑funded or sponsor‑funded)</li>
+              <li>20–50 creator videos per month (varies by tier)</li>
+              <li>Creator distribution across multiple cities</li>
+              <li>Full management, content briefs, and scheduling</li>
+            </ul>
+            <p class="font-medium">10–20 Business Spotlights per Month</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Rotating spotlights for restaurants, boutiques, local makers, attractions, and services</li>
+              <li>1 short UGC‑style video per spotlight with cross‑posting and collaboration</li>
+            </ul>
+            <p class="font-medium">Quarterly Professional Tourism Videos</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Full creative direction, multi‑location filming, drone footage</li>
+              <li>Editing + color grading with regional distribution</li>
+            </ul>
+            <p class="font-medium">Seasonal Campaigns</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Restaurant Week, Coast‑Wide Holiday Events, Summer Kickoff, Spring Break Coast</li>
+              <li>Family Adventure Month, Arts & Culture Spotlight</li>
+              <li>UGC bursts, creator takeovers, paid boosts (optional), local business promotions</li>
+            </ul>
+            <p class="font-medium">Creator Network Development</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Training, paid opportunities, community building</li>
+            </ul>
+            <p class="font-medium">Cross-City Visibility Initiatives</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>One Coast cooperation through shared storytelling</li>
+            </ul>
+            <p class="font-medium">Monthly + Quarterly Impact Reports</p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Total reach across creators and impressions per city</li>
+              <li>Economic uplift indicators and business spotlight performance</li>
+              <li>Tourism video distribution metrics and YoY growth snapshots</li>
+            </ul>
+            <h5 class="font-semibold">Pricing Tiers</h5>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Single City — $5,000/month</li>
+              <li>Multi‑City Regional — $12,000/month</li>
+              <li>Full Coast Initiative — $25,000/month</li>
+              <li>Complete Tourism & Economic Engine — $50,000/month</li>
+            </ul>
+            <h5 class="font-semibold">Optional Add-Ons</h5>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>UGC Mega‑Burst campaigns (custom budget)</li>
+              <li>Event Recap Video — $950</li>
+              <li>Quarterly Creator Summit — $1,200</li>
+              <li>Paid Boost Management — $500/month</li>
+            </ul>
+            <h5 class="font-semibold">Workflow</h5>
+            <ol class="list-decimal pl-5 space-y-1">
+              <li>Monthly strategy planning</li>
+              <li>Creator activation</li>
+              <li>Spotlight production</li>
+              <li>Tourism storyboarding</li>
+              <li>Distribution and reporting</li>
+            </ol>
+            <h5 class="font-semibold">Pricing</h5>
+            <p>$5,000–$50,000/month</p>
+          </div>
+          <div class="pt-3 border-t border-white/10 flex flex-wrap gap-3">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-black font-bold hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">Request Partnership Deck</a>
+            <a href="tel:+12283571897" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-500 text-black font-bold hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">Talk to Blake</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Service Categories Overview -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
