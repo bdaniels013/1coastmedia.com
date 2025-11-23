@@ -8,7 +8,7 @@ A clear side‑by‑side comparison of all core offers so businesses, cities, an
 
 | **Feature**                       | **Offer 1: Local Growth Starter** | **Offer 2: Customer Growth System** | **Offer 3: Content + Production** | **Offer 4: Online Sales Accelerator** | **Growth Starter (Website)**                 | **Growth Machine (Website)**                | **Growth Accelerator (Website)**       | **Offer 5: Economic Impact Initiative** |
 | --------------------------------- | --------------------------------- | ----------------------------------- | --------------------------------- | ------------------------------------- | -------------------------------------------- | ------------------------------------------- | -------------------------------------- | --------------------------------------- |
-| **Monthly Price**                 | \$199/mo                          | \$499/mo                            | Menu Pricing                      | \$299–\$499/mo                        | \$4,500/mo                                   | \$6,500/mo                                  | \$9,000/mo                             | \$5,000–\$50,000/mo                     |
+| **Monthly Price**                 | \$499/mo                          | \$999/mo                            | Menu Pricing                      | \$349–\$699/mo                        | \$4,500/mo                                   | \$6,500/mo                                  | \$9,000/mo                             | \$5,000–\$50,000/mo                     |
 | **Guaranteed Views Included**     | 5,000                             | 15,000                              | Optional Add-On                   | 15,000                                | 50,000                                       | 100,000                                     | 150,000                                | 50,000–1,000,000+                       |
 | **UGC Scaling**                   | Optional                          | Optional                            | Optional                          | Optional                              | 2 UGC Campaigns                              | 3 UGC Campaigns                             | 4 UGC Campaigns                        | Included (Large Scale)                  |
 | **Lead Magnet System**            | Single Lead Magnet                | Multi-Lead-Magnet Engine            | —                                 | Multi-Step Funnel                     | Included                                     | Expanded + A/B Testing                      | Enterprise-Level Funnels               | Region-Wide Campaigns                   |
@@ -29,19 +29,19 @@ A clear side‑by‑side comparison of all core offers so businesses, cities, an
 
 ## ⭐ **Choose Offer 1 if…**
 
-You need a simple, affordable system that gets your business online, visible, and ready for customers.
+You’re a small, locally owned business that wants a simple, low‑risk way to start getting customers online — especially if you’ve never invested in marketing before. Budget‑friendly ($300–$700/mo) and designed to deliver guaranteed local visibility quickly.
 
 ## ⭐ **Choose Offer 2 if…**
 
-You want consistent weekly customers, bookings, or sales and want your marketing fully done‑for‑you.
+You need consistent weekly customers, bookings, or sales — not just visibility. Ideal for small‑to‑medium service businesses (restaurants doing $20k–$100k/mo, med spas, salons, tattoo shops, gyms, car washes, venues, daycares, tutoring, pet grooming, local retail). Budget: $800–$1,500/mo.
 
 ## ⭐ **Choose Offer 3 if…**
 
-You need high‑quality, professional content that elevates your brand image.
+You need high‑quality, professional content that elevates your brand image. Perfect for brands where image quality equals revenue (med spas, real estate, high‑end salons, luxury boutiques), creators and artists, restaurants wanting menu/brand elevation, car dealerships, nightlife/venues, e‑commerce, and clothing stores. Budget: $500–$3,000 per project.
 
 ## ⭐ **Choose Offer 4 if…**
 
-You want to sell statewide or nationwide with funnels, automations, and UGC‑driven ads.
+You want to sell statewide or nationwide with funnels, automations, AI, and UGC‑driven ads. Ideal for e‑commerce brands (apparel, skincare, supplements, jewelry, lifestyle/gift, local brands going statewide), statewide‑demand services (specialized med spas, online coaching, digital products, memberships, real estate investors, training programs, tourism packages), and high‑ticket services (roofing, contractors, HVAC, legal, consultants, medical clinics). Budget: $1,000–$10,000 depending on funnel complexity + UGC scaling.
 
 ## ⭐ **Choose the Growth Starter  if…**
 

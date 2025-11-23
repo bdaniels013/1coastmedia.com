@@ -126,12 +126,12 @@
         <!-- A — Customers: pick budget level -->
         <div class="space-y-2" x-show="goal === 'customers'">
           <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="customersBudget" value="199" x-model="customersBudget" />
-            <span>$199/mo</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
             <input type="radio" name="customersBudget" value="499" x-model="customersBudget" />
             <span>$499/mo</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="radio" name="customersBudget" value="999" x-model="customersBudget" />
+            <span>$999/mo</span>
           </label>
           <label class="flex items-center gap-3 cursor-pointer">
             <input type="radio" name="customersBudget" value="growth" x-model="customersBudget" />
@@ -276,7 +276,7 @@
       return {
         goal: null,
         // Flowchart secondary choices
-        customersBudget: null,   // '199' | '499' | 'growth'
+        customersBudget: null,   // '499' | '999' | 'growth'
         growthTier: null,        // 'starter' | 'machine' | 'accelerator'
         visibilityChoice: null,  // 'simple' | 'full'
         contentChoice: null,     // 'project' | 'heavy'
@@ -286,10 +286,10 @@
         wantsUGC: false,
         offers: {
           // Core service offers (matching the Services page)
-          'local-growth-starter': { key: 'local-growth-starter', name: 'The 1 Coast Local Growth Starter', description: 'Landing page + AI assistant + 5,000 guaranteed local views monthly', price: '$199/month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'customer-growth-system': { key: 'customer-growth-system', name: 'The 1 Coast Customer Growth System', description: 'Lead magnets, AI lead capture, 15,000 guaranteed views, weekly posting + strategy', price: '$499/month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'content-production': { key: 'content-production', name: 'Content + Production Program', description: 'Photo/video production and UGC-ready content', price: null, canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'online-sales-accelerator': { key: 'online-sales-accelerator', name: 'Online Sales Accelerator', description: 'Funnels, AI assistant, automations, UGC ads', price: null, canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'local-growth-starter': { key: 'local-growth-starter', name: 'The 1 Coast Local Growth Starter', description: 'Low‑risk starter for small local businesses — landing page + AI + 5,000 guaranteed local views', price: '$499/month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'customer-growth-system': { key: 'customer-growth-system', name: 'The 1 Coast Customer Growth System', description: 'Done‑for‑you growth for small‑to‑medium service businesses — lead magnets + AI + 15,000 views', price: '$999/month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'content-production': { key: 'content-production', name: 'Content + Production Program', description: 'Professional photo/video for brands where image quality drives revenue', price: null, canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'online-sales-accelerator': { key: 'online-sales-accelerator', name: 'Online Sales Accelerator', description: 'Funnels + AI + UGC ads to sell statewide or nationwide', price: null, canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
           'enterprise-impact': { key: 'enterprise-impact', name: 'Economic Impact Initiative', description: 'City/regional UGC + tourism engine', price: '$5k–$50k/mo', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
           // Additional special
           'website-199': { key: 'website-199', name: '$199 Website Special', description: 'Own your site forever + hosting setup', price: '$199 one-time', canAdd: false },
@@ -332,9 +332,9 @@
           // Flowchart mapping aligned with offer_comparison chart
           switch (this.goal) {
             case 'customers': {
-              if (this.customersBudget === '199') {
+              if (this.customersBudget === '499') {
                 add('local-growth-starter');
-              } else if (this.customersBudget === '499') {
+              } else if (this.customersBudget === '999') {
                 add('customer-growth-system');
               } else if (this.customersBudget === 'growth') {
                 if (this.growthTier === 'starter') add('growth-starter');

@@ -13,18 +13,20 @@ To keep billing predictable, UGC is based on a **monthly view budget**, NOT per-
 
 # ⭐ **UGC View Budget (Optional Add-On for Any Package)**
 
-### **Guaranteed Local Views**
+### **Guaranteed Local Views — UGC Boosts (Final Client Price)**
 
-- **\$100 → 10,000+ local views**
-- **\$200 → 20,000+ local views**
-- **\$300 → 30,000–40,000 views**
-- **\$500 → 50,000–70,000 views**
-- **\$1,000 → 100,000–140,000 views**
+- **Boost 1: $150 → +10,000 local views**
+- **Boost 2: $350 → +25,000 local views**
+- **Boost 3: $650 → +50,000 local views**
+- **Boost 4: $1,250 → +100,000 local views**
 
 ### **Creator Pay Structure**
 
-- Creators are paid **\$10 per 1,000 verified views**.
-- **Payout cap per video: \$150**.
+- Creators are paid **$10 per 1,000 verified views**.
+- **Boost 1 payout:** $100 • **Margin (40%):** $40 • **Final price:** $150
+- **Boost 2 payout:** $250 • **Margin (40%):** $100 • **Final price:** $350
+- **Boost 3 payout:** $500 • **Margin (40%):** $200 • **Final price:** $650
+- **Boost 4 payout:** $1,000 • **Margin (25%):** $250 • **Final price:** $1,250
 - You NEVER exceed your chosen budget.
 
 This system ensures predictable costs + scalable local reach.
@@ -147,11 +149,12 @@ Short, clear, and actionable.
 
 ### **ADD‑ON A: Additional UGC Budget**
 
-If you want more views beyond the included 5,000, you can increase your monthly budget.
+If you want more views beyond the included 5,000, you can increase your monthly budget with **UGC Boosts**:
 
-- +\$50 → +5,000 views
-- +\$100 → +10,000 views
-- +\$200 → +20,000 views
+- **$150 → +10,000 views**
+- **$350 → +25,000 views**
+- **$650 → +50,000 views**
+- **$1,250 → +100,000 views**
 
 ---
 
@@ -248,11 +251,12 @@ We handle:
 - Payouts
 - Tracking + verification
 
-### **Optional UGC Scaling:**
+### **Optional UGC Scaling — Boosts:**
 
-- +\$50 → +5,000 additional views
-- +\$100 → +10,000 additional views
-- +\$200 → +20,000 additional views
+- **$150 → +10,000 additional views**
+- **$350 → +25,000 additional views**
+- **$650 → +50,000 additional views**
+- **$1,250 → +100,000 additional views**
 
 ---
 
@@ -626,10 +630,10 @@ These flows increase average order value.
 
 Your UGC budget determines your reach:
 
-- \$100 → 10,000+ views
-- \$200 → 20,000+ views
-- \$300 → 30,000–40,000+ views
-- \$500+ → 50,000–100,000+ views
+- **$150 → +10,000 views**
+- **$350 → +25,000 views**
+- **$650 → +50,000 views**
+- **$1,250 → +100,000 views**
 
 We handle creator payouts and tracking.
 
@@ -950,4 +954,3 @@ This is for anyone serious about investing in the growth, tourism, visibility, a
 **Focus:** Coast‑wide growth, tourism expansion, unified regional visibility
 
 ---
-
