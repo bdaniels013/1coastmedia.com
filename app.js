@@ -74,7 +74,7 @@ function app() {
         }
       }
       // Always show Special Offer popup on each visit
-      setTimeout(() => { this.showSpecialOffer = true; }, 250);
+
     },
     
     // Format a number as USD
