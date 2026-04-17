@@ -5,9 +5,9 @@ STRIPE_PUBLISHABLE_KEY=pk_test_your_test_publishable_key_here
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 
 # Admin Authentication
-# Change these to secure credentials for production
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=1coastmedia2024!
+# Use strong, unique credentials. NEVER commit real values.
+ADMIN_USERNAME=your_admin_username
+ADMIN_PASSWORD=your_strong_admin_password
 
 # Google Analytics 4 (GA4) Configuration
 # Get these from Google Cloud Console: https://console.cloud.google.com/
