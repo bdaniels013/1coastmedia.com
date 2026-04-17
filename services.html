@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Services • 1CoastMedia</title>
-  <meta name="description" content="Monthly content retainers for Mississippi Gulf Coast businesses — Foundation $3K, Momentum $4K, Complete $5K. Plus one-time website builds, press release distribution, UGC view boosts, and AI assistants." />
+  <meta name="description" content="Monthly social media content retainers for Mississippi Gulf Coast businesses. Foundation $3K, Momentum $4K, Complete $5K. Plus one-time website builds, press release distribution, UGC view boosts, and AI assistants." />
   <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
   <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -43,14 +43,14 @@
   <header class="hero">
     <div class="hero-video-wrap" aria-hidden="true">
       <video autoplay muted loop playsinline preload="metadata" poster="./assets/1coastmedia logo.jpg">
-        <!-- TODO: once hero-particle-720p.mp4 + hero-particle-1080p.mp4 are uploaded to GCS,
-             re-enable multi-source for mobile perf. Transcoded files at /tmp/hero-video/ locally. -->
+        <source media="(max-width: 768px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-720p.mp4" type="video/mp4" />
+        <source media="(max-width: 1440px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-1080p.mp4" type="video/mp4" />
         <source src="https://storage.googleapis.com/1coastmediawebsite/297505_Particle%20Artwork%20Liquid%20Drop_By_Freeman_Footage_Artlist_4K.mp4" type="video/mp4" />
       </video>
     </div>
-    <span class="hero-eyebrow">Monthly Retainers</span>
+    <span class="hero-eyebrow">Social Media Content Retainers</span>
     <h1>Packages that pay for themselves.</h1>
-    <p class="hero-sub">Three done-with-you tiers built for Gulf Coast businesses. Start where you are — scale up as you grow. Every retainer is month-to-month.</p>
+    <p class="hero-sub">Three done-with-you content tiers for Instagram, TikTok, and Facebook Reels. Start where you are. Scale when you're ready. Month-to-month.</p>
     <div class="hero-ctas">
       <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-lg">Book a discovery call</a>
       <a href="tel:+12283578505" class="btn btn-ghost btn-lg">Call (228) 357-8505</a>
@@ -75,9 +75,9 @@
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <div class="section-eyebrow">Monthly retainers · Month-to-month</div>
+        <div class="section-eyebrow">Social media content · Month-to-month</div>
         <h2 class="section-title">Pick your tier.</h2>
-        <p class="section-sub">Three done-with-you tiers built to match your stage. Start where you are, scale when you're ready.</p>
+        <p class="section-sub">Short-form video, photo, and graphics for Instagram, TikTok, and Facebook Reels. Content production only. Posting, community management, and long-form (YouTube, etc.) are separate add-ons.</p>
       </div>
 
       <div class="grid grid-3">
@@ -86,13 +86,13 @@
         <article class="card" id="tier-foundation" x-data="{ open: false }">
           <div class="card-eyebrow">Tier 01 · Foundation</div>
           <h3>Foundation</h3>
-          <p><em>"Consistent, professional content — without the headache."</em></p>
+          <p><em>"Consistent, professional social content without the headache."</em></p>
           <ul>
-            <li>1 shoot day / month (3–4 hrs: photo + video)</li>
-            <li>15–20 short-form videos, edited + captioned</li>
-            <li>10 custom graphics / photos</li>
-            <li>30-day content calendar</li>
-            <li>Scheduled posting on 1 platform</li>
+            <li>1 shoot day per month (3–4 hrs: photo + video)</li>
+            <li>15–20 short-form videos, edited and captioned</li>
+            <li>10 custom graphics or photos</li>
+            <li>30-day content calendar (you post, we produce)</li>
+            <li>Content delivered ready to post</li>
             <li>Monthly performance recap</li>
           </ul>
           <div class="card-price mt-6">$3,000<small> / month</small></div>
@@ -108,8 +108,9 @@
             <p><strong>Shoot Day.</strong> On-location photo + video capture with creative direction. Multiple setups, products, or services in one visit.</p>
             <p><strong>Short-form Videos.</strong> Edited for Reels / TikTok / Shorts. Captions burned in. Branded hook + payoff structure.</p>
             <p><strong>Graphics.</strong> Branded quote cards, promos, seasonal posts, photo retouches.</p>
-            <p><strong>Posting.</strong> We schedule and post for you. You review via shared calendar before anything goes live.</p>
-            <p><strong style="color:var(--text)">Best for:</strong> small local businesses starting their first real content system — restaurants, salons, retail, fitness studios, food trucks, boutiques.</p>
+            <p><strong>Delivery.</strong> Finished assets delivered via shared drive, tagged to your 30-day calendar. You post, we produce.</p>
+            <p><strong style="color:var(--text)">Best for:</strong> small local businesses building their first real content system. Fits restaurants, salons, retail shops, fitness studios, food trucks, and boutiques.</p>
+            <p><strong style="color:var(--text)">Want us to post?</strong> Add Social Media Management (see add-ons below).</p>
           </div>
         </article>
 
@@ -118,13 +119,13 @@
           <div class="card-badge">Most popular</div>
           <div class="card-eyebrow">Tier 02 · Momentum</div>
           <h3>Momentum</h3>
-          <p><em>"Content + active management to grow the audience."</em></p>
+          <p><em>"More volume, faster turnarounds, a content strategy that moves."</em></p>
           <ul>
-            <li>2 shoot days / month</li>
-            <li>25–30 short-form videos + 1 long-form</li>
-            <li>15 custom graphics / photos</li>
-            <li>Active social media management (2 platforms)</li>
-            <li>Monthly strategy call</li>
+            <li>2 shoot days per month</li>
+            <li>25–30 short-form videos, edited and captioned</li>
+            <li>15 custom graphics or photos</li>
+            <li>30-day content calendar</li>
+            <li>Monthly content strategy call</li>
             <li>48-hour edit turnaround</li>
             <li>Quarterly performance report</li>
           </ul>
@@ -138,10 +139,11 @@
           </div>
           <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
             <p><strong>2 Shoot Days.</strong> Enough variety to keep content feeling fresh across all 30 days.</p>
-            <p><strong>Active Social Management.</strong> We post, respond to comments and DMs, run community engagement, track trending topics in your niche.</p>
-            <p><strong>Monthly Strategy Call.</strong> 60-min call to review performance, plan upcoming campaigns, adjust based on what's working.</p>
-            <p><strong>Long-form Video.</strong> 1 piece per month (2–5 min) — YouTube, LinkedIn, or founder-story content.</p>
-            <p><strong style="color:var(--text)">Best for:</strong> established businesses ready to scale — med spas, gyms, busy restaurants, professional services doing $20K+/mo.</p>
+            <p><strong>48-hour Turnarounds.</strong> Priority editing queue so trending moments, promos, and events ship while they still matter.</p>
+            <p><strong>Monthly Content Strategy Call.</strong> 60-min working session to review what's performing, plan the next month's themes, and adjust based on the data.</p>
+            <p><strong>Quarterly Report.</strong> Deeper performance analysis across platforms with recommendations for the next quarter.</p>
+            <p><strong style="color:var(--text)">Best for:</strong> established businesses ready to scale. Fits med spas, gyms, busy restaurants, and professional services doing $20K+/mo.</p>
+            <p><strong style="color:var(--text)">Want us to post and manage?</strong> Add Social Media Management (see add-ons below).</p>
           </div>
         </article>
 
@@ -149,16 +151,16 @@
         <article class="card" id="tier-complete" x-data="{ open: false }">
           <div class="card-eyebrow">Tier 03 · Complete</div>
           <h3>Complete</h3>
-          <p><em>"Full done-for-you: content + web + lead gen + conversion."</em></p>
+          <p><em>"Content plus the web, email, and text systems that turn views into customers."</em></p>
           <ul>
-            <li>3 shoot days / month</li>
-            <li>30 short-form videos + 2 long-form</li>
-            <li>20 custom graphics / photos</li>
-            <li>Full social media management (3 platforms)</li>
+            <li>3 shoot days per month</li>
+            <li>30 short-form videos, edited and captioned</li>
+            <li>20 custom graphics or photos</li>
             <li>Landing page creation + management</li>
             <li>Email + text marketing campaigns</li>
             <li>Website management</li>
-            <li>Bi-weekly strategy calls + monthly report</li>
+            <li>Bi-weekly strategy calls</li>
+            <li>Monthly performance report</li>
           </ul>
           <div class="card-price mt-6">$5,000<small> / month</small></div>
           <div class="card-actions">
@@ -170,10 +172,11 @@
           </div>
           <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
             <p><strong>Landing Page + Management.</strong> 1 new or refreshed landing page per quarter (campaigns, promos, lead magnets) plus ongoing optimization.</p>
-            <p><strong>Email + Text Marketing.</strong> Up to 2 campaigns per month — list building, promos, nurture sequences, review requests.</p>
-            <p><strong>Website Management.</strong> Up to 2 hours/month of updates, fixes, hosting oversight. Full redesigns are a separate one-time charge.</p>
+            <p><strong>Email + Text Marketing.</strong> Up to 2 campaigns per month. List building, promos, nurture sequences, review requests.</p>
+            <p><strong>Website Management.</strong> Up to 2 hours per month of updates, fixes, and hosting oversight. Full redesigns are a separate one-time charge.</p>
             <p><strong>Bi-weekly Strategy Calls.</strong> 30-min syncs every two weeks so you're never out of the loop.</p>
             <p><strong style="color:var(--text)">Best for:</strong> established businesses doing $50K+/mo that want a full marketing department without hiring one. Multi-location or heavier scope? We custom-build on top of Tier 3.</p>
+            <p><strong style="color:var(--text)">Want us to post and manage your socials?</strong> Add Social Media Management (see add-ons below).</p>
           </div>
         </article>
 
@@ -187,7 +190,7 @@
       <div class="card" style="max-width:720px; margin:0 auto; text-align:center; padding:40px 32px; align-items:center;">
         <div class="card-eyebrow">Custom · Scope</div>
         <h3 style="font-size:28px; margin:0 0 12px;">Need something bigger?</h3>
-        <p style="margin:0 0 22px; max-width:52ch;">Multiple locations, long-form content series, or a scope beyond these tiers — we build custom partnerships for businesses ready to scale hard.</p>
+        <p style="margin:0 0 22px; max-width:52ch;">Multiple locations, long-form content series (YouTube, docuseries), or a scope beyond these tiers? We build custom partnerships for businesses ready to scale hard.</p>
         <div class="card-actions" style="justify-content:center;">
           <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary">Book a discovery call</a>
           <a href="tel:+12283578505" class="btn btn-ghost">Talk to Blake</a>
@@ -241,7 +244,7 @@
         <div class="card">
           <div class="card-eyebrow">Basic</div>
           <h3>DM Assistant</h3>
-          <p>Answers FAQs instantly — hours, directions, menu / services, pricing ranges, booking.</p>
+          <p>Answers FAQs instantly. Hours, directions, menu, pricing ranges, booking.</p>
           <div class="card-price">$29<small> / month</small></div>
         </div>
         <div class="card">
@@ -253,7 +256,7 @@
         <div class="card" x-data="{ open: false }">
           <div class="card-eyebrow">Premium</div>
           <h3>AI Voice Receptionist</h3>
-          <p>Answers calls, books appointments, qualifies leads — 24/7.</p>
+          <p>Answers calls, books appointments, qualifies leads. 24/7.</p>
           <div class="card-price">$149<small> setup · $79/mo</small></div>
           <button @click="open = !open" class="btn btn-ghost btn-sm mt-4" style="align-self:flex-start">
             <span x-text="open ? 'Hide' : 'What\'s included'"></span>
@@ -271,10 +274,28 @@
     <div class="wrap">
       <div class="section-head">
         <div class="section-eyebrow">Project-based · Standalone</div>
-        <h2 class="section-title">One-Time Services</h2>
-        <p class="section-sub">Specialty work and one-off projects — standalone or stacked on any retainer.</p>
+        <h2 class="section-title">Specialty & Add-On Services</h2>
+        <p class="section-sub">Ongoing add-ons and one-off projects. Standalone or stacked on any retainer.</p>
       </div>
       <div class="grid grid-3">
+
+        <div class="card" x-data="{ open: false }">
+          <div class="card-eyebrow">Social</div>
+          <h3>Social Media Management</h3>
+          <p>Posting, scheduling, community engagement, comment and DM responses across your platforms. Layers on top of any content retainer.</p>
+          <div class="card-price mt-6">$500 – $1,500<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'What fits?'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">$500 / mo:</strong> 1 platform, scheduled posting, basic engagement.</p>
+            <p><strong style="color:var(--text)">$1,000 / mo:</strong> 2 platforms, active posting, comment and DM responses, community engagement.</p>
+            <p><strong style="color:var(--text)">$1,500 / mo:</strong> 3 platforms, full community management, DM triage, trend monitoring.</p>
+          </div>
+        </div>
 
         <div class="card">
           <div class="card-eyebrow">Web</div>
@@ -291,9 +312,9 @@
           <h3>Press Release + Distribution</h3>
           <p>Written, formatted, and distributed to news outlets. Pick your reach.</p>
           <ul>
-            <li>Local Gulf Coast — $450</li>
-            <li>Regional (MS / AL / LA) — $950</li>
-            <li>National — $2,500</li>
+            <li>Local Gulf Coast: $450</li>
+            <li>Regional (MS / AL / LA): $950</li>
+            <li>National: $2,500</li>
           </ul>
           <div class="card-price mt-6">From $450<small> / release</small></div>
           <div class="card-actions">
@@ -425,7 +446,7 @@
           <li><strong>Increase tourism and visibility</strong> through authentic storytelling and professional media.</li>
           <li><strong>Strengthen the entire Coast</strong> by uniting cities, businesses, and creators into one shared ecosystem.</li>
         </ul>
-        <p>We are not here to compete with the Coast — we are here to elevate it.</p>
+        <p>We are not here to compete with the Coast. We are here to elevate it.</p>
       </div>
     </div>
   </section>

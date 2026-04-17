@@ -99,8 +99,8 @@
   <header class="hero">
     <div class="hero-video-wrap" aria-hidden="true">
       <video autoplay muted loop playsinline preload="metadata" poster="./assets/1coastmedia logo.jpg">
-        <!-- TODO: once hero-particle-720p.mp4 + hero-particle-1080p.mp4 are uploaded to GCS,
-             re-enable multi-source for mobile perf. Transcoded files at /tmp/hero-video/ locally. -->
+        <source media="(max-width: 768px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-720p.mp4" type="video/mp4" />
+        <source media="(max-width: 1440px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-1080p.mp4" type="video/mp4" />
         <source src="https://storage.googleapis.com/1coastmediawebsite/297505_Particle%20Artwork%20Liquid%20Drop_By_Freeman_Footage_Artlist_4K.mp4" type="video/mp4" />
       </video>
     </div>
@@ -138,32 +138,32 @@
         <div class="card">
           <div class="card-eyebrow">01 · Value</div>
           <h3>Budget-smart scalability.</h3>
-          <p>Tiers start accessible and build incrementally — saving 40–60% versus hiring separate experts for web, content, UGC, events, and PR.</p>
+          <p>Tiers start accessible and build incrementally. Save 40–60% versus hiring separate experts for web, content, UGC, events, and PR.</p>
         </div>
         <div class="card">
           <div class="card-eyebrow">02 · Proof</div>
           <h3>Guaranteed, trackable impact.</h3>
-          <p>Every tier ships with custom KPI tracking, real-time dashboards, and UGC/PR guarantees — proving ROI from the start.</p>
+          <p>Every tier ships with custom KPI tracking, real-time dashboards, and UGC/PR guarantees. ROI shows up from the start.</p>
         </div>
         <div class="card">
           <div class="card-eyebrow">03 · Fit</div>
           <h3>Perfect for your stage.</h3>
-          <p>Startup retailer or established venue seeking a national spotlight — tiers adapt seamlessly.</p>
+          <p>Startup retailer or established venue seeking a national spotlight. Tiers adapt seamlessly.</p>
         </div>
         <div class="card">
           <div class="card-eyebrow">04 · Risk</div>
           <h3>Zero-risk commitment.</h3>
-          <p>Performance pledge: if customer growth doesn't materialize, get an extra month free — plus handcrafted UGC and PR expertise.</p>
+          <p>Performance pledge: if customer growth doesn't materialize, get an extra month free. Plus handcrafted UGC and PR expertise.</p>
         </div>
         <div class="card">
           <div class="card-eyebrow">05 · Scope</div>
           <h3>Hands-off mastery.</h3>
-          <p>We handle every digital task — web updates, content calendars, influencer enforcement, event pages, media outreach.</p>
+          <p>We handle every digital task. Web updates, content calendars, influencer enforcement, event pages, media outreach.</p>
         </div>
         <div class="card">
           <div class="card-eyebrow">06 · Revenue</div>
           <h3>E-commerce at every tier.</h3>
-          <p>Start monetizing immediately with e-commerce integration across all tiers — basic in Starter, advanced in higher levels.</p>
+          <p>Start monetizing immediately with e-commerce integration across all tiers. Basic in Starter, advanced in higher levels.</p>
         </div>
       </div>
     </div>
@@ -175,7 +175,7 @@
       <div class="section-head">
         <div class="section-eyebrow">The three tiers</div>
         <h2 class="section-title">Choose your growth tier.</h2>
-        <p class="section-sub">Tailored pathways to revenue. Each tier builds on the last — you pay for what you need, not what you don't.</p>
+        <p class="section-sub">Tailored pathways to revenue. Each tier builds on the last. You pay for what you need, not what you don't.</p>
       </div>
 
       <div class="grid grid-3">
@@ -398,7 +398,7 @@
       </div>
 
       <div class="card-actions" style="margin-top:28px">
-        <button @click="addToCart(selectedTier?.key)" class="btn btn-primary">Add to cart — <span x-text="selectedTier?.price"></span>/mo</button>
+        <button @click="addToCart(selectedTier?.key)" class="btn btn-primary">Add to cart · <span x-text="selectedTier?.price"></span>/mo</button>
         <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-ghost">Book free consultation</a>
       </div>
     </div>

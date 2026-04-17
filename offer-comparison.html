@@ -40,7 +40,7 @@
       color: var(--text-dim); margin: 0 0 6px;
     }
 
-    /* Markdown chart styles — restyled for black theme */
+    /* Markdown chart styles, restyled for black theme */
     .chart-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -151,14 +151,14 @@
   <header class="hero">
     <div class="hero-video-wrap" aria-hidden="true">
       <video autoplay muted loop playsinline preload="metadata" poster="./assets/1coastmedia logo.jpg">
-        <!-- TODO: once hero-particle-720p.mp4 + hero-particle-1080p.mp4 are uploaded to GCS,
-             re-enable multi-source for mobile perf. Transcoded files at /tmp/hero-video/ locally. -->
+        <source media="(max-width: 768px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-720p.mp4" type="video/mp4" />
+        <source media="(max-width: 1440px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-1080p.mp4" type="video/mp4" />
         <source src="https://storage.googleapis.com/1coastmediawebsite/297505_Particle%20Artwork%20Liquid%20Drop_By_Freeman_Footage_Artlist_4K.mp4" type="video/mp4" />
       </video>
     </div>
     <span class="hero-eyebrow">Compare Offers</span>
     <h1>Find your fit.</h1>
-    <p class="hero-sub">Use the quick selector to get a personalized recommendation — or scroll to the full comparison chart and download it as a PDF.</p>
+    <p class="hero-sub">Use the quick selector to get a personalized recommendation. Or scroll to the full comparison chart and download it as a PDF.</p>
     <div class="hero-ctas">
       <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-lg">Book a free consult</a>
       <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now</a>
@@ -272,7 +272,7 @@
       <div class="section-head">
         <div class="section-eyebrow">Full Breakdown</div>
         <h2 class="section-title">Side-by-side chart.</h2>
-        <p class="section-sub">The complete offer matrix — deliverables, audiences, budgets, add-ons. Download as a clean PDF you can share.</p>
+        <p class="section-sub">The complete offer matrix. Deliverables, audiences, budgets, add-ons. Download as a clean PDF you can share.</p>
       </div>
       <div style="display:flex; justify-content:flex-end; margin-bottom:16px">
         <button @click="downloadChartPDF()" class="btn btn-primary btn-sm">Download PDF</button>
@@ -330,8 +330,8 @@
         visibilityChoice: null, contentChoice: null, contentHeavyTier: null,
         sellChoice: null, needsEcom: false, wantsUGC: false,
         offers: {
-          'local-growth-starter': { key: 'local-growth-starter', name: 'Local Growth Starter', description: 'Low-risk starter for small local businesses — landing page + AI + 5,000 guaranteed local views.', price: '$499 / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'customer-growth-system': { key: 'customer-growth-system', name: 'Customer Growth System', description: 'Done-for-you growth for small-to-medium service businesses — lead magnets + AI + 15,000 views.', price: '$999 / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'local-growth-starter': { key: 'local-growth-starter', name: 'Local Growth Starter', description: 'Low-risk starter for small local businesses. Landing page + AI + 5,000 guaranteed local views.', price: '$499 / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'customer-growth-system': { key: 'customer-growth-system', name: 'Customer Growth System', description: 'Done-for-you growth for small-to-medium service businesses. Lead magnets + AI + 15,000 views.', price: '$999 / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
           'content-production': { key: 'content-production', name: 'Content + Production Program', description: 'Professional photo/video for brands where image quality drives revenue.', price: 'From $350 / project', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
           'online-sales-accelerator': { key: 'online-sales-accelerator', name: 'Online Sales Accelerator', description: 'Funnels + AI + UGC ads to sell statewide or nationwide.', price: 'From $1,500 setup · $349/mo', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
           'enterprise-impact': { key: 'enterprise-impact', name: 'Economic Impact Initiative', description: 'City / regional UGC + tourism engine.', price: '$5k–$50k / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
