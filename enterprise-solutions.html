@@ -3,831 +3,231 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>1CoastMedia Services</title>
-  <!-- Favicon -->
+  <title>Enterprise Solutions • 1CoastMedia</title>
+  <meta name="description" content="Regional and enterprise-scale solutions for cities, chambers, casinos, and economic development organizations. Built on 15 years of proven experience." />
   <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
   <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
-  <!-- Open Graph / Social Preview -->
-  <meta property="og:title" content="1CoastMedia – Services and Growth Packages" />
-  <meta property="og:description" content="Your Gulf Coast growth partner. Fast, clear, and measurable marketing services and signature programs." />
-  <meta property="og:image" content="./assets/1coastmedia logo.jpg" />
-  <meta property="og:type" content="website" />
-
-  <!-- Google Analytics tag for GA4 (Gtag) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K54J9FPE7N"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-K54J9FPE7N');
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Alpine.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/boring.css" />
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <!-- Load app logic -->
-  <script src="./app.js"></script>
-  <script>
-    // Enhanced liquid blob mouse interaction
-    document.addEventListener('DOMContentLoaded', function() {
-      const blobs = document.querySelectorAll('[class*="liquid-blob-"]');
-      let mouseX = 0.5;
-      let mouseY = 0.5;
-      let targetX = 0.5;
-      let targetY = 0.5;
-      
-      // Smooth mouse tracking
-      document.addEventListener('mousemove', function(e) {
-        targetX = e.clientX / window.innerWidth;
-        targetY = e.clientY / window.innerHeight;
-      });
-      
-      // Smooth animation loop
-      function animateBlobs() {
-        // Smooth interpolation
-        mouseX += (targetX - mouseX) * 0.1;
-        mouseY += (targetY - mouseY) * 0.1;
-        
-        blobs.forEach((blob, index) => {
-          const speed = (index + 1) * 0.3;
-          const intensity = Math.sin(Date.now() * 0.001 + index) * 0.5 + 0.5;
-          const x = (mouseX - 0.5) * speed * 80 * intensity;
-          const y = (mouseY - 0.5) * speed * 80 * intensity;
-          
-          // Add subtle rotation based on mouse position
-          const rotation = (mouseX - 0.5) * 20;
-          const scale = 1 + (intensity - 0.5) * 0.2;
-          
-          blob.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg) scale(${scale})`;
-        });
-        
-        requestAnimationFrame(animateBlobs);
-      }
-      
-      animateBlobs();
-      
-      // Add scroll-based movement
-      let scrollY = 0;
-      window.addEventListener('scroll', function() {
-        scrollY = window.scrollY / window.innerHeight;
-      });
-      
-      // Enhanced animation with scroll
-      function enhancedAnimate() {
-        blobs.forEach((blob, index) => {
-          const scrollOffset = scrollY * 20 * (index % 2 === 0 ? 1 : -1);
-          const timeOffset = Date.now() * 0.0005 + index;
-          const waveX = Math.sin(timeOffset) * 10;
-          const waveY = Math.cos(timeOffset * 0.8) * 15;
-          
-          const currentTransform = blob.style.transform;
-          const baseTransform = currentTransform.replace(/translate\([^)]*\)/, '');
-          
-          blob.style.transform = `translate(${waveX}px, ${waveY + scrollOffset}px) ${baseTransform}`;
-        });
-        
-        requestAnimationFrame(enhancedAnimate);
-      }
-      
-      enhancedAnimate();
-    });
-  </script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    
-    /* Custom animations for enhanced UX */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
-    
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
-      50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+    @media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
+    .stat {
+      text-align: center; padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--bg-elev);
     }
-    
-    @keyframes shimmer {
-      0% { background-position: -200% center; }
-      100% { background-position: 200% center; }
-    }
-    
-    .animate-float {
-      animation: float 3s ease-in-out infinite;
-    }
-    
-    .animate-glow {
-      animation: glow 2s ease-in-out infinite;
-    }
-    
-    .shimmer-bg {
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      background-size: 200% 100%;
-      animation: shimmer 2s infinite;
-    }
-    
-    /* Enhanced Liquid Flowy Background Animations */
-    @keyframes liquid-flow-1 {
-      0% { 
-        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1);
-        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-      }
-      12.5% { 
-        transform: translateX(-35%) translateY(-65%) rotate(45deg) scale(1.15);
-        border-radius: 25% 75% 45% 55% / 70% 30% 60% 40%;
-      }
-      25% { 
-        transform: translateX(-40%) translateY(-60%) rotate(90deg) scale(1.1);
-        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-      }
-      37.5% { 
-        transform: translateX(-55%) translateY(-45%) rotate(135deg) scale(0.95);
-        border-radius: 45% 55% 25% 75% / 40% 70% 50% 30%;
-      }
-      50% { 
-        transform: translateX(-60%) translateY(-40%) rotate(180deg) scale(0.9);
-        border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
-      }
-      62.5% { 
-        transform: translateX(-45%) translateY(-55%) rotate(225deg) scale(1.05);
-        border-radius: 35% 65% 55% 45% / 60% 40% 30% 70%;
-      }
-      75% { 
-        transform: translateX(-45%) translateY(-55%) rotate(270deg) scale(1.05);
-        border-radius: 40% 30% 60% 70% / 60% 50% 40% 30%;
-      }
-      87.5% { 
-        transform: translateX(-55%) translateY(-45%) rotate(315deg) scale(0.98);
-        border-radius: 55% 45% 35% 65% / 45% 55% 25% 75%;
-      }
-      100% { 
-        transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1);
-        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-      }
-    }
-    
-    @keyframes liquid-flow-2 {
-      0% { 
-        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1);
-        border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
-      }
-      16.5% { 
-        transform: translateX(-60%) translateY(-40%) rotate(60deg) scale(1.3);
-        border-radius: 20% 80% 50% 50% / 60% 40% 80% 20%;
-      }
-      33% { 
-        transform: translateX(-55%) translateY(-45%) rotate(120deg) scale(1.2);
-        border-radius: 70% 30% 40% 60% / 30% 40% 70% 60%;
-      }
-      49.5% { 
-        transform: translateX(-35%) translateY(-65%) rotate(180deg) scale(0.7);
-        border-radius: 80% 20% 60% 40% / 40% 80% 20% 60%;
-      }
-      66% { 
-        transform: translateX(-45%) translateY(-55%) rotate(240deg) scale(0.8);
-        border-radius: 30% 70% 60% 40% / 70% 30% 40% 60%;
-      }
-      82.5% { 
-        transform: translateX(-65%) translateY(-35%) rotate(300deg) scale(1.1);
-        border-radius: 50% 50% 80% 20% / 20% 80% 50% 50%;
-      }
-      100% { 
-        transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1);
-        border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
-      }
-    }
-    
-    @keyframes liquid-flow-3 {
-      0% { 
-        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1);
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-      }
-      10% { 
-        transform: translateX(-45%) translateY(-55%) rotate(36deg) scale(1.1);
-        border-radius: 30% 70% 40% 60% / 60% 40% 70% 30%;
-      }
-      20% { 
-        transform: translateX(-60%) translateY(-40%) rotate(72deg) scale(1.3);
-        border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%;
-      }
-      30% { 
-        transform: translateX(-35%) translateY(-65%) rotate(108deg) scale(0.8);
-        border-radius: 70% 30% 60% 40% / 30% 70% 40% 60%;
-      }
-      40% { 
-        transform: translateX(-40%) translateY(-60%) rotate(144deg) scale(0.7);
-        border-radius: 80% 20% 80% 20% / 20% 80% 20% 80%;
-      }
-      50% { 
-        transform: translateX(-55%) translateY(-45%) rotate(180deg) scale(1.2);
-        border-radius: 60% 40% 70% 30% / 40% 60% 30% 70%;
-      }
-      60% { 
-        transform: translateX(-70%) translateY(-30%) rotate(216deg) scale(1.1);
-        border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
-      }
-      70% { 
-        transform: translateX(-25%) translateY(-75%) rotate(252deg) scale(0.9);
-        border-radius: 75% 25% 45% 55% / 25% 75% 55% 45%;
-      }
-      80% { 
-        transform: translateX(-30%) translateY(-70%) rotate(288deg) scale(0.9);
-        border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%;
-      }
-      90% { 
-        transform: translateX(-65%) translateY(-35%) rotate(324deg) scale(1.05);
-        border-radius: 35% 65% 55% 45% / 65% 35% 45% 55%;
-      }
-      100% { 
-        transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1);
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-      }
-    }
-    
-    @keyframes liquid-pulse {
-      0%, 100% { 
-        opacity: 0.3;
-        transform: scale(1);
-      }
-      50% { 
-        opacity: 0.6;
-        transform: scale(1.1);
-      }
-    }
-    
-    @keyframes liquid-wave {
-      0% { 
-        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1);
-        border-radius: 30% 70% 20% 80% / 40% 60% 30% 70%;
-      }
-      25% { 
-        transform: translateX(-40%) translateY(-60%) rotate(90deg) scale(1.2);
-        border-radius: 70% 30% 80% 20% / 60% 40% 70% 30%;
-      }
-      50% { 
-        transform: translateX(-60%) translateY(-40%) rotate(180deg) scale(0.8);
-        border-radius: 20% 80% 30% 70% / 70% 30% 40% 60%;
-      }
-      75% { 
-        transform: translateX(-50%) translateY(-50%) rotate(270deg) scale(1.1);
-        border-radius: 80% 20% 70% 30% / 30% 70% 20% 80%;
-      }
-      100% { 
-        transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(1);
-        border-radius: 30% 70% 20% 80% / 40% 60% 30% 70%;
-      }
-    }
-    
-    @keyframes liquid-splash {
-      0% { 
-        transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(0.5);
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-        opacity: 0.8;
-      }
-      20% { 
-        transform: translateX(-30%) translateY(-70%) rotate(72deg) scale(1.5);
-        border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%;
-        opacity: 0.6;
-      }
-      40% { 
-        transform: translateX(-70%) translateY(-30%) rotate(144deg) scale(0.7);
-        border-radius: 80% 20% 80% 20% / 20% 80% 20% 80%;
-        opacity: 0.4;
-      }
-      60% { 
-        transform: translateX(-20%) translateY(-80%) rotate(216deg) scale(1.3);
-        border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
-        opacity: 0.5;
-      }
-      80% { 
-        transform: translateX(-80%) translateY(-20%) rotate(288deg) scale(0.9);
-        border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%;
-        opacity: 0.7;
-      }
-      100% { 
-        transform: translateX(-50%) translateY(-50%) rotate(360deg) scale(0.5);
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-        opacity: 0.8;
-      }
-    }
-    
-    @keyframes liquid-ripple {
-      0% { 
-        transform: translateX(-50%) translateY(-50%) scale(0.8);
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-        opacity: 0.4;
-      }
-      50% { 
-        transform: translateX(-50%) translateY(-50%) scale(1.4);
-        border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%;
-        opacity: 0.1;
-      }
-      100% { 
-        transform: translateX(-50%) translateY(-50%) scale(0.8);
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-        opacity: 0.4;
-      }
-    }
-    
-    .liquid-blob-1 {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: linear-gradient(45deg, rgba(234, 179, 8, 0.25), rgba(217, 119, 6, 0.25));
-      animation: liquid-flow-1 18s ease-in-out infinite;
-      filter: blur(35px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-2 {
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(234, 179, 8, 0.2));
-      animation: liquid-wave 22s ease-in-out infinite;
-      filter: blur(45px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-3 {
-      position: absolute;
-      width: 250px;
-      height: 250px;
-      background: linear-gradient(225deg, rgba(239, 68, 68, 0.22), rgba(234, 179, 8, 0.22));
-      animation: liquid-splash 26s ease-in-out infinite;
-      filter: blur(30px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-4 {
-      position: absolute;
-      width: 350px;
-      height: 350px;
-      background: linear-gradient(315deg, rgba(217, 119, 6, 0.18), rgba(107, 114, 128, 0.18));
-      animation: liquid-ripple 6s ease-in-out infinite;
-      filter: blur(40px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-5 {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
-      animation: liquid-flow-2 32s ease-in-out infinite reverse;
-      filter: blur(25px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-6 {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      background: linear-gradient(180deg, rgba(107, 114, 128, 0.12), rgba(217, 119, 6, 0.12));
-      animation: liquid-flow-3 38s ease-in-out infinite;
-      filter: blur(55px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-7 {
-      position: absolute;
-      width: 180px;
-      height: 180px;
-      background: linear-gradient(45deg, rgba(107, 114, 128, 0.24), rgba(245, 158, 11, 0.24));
-      animation: liquid-wave 20s ease-in-out infinite;
-      filter: blur(20px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-8 {
-      position: absolute;
-      width: 320px;
-      height: 320px;
-      background: linear-gradient(270deg, rgba(217, 119, 6, 0.16), rgba(107, 114, 128, 0.16));
-      animation: liquid-splash 14s ease-in-out infinite;
-      filter: blur(50px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-9 {
-      position: absolute;
-      width: 280px;
-      height: 280px;
-      background: linear-gradient(120deg, rgba(239, 68, 68, 0.19), rgba(217, 119, 6, 0.19));
-      animation: liquid-ripple 10s ease-in-out infinite;
-      filter: blur(35px);
-      z-index: 1;
-    }
-    
-    .liquid-blob-10 {
-      position: absolute;
-      width: 450px;
-      height: 450px;
-      background: linear-gradient(60deg, rgba(107, 114, 128, 0.1), rgba(245, 158, 11, 0.1));
-      animation: liquid-flow-1 42s ease-in-out infinite;
-      filter: blur(65px);
-      z-index: 1;
-    }
-    
-    /* Enhanced hover effects */
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .card-hover:hover {
-      transform: translateY(-8px) scale(1.02);
-    }
-    
-    /* Gradient text animation */
-    .gradient-text-animate {
-      background-size: 200% 200%;
-      animation: gradient-shift 3s ease infinite;
-    }
-    
-    @keyframes gradient-shift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+    .stat-value { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
+    .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; letter-spacing: .05em; text-transform: uppercase; }
 
-    /* Performance: reduce animations on low-power devices */
-    @media (prefers-reduced-motion: reduce) {
-      .animate-float,
-      .animate-glow,
-      .animate-pulse-glow,
-      .gradient-text-animate,
-      .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
-      .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
-      .liquid-blob-9, .liquid-blob-10 {
-        animation: none !important;
-      }
+    .spotlight {
+      background: linear-gradient(180deg, var(--bg-elev), #000);
+      border: 1px solid var(--text);
+      border-radius: 22px;
+      padding: 48px;
+      text-align: center;
     }
-
-    /* Mobile: simplify visuals and disable heavy effects */
-    @media (max-width: 640px) {
-      /* Hide decorative background blobs entirely */
-      .liquid-blob-1, .liquid-blob-2, .liquid-blob-3, .liquid-blob-4,
-      .liquid-blob-5, .liquid-blob-6, .liquid-blob-7, .liquid-blob-8,
-      .liquid-blob-9, .liquid-blob-10 {
-        display: none !important;
-      }
-
-      /* Remove expensive blur on cards */
-      .backdrop-blur-xl, .backdrop-blur-lg, .backdrop-blur-md {
-        backdrop-filter: none !important;
-        filter: none !important;
-      }
-
-      /* Neutralize hover transitions on mobile */
-      .group:hover {
-        transform: none !important;
-        filter: none !important;
-        box-shadow: none !important;
-      }
+    @media (max-width: 720px) { .spotlight { padding: 28px; } }
+    .tier-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 24px 0 28px; }
+    .tier-pill {
+      padding: 8px 16px; border-radius: 999px;
+      background: var(--bg); border: 1px solid var(--border-strong);
+      font-size: 13px; font-weight: 600;
     }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-gray-100" x-data="app()" x-init="init()">
-  <!-- BEGIN: Site Content -->
-  <!-- Enhanced Liquid Flowy Background -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none hidden sm:block" style="z-index: 0;">
-    <div class="liquid-blob-1" style="top: 10%; left: 10%;"></div>
-    <div class="liquid-blob-2" style="top: 20%; right: 15%;"></div>
-    <div class="liquid-blob-3" style="top: 60%; left: 5%;"></div>
-    <div class="liquid-blob-4" style="top: 40%; right: 5%;"></div>
-    <div class="liquid-blob-5" style="top: 80%; left: 20%;"></div>
-    <div class="liquid-blob-6" style="top: 30%; left: 50%;"></div>
-    <div class="liquid-blob-7" style="top: 15%; left: 70%;"></div>
-    <div class="liquid-blob-8" style="top: 70%; right: 25%;"></div>
-    <div class="liquid-blob-9" style="top: 50%; left: 30%;"></div>
-    <div class="liquid-blob-10" style="top: 85%; right: 10%;"></div>
-    
-    <!-- Additional liquid blobs for more fluidity -->
-    <div class="liquid-blob-1" style="top: 5%; left: 80%; animation-delay: -5s;"></div>
-    <div class="liquid-blob-2" style="top: 75%; left: 60%; animation-delay: -8s;"></div>
-    <div class="liquid-blob-3" style="top: 25%; left: 85%; animation-delay: -12s;"></div>
-    <div class="liquid-blob-4" style="top: 90%; left: 40%; animation-delay: -3s;"></div>
-    <div class="liquid-blob-5" style="top: 45%; left: 15%; animation-delay: -7s;"></div>
-  </div>
-  <!-- END: Enhanced Liquid Flowy Background -->
-  
-  <!-- Header -->
-  <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-extrabold tracking-wide">
-        <a href="/" class="flex items-center space-x-3">
-          <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-10 w-10 object-contain" />
-          <span>1CoastMedia</span>
-        </a>
-      </h1>
-      <!-- Optional inline cart button in the header -->
-      <div class="flex items-center gap-3">
-        <a href="/offer-comparison" class="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20">Compare Offers</a>
-        <button @click="cartOpen = !cartOpen" class="relative px-4 py-2 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-          Cart (<span x-text="cartCount()"></span>)
-        </button>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" x-data="{ menuOpen: false }">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia" />
+        <span>1CoastMedia</span>
+      </a>
+      <div class="nav-links">
+        <a href="/services">Services</a>
+        <a href="/growth-machine">Growth Machine</a>
+        <a href="/enterprise-solutions">Enterprise</a>
+        <a href="/offer-comparison">Compare</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="nav-cta">Book a call</a>
       </div>
+      <button class="nav-toggle" @click="menuOpen = !menuOpen">Menu</button>
+      <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/growth-machine">Growth Machine</a>
+        <a href="/enterprise-solutions">Enterprise Solutions</a>
+        <a href="/offer-comparison">Compare Offers</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank">Book a call</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <span class="hero-eyebrow">Enterprise Solutions · 15 Years Proven</span>
+    <h1>Built for the Coast. Made for real results.</h1>
+    <p class="hero-sub">Most agencies sell you the same playbook. 1CoastMedia is different — a full-scale creative and media powerhouse built on 15 years of turning brands into cultural forces.</p>
+    <div class="hero-ctas">
+      <a href="/growth-machine" class="btn btn-primary btn-lg">Explore Growth Machine →</a>
+      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-ghost btn-lg">Book a partnership call</a>
     </div>
   </header>
 
-  <!-- Clean URL: replace .html with /enterprise-solutions if present -->
-  <script>
-    if (location.pathname.endsWith('/enterprise-solutions.html')) {
-      history.replaceState(null, '', '/enterprise-solutions');
-    }
-  </script>
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>15 years proven.</span><span class="dot">•</span>
+      <span>Full spectrum.</span><span class="dot">•</span>
+      <span>Cities. Chambers. Casinos.</span><span class="dot">•</span>
+      <span>One partner, total accountability.</span><span class="dot">•</span>
+      <span>15 years proven.</span><span class="dot">•</span>
+      <span>Full spectrum.</span><span class="dot">•</span>
+      <span>Cities. Chambers. Casinos.</span><span class="dot">•</span>
+      <span>One partner, total accountability.</span><span class="dot">•</span>
+    </div>
+  </div>
 
-  <!-- Spacer to offset fixed header -->
-  <div class="pt-20 relative z-10"></div>
-
-  <!-- Hero Section -->
-  <section class="max-w-7xl mx-auto px-4 py-20 text-center space-y-8 relative overflow-hidden">
-    <!-- Floating background elements -->
-    <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-500/10 rounded-full blur-xl animate-float"></div>
-    <div class="absolute top-20 right-20 w-16 h-16 bg-gray-400/10 rounded-full blur-xl animate-float" style="animation-delay: 1s;"></div>
-    <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-amber-500/10 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
-    
-    <div class="relative z-10 space-y-8">
-      <!-- Main heading with enhanced typography -->
-      <div class="space-y-6">
-        <h2 class="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-200 bg-clip-text text-transparent gradient-text-animate">
-          1CoastMedia: Built for the Coast. Made for Real Results.
-        </h2>
-        <div class="w-32 h-1 bg-gradient-to-r from-yellow-300 to-amber-400 mx-auto rounded-full animate-pulse"></div>
+  <!-- Trust Stats -->
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><div class="stat-value">3–7 day</div><div class="stat-label">Website turnarounds</div></div>
+        <div class="stat"><div class="stat-value">30k+</div><div class="stat-label">UGC views per campaign</div></div>
+        <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Upfront pricing clarity</div></div>
       </div>
-      
-      <!-- Enhanced subtitle -->
-      <p class="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-        Most agencies sell you the same playbook everyone else is using. <span class="font-semibold text-white">1CoastMedia is different</span>—we're a full-scale creative and media powerhouse built on <span class="text-yellow-300 font-bold">15 years of proven experience</span> turning brands into cultural forces.
-      </p>
-      
-      <!-- Enhanced CTA buttons -->
-      <div class="flex justify-center mt-8">
-        <a href="./growth-machine" class="group relative px-10 py-6 rounded-3xl bg-gradient-to-r from-yellow-600 via-amber-600 to-red-600 text-black font-bold text-xl shadow-2xl hover:shadow-yellow-500/40 transition-all duration-300 hover:scale-110 overflow-hidden border-2 border-yellow-400/50">
-          <span class="relative z-10 flex items-center gap-4">
-            <span class="text-3xl group-hover:scale-110 transition-transform duration-300">🚀</span>
-            <span>Growth Machine</span>
-            <span class="group-hover:translate-x-2 transition-transform duration-300 text-2xl">→</span>
-          </span>
-          <div class="absolute inset-0 bg-gradient-to-r from-yellow-700 via-amber-700 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Prominent Logo Section -->
-  <section class="py-16 relative z-10">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="mb-8">
-        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia Logo" class="h-64 w-64 mx-auto object-contain drop-shadow-2xl animate-float" />
-      </div>
-      <h3 class="text-3xl font-bold text-white mb-4">Your Gulf Coast Growth Partner</h3>
-      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
-        Where creativity meets strategy, and brands become cultural forces.
-      </p>
-    </div>
-  </section>
-
-  <!-- Trust / Proof Strip -->
-  <section class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-    <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
-      <div class="text-2xl font-bold">3–7 day</div>
-      <div class="text-sm text-gray-400">website turnarounds</div>
-    </div>
-    <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
-      <div class="text-2xl font-bold">30k+</div>
-      <div class="text-sm text-gray-400">UGC views per campaign</div>
-    </div>
-    <div class="p-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/20">
-      <div class="text-2xl font-bold">100%</div>
-      <div class="text-sm text-gray-400">upfront pricing clarity</div>
     </div>
   </section>
 
   <!-- What Sets Us Apart -->
-  <section class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">What Sets Us Apart</h3>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-gray-600/0 to-amber-600/0 group-hover:from-yellow-600/10 group-hover:via-gray-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">⭐</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">Real Experience, Real Results</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">Fifteen years building brands that matter. Ten of those at the highest level of entertainment, working alongside global superstars, A-list talent, and culture-defining influencers. We've cracked the code on what makes audiences obsess, engage, and convert—on every scale from local to worldwide.</p>
-          <div class="mt-6 flex items-center text-sm text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>15+ years proven</span>
-          </div>
-        </div>
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">The difference</div>
+        <h2 class="section-title">What sets us apart.</h2>
       </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-gray-400/20 hover:border-gray-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-gray-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-gray-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">🌊</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-gray-300 to-yellow-400 bg-clip-text text-transparent">The Gulf Coast Advantage</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">You get world-class strategy and execution with deep local understanding. We know this market, this culture, and what resonates here. But we also know how to scale beyond these borders when you're ready.</p>
-          <div class="mt-6 flex items-center text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Local + Global reach</span>
-          </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-eyebrow">Experience</div>
+          <h3>Real experience, real results.</h3>
+          <p>Fifteen years building brands that matter — ten of those at the highest level of entertainment, alongside global superstars and culture-defining influencers. We've cracked the code on what makes audiences obsess, engage, and convert.</p>
         </div>
-      </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 via-gray-500/10 to-yellow-500/10 backdrop-blur-xl border border-amber-400/20 hover:border-amber-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-amber-600/0 via-gray-600/0 to-yellow-600/0 group-hover:from-amber-600/10 group-hover:via-gray-600/10 group-hover:to-yellow-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">🚀</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent">Full-Spectrum Creative Power</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">Strategy, content creation, campaign execution, event production, brand development—everything under one roof. No juggling vendors, no mixed messages, no excuses. One partner, total accountability.</p>
-          <div class="mt-6 flex items-center text-sm text-amber-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>One partner, everything</span>
-          </div>
+        <div class="card">
+          <div class="card-eyebrow">Geography</div>
+          <h3>The Gulf Coast advantage.</h3>
+          <p>World-class strategy and execution with deep local understanding. We know this market, this culture, and what resonates here — and how to scale beyond when you're ready.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Scope</div>
+          <h3>Full-spectrum creative power.</h3>
+          <p>Strategy, content, campaign execution, event production, brand development — everything under one roof. No juggling vendors. No mixed messages. One partner. Total accountability.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How We Transform Businesses -->
-  <section class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">How We Transform Businesses</h3>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-red-400/20 hover:border-red-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-red-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-red-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-amber-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">✨</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-red-400 to-amber-400 bg-clip-text text-transparent">Brand Alchemy</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">We don't just design logos—we architect experiences. Every touchpoint, every interaction, every piece of content works together to create something people can't ignore and won't forget.</p>
-          <div class="mt-6 flex items-center text-sm text-red-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Experience architecture</span>
-          </div>
-        </div>
+  <!-- How We Transform -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Our method</div>
+        <h2 class="section-title">How we transform businesses.</h2>
       </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-gray-400/20 hover:border-gray-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-gray-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-gray-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">🎯</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-gray-300 to-yellow-400 bg-clip-text text-transparent">Content That Cuts Through</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">In a world drowning in noise, we create signal. Short-form video that stops the scroll. Visuals that demand attention. Copy that moves people to action. Every piece engineered for maximum impact.</p>
-          <div class="mt-6 flex items-center text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Signal over noise</span>
-          </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-eyebrow">01 · Brand</div>
+          <h3>Brand alchemy.</h3>
+          <p>We don't just design logos — we architect experiences. Every touchpoint, every interaction, every piece of content works together to create something people can't ignore and won't forget.</p>
         </div>
-      </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-red-500/10 to-amber-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-red-600/0 to-amber-600/0 group-hover:from-yellow-600/10 group-hover:via-red-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-600 to-red-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">🎉</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-yellow-400 to-red-400 bg-clip-text text-transparent">Events That Build Empires</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">Launch parties become legendary. Grand openings turn into local phenomena. We design experiences that create genuine buzz, foster real connections, and generate immediate revenue.</p>
-          <div class="mt-6 flex items-center text-sm text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Legendary experiences</span>
-          </div>
+        <div class="card">
+          <div class="card-eyebrow">02 · Content</div>
+          <h3>Content that cuts through.</h3>
+          <p>In a world drowning in noise, we create signal. Short-form that stops the scroll. Visuals that demand attention. Copy that moves people to action. Every piece engineered for impact.</p>
         </div>
-      </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 via-red-500/10 to-amber-500/10 backdrop-blur-xl border border-gray-400/20 hover:border-gray-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-gray-600/0 via-red-600/0 to-amber-600/0 group-hover:from-gray-600/10 group-hover:via-red-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-600 to-red-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">📖</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-gray-300 to-red-400 bg-clip-text text-transparent">Storytelling as Strategy</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">The brands that win don't just sell products—they sell identity, belonging, and transformation. We craft narratives that turn customers into evangelists and transactions into relationships.</p>
-          <div class="mt-6 flex items-center text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Narrative power</span>
-          </div>
+        <div class="card">
+          <div class="card-eyebrow">03 · Events</div>
+          <h3>Events that build empires.</h3>
+          <p>Launch parties become legendary. Grand openings turn into local phenomena. We design experiences that create genuine buzz, foster real connections, and generate immediate revenue.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">04 · Story</div>
+          <h3>Storytelling as strategy.</h3>
+          <p>The brands that win don't just sell products — they sell identity, belonging, and transformation. We craft narratives that turn customers into evangelists.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- The 1CoastMedia Promise -->
-  <section class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">The 1CoastMedia Promise</h3>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/10 via-amber-500/10 to-red-500/10 backdrop-blur-xl border border-yellow-400/20 hover:border-yellow-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-yellow-600/0 via-amber-600/0 to-red-600/0 group-hover:from-yellow-600/10 group-hover:via-amber-600/10 group-hover:to-red-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">🎨</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">No Templated Solutions</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">Your business is unique. Your strategy should be too. Every campaign, every creative brief, every execution is built specifically for your goals, your audience, your vision.</p>
-          <div class="mt-6 flex items-center text-sm text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>100% custom</span>
-          </div>
-        </div>
+  <!-- The Promise -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Why clients stay</div>
+        <h2 class="section-title">The 1CoastMedia promise.</h2>
       </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-gray-400/20 hover:border-gray-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-gray-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-gray-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">💬</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-gray-300 to-yellow-400 bg-clip-text text-transparent">Direct Access, Always</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">You work directly with decision-makers. No account coordinators reading from scripts. No layers of bureaucracy. Just straight talk, creative collaboration, and immediate action.</p>
-          <div class="mt-6 flex items-center text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Direct to decision-makers</span>
-          </div>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-num">01</div>
+          <h4>No templated solutions.</h4>
+          <p>Your business is unique. Every campaign, creative brief, and execution is built specifically for your goals, your audience, your vision.</p>
         </div>
-      </div>
-      
-      <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/10 via-yellow-500/10 to-amber-500/10 backdrop-blur-xl border border-red-400/20 hover:border-red-400/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
-        <div class="absolute inset-0 bg-gradient-to-r from-red-600/0 via-yellow-600/0 to-amber-600/0 group-hover:from-red-600/10 group-hover:via-yellow-600/10 group-hover:to-amber-600/10 transition-all duration-700"></div>
-        <div class="relative p-8">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-yellow-700 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-              <span class="text-2xl">🎯</span>
-            </div>
-            <h4 class="text-xl font-bold bg-gradient-to-r from-red-400 to-yellow-400 bg-clip-text text-transparent">Results-Driven Partnership</h4>
-          </div>
-          <p class="text-gray-300 leading-relaxed">We succeed when you succeed. If something isn't working, we fix it fast. If targets aren't met, we keep working until they are. Fifteen years in business, zero unhappy clients walking away.</p>
-          <div class="mt-6 flex items-center text-sm text-red-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span class="mr-2">→</span>
-            <span>Zero unhappy clients</span>
-          </div>
+        <div class="feature">
+          <div class="feature-num">02</div>
+          <h4>Direct access, always.</h4>
+          <p>You work directly with decision-makers. No account coordinators reading scripts. Straight talk, creative collaboration, immediate action.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-num">03</div>
+          <h4>Results-driven partnership.</h4>
+          <p>We succeed when you succeed. Fifteen years in business. Zero unhappy clients walking away.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Signature Offers -->
-  <section class="max-w-7xl mx-auto px-4 py-12 space-y-6">
-    <h3 class="text-3xl font-bold text-center bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">Our Service Ecosystem</h3>
-    
-    <!-- Growth Machine Highlight -->
-    <div class="text-center mb-8">
-      <div class="inline-block p-8 rounded-3xl bg-gradient-to-r from-yellow-900/30 via-amber-900/30 to-red-900/30 backdrop-blur-xl border-2 border-yellow-500/50 max-w-5xl shadow-2xl hover:shadow-yellow-500/20 transition-all duration-300 hover:scale-105">
-        <h4 class="text-3xl font-bold mb-4 bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent">🚀 All Inclusive Growth Machine</h4>
-        <p class="text-gray-200 mb-6 text-lg">The definitive engine for revenue revolution. Choose your tier and watch objections dissolve.</p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
-          <span class="px-4 py-2 bg-gradient-to-r from-yellow-600 to-amber-600 text-black text-sm font-semibold rounded-full shadow-lg">Growth Starter: $4,500/mo</span>
-          <span class="px-4 py-2 bg-gradient-to-r from-gray-600 to-slate-600 text-white text-sm font-semibold rounded-full shadow-lg">Growth Machine: $6,500/mo</span>
-          <span class="px-4 py-2 bg-gradient-to-r from-red-600 to-amber-600 text-white text-sm font-semibold rounded-full shadow-lg">Growth Accelerator: $9,000/mo</span>
-        </div>
-        <a href="./growth-machine" class="group inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-yellow-600 via-amber-600 to-red-600 text-black font-bold text-lg shadow-xl hover:shadow-yellow-500/30 transition-all duration-300 hover:scale-105">
-          <span class="flex items-center gap-3">
-            <span>Explore Growth Machine</span>
-            <span class="group-hover:translate-x-2 transition-transform duration-300 text-xl">→</span>
-          </span>
-        </a>
+  <!-- Service Ecosystem — Growth Machine spotlight -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Our ecosystem</div>
+        <h2 class="section-title">The service ecosystem.</h2>
       </div>
-        </div>
 
-    <!-- The 1 Coast Economic Impact Initiative (Enterprise) -->
-    <div class="max-w-5xl mx-auto mb-10">
-      <div class="group card-hover relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br from-gray-500/10 via-yellow-500/10 to-red-500/10 backdrop-blur-xl border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20">
-        <div class="relative space-y-3" x-data="{ open: false }">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-700 flex items-center justify-center">
-              <span class="text-2xl">🌊</span>
-            </div>
-            <h4 class="text-xl font-bold">The 1 Coast Economic Impact Initiative</h4>
-          </div>
-          <p class="text-gray-300 italic">“Growing the Mississippi Gulf Coast Together.”</p>
-          <div class="text-sm text-gray-300">Price Tiers: <span class="font-semibold text-yellow-300">$5,000 • $12,000 • $25,000 • $50,000 per month</span></div>
-          <ul class="space-y-1 text-gray-200">
+      <div class="spotlight">
+        <div class="card-eyebrow">Flagship program</div>
+        <h3 style="font-size:clamp(28px,4vw,44px); font-weight:800; letter-spacing:-0.02em; margin:8px 0 14px; text-transform:uppercase;">All-Inclusive Growth Machine</h3>
+        <p class="muted" style="max-width:60ch; margin:0 auto; font-size:17px; line-height:1.5;">The definitive engine for revenue revolution. Choose your tier and watch objections dissolve.</p>
+        <div class="tier-pills">
+          <span class="tier-pill">Starter · $4,500 / mo</span>
+          <span class="tier-pill">Machine · $6,500 / mo</span>
+          <span class="tier-pill">Accelerator · $9,000 / mo</span>
+        </div>
+        <a href="/growth-machine" class="btn btn-primary btn-lg">Explore Growth Machine →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 Coast Economic Impact Initiative -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">For cities, chambers, tourism boards</div>
+        <h2 class="section-title">The 1 Coast Economic Impact Initiative.</h2>
+        <p class="section-sub">Growing the Mississippi Gulf Coast together — through coordinated UGC, business spotlights, tourism videos, and creator networks.</p>
+      </div>
+
+      <div class="grid grid-2" x-data="{ open: false }">
+        <article class="card card-featured">
+          <div class="card-eyebrow">Partnership Program</div>
+          <h3>Regional Growth Engine</h3>
+          <p><em>"Growing the Mississippi Gulf Coast Together."</em></p>
+          <ul>
             <li>Coast-wide monthly UGC campaigns</li>
             <li>10–20 business spotlights per month</li>
             <li>Quarterly cinematic tourism videos</li>
@@ -836,306 +236,180 @@
             <li>Cross-city collaboration</li>
             <li>Tourism + economic impact reporting</li>
           </ul>
-          <div class="text-xs text-gray-400">Audience: Cities, counties, tourism boards, chambers, casinos, foundations, economic development organizations.</div>
-          <button @click="open = !open" class="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm">More info</button>
-          <div x-show="open" x-transition class="mt-4 space-y-4 bg-white/5 border border-white/10 rounded-xl p-4 text-gray-200">
-            <h5 class="font-semibold">What You Get</h5>
-            <p class="font-medium">Monthly Coast-Wide UGC Campaigns</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Guaranteed view delivery via your UGC budget (city‑funded or sponsor‑funded)</li>
-              <li>20–50 creator videos per month (varies by tier)</li>
-              <li>Creator distribution across multiple cities</li>
-              <li>Full management, content briefs, and scheduling</li>
-            </ul>
-            <p class="font-medium">10–20 Business Spotlights per Month</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Rotating spotlights for restaurants, boutiques, local makers, attractions, and services</li>
-              <li>1 short UGC‑style video per spotlight with cross‑posting and collaboration</li>
-            </ul>
-            <p class="font-medium">Quarterly Professional Tourism Videos</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Full creative direction, multi‑location filming, drone footage</li>
-              <li>Editing + color grading with regional distribution</li>
-            </ul>
-            <p class="font-medium">Seasonal Campaigns</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Restaurant Week, Coast‑Wide Holiday Events, Summer Kickoff, Spring Break Coast</li>
-              <li>Family Adventure Month, Arts & Culture Spotlight</li>
-              <li>UGC bursts, creator takeovers, paid boosts (optional), local business promotions</li>
-            </ul>
-            <p class="font-medium">Creator Network Development</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Training, paid opportunities, community building</li>
-            </ul>
-            <p class="font-medium">Cross-City Visibility Initiatives</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>One Coast cooperation through shared storytelling</li>
-            </ul>
-            <p class="font-medium">Monthly + Quarterly Impact Reports</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Total reach across creators and impressions per city</li>
-              <li>Economic uplift indicators and business spotlight performance</li>
-              <li>Tourism video distribution metrics and YoY growth snapshots</li>
-            </ul>
-            <h5 class="font-semibold">Pricing Tiers</h5>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Single City — $5,000/month</li>
-              <li>Multi‑City Regional — $12,000/month</li>
-              <li>Full Coast Initiative — $25,000/month</li>
-              <li>Complete Tourism & Economic Engine — $50,000/month</li>
-            </ul>
-            <h5 class="font-semibold">Optional Add-Ons</h5>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>UGC Mega‑Burst campaigns (custom budget)</li>
-              <li>Event Recap Video — $950</li>
-              <li>Quarterly Creator Summit — $1,200</li>
-              <li>Paid Boost Management — $500/month</li>
-            </ul>
-            <h5 class="font-semibold">Workflow</h5>
-            <ol class="list-decimal pl-5 space-y-1">
-              <li>Monthly strategy planning</li>
-              <li>Creator activation</li>
-              <li>Spotlight production</li>
-              <li>Tourism storyboarding</li>
-              <li>Distribution and reporting</li>
-            </ol>
-            <h5 class="font-semibold">Pricing</h5>
-            <p>$5,000–$50,000/month</p>
+          <p class="muted mt-6" style="font-size:13px">For: Cities · Counties · Tourism Boards · Chambers · Casinos · Foundations · Economic Development Orgs.</p>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Request partnership deck</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide details' : 'Full details →'"></span>
+            </button>
           </div>
-          <div class="pt-3 border-t border-white/10 flex flex-wrap gap-3">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-yellow-500 text-black font-bold hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">Request Partnership Deck</a>
-            <a href="tel:+12283571897" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-500 text-black font-bold hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">Talk to Blake</a>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">Monthly Coast-Wide UGC.</strong> Guaranteed view delivery via your UGC budget (city- or sponsor-funded). 20–50 creator videos/mo, multi-city distribution, full management.</p>
+            <p><strong style="color:var(--text)">10–20 Business Spotlights.</strong> Rotating spotlights for restaurants, boutiques, makers, attractions, services. 1 short UGC-style video per spotlight with cross-posting.</p>
+            <p><strong style="color:var(--text)">Quarterly Tourism Videos.</strong> Full creative direction, multi-location filming, drone footage, editing, regional distribution.</p>
+            <p><strong style="color:var(--text)">Seasonal Campaigns.</strong> Restaurant Week, Coast-Wide Holiday, Summer Kickoff, Spring Break Coast, Family Adventure Month, Arts & Culture Spotlight.</p>
+            <p><strong style="color:var(--text)">Creator Network.</strong> Training, paid opportunities, community building.</p>
+            <p><strong style="color:var(--text)">Impact Reports.</strong> Monthly + quarterly reports on reach, economic uplift indicators, spotlight performance, tourism distribution, YoY growth.</p>
+            <p><strong style="color:var(--text)">Optional add-ons:</strong> UGC Mega-Burst (custom), Event Recap Video ($950), Quarterly Creator Summit ($1,200), Paid Boost Management ($500/mo).</p>
           </div>
-        </div>
-      </div>
-    </div>
+        </article>
 
-    <!-- Service Categories Overview -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-      <div class="text-center p-6 rounded-2xl bg-gradient-to-r from-yellow-900/20 to-amber-900/20 backdrop-blur-lg border border-yellow-500/30">
-        <div class="text-4xl mb-3">🚀</div>
-        <h4 class="text-xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">Launches</h4>
-        <p class="text-gray-300 text-sm">One-time projects to get your business off the ground fast</p>
-      </div>
-      
-      <div class="text-center p-6 rounded-2xl bg-gradient-to-r from-gray-900/20 to-slate-900/20 backdrop-blur-lg border border-gray-500/30">
-        <div class="text-4xl mb-3">⚙️</div>
-        <h4 class="text-xl font-bold mb-2 bg-gradient-to-r from-gray-300 to-slate-400 bg-clip-text text-transparent">Engines</h4>
-        <p class="text-gray-300 text-sm">Monthly services to keep your business running smoothly</p>
-      </div>
-      
-      <div class="text-center p-6 rounded-2xl bg-gradient-to-r from-red-900/20 to-amber-900/20 backdrop-blur-lg border border-red-500/30">
-        <div class="text-4xl mb-3">⚡</div>
-        <h4 class="text-xl font-bold mb-2 bg-gradient-to-r from-red-400 to-amber-400 bg-clip-text text-transparent">Boosts</h4>
-        <p class="text-gray-300 text-sm">Add-ons to enhance existing services when you need them</p>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Why Now? Why Us? -->
-  <section class="max-w-7xl mx-auto px-4 py-16 space-y-8">
-    <div class="text-center mb-12">
-      <h3 class="text-4xl font-bold bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent mb-4">Why Now? Why Us?</h3>
-      <div class="w-24 h-1 bg-gradient-to-r from-yellow-300 to-red-400 mx-auto rounded-full"></div>
-    </div>
-    
-    <div class="relative">
-      <!-- Background decorative elements -->
-      <div class="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-amber-500/5 to-red-500/5 rounded-3xl"></div>
-      <div class="absolute top-0 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
-      <div class="absolute bottom-0 right-1/4 w-40 h-40 bg-red-400/10 rounded-full blur-3xl"></div>
-      
-      <div class="relative max-w-5xl mx-auto p-12 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/20">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-          <!-- Left column -->
-          <div class="text-center lg:text-left">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center mx-auto lg:mx-0 mb-4">
-              <span class="text-3xl">⚡</span>
-            </div>
-            <h4 class="text-xl font-bold text-yellow-300 mb-3">The Gulf Coast Moment</h4>
-            <p class="text-gray-300">New energy, new opportunities, new money flowing in. But too many local businesses are still marketing like it's 2010—competing on price instead of value, blending in instead of standing out.</p>
-          </div>
-          
-          <!-- Center column -->
-          <div class="text-center">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-600 to-red-700 flex items-center justify-center mx-auto mb-4">
-              <span class="text-3xl">🎯</span>
-            </div>
-            <h4 class="text-xl font-bold text-gray-300 mb-3">15+ Years of Learning</h4>
-            <p class="text-gray-300">We've spent over a decade learning what separates the winners from everyone else. We've seen brands go from unknown to unavoidable.</p>
-          </div>
-          
-          <!-- Right column -->
-          <div class="text-center lg:text-right">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-amber-700 flex items-center justify-center mx-auto lg:mx-0 mb-4">
-              <span class="text-3xl">🚀</span>
-            </div>
-            <h4 class="text-xl font-bold text-red-300 mb-3">Ready for Transformation?</h4>
-            <p class="text-gray-300 font-semibold">The question isn't whether we can deliver results—it's whether you're ready for what happens when your business becomes the one everyone's talking about.</p>
-      </div>
-      </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Ready to Own Your Market? -->
-  <section class="max-w-7xl mx-auto px-4 py-20 space-y-8">
-    <div class="relative">
-      <!-- Animated background elements -->
-      <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-amber-500/10 to-red-500/10 rounded-3xl"></div>
-      <div class="absolute top-0 left-0 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute bottom-0 right-0 w-80 h-80 bg-red-400/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-      
-      <div class="relative text-center p-16 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/20">
-        <div class="max-w-4xl mx-auto space-y-8">
-          <!-- Main heading with animated underline -->
-          <div class="space-y-4">
-            <h3 class="text-5xl font-bold bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent">Ready to Own Your Market?</h3>
-            <div class="w-32 h-1 bg-gradient-to-r from-yellow-300 to-red-400 mx-auto rounded-full animate-pulse"></div>
-          </div>
-          
-          <!-- Content with enhanced typography -->
-          <div class="space-y-6 text-lg">
-            <p class="text-gray-300 leading-relaxed">Stop settling for marketing that's merely adequate. Stop accepting agencies that treat you like a number.</p>
-            <p class="text-gray-300 leading-relaxed">If you're ready to build a brand that dominates, creates genuine connection, and drives real revenue—let's talk.</p>
-            <p class="text-xl text-gray-200 font-semibold bg-gradient-to-r from-yellow-300 to-amber-300 bg-clip-text text-transparent">This is about more than marketing. It's about claiming your place as a Gulf Coast success story.</p>
-          </div>
-          
-          <!-- Enhanced CTA button -->
-        <div class="pt-6">
-          <a href="./growth-machine"
-             class="inline-flex items-center gap-3 px-10 py-4 rounded-2xl bg-gradient-to-r from-yellow-600 via-amber-600 to-red-600 text-black font-bold text-lg shadow-2xl hover:opacity-90 hover:scale-105 transition-transform duration-300">
-            <span class="text-2xl">🚀</span>
-            <span>Growth Machine</span>
-            <span class="text-2xl">→</span>
-          </a>
-        </div>
+        <div class="grid" style="grid-template-columns:1fr; gap:16px">
+          <article class="card">
+            <div class="card-eyebrow">Tier 01 · Single City</div>
+            <h3>Single City</h3>
+            <p>Focused engagement for one municipality or chamber.</p>
+            <div class="card-price">$5,000<small> / month</small></div>
+          </article>
+          <article class="card">
+            <div class="card-eyebrow">Tier 02 · Multi-City</div>
+            <h3>Multi-City Regional</h3>
+            <p>Coordinated campaigns across multiple Coast cities.</p>
+            <div class="card-price">$12,000<small> / month</small></div>
+          </article>
+          <article class="card">
+            <div class="card-eyebrow">Tier 03 · Full Coast</div>
+            <h3>Full Coast Initiative</h3>
+            <p>Complete Coast-wide presence and reporting.</p>
+            <div class="card-price">$25,000<small> / month</small></div>
+          </article>
+          <article class="card">
+            <div class="card-eyebrow">Tier 04 · Complete Engine</div>
+            <h3>Tourism & Economic Engine</h3>
+            <p>The full regional growth + tourism machine.</p>
+            <div class="card-price">$50,000<small> / month</small></div>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Calendly CTA -->
-  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-4">
-    <h3 class="text-3xl font-bold">Book a Free 30‑Minute Call</h3>
-    <p class="text-gray-300">Have questions or need guidance? Let's talk.</p>
-    <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-medium shadow-lg hover:opacity-90">Book a Call</a>
-  </section>
-
-
-
-  <!-- Call Now CTA (below services) -->
-  <section class="max-w-7xl mx-auto px-4 py-10 text-center">
-    <a href="tel:+12283571897"
-       class="inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-black font-bold shadow-2xl hover:opacity-90">
-      CALL NOW FOR A FREE CONSULTATION
-    </a>
-    <p class="mt-2 text-sm text-gray-400">Or dial (228) 357-1897</p>
-  </section>
-
-  <!-- Cart Sidebar -->
-  <div class="fixed top-0 right-0 w-80 max-w-full h-full bg-gray-900/95 backdrop-blur-lg shadow-xl z-50 transform transition-transform duration-300 flex flex-col"
-       :class="cartOpen ? 'translate-x-0' : 'translate-x-full'">
-    <div class="p-4 border-b border-white/20 flex justify-between items-center">
-      <h2 class="text-lg font-bold">Your Cart</h2>
-      <button @click="cartOpen = false" class="text-gray-400 text-2xl leading-none hover:text-gray-200">&times;</button>
+  <!-- Service Categories Overview -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Three flavors of engagement</div>
+        <h2 class="section-title">Launches. Engines. Boosts.</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-eyebrow">One-time</div>
+          <h3>Launches</h3>
+          <p>One-time projects to get your business off the ground fast.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Monthly</div>
+          <h3>Engines</h3>
+          <p>Monthly services to keep your business running smoothly.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Add-on</div>
+          <h3>Boosts</h3>
+          <p>Add-ons to enhance existing services when you need them.</p>
+        </div>
+      </div>
     </div>
-    <div class="flex-1 p-4 overflow-y-auto">
-      <div x-show="cartServices.length === 0" class="text-gray-400 text-sm">Your cart is empty.</div>
-      <template x-for="svcKey in cartServices" :key="svcKey">
-        <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-          <div>
-            <div class="font-semibold" x-text="getServiceByKey(svcKey)?.name"></div>
-            <div class="text-xs text-gray-400" x-text="getServiceByKey(svcKey)?.outcome"></div>
+  </section>
+
+  <!-- Why Now Why Us -->
+  <section class="section">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <div class="section-eyebrow">Why Now. Why Us.</div>
+          <h2>The Gulf Coast is moving. Are you?</h2>
+          <p>New energy. New opportunities. New money flowing in. But too many local businesses are still marketing like it's 2010.</p>
+          <p>We've spent 15+ years learning what separates winners from everyone else. We've seen brands go from unknown to unavoidable.</p>
+        </div>
+        <div class="features" style="grid-template-columns:1fr">
+          <div class="feature">
+            <div class="feature-num">The moment</div>
+            <p>Post-2020 growth on the Coast is real. Outside capital is arriving. The window to position is now.</p>
           </div>
-          <div class="text-right">
-            <div class="font-semibold">
-              <span x-show="getServiceByKey(svcKey)?.price && getServiceByKey(svcKey)?.price.oneTime && getServiceByKey(svcKey).price.oneTime > 0" x-text="fmtUSD(getServiceByKey(svcKey).price.oneTime)"></span>
-              <span x-show="(!getServiceByKey(svcKey)?.price.oneTime || getServiceByKey(svcKey).price.oneTime === 0) && getServiceByKey(svcKey)?.price && getServiceByKey(svcKey).price.monthly && getServiceByKey(svcKey).price.monthly > 0" x-text="fmtUSD(getServiceByKey(svcKey).price.monthly) + ' / mo'"></span>
-            </div>
-            <button @click="toggleService(svcKey)" class="text-xs text-red-400 hover:underline mt-1">Remove</button>
+          <div class="feature">
+            <div class="feature-num">The lens</div>
+            <p>15+ years watching what converts here. Local knowledge, national-grade execution.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-num">The stakes</div>
+            <p>The question isn't whether we can deliver — it's whether you're ready for what happens when your business becomes the one everyone's talking about.</p>
           </div>
         </div>
-      </template>
-
-      <!-- Add-ons section -->
-      <div x-show="oneTimeAddons.length > 0" class="mt-6">
-        <h3 class="font-semibold mb-2">One‑Time Add‑ons</h3>
-        <template x-for="addon in oneTimeAddons" :key="addon.key">
-          <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-            <div>
-              <div class="font-medium" x-text="addon.name"></div>
-              <div class="text-xs text-gray-400" x-text="addon.description"></div>
-            </div>
-            <div class="text-right">
-              <div class="text-sm">
-                <span x-show="addon.price && addon.price.oneTime && addon.price.oneTime > 0" x-text="fmtUSD(addon.price.oneTime)"></span>
-                <span x-show="(!addon.price.oneTime || addon.price.oneTime === 0) && addon.price && addon.price.monthly && addon.price.monthly > 0" x-text="fmtUSD(addon.price.monthly) + ' / mo'"></span>
-              </div>
-              <button @click="toggleAddon(addon.key)"
-                      class="text-xs mt-1 hover:underline"
-                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-yellow-300'">
-                <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
-              </button>
-            </div>
-          </div>
-        </template>
-      </div>
-      <div x-show="monthlyAddons.length > 0" class="mt-6">
-        <h3 class="font-semibold mb-2">Monthly Add‑ons</h3>
-        <template x-for="addon in monthlyAddons" :key="addon.key">
-          <div class="flex justify-between items-center mb-3 border-b border-white/20 pb-2">
-            <div>
-              <div class="font-medium" x-text="addon.name"></div>
-              <div class="text-xs text-gray-400" x-text="addon.description"></div>
-            </div>
-            <div class="text-right">
-              <div class="text-sm">
-                <span x-show="addon.price && addon.price.oneTime && addon.price.oneTime > 0" x-text="fmtUSD(addon.price.oneTime)"></span>
-                <span x-show="(!addon.price.oneTime || addon.price.oneTime === 0) && addon.price && addon.price.monthly && addon.price.monthly > 0" x-text="fmtUSD(addon.price.monthly) + ' / mo'"></span>
-              </div>
-              <button @click="toggleAddon(addon.key)"
-                      class="text-xs mt-1 hover:underline"
-                      :class="cartAddons.includes(addon.key) ? 'text-red-400' : 'text-yellow-300'">
-                <span x-text="cartAddons.includes(addon.key) ? 'Remove' : 'Add'"></span>
-              </button>
-            </div>
-          </div>
-        </template>
       </div>
     </div>
-    <div class="p-4 border-t border-white/20">
-      <div class="flex justify-between font-semibold mb-3">
-        <span>Total</span>
-        <span x-text="fmtUSD(cartTotal())"></span>
-      </div>
-      <button
-        @click="checkout()"
-        :disabled="cartServices.length === 0 && cartAddons.length === 0"
-        class="w-full py-2 rounded-lg text-center font-medium transition"
-        :class="(cartServices.length === 0 && cartAddons.length === 0)
-          ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-          : 'bg-gradient-to-r from-yellow-600 to-amber-600 hover:opacity-90 text-black'"
-      >
-        Checkout
-      </button>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Own your market.</span><span class="dot">•</span>
+      <span>Dominate the Coast.</span><span class="dot">•</span>
+      <span>Build the empire.</span><span class="dot">•</span>
+      <span>Stop settling.</span><span class="dot">•</span>
+      <span>Own your market.</span><span class="dot">•</span>
+      <span>Dominate the Coast.</span><span class="dot">•</span>
+      <span>Build the empire.</span><span class="dot">•</span>
+      <span>Stop settling.</span><span class="dot">•</span>
     </div>
   </div>
 
-  <!-- Floating cart button (bottom right) -->
-  <button
-    @click="cartOpen = !cartOpen"
-    x-show="cartServices.length > 0"
-    class="fixed bottom-5 right-5 px-4 py-3 rounded-full shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gradient-to-r from-yellow-600 to-amber-600 text-black hover:opacity-90"
-    x-transition
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h14l-1.35 4.03a2 2 0 01-1.92 1.42H9.27a2 2 0 01-1.92-1.42L5 6H3" />
-    </svg>
-    <span x-text="cartServices.length"></span>
-  </button>
-  <!-- END: Site Content -->
+  <!-- Ready to Own Your Market -->
+  <section class="section">
+    <div class="wrap center">
+      <div class="section-eyebrow">No more settling</div>
+      <h2 class="section-title">Ready to own your market?</h2>
+      <p class="section-sub">Stop settling for marketing that's merely adequate. Stop accepting agencies that treat you like a number. If you're ready to build a brand that dominates — let's talk. This is about more than marketing. It's about claiming your place as a Gulf Coast success story.</p>
+      <div class="hero-ctas">
+        <a href="/growth-machine" class="btn btn-primary btn-lg">View Growth Machine →</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-ghost btn-lg">Book a 30-min call</a>
+        <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now</a>
+      </div>
+      <p class="muted mt-4" style="font-size:14px">Or dial (228) 357-8505</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a href="/" class="nav-brand"><img src="./assets/1coastmedia logo.jpg" alt="" /><span>1CoastMedia</span></a>
+          <p style="max-width:36ch; margin-top:12px">Your Gulf Coast growth partner. Marketing, content, and growth systems built to elevate the Coast.</p>
+        </div>
+        <div>
+          <h5>Services</h5>
+          <ul>
+            <li><a href="/services">Core services</a></li>
+            <li><a href="/growth-machine">Growth Machine</a></li>
+            <li><a href="/enterprise-solutions">Enterprise</a></li>
+            <li><a href="/offer-comparison">Compare offers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="https://calendly.com/bdaniels013/30min" target="_blank">Book a call</a></li>
+            <li><a href="tel:+12283578505">(228) 357-8505</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Coast</h5>
+          <ul>
+            <li>Mississippi Gulf Coast</li>
+            <li>Est. 2010</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <span id="year"></span> 1CoastMedia. All rights reserved.</div>
+        <div>Built on the Coast.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

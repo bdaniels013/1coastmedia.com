@@ -4,39 +4,102 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Compare Offers • 1CoastMedia</title>
+  <meta name="description" content="Find your perfect offer. Interactive selector plus a full side-by-side comparison chart with PDF export." />
   <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
   <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/boring.css" />
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    [x-cloak] { display: none !important; }
-    .premium-btn { box-shadow: 0 10px 25px rgba(234,179,8,0.25); }
-    .badge-3d { box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
-    .card-hover:hover { transform: translateY(-2px); }
+    /* Wizard column styling */
+    .wizard-col {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+    }
+    .wizard-col h3 {
+      font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--text-dim); margin: 0 0 18px; font-weight: 700;
+    }
+    .wizard-col label {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      cursor: pointer; transition: background .15s ease;
+      font-size: 14px; line-height: 1.45;
+    }
+    .wizard-col label:hover { background: var(--bg-elev); }
+    .wizard-col input[type="radio"], .wizard-col input[type="checkbox"] {
+      margin-top: 3px; accent-color: #ffffff;
+    }
+    .wizard-col .sub {
+      margin-top: 12px; padding: 12px; border-top: 1px solid var(--border);
+    }
+    .wizard-col .sub p {
+      font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-dim); margin: 0 0 6px;
+    }
 
-    /* Pretty markdown chart styles */
-    .chart-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 1.25rem; backdrop-filter: blur(10px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
-    .md-h2 { font-size: 1.5rem; font-weight: 800; margin-top: 1rem; margin-bottom: .5rem; background: linear-gradient(90deg,#fde047,#f59e0b,#ef4444); -webkit-background-clip:text; background-clip:text; color: transparent; }
-    .md-h3 { font-size: 1.1rem; font-weight: 700; margin-top: .75rem; margin-bottom: .25rem; color: #fde68a; }
-    .md-p { font-size: .95rem; color: #d1d5db; margin: .25rem 0; }
-    .md-divider { height: 1px; background: linear-gradient(90deg, rgba(253,224,71,0.5), rgba(245,158,11,0.5), rgba(239,68,68,0.5)); border-radius: 999px; margin: .75rem 0; }
-    .md-list { list-style: none; padding-left: 0; margin: .5rem 0 .75rem; }
-    .md-list li { position: relative; padding-left: 1.25rem; margin: .25rem 0; color: #e5e7eb; }
-    .md-list li::before { content: '✓'; position: absolute; left: 0; top: 0; color: #f59e0b; }
-    .md-table { width: 100%; border-collapse: collapse; font-size: .95rem; color: #e5e7eb; }
-    .md-table thead th { background: linear-gradient(90deg, rgba(253,224,71,0.15), rgba(245,158,11,0.15)); color: #fff; font-weight: 700; text-align: left; padding: .75rem .75rem; border-bottom: 1px solid rgba(255,255,255,0.15); position: sticky; top: 0; backdrop-filter: blur(4px); }
-    .md-table tbody td { padding: .75rem; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: top; }
-    .md-table tbody tr:nth-child(odd) { background: rgba(255,255,255,0.03); }
-    .md-caption { font-size: .8rem; color: #9ca3af; margin-top: .5rem; }
+    /* Markdown chart styles — restyled for black theme */
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      overflow-x: auto;
+    }
+    .md-h2 {
+      font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+      margin: 24px 0 10px; text-transform: uppercase;
+      color: var(--text);
+    }
+    .md-h2:first-child { margin-top: 0; }
+    .md-h3 {
+      font-size: 18px; font-weight: 700; letter-spacing: -0.01em;
+      margin: 16px 0 6px; color: var(--text);
+    }
+    .md-p { font-size: 15px; color: var(--text-muted); margin: 6px 0; line-height: 1.55; }
+    .md-divider {
+      height: 1px; background: var(--border);
+      margin: 20px 0;
+    }
+    .md-list { list-style: none; padding: 0; margin: 10px 0 16px; }
+    .md-list li {
+      position: relative; padding: 6px 0 6px 24px;
+      color: var(--text-muted); font-size: 15px; line-height: 1.55;
+      border-top: 1px solid var(--border);
+    }
+    .md-list li:first-child { border-top: 0; }
+    .md-list li::before {
+      content: '✓'; position: absolute; left: 0; top: 6px;
+      color: var(--text); font-weight: 700;
+    }
+    .md-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px; color: var(--text-muted);
+    }
+    .md-table thead th {
+      background: var(--bg-elev);
+      color: var(--text); font-weight: 700;
+      text-align: left; padding: 14px 12px;
+      border-bottom: 1px solid var(--border-strong);
+      position: sticky; top: 0;
+      font-size: 13px; letter-spacing: .02em;
+    }
+    .md-table tbody td {
+      padding: 12px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .md-table tbody tr:hover { background: var(--bg-elev); }
 
-    /* Print/PDF export: force high-contrast light theme for legibility */
-    #md-chart.pdf-export { background: #ffffff; border-color: #e5e7eb; box-shadow: none; color: #111827; }
-    #md-chart.pdf-export .md-h2 { color: #111827; background: none; font-size: 1.6rem; }
-    #md-chart.pdf-export .md-h3 { color: #1f2937; background: none; font-size: 1.2rem; }
+    /* PDF export light theme */
+    #md-chart.pdf-export {
+      background: #ffffff; border-color: #e5e7eb; box-shadow: none; color: #111827;
+    }
+    #md-chart.pdf-export .md-h2 { color: #111827; font-size: 1.6rem; }
+    #md-chart.pdf-export .md-h3 { color: #1f2937; font-size: 1.2rem; }
     #md-chart.pdf-export .md-p { color: #111827; font-size: 1rem; }
-    #md-chart.pdf-export .md-list li { color: #111827; }
+    #md-chart.pdf-export .md-list li { color: #111827; border-top-color: #e5e7eb; }
     #md-chart.pdf-export .md-list li::before { content: '•'; color: #111827; }
     #md-chart.pdf-export .md-divider { background: #e5e7eb; }
     #md-chart.pdf-export .md-table { color: #111827; font-size: 0.98rem; }
@@ -47,268 +110,237 @@
     #md-chart.pdf-export { overflow: visible !important; padding: 0.4in; }
     #md-chart.pdf-export .md-table thead th { position: static !important; }
     #md-chart.pdf-export .page-break-before { page-break-before: always; break-before: page; }
-    #md-chart.pdf-export .md-list li, #md-chart.pdf-export .md-table tbody tr, #md-chart.pdf-export .md-table thead, #md-chart.pdf-export .md-h2, #md-chart.pdf-export .md-h3 { page-break-inside: avoid; }
-    @media print { .chart-card, #md-chart.pdf-export { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    #md-chart.pdf-export .md-list li, #md-chart.pdf-export .md-table tbody tr,
+    #md-chart.pdf-export .md-table thead, #md-chart.pdf-export .md-h2, #md-chart.pdf-export .md-h3 {
+      page-break-inside: avoid;
+    }
+    @media print {
+      .chart-card, #md-chart.pdf-export { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-gray-100" x-data="compareOffers()" x-init="init()">
-  <!-- Header -->
-  <header class="fixed top-0 inset-x-0 z-40 bg-white/10 backdrop-blur-md border-b border-white/20">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center" x-data="{ menuOpen: false }">
-      <h1 class="flex items-center space-x-3 text-2xl font-extrabold tracking-wide">
-        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia logo" class="h-12 w-12 object-contain" />
+<body x-data="compareOffers()" x-init="init()">
+
+  <!-- Navigation -->
+  <nav class="nav" x-data="{ menuOpen: false }">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        <img src="./assets/1coastmedia logo.jpg" alt="1CoastMedia" />
         <span>1CoastMedia</span>
-      </h1>
-      <div class="flex items-center gap-3">
-        <div class="relative">
-          <button @click="menuOpen = !menuOpen" class="px-4 py-2 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-            Menu ▾
-          </button>
-          <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition
-               class="absolute right-0 mt-2 w-56 bg-gray-900/95 border border-white/20 rounded-lg shadow-lg p-2">
-            <a href="/index.html" class="block px-3 py-2 rounded hover:bg-white/10">Home</a>
-            <a href="/services" class="block px-3 py-2 rounded hover:bg-white/10">Services</a>
-            <a href="/growth-machine.html" class="block px-3 py-2 rounded hover:bg-white/10">Growth Machine</a>
-            <a href="/enterprise-solutions.html" class="block px-3 py-2 rounded hover:bg-white/10">Enterprise Solutions</a>
-            <a href="/offer-comparison.html" class="block px-3 py-2 rounded bg-white/10">Compare Offers</a>
-          </div>
-        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/services">Services</a>
+        <a href="/growth-machine">Growth Machine</a>
+        <a href="/enterprise-solutions">Enterprise</a>
+        <a href="/offer-comparison">Compare</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="nav-cta">Book a call</a>
       </div>
+      <button class="nav-toggle" @click="menuOpen = !menuOpen">Menu</button>
+      <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/growth-machine">Growth Machine</a>
+        <a href="/enterprise-solutions">Enterprise Solutions</a>
+        <a href="/offer-comparison">Compare Offers</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank">Book a call</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <span class="hero-eyebrow">Compare Offers</span>
+    <h1>Find your fit.</h1>
+    <p class="hero-sub">Use the quick selector to get a personalized recommendation — or scroll to the full comparison chart and download it as a PDF.</p>
+    <div class="hero-ctas">
+      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-lg">Book a free consult</a>
+      <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now</a>
     </div>
   </header>
 
-  <!-- Offset for fixed header -->
-  <div class="pt-20"></div>
-
-  <!-- Hero -->
-  <section class="max-w-7xl mx-auto px-4 py-16 text-center space-y-6">
-    <h2 class="text-5xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent">Compare Offers & Find Your Fit</h2>
-    <p class="text-gray-300 max-w-3xl mx-auto">Use the quick selector to get a recommendation, or scroll to view the full comparison chart.</p>
-    <div class="flex items-center justify-center gap-4">
-      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-bold premium-btn hover:opacity-90">Book a Free Consult</a>
-      <a href="tel:+12283571897" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-green-500 text-black font-bold hover:bg-green-600">Call Now</a>
-    </div>
-  </section>
-
-  <!-- Selector Wizard -->
-  <section class="max-w-7xl mx-auto px-4 py-8">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Goals (Flowchart START HERE) -->
-      <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
-        <h3 class="text-xl font-bold mb-3">Start Here — Main Goal</h3>
-        <div class="space-y-2">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="goal" value="customers" x-model="goal" />
-            <span>I want more customers quickly</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="goal" value="visibility" x-model="goal" />
-            <span>I want visibility + a professional presence</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="goal" value="content" x-model="goal" />
-            <span>I need content for my brand</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="goal" value="sell" x-model="goal" />
-            <span>I want to sell statewide or nationwide</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="goal" value="regional" x-model="goal" />
-            <span>I am a city, chamber, casino, or tourism board</span>
-          </label>
-        </div>
+  <!-- Wizard -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">3 steps · 30 seconds</div>
+        <h2 class="section-title">Which offer fits?</h2>
       </div>
 
-      <!-- Next Step (adapts based on goal) -->
-      <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
-        <h3 class="text-xl font-bold mb-3">Next Step</h3>
-        <!-- A — Customers: pick budget level -->
-        <div class="space-y-2" x-show="goal === 'customers'">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="customersBudget" value="499" x-model="customersBudget" />
-            <span>$499/mo</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="customersBudget" value="999" x-model="customersBudget" />
-            <span>$999/mo</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="customersBudget" value="growth" x-model="customersBudget" />
-            <span>$4,500–$9,000/mo (Growth Packages)</span>
-          </label>
-          <!-- Choose growth tier when growth selected -->
-          <div class="mt-3 space-y-2" x-show="customersBudget === 'growth'">
-            <p class="text-sm text-gray-300">Choose Growth Tier:</p>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="growthTier" value="starter" x-model="growthTier" />
-              <span>Growth Starter ($4,500/mo)</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="growthTier" value="machine" x-model="growthTier" />
-              <span>Growth Machine ($6,500/mo)</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="growthTier" value="accelerator" x-model="growthTier" />
-              <span>Growth Accelerator ($9,000/mo)</span>
-            </label>
+      <div class="grid grid-3">
+
+        <!-- Step 1: Goal -->
+        <div class="wizard-col">
+          <h3>01 · Main Goal</h3>
+          <label><input type="radio" name="goal" value="customers" x-model="goal" /><span>I want more customers quickly</span></label>
+          <label><input type="radio" name="goal" value="visibility" x-model="goal" /><span>I want visibility + a professional presence</span></label>
+          <label><input type="radio" name="goal" value="content" x-model="goal" /><span>I need content for my brand</span></label>
+          <label><input type="radio" name="goal" value="sell" x-model="goal" /><span>I want to sell statewide or nationwide</span></label>
+          <label><input type="radio" name="goal" value="regional" x-model="goal" /><span>I'm a city, chamber, casino, or tourism board</span></label>
+        </div>
+
+        <!-- Step 2: Next step -->
+        <div class="wizard-col">
+          <h3>02 · Next Step</h3>
+
+          <div x-show="goal === 'customers'" x-transition x-cloak>
+            <label><input type="radio" name="customersBudget" value="499" x-model="customersBudget" /><span>$499 / mo</span></label>
+            <label><input type="radio" name="customersBudget" value="999" x-model="customersBudget" /><span>$999 / mo</span></label>
+            <label><input type="radio" name="customersBudget" value="growth" x-model="customersBudget" /><span>$4,500–$9,000 / mo (Growth packages)</span></label>
+            <div class="sub" x-show="customersBudget === 'growth'" x-transition x-cloak>
+              <p>Choose growth tier</p>
+              <label><input type="radio" name="growthTier" value="starter" x-model="growthTier" /><span>Growth Starter · $4,500/mo</span></label>
+              <label><input type="radio" name="growthTier" value="machine" x-model="growthTier" /><span>Growth Machine · $6,500/mo</span></label>
+              <label><input type="radio" name="growthTier" value="accelerator" x-model="growthTier" /><span>Growth Accelerator · $9,000/mo</span></label>
+            </div>
+          </div>
+
+          <div x-show="goal === 'visibility'" x-transition x-cloak>
+            <label><input type="radio" name="visibilityChoice" value="simple" x-model="visibilityChoice" /><span>Simple + affordable</span></label>
+            <label><input type="radio" name="visibilityChoice" value="full" x-model="visibilityChoice" /><span>Full-service monthly marketing</span></label>
+          </div>
+
+          <div x-show="goal === 'content'" x-transition x-cloak>
+            <label><input type="radio" name="contentChoice" value="project" x-model="contentChoice" /><span>Project-based or occasional shoots</span></label>
+            <label><input type="radio" name="contentChoice" value="heavy" x-model="contentChoice" /><span>Heavy monthly content (20–40 pieces/mo)</span></label>
+            <div class="sub" x-show="contentChoice === 'heavy'" x-transition x-cloak>
+              <p>Choose tier</p>
+              <label><input type="radio" name="contentHeavyTier" value="machine" x-model="contentHeavyTier" /><span>Growth Machine</span></label>
+              <label><input type="radio" name="contentHeavyTier" value="accelerator" x-model="contentHeavyTier" /><span>Growth Accelerator</span></label>
+            </div>
+          </div>
+
+          <div x-show="goal === 'sell'" x-transition x-cloak>
+            <label><input type="radio" name="sellChoice" value="entry" x-model="sellChoice" /><span>Entry-level funnels</span></label>
+            <label><input type="radio" name="sellChoice" value="enterprise" x-model="sellChoice" /><span>Enterprise-level e-commerce + funnel systems</span></label>
+          </div>
+
+          <div x-show="goal === 'regional'" x-transition x-cloak style="padding:12px; color:var(--text-muted); font-size:14px">
+            Economic Impact Initiative is recommended.
+          </div>
+
+          <div x-show="!goal" style="padding:12px; color:var(--text-dim); font-size:13px">
+            Pick a goal on the left to begin.
           </div>
         </div>
 
-        <!-- B — Visibility: pick level -->
-        <div class="space-y-2" x-show="goal === 'visibility'">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="visibilityChoice" value="simple" x-model="visibilityChoice" />
-            <span>Simple + affordable</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="visibilityChoice" value="full" x-model="visibilityChoice" />
-            <span>Full-service monthly marketing</span>
-          </label>
-        </div>
-
-        <!-- C — Content: pick type -->
-        <div class="space-y-2" x-show="goal === 'content'">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="contentChoice" value="project" x-model="contentChoice" />
-            <span>Project-based or occasional shoots</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="contentChoice" value="heavy" x-model="contentChoice" />
-            <span>Heavy monthly content needs (20–40 pieces/month)</span>
-          </label>
-          <div class="mt-3 space-y-2" x-show="contentChoice === 'heavy'">
-            <p class="text-sm text-gray-300">Choose Tier:</p>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="contentHeavyTier" value="machine" x-model="contentHeavyTier" />
-              <span>Growth Machine</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="contentHeavyTier" value="accelerator" x-model="contentHeavyTier" />
-              <span>Growth Accelerator</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- D — Sell statewide/nationwide: pick level -->
-        <div class="space-y-2" x-show="goal === 'sell'">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="sellChoice" value="entry" x-model="sellChoice" />
-            <span>Entry-level funnels</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="radio" name="sellChoice" value="enterprise" x-model="sellChoice" />
-            <span>Enterprise-level ecommerce + funnel systems</span>
-          </label>
-        </div>
-
-        <!-- E — Regional: informational only -->
-        <div class="space-y-2" x-show="goal === 'regional'">
-          <p class="text-sm text-gray-300">Economic Impact Initiative is recommended.</p>
+        <!-- Step 3: Extras -->
+        <div class="wizard-col">
+          <h3>03 · Extras (optional)</h3>
+          <label><input type="checkbox" x-model="needsEcom" /><span>Need e-commerce or online checkout</span></label>
+          <label><input type="checkbox" x-model="wantsUGC" /><span>Want UGC scaling / creator campaigns</span></label>
         </div>
       </div>
 
-      <!-- Extras (optional boosts) -->
-      <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
-        <h3 class="text-xl font-bold mb-3">Extras (optional)</h3>
-        <div class="space-y-2">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" x-model="needsEcom" />
-            <span>Need e-commerce or online checkout</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" x-model="wantsUGC" />
-            <span>Want UGC scaling / creator campaigns</span>
-          </label>
+      <!-- Recommendations -->
+      <div class="mt-8" style="margin-top:48px">
+        <div class="section-head" style="margin-bottom:24px">
+          <div class="section-eyebrow">Results</div>
+          <h2 class="section-title" style="font-size:32px">Recommended offers.</h2>
         </div>
-      </div>
-    </div>
-
-    <!-- Recommendations -->
-    <div class="mt-8">
-      <h3 class="text-2xl font-bold mb-4">Recommended Offers</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <template x-for="rec in recommendations()" :key="rec.key">
-          <div class="group relative p-6 rounded-2xl bg-gradient-to-br from-yellow-500/10 via-gray-500/10 to-red-500/10 backdrop-blur-xl border border-white/20 card-hover">
-            <div class="space-y-2">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center">
-                  <span class="text-xl">🔥</span>
-                </div>
-                <h4 class="text-lg font-bold" x-text="rec.name"></h4>
+        <div x-show="recommendations().length === 0" class="muted center" x-cloak>
+          <p>Make your selections above to see recommendations.</p>
+        </div>
+        <div class="grid grid-3">
+          <template x-for="rec in recommendations()" :key="rec.key">
+            <article class="card">
+              <div class="card-eyebrow">Recommended</div>
+              <h3 x-text="rec.name"></h3>
+              <p x-text="rec.description"></p>
+              <div class="card-price" x-show="rec.price" x-text="rec.price"></div>
+              <div class="card-actions">
+                <button @click="openDetails(rec.key)" class="btn btn-ghost btn-sm">View details →</button>
+                <button x-show="rec.canAdd" @click="addToCart(rec.key)" class="btn btn-primary btn-sm">Add to cart</button>
+                <a x-show="rec.bookLink" :href="rec.bookLink" target="_blank" class="btn btn-ghost btn-sm">Book a call</a>
               </div>
-              <p class="text-sm text-gray-300" x-text="rec.description"></p>
-              <div class="text-sm font-semibold" x-show="rec.price"><span x-text="rec.price"></span></div>
-            </div>
-            <div class="pt-4 border-t border-white/10 flex flex-col gap-3">
-              <button @click="openDetails(rec.key)" class="w-full px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-white/20">View Details</button>
-              <button x-show="rec.canAdd" @click="addToCart(rec.key)" class="w-full px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-bold premium-btn hover:opacity-90">Add to Cart</button>
-              <a x-show="rec.bookLink" :href="rec.bookLink" target="_blank" class="w-full px-4 py-2 text-center rounded-xl bg-white/10 border border-white/20 text-yellow-200 hover:bg-white/20">Book a Call</a>
-            </div>
-          </div>
-        </template>
+            </article>
+          </template>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Comparison Chart (from offer_comparison_chart.md) -->
-  <section class="max-w-7xl mx-auto px-4 py-12">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-2xl font-bold">Offers Comparison Chart</h3>
-      <button @click="downloadChartPDF()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-600 to-amber-600 text-black font-bold premium-btn hover:opacity-90">Download PDF</button>
+  <!-- Comparison Chart -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Full Breakdown</div>
+        <h2 class="section-title">Side-by-side chart.</h2>
+        <p class="section-sub">The complete offer matrix — deliverables, audiences, budgets, add-ons. Download as a clean PDF you can share.</p>
+      </div>
+      <div style="display:flex; justify-content:flex-end; margin-bottom:16px">
+        <button @click="downloadChartPDF()" class="btn btn-primary btn-sm">Download PDF</button>
+      </div>
+      <div id="md-chart" class="chart-card"></div>
     </div>
-    <div id="md-chart" class="chart-card overflow-x-auto"></div>
   </section>
 
   <!-- Footer -->
-  <footer class="border-t border-white/20 py-8 mt-16">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      <p class="text-gray-400">© 2025 1CoastMedia. All rights reserved.</p>
-      <div class="mt-4 space-x-4">
-        <a href="/services" class="text-gray-400 hover:text-white transition">Services</a>
-        <a href="/offer-comparison.html" class="text-gray-400 hover:text-white transition">Compare Offers</a>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a href="/" class="nav-brand"><img src="./assets/1coastmedia logo.jpg" alt="" /><span>1CoastMedia</span></a>
+          <p style="max-width:36ch; margin-top:12px">Your Gulf Coast growth partner. Marketing, content, and growth systems built to elevate the Coast.</p>
+        </div>
+        <div>
+          <h5>Services</h5>
+          <ul>
+            <li><a href="/services">Core services</a></li>
+            <li><a href="/growth-machine">Growth Machine</a></li>
+            <li><a href="/enterprise-solutions">Enterprise</a></li>
+            <li><a href="/offer-comparison">Compare offers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="https://calendly.com/bdaniels013/30min" target="_blank">Book a call</a></li>
+            <li><a href="tel:+12283578505">(228) 357-8505</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Coast</h5>
+          <ul>
+            <li>Mississippi Gulf Coast</li>
+            <li>Est. 2010</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <span id="year"></span> 1CoastMedia. All rights reserved.</div>
+        <div>Built on the Coast.</div>
       </div>
     </div>
   </footer>
 
   <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
     function compareOffers() {
       return {
         goal: null,
-        // Flowchart secondary choices
-        customersBudget: null,   // '499' | '999' | 'growth'
-        growthTier: null,        // 'starter' | 'machine' | 'accelerator'
-        visibilityChoice: null,  // 'simple' | 'full'
-        contentChoice: null,     // 'project' | 'heavy'
-        contentHeavyTier: null,  // 'machine' | 'accelerator'
-        sellChoice: null,        // 'entry' | 'enterprise'
-        needsEcom: false,
-        wantsUGC: false,
+        customersBudget: null, growthTier: null,
+        visibilityChoice: null, contentChoice: null, contentHeavyTier: null,
+        sellChoice: null, needsEcom: false, wantsUGC: false,
         offers: {
-          // Core service offers (matching the Services page)
-          'local-growth-starter': { key: 'local-growth-starter', name: 'The 1 Coast Local Growth Starter', description: 'Low‑risk starter for small local businesses — landing page + AI + 5,000 guaranteed local views', price: '$499/month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'customer-growth-system': { key: 'customer-growth-system', name: 'The 1 Coast Customer Growth System', description: 'Done‑for‑you growth for small‑to‑medium service businesses — lead magnets + AI + 15,000 views', price: '$999/month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'content-production': { key: 'content-production', name: 'Content + Production Program', description: 'Professional photo/video for brands where image quality drives revenue', price: null, canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'online-sales-accelerator': { key: 'online-sales-accelerator', name: 'Online Sales Accelerator', description: 'Funnels + AI + UGC ads to sell statewide or nationwide', price: null, canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          'enterprise-impact': { key: 'enterprise-impact', name: 'Economic Impact Initiative', description: 'City/regional UGC + tourism engine', price: '$5k–$50k/mo', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
-          // Additional special
-          'website-199': { key: 'website-199', name: '$199 Website Special', description: 'Own your site forever + hosting setup', price: '$199 one-time', canAdd: false },
+          'local-growth-starter': { key: 'local-growth-starter', name: 'Local Growth Starter', description: 'Low-risk starter for small local businesses — landing page + AI + 5,000 guaranteed local views.', price: '$499 / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'customer-growth-system': { key: 'customer-growth-system', name: 'Customer Growth System', description: 'Done-for-you growth for small-to-medium service businesses — lead magnets + AI + 15,000 views.', price: '$999 / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'content-production': { key: 'content-production', name: 'Content + Production Program', description: 'Professional photo/video for brands where image quality drives revenue.', price: 'From $350 / project', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'online-sales-accelerator': { key: 'online-sales-accelerator', name: 'Online Sales Accelerator', description: 'Funnels + AI + UGC ads to sell statewide or nationwide.', price: 'From $1,500 setup · $349/mo', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'enterprise-impact': { key: 'enterprise-impact', name: 'Economic Impact Initiative', description: 'City / regional UGC + tourism engine.', price: '$5k–$50k / month', canAdd: false, bookLink: 'https://calendly.com/bdaniels013/30min' },
+          'website-199': { key: 'website-199', name: '$199 Website Special', description: 'Own your site forever + hosting setup.', price: '$199 one-time', canAdd: false },
+          'growth-starter': { key: 'growth-starter', name: 'Growth Starter', description: 'Local growth foundation.', price: '$4,500 / mo', canAdd: true },
+          'growth-machine': { key: 'growth-machine', name: 'Growth Machine', description: 'Optimized power for steady acceleration.', price: '$6,500 / mo', canAdd: true },
+          'growth-accelerator': { key: 'growth-accelerator', name: 'Growth Accelerator', description: 'Elite mastery and national scale.', price: '$9,000 / mo', canAdd: true }
+        },
+        init() { this.loadMarkdownChart(); },
 
-          // Growth tiers (used in selector recommendations only)
-          'growth-starter': { key: 'growth-starter', name: 'Growth Starter', description: 'Local growth foundation', price: '$4,500/mo', canAdd: true },
-          'growth-machine': { key: 'growth-machine', name: 'Growth Machine', description: 'Optimized power for steady acceleration', price: '$6,500/mo', canAdd: true },
-          'growth-accelerator': { key: 'growth-accelerator', name: 'Growth Accelerator', description: 'Elite mastery and national scale', price: '$9,000/mo', canAdd: true }
-        },
-        init() {
-          this.loadMarkdownChart();
-        },
         downloadChartPDF() {
           const el = document.getElementById('md-chart');
           if (!window.html2pdf || !el) {
             alert('PDF generator not loaded. Please try again in a moment.');
             return;
           }
-          // Temporarily switch the chart to a print-optimized light theme
           el.classList.add('pdf-export');
           const opt = {
             margin: 0.35,
@@ -318,56 +350,39 @@
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
             pagebreak: { mode: ['css','legacy'], before: ['.page-break-before'], avoid: ['.md-table thead', '.md-table tbody tr', '.md-list li', '.md-h2', '.md-h3'] }
           };
-          // Generate PDF, then revert chart styles
           window.html2pdf().set(opt).from(el).save().then(() => {
             el.classList.remove('pdf-export');
           }).catch(() => {
             el.classList.remove('pdf-export');
           });
         },
+
         recommendations() {
           const recKeys = [];
           const add = (k) => { if (!recKeys.includes(k)) recKeys.push(k); };
-
-          // Flowchart mapping aligned with offer_comparison chart
           switch (this.goal) {
             case 'customers': {
-              if (this.customersBudget === '499') {
-                add('local-growth-starter');
-              } else if (this.customersBudget === '999') {
-                add('customer-growth-system');
-              } else if (this.customersBudget === 'growth') {
+              if (this.customersBudget === '499') add('local-growth-starter');
+              else if (this.customersBudget === '999') add('customer-growth-system');
+              else if (this.customersBudget === 'growth') {
                 if (this.growthTier === 'starter') add('growth-starter');
                 else if (this.growthTier === 'machine') add('growth-machine');
                 else if (this.growthTier === 'accelerator') add('growth-accelerator');
-                else {
-                  // If no tier chosen yet, show all growth tiers for exploration
-                  add('growth-starter');
-                  add('growth-machine');
-                  add('growth-accelerator');
-                }
+                else { add('growth-starter'); add('growth-machine'); add('growth-accelerator'); }
               }
               break;
             }
             case 'visibility': {
-              if (this.visibilityChoice === 'simple') {
-                add('local-growth-starter');
-              } else if (this.visibilityChoice === 'full') {
-                add('growth-starter');
-              }
+              if (this.visibilityChoice === 'simple') add('local-growth-starter');
+              else if (this.visibilityChoice === 'full') add('growth-starter');
               break;
             }
             case 'content': {
-              if (this.contentChoice === 'project') {
-                add('content-production');
-              } else if (this.contentChoice === 'heavy') {
+              if (this.contentChoice === 'project') add('content-production');
+              else if (this.contentChoice === 'heavy') {
                 if (this.contentHeavyTier === 'machine') add('growth-machine');
                 else if (this.contentHeavyTier === 'accelerator') add('growth-accelerator');
-                else {
-                  // Show both if tier not yet chosen
-                  add('growth-machine');
-                  add('growth-accelerator');
-                }
+                else { add('growth-machine'); add('growth-accelerator'); }
               }
               break;
             }
@@ -376,69 +391,42 @@
               else if (this.sellChoice === 'enterprise') add('growth-accelerator');
               break;
             }
-            case 'regional': {
-              add('enterprise-impact');
-              break;
-            }
-            default:
-              // No goal selected: show nothing until user chooses
-              break;
+            case 'regional': { add('enterprise-impact'); break; }
+            default: break;
           }
-
-          // Extras apply across goals
           if (this.wantsUGC) add('content-production');
           if (this.needsEcom) add('online-sales-accelerator');
-
           return recKeys.map(k => this.offers[k]);
         },
+
         openDetails(key) {
-          if (key === 'local-growth-starter') {
-            window.location.href = '/services#offers-local-growth-starter';
-            return;
-          }
-          if (key === 'customer-growth-system') {
-            window.location.href = '/services#offers-customer-growth-system';
-            return;
-          }
+          if (key === 'local-growth-starter') { window.location.href = '/services#offers-local-growth-starter'; return; }
+          if (key === 'customer-growth-system') { window.location.href = '/services#offers-customer-growth-system'; return; }
           if (key === 'growth-starter' || key === 'growth-machine' || key === 'growth-accelerator') {
-            const url = `/growth-machine.html?open=${encodeURIComponent(key)}`;
-            window.location.href = url;
-            return;
+            window.location.href = `/growth-machine.html?open=${encodeURIComponent(key)}`; return;
           }
-          if (key === 'content-production') {
-            // Jump to services page section
-            window.location.href = '/services#offers-content-production';
-            return;
-          }
-          if (key === 'online-sales-accelerator') {
-            window.location.href = '/services#offers-online-sales-accelerator';
-            return;
-          }
-          if (key === 'enterprise-impact') {
-            window.location.href = '/enterprise-solutions.html';
-            return;
-          }
-          if (key === 'website-199') {
-            window.location.href = '/index.html';
-            return;
-          }
+          if (key === 'content-production') { window.location.href = '/services#offers-content-production'; return; }
+          if (key === 'online-sales-accelerator') { window.location.href = '/services#offers-online-sales-accelerator'; return; }
+          if (key === 'enterprise-impact') { window.location.href = '/enterprise-solutions'; return; }
+          if (key === 'website-199') { window.location.href = '/'; return; }
         },
+
         addToCart(key) {
           if (key === 'growth-starter' || key === 'growth-machine' || key === 'growth-accelerator') {
-            const url = `/growth-machine.html?add=${encodeURIComponent(key)}&open=${encodeURIComponent(key)}`;
-            window.location.href = url;
+            window.location.href = `/growth-machine.html?add=${encodeURIComponent(key)}&open=${encodeURIComponent(key)}`;
           }
         },
+
         async loadMarkdownChart() {
           try {
             const res = await fetch('/offer_comparison_chart.md');
             const md = await res.text();
-            const html = this.renderMarkdownEnhanced(md);
-            document.getElementById('md-chart').innerHTML = html;
+            document.getElementById('md-chart').innerHTML = this.renderMarkdownEnhanced(md);
           } catch (e) {
-            document.getElementById('md-chart').innerHTML = '<div class="text-red-300">Unable to load comparison chart.</div>';
+            document.getElementById('md-chart').innerHTML = '<div class="muted">Unable to load comparison chart.</div>';
           }
         },
+
         renderMarkdownEnhanced(md) {
           const lines = md.split(/\r?\n/);
           let i = 0, out = '';
@@ -446,9 +434,8 @@
           function fmtInline(s){
             return s
               .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-yellow-300 hover:underline" target="_blank">$1</a>');
+              .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" style="color:var(--text); text-decoration:underline;">$1</a>');
           }
-
           while (i < lines.length) {
             const line = lines[i];
             if (/^\s*\|/.test(line)) {
@@ -465,11 +452,13 @@
               if (lower.includes('which offer') || lower.includes('should you choose')) {
                 out += '<div class="page-break-before"></div>';
               }
-              out += `<div class=\"md-h3\">${fmtInline(esc(text))}</div>`; i++; continue;
+              out += `<div class="md-h3">${fmtInline(esc(text))}</div>`; i++; continue;
             }
             if (/^\*\s+/.test(line) || /^-\s+/.test(line)) {
               const items = [];
-              while (i < lines.length && (/^\*\s+/.test(lines[i]) || /^-\s+/.test(lines[i]))) { items.push(lines[i].replace(/^\*\s+|^-\s+/, '')); i++; }
+              while (i < lines.length && (/^\*\s+/.test(lines[i]) || /^-\s+/.test(lines[i]))) {
+                items.push(lines[i].replace(/^\*\s+|^-\s+/, '')); i++;
+              }
               out += '<ul class="md-list">' + items.map(it => `<li>${fmtInline(esc(it))}</li>`).join('') + '</ul>';
               continue;
             }
@@ -483,7 +472,7 @@
             if (cells.length < 2) return '';
             const header = cells[0];
             const body = cells.slice(2);
-            let html = '<div class="overflow-x-auto">';
+            let html = '<div style="overflow-x:auto">';
             html += '<table class="md-table"><thead><tr>';
             for (const h of header) html += `<th>${fmtInline(esc(h))}</th>`;
             html += '</tr></thead><tbody>';
