@@ -364,13 +364,13 @@
     </div>
   </section>
 
-  <!-- A La Carte Services (API-driven) -->
+  <!-- Specials (API-driven) -->
   <section class="section" id="admin-services" x-show="!loading && categoriesList().length > 0" x-cloak>
     <div class="wrap">
       <div class="section-head">
-        <div class="section-eyebrow">Custom · Flexible</div>
-        <h2 class="section-title">A La Carte Services</h2>
-        <p class="section-sub">Individual services you can combine with any offer.</p>
+        <div class="section-eyebrow">Limited-time · Featured</div>
+        <h2 class="section-title">Specials</h2>
+        <p class="section-sub">Featured offers and special deals. Combine with any package.</p>
       </div>
 
       <template x-for="entry in categoriesList()" :key="entry.key">
