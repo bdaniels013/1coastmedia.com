@@ -173,6 +173,164 @@ function initializeServicesFile() {
   }
 }
 
+// Seed required service categories (monthly-addons, specialty-projects) so the
+// admin panel and the /services page render them on first boot. Only ADDS missing
+// categories — never overwrites existing ones — so Blake's edits are preserved
+// across deploys on Render's persistent disk.
+const REQUIRED_CATEGORY_TEMPLATES = {
+  'monthly-addons': {
+    name: 'Monthly Add-Ons',
+    description: 'Recurring services that stack on any package.',
+    services: [
+      {
+        key: 'social-media-management',
+        name: 'Social Media Management',
+        outcome: 'Posting, scheduling, community engagement, comments, and DMs. Built into Growth Machine and Growth Partner. Add it to Content Presence or Content Growth.',
+        price: { oneTime: 0, monthly: 500 },
+        priceDisplay: '$500 – $1,500',
+        priceNote: '/ month',
+        deliverables: [
+          '$500 / mo: 1 platform, scheduled posting, basic engagement',
+          '$1,000 / mo: 2 platforms, active posting, comments and DMs',
+          '$1,500 / mo: 3 platforms, full community management, trend monitoring'
+        ],
+        badge: 'Social',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'ad-campaign-management',
+        name: 'Ad Campaign Management',
+        outcome: 'Meta, Google, and TikTok ad creative, launch, and optimization. Priced on platforms and ad budget. Ad spend billed separately.',
+        price: { oneTime: 0, monthly: 750 },
+        priceDisplay: '$750 – $2,500',
+        priceNote: '/ month',
+        deliverables: [],
+        badge: 'Ads',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'ongoing-pr-retainer',
+        name: 'Ongoing PR Retainer',
+        outcome: '1 to 2 press releases per month plus active media outreach and relationship building. Local, regional, and national targeting.',
+        price: { oneTime: 0, monthly: 1500 },
+        priceDisplay: '$1,500 – $3,500',
+        priceNote: '/ month',
+        deliverables: [],
+        badge: 'PR',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      }
+    ]
+  },
+  'specialty-projects': {
+    name: 'Specialty Projects',
+    description: 'One-off projects and standalone productions. Stack on any package or book solo.',
+    services: [
+      {
+        key: 'website-build',
+        name: 'Website Build / Redesign',
+        outcome: 'Custom design, build, and launch. Mobile-first, SEO-ready, conversion-optimized.',
+        price: { oneTime: 3500, monthly: 0 },
+        priceDisplay: 'Custom scope',
+        priceNote: 'typical range $3,500 to $12,000',
+        deliverables: [],
+        badge: 'Web',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'single-press-release',
+        name: 'Single Press Release',
+        outcome: 'Written, formatted, and distributed to news outlets. Pick your reach.',
+        price: { oneTime: 450, monthly: 0 },
+        priceDisplay: 'From $450',
+        priceNote: '/ release',
+        deliverables: [
+          'Local Gulf Coast: $450',
+          'Regional (MS / AL / LA): $950',
+          'National: $2,500'
+        ],
+        badge: 'PR',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'photo-mini-session',
+        name: 'Photo Mini Session',
+        outcome: '20 to 30 edited photos delivered in 48 to 72 hours. Products, staff, venue, menu items.',
+        price: { oneTime: 350, monthly: 0 },
+        priceDisplay: '$350',
+        priceNote: 'per session',
+        deliverables: [],
+        badge: 'Photo',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'ugc-view-boosts',
+        name: 'UGC View Boosts',
+        outcome: 'Guaranteed local views from our Gulf Coast creator network. Pay per boost, stack as needed.',
+        price: { oneTime: 150, monthly: 0 },
+        priceDisplay: '$150 – $1,250',
+        priceNote: 'per boost',
+        deliverables: [
+          '$150 → +10,000 views',
+          '$350 → +25,000 views',
+          '$650 → +50,000 views',
+          '$1,250 → +100,000 views'
+        ],
+        badge: 'Distribution',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      }
+    ]
+  }
+};
+
+function ensureRequiredCategories() {
+  try {
+    initializeServicesFile();
+    const raw = fs.readFileSync(SERVICES_FILE, 'utf8');
+    const data = JSON.parse(raw);
+    if (!data.serviceCategories || typeof data.serviceCategories !== 'object') {
+      data.serviceCategories = {};
+    }
+    if (!Array.isArray(data.addons)) data.addons = [];
+
+    let changed = false;
+    for (const [key, template] of Object.entries(REQUIRED_CATEGORY_TEMPLATES)) {
+      if (!data.serviceCategories[key]) {
+        data.serviceCategories[key] = template;
+        changed = true;
+        console.log(`✅ Seeded missing required category: ${key}`);
+      }
+    }
+
+    if (changed) {
+      fs.writeFileSync(SERVICES_FILE, JSON.stringify(data, null, 2));
+      console.log('✅ Required categories written to services-data.json');
+    }
+  } catch (err) {
+    console.error('❌ ensureRequiredCategories failed:', err);
+  }
+}
+
 // Helper function to get date range based on selection
 function getDateRange(range) {
   const endDate = new Date();
@@ -870,8 +1028,9 @@ app.use((req, res) => {
   });
 });
 
-// Initialize the services file when server starts
+// Initialize the services file and seed required categories when server starts
 initializeServicesFile();
+ensureRequiredCategories();
 
 app.listen(PORT, () => {
   console.log('🚀 1CoastMedia server running!');
