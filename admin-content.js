@@ -174,10 +174,13 @@ function contentManager() {
         name: 'New Service',
         outcome: 'Service outcome description',
         price: { oneTime: 0, monthly: 0 },
-        sla: 'Timeline',
-        deliverables: ['Deliverable 1', 'Deliverable 2'],
-        deliverablesText: 'Deliverable 1\nDeliverable 2',
-        acceptance: 'Acceptance criteria',
+        priceDisplay: '',
+        priceNote: '',
+        image: '',
+        sla: '',
+        deliverables: [],
+        deliverablesText: '',
+        acceptance: '',
         badge: '',
         minTerm: 0
       });
@@ -237,6 +240,9 @@ function contentManager() {
           service.acceptance = service.acceptance || '';
           service.badge = service.badge || '';
           service.minTerm = service.minTerm || 0;
+          service.priceDisplay = service.priceDisplay || '';
+          service.priceNote = service.priceNote || '';
+          service.image = service.image || '';
         });
       });
     },

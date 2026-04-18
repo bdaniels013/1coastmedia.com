@@ -74,13 +74,19 @@
     .compare-table tbody tr:last-child th { border-bottom: 0; }
     .compare-table tbody tr:hover td { background: var(--bg-elev); }
     .compare-table td.featured-col {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      background: linear-gradient(180deg, rgba(212, 163, 92, 0.05), transparent);
     }
     .compare-table thead th.featured-col {
-      background: linear-gradient(180deg, #0a0a0a, #000);
-      border-top: 1px solid var(--text);
-      border-left: 1px solid var(--text);
-      border-right: 1px solid var(--text);
+      background: linear-gradient(180deg, rgba(212, 163, 92, 0.08), #000);
+      border-top: 1px solid var(--accent-warm);
+      border-left: 1px solid var(--accent-warm);
+      border-right: 1px solid var(--accent-warm);
+    }
+    .compare-table thead th.featured-col .col-eyebrow {
+      color: var(--accent-warm) !important;
+    }
+    .compare-table thead th.featured-col .col-price {
+      color: var(--accent-warm) !important;
     }
     .compare-check {
       color: var(--text);
@@ -268,7 +274,7 @@
               <th>
                 <span class="col-eyebrow">Custom</span>
                 Enterprise
-                <span class="col-price">Starts at $7,500 / mo</span>
+                <span class="col-price">Custom scope</span>
               </th>
             </tr>
           </thead>
@@ -460,7 +466,7 @@
           <div class="qm-eyebrow">If you say</div>
           <h4>"I run multi-location, an owner group, or a public-sector partnership."</h4>
           <p>Custom-scoped engagements for scale.</p>
-          <div class="qm-price">Starts $7,500<small> / mo</small></div>
+          <div class="qm-price">Custom scope<small> · priced per engagement</small></div>
           <div class="muted" style="font-size:12px">→ Enterprise</div>
         </a>
       </div>

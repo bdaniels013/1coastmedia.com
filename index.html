@@ -70,57 +70,6 @@
     </div>
   </div>
 
-  <!-- Current Specials (from API) -->
-  <section class="section" id="services">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Current Offers</div>
-        <h2 class="section-title">Specials</h2>
-        <p class="section-sub"
-           x-text="(() => {
-             const cats = serviceCategories || {};
-             if (cats.specials) return cats.specials.description || '';
-             const byKey = Object.entries(cats).find(([k]) => (k||'').toLowerCase().includes('special'))?.[1];
-             return byKey?.description || 'Limited-time packages built to get you moving fast.';
-           })()"></p>
-      </div>
-      <div class="grid grid-3">
-        <template x-for="svc in (() => {
-          const cats = serviceCategories || {};
-          if (cats.specials?.services) return cats.specials.services;
-          const byKey = Object.entries(cats).find(([k]) => (k||'').toLowerCase().includes('special'))?.[1];
-          return byKey?.services || [];
-        })()" :key="svc.key">
-          <article class="card" :id="'svc-' + svc.key">
-            <div class="card-eyebrow" x-text="svc.badge || 'Special'"></div>
-            <h3 x-text="svc.name"></h3>
-            <p x-text="svc.outcome"></p>
-            <button @click="toggleDetails(svc.key)" class="btn btn-ghost btn-sm mt-4" style="align-self:flex-start">
-              <span x-text="detailsOpen[svc.key] ? 'Hide details' : 'View details'"></span>
-            </button>
-            <div x-show="detailsOpen[svc.key]" x-transition class="mt-4" x-cloak>
-              <ul>
-                <template x-for="item in svc.deliverables" :key="item"><li x-text="item"></li></template>
-              </ul>
-              <p class="muted mt-4" style="font-size:13px" x-show="svc.sla">SLA: <span x-text="svc.sla"></span></p>
-            </div>
-            <div class="card-price">
-              <span x-show="svc.price?.oneTime > 0" x-text="fmtUSD(svc.price.oneTime)"></span>
-              <span x-show="(!svc.price?.oneTime || svc.price.oneTime === 0) && svc.price?.monthly > 0" x-text="fmtUSD(svc.price.monthly)"></span>
-              <small x-show="(!svc.price?.oneTime || svc.price.oneTime === 0) && svc.price?.monthly > 0"> / mo</small>
-            </div>
-            <div class="card-actions">
-              <button @click="toggleService(svc.key)" class="btn"
-                      :class="cartServices.includes(svc.key) ? 'btn-ghost' : 'btn-primary'">
-                <span x-text="cartServices.includes(svc.key) ? 'Remove' : 'Add to cart'"></span>
-              </button>
-            </div>
-          </article>
-        </template>
-      </div>
-    </div>
-  </section>
-
   <!-- Call CTA -->
   <section class="section-tight">
     <div class="wrap center">

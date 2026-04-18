@@ -607,14 +607,53 @@
                       <!-- Badge -->
                       <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-300 mb-2">
-                          🏆 Badge (optional)
+                          🏷️ Eyebrow / Badge (optional)
                         </label>
-                        <input 
-                          x-model="service.badge" 
-                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
-                          placeholder="e.g., Fastest ROI"
+                        <input
+                          x-model="service.badge"
+                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                          placeholder="e.g., Social, Web, PR, Ads"
                         >
-                        <p class="text-xs text-gray-400 mt-1">Displayed on frontend</p>
+                        <p class="text-xs text-gray-400 mt-1">Short label shown above the card title on /services.</p>
+                      </div>
+
+                      <!-- Price Display Override -->
+                      <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                          💲 Price Display Override (optional)
+                        </label>
+                        <input
+                          x-model="service.priceDisplay"
+                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                          placeholder='e.g., "$500 – $1,500" or "Custom scope"'
+                        >
+                        <p class="text-xs text-gray-400 mt-1">Use for ranges or custom wording. Overrides the numeric price above if set.</p>
+                      </div>
+
+                      <!-- Price Note -->
+                      <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                          💬 Price Note (optional)
+                        </label>
+                        <input
+                          x-model="service.priceNote"
+                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                          placeholder='e.g., "/ month", "per session", "typical range $X to $Y"'
+                        >
+                        <p class="text-xs text-gray-400 mt-1">Small text shown after the price.</p>
+                      </div>
+
+                      <!-- Image URL -->
+                      <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                          🖼️ Image URL (optional)
+                        </label>
+                        <input
+                          x-model="service.image"
+                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                          placeholder='https://... or /assets/my-image.jpg'
+                        >
+                        <p class="text-xs text-gray-400 mt-1">Optional image displayed at the top of the card. Upload via your image host and paste the URL here (native upload coming soon).</p>
                       </div>
                       
                       <!-- Service Preview -->

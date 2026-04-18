@@ -15,6 +15,8 @@
   --text-dim: #6b6b6b;
   --accent: #ffffff;
   --accent-ink: #000000;
+  --accent-warm: #d4a35c;        /* Gulf Coast sunset gold */
+  --accent-warm-soft: rgba(212, 163, 92, 0.18);
   --success: #16a34a;
   --maxw: 1280px;
 }
@@ -263,8 +265,9 @@ img { max-width: 100%; display: block; }
 .card-badge {
   display: inline-block; padding: 4px 10px; border-radius: 999px;
   font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-  background: var(--text); color: var(--accent-ink);
+  background: var(--accent-warm); color: var(--accent-ink);
   margin-bottom: 12px;
+  box-shadow: 0 0 24px rgba(212, 163, 92, 0.35);
 }
 .card ul {
   margin: 16px 0 0; padding: 0; list-style: none;
@@ -280,8 +283,12 @@ img { max-width: 100%; display: block; }
 .card ul li:first-child { border-top: 0; }
 
 .card-featured {
-  border: 1px solid var(--text);
-  background: linear-gradient(180deg, #0a0a0a, #000);
+  border: 1px solid var(--accent-warm);
+  background: linear-gradient(180deg, rgba(212, 163, 92, 0.06), #000);
+  box-shadow: 0 0 0 1px rgba(212, 163, 92, 0.1), 0 30px 60px rgba(212, 163, 92, 0.08);
+}
+.card-featured .card-price {
+  color: var(--accent-warm);
 }
 
 /* -------- Social proof row -------- */

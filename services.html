@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="./assets/boring.css" />
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
+<body x-data="catalogServices()" x-init="init()">
 
   <!-- Navigation -->
   <nav class="nav" x-data="{ menuOpen: false }">
@@ -238,48 +238,36 @@
       <div class="section-head">
         <div class="section-eyebrow">Monthly · Recurring</div>
         <h2 class="section-title">Monthly Add-Ons</h2>
-        <p class="section-sub">Recurring services that stack on any package.</p>
+        <p class="section-sub" x-text="serviceCategories['monthly-addons']?.description || 'Recurring services that stack on any package.'"></p>
       </div>
-      <div class="grid grid-3">
-
-        <div class="card" x-data="{ open: false }">
-          <div class="card-eyebrow">Social</div>
-          <h3>Social Media Management</h3>
-          <p>Posting, scheduling, community engagement, comments, and DMs. Built into Growth Machine and Growth Partner. Add it to Content Presence or Content Growth.</p>
-          <div class="card-price mt-6">$500 – $1,500<small> / month</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
-            <button @click="open = !open" class="btn btn-ghost btn-sm">
-              <span x-text="open ? 'Hide' : 'What fits?'"></span>
-            </button>
-          </div>
-          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
-            <p><strong style="color:var(--text)">$500 / mo:</strong> 1 platform, scheduled posting, basic engagement.</p>
-            <p><strong style="color:var(--text)">$1,000 / mo:</strong> 2 platforms, active posting, comments and DMs.</p>
-            <p><strong style="color:var(--text)">$1,500 / mo:</strong> 3 platforms, full community management, trend monitoring.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">Ads</div>
-          <h3>Ad Campaign Management</h3>
-          <p>Meta, Google, and TikTok ad creative, launch, and optimization. Priced on platforms and ad budget. Ad spend billed separately.</p>
-          <div class="card-price mt-6">$750 – $2,500<small> / month</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get started</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">PR</div>
-          <h3>Ongoing PR Retainer</h3>
-          <p>1 to 2 press releases per month plus active media outreach and relationship building. Local, regional, and national targeting.</p>
-          <div class="card-price mt-6">$1,500 – $3,500<small> / month</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
-          </div>
-        </div>
-
+      <div class="grid grid-3" x-show="(serviceCategories['monthly-addons']?.services?.length || 0) > 0">
+        <template x-for="svc in (serviceCategories['monthly-addons']?.services || [])" :key="svc.key">
+          <article class="card" x-data="{ open: false }">
+            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+            <div class="card-eyebrow" x-text="svc.badge || 'Monthly'"></div>
+            <h3 x-text="svc.name"></h3>
+            <p x-text="svc.outcome"></p>
+            <div class="card-price mt-6">
+              <span x-text="priceLabel(svc)"></span><small x-show="svc.priceNote" x-text="' · ' + svc.priceNote"></small>
+            </div>
+            <div class="card-actions">
+              <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+              <button x-show="svc.deliverables && svc.deliverables.length" @click="open = !open" class="btn btn-ghost btn-sm">
+                <span x-text="open ? 'Hide' : 'Details'"></span>
+              </button>
+            </div>
+            <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+              <ul style="list-style:none; padding:0; margin:0">
+                <template x-for="item in svc.deliverables" :key="item">
+                  <li x-text="item" style="padding:4px 0"></li>
+                </template>
+              </ul>
+            </div>
+          </article>
+        </template>
+      </div>
+      <div x-show="!loading && (serviceCategories['monthly-addons']?.services?.length || 0) === 0" class="muted center" style="padding: 40px 20px">
+        <p>No monthly add-ons configured yet.</p>
       </div>
     </div>
   </section>
@@ -342,90 +330,42 @@
       <div class="section-head">
         <div class="section-eyebrow">Project-based · One-time</div>
         <h2 class="section-title">Specialty Projects</h2>
-        <p class="section-sub">One-off projects and standalone productions. Stack on any package or book solo.</p>
+        <p class="section-sub" x-text="serviceCategories['specialty-projects']?.description || 'One-off projects and standalone productions. Stack on any package or book solo.'"></p>
       </div>
-      <div class="grid grid-3">
-
-        <div class="card">
-          <div class="card-eyebrow">Web</div>
-          <h3>Website Build / Redesign</h3>
-          <p>Custom design, build, and launch. Mobile-first, SEO-ready, conversion-optimized.</p>
-          <div class="card-price mt-6">$2,500 – $7,500<small> · scope-based</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">PR</div>
-          <h3>Single Press Release</h3>
-          <p>Written, formatted, and distributed to news outlets. Pick your reach.</p>
-          <ul>
-            <li>Local Gulf Coast: $450</li>
-            <li>Regional (MS / AL / LA): $950</li>
-            <li>National: $2,500</li>
-          </ul>
-          <div class="card-price mt-6">From $450<small> / release</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">Video</div>
-          <h3>Brand / Cinematic Video</h3>
-          <p>Story-driven, high-production brand film. Scripted, scored, color-graded.</p>
-          <div class="card-price mt-6">$950+<small> · per project</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">Photo</div>
-          <h3>Photo Mini Session</h3>
-          <p>20 to 30 edited photos delivered in 48 to 72 hours. Products, staff, venue, menu items.</p>
-          <div class="card-price mt-6">$350<small> · per session</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book now</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">Content</div>
-          <h3>Social Content Day</h3>
-          <p>10 to 15 short-form videos plus 20 to 30 photos. Edited for Reels, TikTok, and Shorts. On-site direction included.</p>
-          <div class="card-price mt-6">$699<small> · per session</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book now</a>
-          </div>
-        </div>
-
-        <div class="card" x-data="{ open: false }">
-          <div class="card-eyebrow">Distribution</div>
-          <h3>UGC View Boosts</h3>
-          <p>Guaranteed local views from our Gulf Coast creator network. Pay per boost, stack as needed.</p>
-          <div class="card-price mt-6">$150 – $1,250<small> · per boost</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
-            <button @click="open = !open" class="btn btn-ghost btn-sm">
-              <span x-text="open ? 'Hide' : 'See boosts'"></span>
-            </button>
-          </div>
-          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
-            <p><strong style="color:var(--text)">$150:</strong> +10,000 local views</p>
-            <p><strong style="color:var(--text)">$350:</strong> +25,000 local views</p>
-            <p><strong style="color:var(--text)">$650:</strong> +50,000 local views</p>
-            <p><strong style="color:var(--text)">$1,250:</strong> +100,000 local views</p>
-          </div>
-        </div>
-
+      <div class="grid grid-3" x-show="(serviceCategories['specialty-projects']?.services?.length || 0) > 0">
+        <template x-for="svc in (serviceCategories['specialty-projects']?.services || [])" :key="svc.key">
+          <article class="card" x-data="{ open: false }">
+            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+            <div class="card-eyebrow" x-text="svc.badge || 'Project'"></div>
+            <h3 x-text="svc.name"></h3>
+            <p x-text="svc.outcome"></p>
+            <div class="card-price mt-6">
+              <span x-text="priceLabel(svc)"></span><small x-show="svc.priceNote" x-text="' · ' + svc.priceNote"></small>
+            </div>
+            <div class="card-actions">
+              <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+              <button x-show="svc.deliverables && svc.deliverables.length" @click="open = !open" class="btn btn-ghost btn-sm">
+                <span x-text="open ? 'Hide' : 'Details'"></span>
+              </button>
+            </div>
+            <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+              <ul style="list-style:none; padding:0; margin:0">
+                <template x-for="item in svc.deliverables" :key="item">
+                  <li x-text="item" style="padding:4px 0"></li>
+                </template>
+              </ul>
+            </div>
+          </article>
+        </template>
+      </div>
+      <div x-show="!loading && (serviceCategories['specialty-projects']?.services?.length || 0) === 0" class="muted center" style="padding: 40px 20px">
+        <p>No specialty projects configured yet.</p>
       </div>
     </div>
   </section>
 
   <!-- A La Carte Services (API-driven) -->
-  <section class="section" id="admin-services" x-data="catalogServices()" x-init="init()" x-show="!loading && categoriesList().length > 0" x-cloak>
+  <section class="section" id="admin-services" x-show="!loading && categoriesList().length > 0" x-cloak>
     <div class="wrap">
       <div class="section-head">
         <div class="section-eyebrow">Custom · Flexible</div>
@@ -554,6 +494,9 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Categories rendered in their own dedicated sections. Filtered out of the A La Carte catch-all.
+    const RESERVED_CATEGORY_KEYS = ['monthly-addons', 'specialty-projects', 'ai-integration'];
+
     function catalogServices() {
       return {
         apiBase: window.location.origin,
@@ -573,10 +516,20 @@
           }
         },
         categoriesList() {
+          // Used by the A La Carte section — shows any category NOT rendered in a dedicated section above.
           const entries = Object.entries(this.serviceCategories || {});
           return entries
-            .filter(([key, cat]) => Array.isArray(cat?.services) && cat.services.length > 0)
+            .filter(([key, cat]) => !RESERVED_CATEGORY_KEYS.includes(key) && Array.isArray(cat?.services) && cat.services.length > 0)
             .map(([key, cat]) => ({ key, cat }));
+        },
+        priceLabel(svc) {
+          if (svc?.priceDisplay) return svc.priceDisplay;
+          const oneTime = svc?.price?.oneTime || 0;
+          const monthly = svc?.price?.monthly || 0;
+          if (oneTime > 0 && monthly > 0) return this.fmtUSD(oneTime) + ' + ' + this.fmtUSD(monthly) + ' / mo';
+          if (monthly > 0) return this.fmtUSD(monthly) + ' / mo';
+          if (oneTime > 0) return this.fmtUSD(oneTime);
+          return 'Custom scope';
         },
         fmtUSD(n) {
           const num = typeof n === 'number' ? n : parseFloat(n || '0');
