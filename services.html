@@ -374,10 +374,12 @@
       </div>
 
       <template x-for="entry in categoriesList()" :key="entry.key">
-        <div style="margin-bottom:64px">
-          <div class="section-head" style="margin-bottom:32px">
-            <h3 style="font-size:28px; font-weight:800; letter-spacing:-0.02em; margin:0 0 10px; text-transform:uppercase;" x-text="titleCase(entry.key)"></h3>
-            <p class="muted" x-text="entry.cat.description"></p>
+        <div style="margin-bottom:48px">
+          <!-- Only render a sub-heading when multiple Specials categories exist AND the category has a meaningful name -->
+          <div class="section-head" style="margin-bottom:24px"
+               x-show="categoriesList().length > 1 && entry.cat.name && entry.cat.name.toLowerCase() !== 'specials'">
+            <h3 style="font-size:24px; font-weight:800; letter-spacing:-0.02em; margin:0 0 6px; text-transform:uppercase;" x-text="entry.cat.name"></h3>
+            <p class="muted" x-show="entry.cat.description" x-text="entry.cat.description"></p>
           </div>
           <div class="grid grid-2">
             <template x-for="svc in entry.cat.services" :key="svc.key">
