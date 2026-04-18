@@ -3,41 +3,46 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Enterprise Solutions • 1CoastMedia</title>
-  <meta name="description" content="Regional and enterprise-scale solutions for cities, chambers, casinos, and economic development organizations. Built on 15 years of proven experience." />
+  <title>Enterprise & Partnerships • 1CoastMedia</title>
+  <meta name="description" content="Custom growth engagements for multi-location brands, owner groups, destination properties, and public-sector partners. Scoped around your geography, volume, management level, and reporting needs." />
   <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
   <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./assets/boring.css" />
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
-    .stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    @media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
-    .stat {
-      text-align: center; padding: 28px;
+    .scope-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (max-width: 720px) { .scope-grid { grid-template-columns: 1fr; } }
+    .scope-item {
+      padding: 28px;
       border: 1px solid var(--border);
       border-radius: 18px;
       background: var(--bg-elev);
     }
-    .stat-value { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
-    .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; letter-spacing: .05em; text-transform: uppercase; }
-
-    .spotlight {
-      background: linear-gradient(180deg, var(--bg-elev), #000);
+    .scope-item h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .scope-item p { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 1.55; }
+    .starting-at {
+      margin-top: 32px; padding: 28px;
       border: 1px solid var(--text);
-      border-radius: 22px;
-      padding: 48px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #0a0a0a, #000);
       text-align: center;
     }
-    @media (max-width: 720px) { .spotlight { padding: 28px; } }
-    .tier-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 24px 0 28px; }
-    .tier-pill {
-      padding: 8px 16px; border-radius: 999px;
-      background: var(--bg); border: 1px solid var(--border-strong);
-      font-size: 13px; font-weight: 600;
+    .starting-at .label {
+      font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 10px;
+    }
+    .starting-at .amount {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .starting-at .note {
+      margin-top: 10px; color: var(--text-muted); font-size: 14px;
     }
   </style>
 </head>
@@ -52,7 +57,6 @@
       </a>
       <div class="nav-links">
         <a href="/services">Services</a>
-        <a href="/growth-machine">Growth Machine</a>
         <a href="/enterprise-solutions">Enterprise</a>
         <a href="/offer-comparison">Compare</a>
         <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="nav-cta">Book a call</a>
@@ -61,8 +65,7 @@
       <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
         <a href="/">Home</a>
         <a href="/services">Services</a>
-        <a href="/growth-machine">Growth Machine</a>
-        <a href="/enterprise-solutions">Enterprise Solutions</a>
+        <a href="/enterprise-solutions">Enterprise</a>
         <a href="/offer-comparison">Compare Offers</a>
         <a href="https://calendly.com/bdaniels013/30min" target="_blank">Book a call</a>
       </div>
@@ -78,301 +81,202 @@
         <source src="https://storage.googleapis.com/1coastmediawebsite/297505_Particle%20Artwork%20Liquid%20Drop_By_Freeman_Footage_Artlist_4K.mp4" type="video/mp4" />
       </video>
     </div>
-    <span class="hero-eyebrow">Enterprise Solutions · 15 Years Proven</span>
-    <h1>Built for the Coast. Made for real results.</h1>
-    <p class="hero-sub">Most agencies sell you the same playbook. 1CoastMedia is different. A full-scale creative and media powerhouse built on 15 years of turning brands into cultural forces.</p>
+    <span class="hero-eyebrow">Enterprise · Multi-Business · Public Sector</span>
+    <h1>Partnerships at scale.</h1>
+    <p class="hero-sub">Custom growth engagements for multi-location brands, owner groups, destination properties, and public-sector partners. Built around your geography, volume, management level, and reporting needs.</p>
     <div class="hero-ctas">
-      <a href="/growth-machine" class="btn btn-primary btn-lg">Explore Growth Machine →</a>
-      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-ghost btn-lg">Book a partnership call</a>
+      <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-lg">Book a partnership call</a>
+      <a href="tel:+12283578505" class="btn btn-ghost btn-lg">Call (228) 357-8505</a>
     </div>
   </header>
 
   <!-- Marquee -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <span>15 years proven.</span><span class="dot">•</span>
-      <span>Full spectrum.</span><span class="dot">•</span>
-      <span>Cities. Chambers. Casinos.</span><span class="dot">•</span>
-      <span>One partner, total accountability.</span><span class="dot">•</span>
-      <span>15 years proven.</span><span class="dot">•</span>
-      <span>Full spectrum.</span><span class="dot">•</span>
-      <span>Cities. Chambers. Casinos.</span><span class="dot">•</span>
-      <span>One partner, total accountability.</span><span class="dot">•</span>
+      <span>Multi-location.</span><span class="dot">•</span>
+      <span>Owner groups.</span><span class="dot">•</span>
+      <span>Public sector.</span><span class="dot">•</span>
+      <span>Built to scale.</span><span class="dot">•</span>
+      <span>Multi-location.</span><span class="dot">•</span>
+      <span>Owner groups.</span><span class="dot">•</span>
+      <span>Public sector.</span><span class="dot">•</span>
+      <span>Built to scale.</span><span class="dot">•</span>
     </div>
   </div>
 
-  <!-- Trust Stats -->
-  <section class="section-tight">
-    <div class="wrap">
-      <div class="stats">
-        <div class="stat"><div class="stat-value">3–7 day</div><div class="stat-label">Website turnarounds</div></div>
-        <div class="stat"><div class="stat-value">30k+</div><div class="stat-label">UGC views per campaign</div></div>
-        <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Upfront pricing clarity</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- What Sets Us Apart -->
+  <!-- Three segments -->
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <div class="section-eyebrow">The difference</div>
-        <h2 class="section-title">What sets us apart.</h2>
+        <div class="section-eyebrow">Who we partner with</div>
+        <h2 class="section-title">Three segments.</h2>
+        <p class="section-sub">Every engagement custom-scoped to your operation. No cookie-cutter enterprise tiers.</p>
       </div>
+
       <div class="grid grid-3">
-        <div class="card">
-          <div class="card-eyebrow">Experience</div>
-          <h3>Real experience, real results.</h3>
-          <p>Fifteen years building brands that matter. Ten of those at the highest level of entertainment, alongside global superstars and culture-defining influencers. We've cracked the code on what makes audiences obsess, engage, and convert.</p>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">Geography</div>
-          <h3>The Gulf Coast advantage.</h3>
-          <p>World-class strategy and execution with deep local understanding. We know this market, this culture, and what resonates here. And we know how to scale beyond when you're ready.</p>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">Scope</div>
-          <h3>Full-spectrum creative power.</h3>
-          <p>Strategy, content, campaign execution, event production, brand development. Everything under one roof. No juggling vendors. No mixed messages. One partner. Total accountability.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- How We Transform -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Our method</div>
-        <h2 class="section-title">How we transform businesses.</h2>
-      </div>
-      <div class="grid grid-2">
-        <div class="card">
-          <div class="card-eyebrow">01 · Brand</div>
-          <h3>Brand alchemy.</h3>
-          <p>We don't just design logos. We architect experiences. Every touchpoint, every interaction, every piece of content works together to create something people can't ignore and won't forget.</p>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">02 · Content</div>
-          <h3>Content that cuts through.</h3>
-          <p>In a world drowning in noise, we create signal. Short-form that stops the scroll. Visuals that demand attention. Copy that moves people to action. Every piece engineered for impact.</p>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">03 · Events</div>
-          <h3>Events that build empires.</h3>
-          <p>Launch parties become legendary. Grand openings turn into local phenomena. We design experiences that create genuine buzz, foster real connections, and generate immediate revenue.</p>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">04 · Story</div>
-          <h3>Storytelling as strategy.</h3>
-          <p>The brands that win don't just sell products. They sell identity, belonging, and transformation. We craft narratives that turn customers into evangelists.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- The Promise -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Why clients stay</div>
-        <h2 class="section-title">The 1CoastMedia promise.</h2>
-      </div>
-      <div class="features">
-        <div class="feature">
-          <div class="feature-num">01</div>
-          <h4>No templated solutions.</h4>
-          <p>Your business is unique. Every campaign, creative brief, and execution is built specifically for your goals, your audience, your vision.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-num">02</div>
-          <h4>Direct access, always.</h4>
-          <p>You work directly with decision-makers. No account coordinators reading scripts. Straight talk, creative collaboration, immediate action.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-num">03</div>
-          <h4>Results-driven partnership.</h4>
-          <p>We succeed when you succeed. Fifteen years in business. Zero unhappy clients walking away.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Service Ecosystem: Growth Machine spotlight -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Our ecosystem</div>
-        <h2 class="section-title">The service ecosystem.</h2>
-      </div>
-
-      <div class="spotlight">
-        <div class="card-eyebrow">Flagship program</div>
-        <h3 style="font-size:clamp(28px,4vw,44px); font-weight:800; letter-spacing:-0.02em; margin:8px 0 14px; text-transform:uppercase;">All-Inclusive Growth Machine</h3>
-        <p class="muted" style="max-width:60ch; margin:0 auto; font-size:17px; line-height:1.5;">The definitive engine for revenue revolution. Choose your tier and watch objections dissolve.</p>
-        <div class="tier-pills">
-          <span class="tier-pill">Starter · $4,500 / mo</span>
-          <span class="tier-pill">Machine · $6,500 / mo</span>
-          <span class="tier-pill">Accelerator · $9,000 / mo</span>
-        </div>
-        <a href="/growth-machine" class="btn btn-primary btn-lg">Explore Growth Machine →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 1 Coast Economic Impact Initiative -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">For cities, chambers, tourism boards</div>
-        <h2 class="section-title">The 1 Coast Economic Impact Initiative.</h2>
-        <p class="section-sub">Growing the Mississippi Gulf Coast together through coordinated UGC, business spotlights, tourism videos, and creator networks.</p>
-      </div>
-
-      <div class="grid grid-2" x-data="{ open: false }">
-        <article class="card card-featured">
-          <div class="card-eyebrow">Partnership Program</div>
-          <h3>Regional Growth Engine</h3>
-          <p><em>"Growing the Mississippi Gulf Coast Together."</em></p>
+        <!-- Segment 1: Enterprise & Multi-Location -->
+        <article class="card" x-data="{ open: false }">
+          <div class="card-eyebrow">01 · Enterprise</div>
+          <h3>Multi-Location Businesses</h3>
+          <p>Content and growth operations coordinated across every location. Centralized strategy, unified brand voice, location-level execution.</p>
           <ul>
-            <li>Coast-wide monthly UGC campaigns</li>
-            <li>10–20 business spotlights per month</li>
-            <li>Quarterly cinematic tourism videos</li>
-            <li>Seasonal regional campaigns</li>
-            <li>Creator network development</li>
-            <li>Cross-city collaboration</li>
-            <li>Tourism + economic impact reporting</li>
+            <li>Casinos and destination properties</li>
+            <li>Malls and shopping centers</li>
+            <li>Regional restaurant and retail chains</li>
+            <li>Multi-location service brands</li>
+            <li>Hotels and hospitality groups</li>
           </ul>
-          <p class="muted mt-6" style="font-size:13px">For: Cities · Counties · Tourism Boards · Chambers · Casinos · Foundations · Economic Development Orgs.</p>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Request partnership deck</a>
-            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+          <div class="card-actions mt-6">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
             <button @click="open = !open" class="btn btn-ghost btn-sm">
-              <span x-text="open ? 'Hide details' : 'Full details →'"></span>
+              <span x-text="open ? 'Hide' : 'Typical scope'"></span>
             </button>
           </div>
           <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
-            <p><strong style="color:var(--text)">Monthly Coast-Wide UGC.</strong> Guaranteed view delivery via your UGC budget (city- or sponsor-funded). 20–50 creator videos/mo, multi-city distribution, full management.</p>
-            <p><strong style="color:var(--text)">10–20 Business Spotlights.</strong> Rotating spotlights for restaurants, boutiques, makers, attractions, services. 1 short UGC-style video per spotlight with cross-posting.</p>
-            <p><strong style="color:var(--text)">Quarterly Tourism Videos.</strong> Full creative direction, multi-location filming, drone footage, editing, regional distribution.</p>
-            <p><strong style="color:var(--text)">Seasonal Campaigns.</strong> Restaurant Week, Coast-Wide Holiday, Summer Kickoff, Spring Break Coast, Family Adventure Month, Arts & Culture Spotlight.</p>
-            <p><strong style="color:var(--text)">Creator Network.</strong> Training, paid opportunities, community building.</p>
-            <p><strong style="color:var(--text)">Impact Reports.</strong> Monthly + quarterly reports on reach, economic uplift indicators, spotlight performance, tourism distribution, YoY growth.</p>
-            <p><strong style="color:var(--text)">Optional add-ons:</strong> UGC Mega-Burst (custom), Event Recap Video ($950), Quarterly Creator Summit ($1,200), Paid Boost Management ($500/mo).</p>
+            <p><strong style="color:var(--text)">What's typically involved:</strong> multi-location content capture, centralized brand guidelines, location-specific social accounts, enterprise reporting, ad coordination, and a dedicated team that learns every property.</p>
           </div>
         </article>
 
-        <div class="grid" style="grid-template-columns:1fr; gap:16px">
-          <article class="card">
-            <div class="card-eyebrow">Tier 01 · Single City</div>
-            <h3>Single City</h3>
-            <p>Focused engagement for one municipality or chamber.</p>
-            <div class="card-price">$5,000<small> / month</small></div>
-          </article>
-          <article class="card">
-            <div class="card-eyebrow">Tier 02 · Multi-City</div>
-            <h3>Multi-City Regional</h3>
-            <p>Coordinated campaigns across multiple Coast cities.</p>
-            <div class="card-price">$12,000<small> / month</small></div>
-          </article>
-          <article class="card">
-            <div class="card-eyebrow">Tier 03 · Full Coast</div>
-            <h3>Full Coast Initiative</h3>
-            <p>Complete Coast-wide presence and reporting.</p>
-            <div class="card-price">$25,000<small> / month</small></div>
-          </article>
-          <article class="card">
-            <div class="card-eyebrow">Tier 04 · Complete Engine</div>
-            <h3>Tourism & Economic Engine</h3>
-            <p>The full regional growth + tourism machine.</p>
-            <div class="card-price">$50,000<small> / month</small></div>
-          </article>
-        </div>
+        <!-- Segment 2: Owner Groups -->
+        <article class="card" x-data="{ open: false }">
+          <div class="card-eyebrow">02 · Owner Groups</div>
+          <h3>Multiple Businesses, One Owner</h3>
+          <p>One partner across your portfolio. Shared team, shared systems, volume efficiency across every brand you own.</p>
+          <ul>
+            <li>Owners with three or more businesses</li>
+            <li>Holding companies and family portfolios</li>
+            <li>Multi-concept restaurant groups</li>
+            <li>Portfolio landlords with tenant brands</li>
+            <li>Serial entrepreneurs</li>
+          </ul>
+          <div class="card-actions mt-6">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'Typical scope'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">What's typically involved:</strong> consolidated content production across brands, shared shoot days when possible, portfolio-level strategy, per-brand reporting, and discounted per-brand pricing for owners consolidating with one partner.</p>
+          </div>
+        </article>
+
+        <!-- Segment 3: Public Sector -->
+        <article class="card" x-data="{ open: false }">
+          <div class="card-eyebrow">03 · Public Sector</div>
+          <h3>Regional & Public-Sector Partners</h3>
+          <p>Regional storytelling, business spotlights, and tourism content that moves economic needles. Not just metrics.</p>
+          <ul>
+            <li>Cities and municipalities</li>
+            <li>Chambers of commerce</li>
+            <li>Tourism boards and CVBs</li>
+            <li>Economic development organizations</li>
+            <li>Destination marketing partnerships</li>
+          </ul>
+          <div class="card-actions mt-6">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'Typical scope'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">What's typically involved:</strong> tourism content production, member business spotlights, seasonal campaign pushes, creator network activation, regional media outreach, and public-facing economic impact reporting.</p>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <!-- Service Categories Overview -->
+  <!-- How pricing works -->
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <div class="section-eyebrow">Three flavors of engagement</div>
-        <h2 class="section-title">Launches. Engines. Boosts.</h2>
+        <div class="section-eyebrow">Pricing</div>
+        <h2 class="section-title">Custom scope. Custom price.</h2>
+        <p class="section-sub">Every enterprise engagement is scoped around your reality. No two businesses at this scale are the same, so the pricing isn't either. Four inputs drive the number.</p>
       </div>
-      <div class="grid grid-3">
-        <div class="card">
-          <div class="card-eyebrow">One-time</div>
-          <h3>Launches</h3>
-          <p>One-time projects to get your business off the ground fast.</p>
+
+      <div class="scope-grid">
+        <div class="scope-item">
+          <h4>Scope</h4>
+          <p>What we actually do. Content production, social management, paid ads, PR, web, email, AI integration, events. Pick the full stack or just the pieces you need.</p>
         </div>
-        <div class="card">
-          <div class="card-eyebrow">Monthly</div>
-          <h3>Engines</h3>
-          <p>Monthly services to keep your business running smoothly.</p>
+        <div class="scope-item">
+          <h4>Geography</h4>
+          <p>Single location to multi-state. Travel, on-location work, and coordinated multi-city production priced accordingly.</p>
         </div>
-        <div class="card">
-          <div class="card-eyebrow">Add-on</div>
-          <h3>Boosts</h3>
-          <p>Add-ons to enhance existing services when you need them.</p>
+        <div class="scope-item">
+          <h4>Volume</h4>
+          <p>Content output per month, shoot days, campaigns launched, press releases distributed, AI systems deployed. More volume, more resources.</p>
         </div>
+        <div class="scope-item">
+          <h4>Management &amp; Reporting</h4>
+          <p>How hands-on the partnership runs. Dedicated team, strategy depth, reporting cadence, stakeholder presentations, executive-level access.</p>
+        </div>
+      </div>
+
+      <div class="starting-at">
+        <div class="label">Typical engagements start at</div>
+        <div class="amount">$7,500 / month</div>
+        <p class="note">Scope defines the final number. Some partnerships run six figures annually. Public sector and regional partnerships are often grant-backed or project-funded.</p>
       </div>
     </div>
   </section>
 
-  <!-- Why Now Why Us -->
+  <!-- What's included at scale -->
   <section class="section">
     <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="section-eyebrow">Why Now. Why Us.</div>
-          <h2>The Gulf Coast is moving. Are you?</h2>
-          <p>New energy. New opportunities. New money flowing in. But too many local businesses are still marketing like it's 2010.</p>
-          <p>We've spent 15+ years learning what separates winners from everyone else. We've seen brands go from unknown to unavoidable.</p>
+      <div class="section-head">
+        <div class="section-eyebrow">What changes at scale</div>
+        <h2 class="section-title">Different operation.</h2>
+        <p class="section-sub">Enterprise engagements aren't just bigger packages. The whole operation runs differently.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-eyebrow">Team</div>
+          <h3>Dedicated Production Team</h3>
+          <p>Assigned producers, shooters, editors, and strategists who learn your brands and operate like an in-house marketing department.</p>
         </div>
-        <div class="features" style="grid-template-columns:1fr">
-          <div class="feature">
-            <div class="feature-num">The moment</div>
-            <p>Post-2020 growth on the Coast is real. Outside capital is arriving. The window to position is now.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-num">The lens</div>
-            <p>15+ years watching what converts here. Local knowledge, national-grade execution.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-num">The stakes</div>
-            <p>The question isn't whether we can deliver. It's whether you're ready for what happens when your business becomes the one everyone's talking about.</p>
-          </div>
+        <div class="card">
+          <div class="card-eyebrow">Process</div>
+          <h3>Multi-Location Coordination</h3>
+          <p>Location-by-location shoot schedules, unified brand standards, location-specific social accounts, centralized approvals, regional rollouts.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Reporting</div>
+          <h3>Executive Reporting</h3>
+          <p>Monthly stakeholder reports, quarterly strategy reviews, real-time dashboards, and presentation-ready economic impact data when needed.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Integration</div>
+          <h3>AI &amp; Systems at Scale</h3>
+          <p>Custom AI integrations across customer-facing and internal workflows. Offline systems available for operations handling sensitive data.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Access</div>
+          <h3>Direct Founder Access</h3>
+          <p>Every enterprise engagement runs with direct access to Blake. No account coordinators between you and the person running the work.</p>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Flexibility</div>
+          <h3>Quarterly Re-Scoping</h3>
+          <p>Scope reviewed quarterly and adjusted as your operation changes. Scale up, scale down, or shift resources between brands.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Marquee -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Own your market.</span><span class="dot">•</span>
-      <span>Dominate the Coast.</span><span class="dot">•</span>
-      <span>Build the empire.</span><span class="dot">•</span>
-      <span>Stop settling.</span><span class="dot">•</span>
-      <span>Own your market.</span><span class="dot">•</span>
-      <span>Dominate the Coast.</span><span class="dot">•</span>
-      <span>Build the empire.</span><span class="dot">•</span>
-      <span>Stop settling.</span><span class="dot">•</span>
-    </div>
-  </div>
-
-  <!-- Ready to Own Your Market -->
+  <!-- Final CTA -->
   <section class="section">
     <div class="wrap center">
-      <div class="section-eyebrow">No more settling</div>
-      <h2 class="section-title">Ready to own your market?</h2>
-      <p class="section-sub">Stop settling for marketing that's merely adequate. Stop accepting agencies that treat you like a number. If you're ready to build a brand that dominates, let's talk. This is about more than marketing. It's about claiming your place as a Gulf Coast success story.</p>
+      <h2 class="section-title">Let's scope your engagement.</h2>
+      <p class="section-sub">Every partnership starts with a call. We map scope, geography, volume, and goals. Then we build the engagement around your operation.</p>
       <div class="hero-ctas">
-        <a href="/growth-machine" class="btn btn-primary btn-lg">View Growth Machine →</a>
-        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-ghost btn-lg">Book a 30-min call</a>
-        <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now</a>
+        <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-lg">Book a partnership call</a>
+        <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call (228) 357-8505</a>
       </div>
-      <p class="muted mt-4" style="font-size:14px">Or dial (228) 357-8505</p>
     </div>
   </section>
 
@@ -388,7 +292,6 @@
           <h5>Services</h5>
           <ul>
             <li><a href="/services">Core services</a></li>
-            <li><a href="/growth-machine">Growth Machine</a></li>
             <li><a href="/enterprise-solutions">Enterprise</a></li>
             <li><a href="/offer-comparison">Compare offers</a></li>
           </ul>

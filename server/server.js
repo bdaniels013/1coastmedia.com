@@ -703,13 +703,9 @@ app.get('/api/health', (req, res) => {
 });
 
 // URL Rewriting - Clean URLs without .html extension
+// Legacy /growth-machine redirects to /services (the Growth Machine package section)
 app.get('/growth-machine', (req, res) => {
-  const growthMachinePath = path.join(__dirname, '..', 'growth-machine.html');
-  if (fs.existsSync(growthMachinePath)) {
-    res.sendFile(growthMachinePath);
-  } else {
-    res.status(404).json({ error: 'Growth Machine page not found' });
-  }
+  res.redirect(301, '/services#pkg-growth-machine');
 });
 
 app.get('/admin', (req, res) => {
@@ -811,18 +807,9 @@ app.get('/compare-offers', (req, res) => {
   res.redirect(301, '/offer-comparison');
 });
 
-// Specific route for growth-machine.html (fallback)
+// Legacy /growth-machine.html redirects to /services (the Growth Machine package section)
 app.get('/growth-machine.html', (req, res) => {
-  const growthMachinePath = path.join(__dirname, '..', 'growth-machine.html');
-  if (fs.existsSync(growthMachinePath)) {
-    res.sendFile(growthMachinePath);
-  } else {
-    res.status(404).json({
-      error: 'growth-machine.html not found',
-      path: growthMachinePath,
-      exists: fs.existsSync(growthMachinePath)
-    });
-  }
+  res.redirect(301, '/services#pkg-growth-machine');
 });
 
 // Specific route for services.html (fallback)

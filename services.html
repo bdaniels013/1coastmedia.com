@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Services • 1CoastMedia</title>
-  <meta name="description" content="Monthly growth packages for Mississippi Gulf Coast businesses. Content Presence $1K, Content Momentum $1.75K, Growth Machine $3.25K, Growth Partner $5K. Plus one-time website builds, press release distribution, UGC view boosts, and AI assistants." />
+  <meta name="description" content="Monthly growth packages for Mississippi Gulf Coast businesses. Content Presence $1K, Content Growth $1.75K, Growth Machine $3.25K, Growth Partner $5K. Plus one-time website builds, press release distribution, UGC view boosts, and AI assistants." />
   <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
   <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -22,7 +22,6 @@
       </a>
       <div class="nav-links">
         <a href="/services">Services</a>
-        <a href="/growth-machine">Growth Machine</a>
         <a href="/enterprise-solutions">Enterprise</a>
         <a href="/offer-comparison">Compare</a>
         <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="nav-cta">Book a call</a>
@@ -31,7 +30,6 @@
       <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
         <a href="/">Home</a>
         <a href="/services">Services</a>
-        <a href="/growth-machine">Growth Machine</a>
         <a href="/enterprise-solutions">Enterprise Solutions</a>
         <a href="/offer-comparison">Compare Offers</a>
         <a href="https://calendly.com/bdaniels013/30min" target="_blank">Book a call</a>
@@ -112,10 +110,10 @@
           </div>
         </article>
 
-        <!-- Package 2: Content Momentum -->
-        <article class="card" id="pkg-content-momentum" x-data="{ open: false }">
-          <div class="card-eyebrow">Package 02 · Content Momentum</div>
-          <h3>Content Momentum</h3>
+        <!-- Package 2: Content Growth -->
+        <article class="card" id="pkg-content-growth" x-data="{ open: false }">
+          <div class="card-eyebrow">Package 02 · Content Growth</div>
+          <h3>Content Growth</h3>
           <p><em>"More volume, stronger consistency, better momentum."</em></p>
           <ul>
             <li>2 shoot days per month</li>
@@ -234,90 +232,20 @@
     </div>
   </section>
 
-  <!-- UGC View Budget -->
+  <!-- Monthly Add-Ons -->
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <div class="section-eyebrow">Optional add-on · any package</div>
-        <h2 class="section-title">UGC View Budget</h2>
-        <p class="section-sub">Guaranteed local views you can stack on top of any offer.</p>
-      </div>
-      <div class="grid grid-4">
-        <div class="card">
-          <div class="card-eyebrow">Boost 01</div>
-          <h3>+10,000 views</h3>
-          <div class="card-price">$150</div>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">Boost 02</div>
-          <h3>+25,000 views</h3>
-          <div class="card-price">$350</div>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">Boost 03</div>
-          <h3>+50,000 views</h3>
-          <div class="card-price">$650</div>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">Boost 04</div>
-          <h3>+100,000 views</h3>
-          <div class="card-price">$1,250</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AI Assistant Add-Ons -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Optional add-ons</div>
-        <h2 class="section-title">AI Assistants</h2>
-        <p class="section-sub">Layer AI on top of any offer that includes chat, DM, or phone support.</p>
-      </div>
-      <div class="grid grid-3">
-        <div class="card">
-          <div class="card-eyebrow">Basic</div>
-          <h3>DM Assistant</h3>
-          <p>Answers FAQs instantly. Hours, directions, menu, pricing ranges, booking.</p>
-          <div class="card-price">$29<small> / month</small></div>
-        </div>
-        <div class="card">
-          <div class="card-eyebrow">Pro</div>
-          <h3>Lead Capture Assistant</h3>
-          <p>Collects name, phone, email; routes hot leads directly to your team.</p>
-          <div class="card-price">$49<small> / month</small></div>
-        </div>
-        <div class="card" x-data="{ open: false }">
-          <div class="card-eyebrow">Premium</div>
-          <h3>AI Voice Receptionist</h3>
-          <p>Answers calls, books appointments, qualifies leads. 24/7.</p>
-          <div class="card-price">$149<small> setup · $79/mo</small></div>
-          <button @click="open = !open" class="btn btn-ghost btn-sm mt-4" style="align-self:flex-start">
-            <span x-text="open ? 'Hide' : 'What\'s included'"></span>
-          </button>
-          <div x-show="open" x-transition x-cloak class="mt-4" style="font-size:14px; color:var(--text-muted); line-height:1.6;">
-            Setup · training · optimization · script tuning · updates · performance review · error handling.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- One-Time & Specialty Services -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Project-based · Standalone</div>
-        <h2 class="section-title">Specialty & Add-On Services</h2>
-        <p class="section-sub">Ongoing add-ons and one-off projects. Standalone or stacked on any retainer.</p>
+        <div class="section-eyebrow">Monthly · Recurring</div>
+        <h2 class="section-title">Monthly Add-Ons</h2>
+        <p class="section-sub">Recurring services that stack on any package.</p>
       </div>
       <div class="grid grid-3">
 
         <div class="card" x-data="{ open: false }">
           <div class="card-eyebrow">Social</div>
           <h3>Social Media Management</h3>
-          <p>Posting, scheduling, community engagement, comment and DM responses across your platforms. Add to Content Presence or Content Momentum. (Growth Machine and Growth Partner already include it.)</p>
+          <p>Posting, scheduling, community engagement, comments, and DMs. Built into Growth Machine and Growth Partner. Add it to Content Presence or Content Growth.</p>
           <div class="card-price mt-6">$500 – $1,500<small> / month</small></div>
           <div class="card-actions">
             <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
@@ -327,24 +255,110 @@
           </div>
           <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
             <p><strong style="color:var(--text)">$500 / mo:</strong> 1 platform, scheduled posting, basic engagement.</p>
-            <p><strong style="color:var(--text)">$1,000 / mo:</strong> 2 platforms, active posting, comment and DM responses, community engagement.</p>
-            <p><strong style="color:var(--text)">$1,500 / mo:</strong> 3 platforms, full community management, DM triage, trend monitoring.</p>
+            <p><strong style="color:var(--text)">$1,000 / mo:</strong> 2 platforms, active posting, comments and DMs.</p>
+            <p><strong style="color:var(--text)">$1,500 / mo:</strong> 3 platforms, full community management, trend monitoring.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-eyebrow">Web</div>
-          <h3>Website Build / Redesign</h3>
-          <p>Custom design, build, and launch. Mobile-first, SEO-ready, conversion-optimized.</p>
-          <div class="card-price mt-6">$2,500 – $7,500<small> · one-time, scope-based</small></div>
+          <div class="card-eyebrow">Ads</div>
+          <h3>Ad Campaign Management</h3>
+          <p>Meta, Google, and TikTok ad creative, launch, and optimization. Priced on platforms and ad budget. Ad spend billed separately.</p>
+          <div class="card-price mt-6">$750 – $2,500<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get started</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-eyebrow">PR</div>
+          <h3>Ongoing PR Retainer</h3>
+          <p>1 to 2 press releases per month plus active media outreach and relationship building. Local, regional, and national targeting.</p>
+          <div class="card-price mt-6">$1,500 – $3,500<small> / month</small></div>
           <div class="card-actions">
             <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Integration -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Online or offline · Built for your workflow</div>
+        <h2 class="section-title">AI Integration</h2>
+        <p class="section-sub">From pre-built customer assistants to full custom AI integrated into your operations. Including fully offline systems for businesses that handle sensitive data.</p>
+      </div>
+      <div class="grid grid-3">
+
         <div class="card" x-data="{ open: false }">
+          <div class="card-eyebrow">Productized</div>
+          <h3>AI Assistants</h3>
+          <p>Pre-built AI that answers customer questions, captures leads, and handles calls. Ready to deploy on your website, social, and phone.</p>
+          <div class="card-price mt-6">From $29<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'See options'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">DM Assistant · $29 / mo.</strong> Answers FAQs instantly. Hours, menu, pricing, booking.</p>
+            <p><strong style="color:var(--text)">Lead Capture Assistant · $49 / mo.</strong> Collects name, phone, email. Routes hot leads to your team.</p>
+            <p><strong style="color:var(--text)">AI Voice Receptionist · $149 setup + $79 / mo.</strong> Answers calls, books appointments, qualifies leads 24/7.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-eyebrow">Custom</div>
+          <h3>Custom AI Integration</h3>
+          <p>Build AI into any part of your business. Customer support, scheduling, sales qualification, internal ops, data analysis. Integrated with the tools and systems you already use.</p>
+          <div class="card-price mt-6">From $1,500<small> setup · custom monthly</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Start discovery</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-eyebrow">Sensitive Data</div>
+          <h3>Offline / On-Premise AI</h3>
+          <p>AI that runs locally on your hardware. Zero customer data leaves your infrastructure. Built for healthcare, legal, financial, and any business handling private records.</p>
+          <div class="card-price mt-6">From $3,500<small> setup · custom monthly</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Scope a project</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialty Projects -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Project-based · One-time</div>
+        <h2 class="section-title">Specialty Projects</h2>
+        <p class="section-sub">One-off projects and standalone productions. Stack on any package or book solo.</p>
+      </div>
+      <div class="grid grid-3">
+
+        <div class="card">
+          <div class="card-eyebrow">Web</div>
+          <h3>Website Build / Redesign</h3>
+          <p>Custom design, build, and launch. Mobile-first, SEO-ready, conversion-optimized.</p>
+          <div class="card-price mt-6">$2,500 – $7,500<small> · scope-based</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get a quote</a>
+          </div>
+        </div>
+
+        <div class="card">
           <div class="card-eyebrow">PR</div>
-          <h3>Press Release + Distribution</h3>
+          <h3>Single Press Release</h3>
           <p>Written, formatted, and distributed to news outlets. Pick your reach.</p>
           <ul>
             <li>Local Gulf Coast: $450</li>
@@ -354,22 +368,6 @@
           <div class="card-price mt-6">From $450<small> / release</small></div>
           <div class="card-actions">
             <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
-            <button @click="open = !open" class="btn btn-ghost btn-sm">
-              <span x-text="open ? 'Hide' : 'Ongoing PR?'"></span>
-            </button>
-          </div>
-          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
-            <strong style="color:var(--text)">Ongoing PR retainer:</strong> $1,500 – $3,500 / month for 1–2 releases monthly + active media outreach and relationship building.
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-eyebrow">Ads</div>
-          <h3>Ad Campaign Management</h3>
-          <p>Meta / Google / TikTok creative, launch, and optimization. Ad spend billed separately.</p>
-          <div class="card-price mt-6">$750 – $2,500<small> / month</small></div>
-          <div class="card-actions">
-            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Get started</a>
           </div>
         </div>
 
@@ -386,7 +384,7 @@
         <div class="card">
           <div class="card-eyebrow">Photo</div>
           <h3>Photo Mini Session</h3>
-          <p>20–30 edited photos delivered in 48–72 hours. Products, staff, venue, menu items.</p>
+          <p>20 to 30 edited photos delivered in 48 to 72 hours. Products, staff, venue, menu items.</p>
           <div class="card-price mt-6">$350<small> · per session</small></div>
           <div class="card-actions">
             <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book now</a>
@@ -396,10 +394,29 @@
         <div class="card">
           <div class="card-eyebrow">Content</div>
           <h3>Social Content Day</h3>
-          <p>10–15 short-form videos + 20–30 photos. Edited for Reels / TikTok / Shorts. On-site direction.</p>
+          <p>10 to 15 short-form videos plus 20 to 30 photos. Edited for Reels, TikTok, and Shorts. On-site direction included.</p>
           <div class="card-price mt-6">$699<small> · per session</small></div>
           <div class="card-actions">
             <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book now</a>
+          </div>
+        </div>
+
+        <div class="card" x-data="{ open: false }">
+          <div class="card-eyebrow">Distribution</div>
+          <h3>UGC View Boosts</h3>
+          <p>Guaranteed local views from our Gulf Coast creator network. Pay per boost, stack as needed.</p>
+          <div class="card-price mt-6">$150 – $1,250<small> · per boost</small></div>
+          <div class="card-actions">
+            <a href="https://calendly.com/bdaniels013/30min" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'See boosts'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">$150:</strong> +10,000 local views</p>
+            <p><strong style="color:var(--text)">$350:</strong> +25,000 local views</p>
+            <p><strong style="color:var(--text)">$650:</strong> +50,000 local views</p>
+            <p><strong style="color:var(--text)">$1,250:</strong> +100,000 local views</p>
           </div>
         </div>
 
@@ -510,7 +527,6 @@
           <h5>Services</h5>
           <ul>
             <li><a href="/services">Core services</a></li>
-            <li><a href="/growth-machine">Growth Machine</a></li>
             <li><a href="/enterprise-solutions">Enterprise</a></li>
             <li><a href="/offer-comparison">Compare offers</a></li>
           </ul>
