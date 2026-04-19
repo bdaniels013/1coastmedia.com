@@ -19,6 +19,9 @@ function contentManager() {
     services: {},
     newCategory: { name: '', description: '' },
     newAddon: { name: '', price: '', description: '' },
+
+    // Upload state (tracks which service/package key is currently uploading)
+    uploadingFor: null,
     
     // Modal states
     showAddCategoryModal: false,
@@ -191,6 +194,93 @@ function contentManager() {
       if (confirm('Are you sure you want to delete this service?')) {
         this.services.serviceCategories[categoryKey].services.splice(serviceIndex, 1);
         this.saveServices();
+      }
+    },
+
+    // Upload an image file and set target.image to the returned URL.
+    async uploadImageFor(event, target) {
+      const file = event?.target?.files?.[0];
+      if (!file) return;
+      if (!/^image\//.test(file.type)) {
+        alert('Please choose an image file (JPG, PNG, WebP, or GIF).');
+        event.target.value = '';
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        alert('Image is too large. Max size is 10 MB.');
+        event.target.value = '';
+        return;
+      }
+      const trackingKey = target?.key || target?.__trackKey || '__upload__';
+      this.uploadingFor = trackingKey;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          credentials: 'include',
+          body: fd
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || `Upload failed (${res.status})`);
+        }
+        const data = await res.json();
+        target.image = data.url;
+        // Persist whichever store this target lives in
+        if (target === this.content?.packageImages?.[target.__pkgKey]) {
+          this.saveContent();
+        } else if (target?.__isPackageImage) {
+          this.saveContent();
+        } else {
+          this.saveServices();
+        }
+      } catch (err) {
+        console.error('❌ Upload failed', err);
+        alert('Upload failed: ' + err.message);
+      } finally {
+        this.uploadingFor = null;
+        event.target.value = '';
+      }
+    },
+
+    // Specialized uploader for package images (stored under content.packageImages).
+    async uploadPackageImage(event, pkgKey) {
+      const file = event?.target?.files?.[0];
+      if (!file) return;
+      if (!/^image\//.test(file.type)) {
+        alert('Please choose an image file (JPG, PNG, WebP, or GIF).');
+        event.target.value = '';
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        alert('Image is too large. Max size is 10 MB.');
+        event.target.value = '';
+        return;
+      }
+      this.uploadingFor = 'pkg:' + pkgKey;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          credentials: 'include',
+          body: fd
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || `Upload failed (${res.status})`);
+        }
+        const data = await res.json();
+        if (!this.content.packageImages) this.content.packageImages = {};
+        this.content.packageImages[pkgKey] = data.url;
+        await this.saveContent();
+      } catch (err) {
+        console.error('❌ Upload failed', err);
+        alert('Upload failed: ' + err.message);
+      } finally {
+        this.uploadingFor = null;
+        event.target.value = '';
       }
     },
     
@@ -433,12 +523,22 @@ function contentManager() {
         if (response.ok) {
           const data = await response.json();
           this.content = data;
-          
+
           // Also load services if they exist in the content
           if (data.services) {
             this.services = data.services;
           }
-          
+
+          // Ensure packageImages always exists so admin UI binds cleanly
+          if (!this.content.packageImages) {
+            this.content.packageImages = {
+              'content-presence': '',
+              'content-growth': '',
+              'growth-machine': '',
+              'growth-partner': ''
+            };
+          }
+
           console.log('✅ Content and services loaded successfully');
         } else {
           console.warn('Failed to load content from server, using default data');

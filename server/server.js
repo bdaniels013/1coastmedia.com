@@ -7,6 +7,7 @@ const Stripe = require('stripe');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 const { google } = require('googleapis');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -163,6 +164,35 @@ const DATA_DIR = process.env.DATA_DIR || path.join(__dirname);
 const SERVICES_FILE = path.join(DATA_DIR, 'services-data.json');
 // Path to the content management file
 const CONTENT_FILE = path.join(DATA_DIR, 'content-data.json');
+// Path to uploaded image files (lives on the persistent disk so uploads survive deploys)
+const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  console.log(`✅ Created upload directory: ${UPLOAD_DIR}`);
+}
+
+// --- Image upload (multer) ---
+const ALLOWED_IMAGE_MIME = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const uploadStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const base = path.basename(file.originalname, ext)
+      .replace(/[^a-z0-9-]+/gi, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase()
+      .slice(0, 60) || 'image';
+    cb(null, `${Date.now()}-${base}${ext}`);
+  }
+});
+const uploadMiddleware = multer({
+  storage: uploadStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB cap per file
+  fileFilter: (_req, file, cb) => {
+    if (ALLOWED_IMAGE_MIME.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Only JPEG, PNG, WebP, and GIF images are allowed.'));
+  }
+});
 
 // Initialize services data file if it doesn't exist
 function initializeServicesFile() {
@@ -473,6 +503,72 @@ app.post('/api/content', requireAuth, (req, res) => {
     res.status(500).json({ error: 'Failed to save content' });
   }
 });
+
+// Upload an image (admin auth required). Accepts multipart/form-data with field "file".
+// Returns { success, url } where url is a /uploads/<filename> path ready to paste into
+// any image field (services, packages, add-ons, specialty projects).
+app.post('/api/upload', requireAuth, (req, res) => {
+  uploadMiddleware.single('file')(req, res, (err) => {
+    if (err) {
+      console.error('❌ Upload failed:', err.message);
+      return res.status(400).json({ error: err.message });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file received' });
+    }
+    const url = `/uploads/${req.file.filename}`;
+    console.log(`✅ Uploaded image: ${req.file.filename} (${req.file.size} bytes)`);
+    res.json({
+      success: true,
+      url,
+      filename: req.file.filename,
+      size: req.file.size,
+      mimetype: req.file.mimetype
+    });
+  });
+});
+
+// List uploaded images (admin auth required). Lets the admin UI show a gallery / picker.
+app.get('/api/uploads', requireAuth, (req, res) => {
+  try {
+    if (!fs.existsSync(UPLOAD_DIR)) return res.json({ files: [] });
+    const entries = fs.readdirSync(UPLOAD_DIR)
+      .filter((name) => !name.startsWith('.'))
+      .map((name) => {
+        const stat = fs.statSync(path.join(UPLOAD_DIR, name));
+        return { filename: name, url: `/uploads/${name}`, size: stat.size, uploadedAt: stat.mtimeMs };
+      })
+      .sort((a, b) => b.uploadedAt - a.uploadedAt);
+    res.json({ files: entries });
+  } catch (err) {
+    console.error('❌ Failed to list uploads:', err);
+    res.status(500).json({ error: 'Failed to list uploads' });
+  }
+});
+
+// Delete an uploaded image (admin auth required).
+app.delete('/api/uploads/:filename', requireAuth, (req, res) => {
+  try {
+    const filename = path.basename(req.params.filename); // strip any path traversal
+    const filePath = path.join(UPLOAD_DIR, filename);
+    if (!fs.existsSync(filePath)) return res.status(404).json({ error: 'Not found' });
+    fs.unlinkSync(filePath);
+    console.log(`🗑  Deleted upload: ${filename}`);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('❌ Failed to delete upload:', err);
+    res.status(500).json({ error: 'Failed to delete upload' });
+  }
+});
+
+// Serve uploaded files publicly under /uploads/*
+app.use('/uploads', express.static(UPLOAD_DIR, {
+  maxAge: '7d',
+  fallthrough: false,
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+  }
+}));
 
 // Google Analytics 4 Analytics Endpoints
 app.get('/api/analytics/realtime', async (req, res) => {

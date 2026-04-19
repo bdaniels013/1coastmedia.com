@@ -469,6 +469,39 @@ img { max-width: 100%; display: block; }
   .nav-toggle { display: inline-flex; }
   .hero { padding: 56px 20px 40px; }
   .section { padding: 56px 0; }
+  .section-tight { padding: 36px 0; }
+  /* Tighter card padding on phones so content doesn't feel cramped against edges */
+  .card { padding: 22px; border-radius: 16px; }
+  .card-price { font-size: 24px; padding-top: 16px; }
+  /* Make CTAs full-width inside narrow card actions so they don't get clipped */
+  .card-actions .btn { flex: 1 1 auto; }
+  /* Buttons get a bit smaller on phones; keep tap target >= 44px */
+  .btn { padding: 12px 22px; font-size: 14px; min-height: 44px; }
+  .btn-sm { padding: 10px 16px; font-size: 13px; min-height: 40px; }
+  .btn-lg { padding: 16px 26px; font-size: 16px; }
+  /* Marquee text scales down so it doesn't blow out small screens */
+  .marquee { padding: 18px 0; }
+  .marquee-track { gap: 32px; padding-left: 32px; }
+  /* Mission / prose blocks */
+  .prose { font-size: 16px; line-height: 1.65; }
+}
+
+/* -------- Small phones: stack the footer fully and tighten hero -------- */
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  .footer { padding: 48px 0 28px; margin-top: 64px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .hero { padding: 40px 18px 32px; }
+  .hero-eyebrow { margin-bottom: 18px; font-size: 11px; padding: 5px 12px; }
+  .hero h1 { font-size: clamp(38px, 11vw, 64px); line-height: 1.0; }
+  .hero-sub { margin-top: 18px; font-size: 16px; line-height: 1.5; }
+  .hero-ctas { margin-top: 24px; }
+  .section-title { font-size: clamp(28px, 7vw, 40px); }
+  .section-head { margin-bottom: 32px; }
+  .wrap, .wrap-sm { padding: 0 18px; }
+  .card { padding: 20px; }
+  /* Hero CTAs go full-width-ish so they're easy to tap */
+  .hero-ctas .btn { flex: 1 1 100%; max-width: 320px; }
 }
 
 /* -------- Print / reduced motion -------- */

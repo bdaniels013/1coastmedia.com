@@ -82,6 +82,8 @@
 
         <!-- Package 1: Content Presence -->
         <article class="card" id="pkg-content-presence" x-data="{ open: false }">
+          <img x-show="pkgImage('content-presence')" :src="pkgImage('content-presence')" alt="Content Presence"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
           <div class="card-eyebrow">Package 01 · Content Presence</div>
           <h3>Content Presence</h3>
           <p><em>"Consistent, professional content without full management."</em></p>
@@ -112,6 +114,8 @@
 
         <!-- Package 2: Content Growth -->
         <article class="card" id="pkg-content-growth" x-data="{ open: false }">
+          <img x-show="pkgImage('content-growth')" :src="pkgImage('content-growth')" alt="Content Growth"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
           <div class="card-eyebrow">Package 02 · Content Growth</div>
           <h3>Content Growth</h3>
           <p><em>"More volume, stronger consistency, better momentum."</em></p>
@@ -143,6 +147,8 @@
 
         <!-- Package 3: Growth Machine (Most Popular) -->
         <article class="card card-featured" id="pkg-growth-machine" x-data="{ open: false }">
+          <img x-show="pkgImage('growth-machine')" :src="pkgImage('growth-machine')" alt="Growth Machine"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
           <div class="card-badge">Most popular</div>
           <div class="card-eyebrow">Package 03 · Growth Machine</div>
           <h3>Growth Machine</h3>
@@ -178,6 +184,8 @@
 
         <!-- Package 4: Growth Partner -->
         <article class="card" id="pkg-growth-partner" x-data="{ open: false }">
+          <img x-show="pkgImage('growth-partner')" :src="pkgImage('growth-partner')" alt="Growth Partner"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
           <div class="card-eyebrow">Package 04 · Growth Partner</div>
           <h3>Growth Partner</h3>
           <p><em>"A true done-for-you growth partner."</em></p>
@@ -503,19 +511,30 @@
       return {
         apiBase: window.location.origin,
         serviceCategories: {},
+        packageImages: {},
         loading: true,
         error: '',
         async init() {
           try {
-            const res = await fetch(`${this.apiBase}/api/services`);
-            const data = await res.json();
-            this.serviceCategories = data?.serviceCategories || {};
+            const [svcRes, contentRes] = await Promise.all([
+              fetch(`${this.apiBase}/api/services`),
+              fetch(`${this.apiBase}/api/content`).catch(() => null)
+            ]);
+            const svcData = await svcRes.json();
+            this.serviceCategories = svcData?.serviceCategories || {};
+            if (contentRes && contentRes.ok) {
+              const contentData = await contentRes.json();
+              this.packageImages = contentData?.packageImages || {};
+            }
           } catch (e) {
             this.error = 'Unable to load services.';
             console.warn('Failed to load services', e);
           } finally {
             this.loading = false;
           }
+        },
+        pkgImage(key) {
+          return (this.packageImages || {})[key] || '';
         },
         categoriesList() {
           // Used by the A La Carte section — shows any category NOT rendered in a dedicated section above.

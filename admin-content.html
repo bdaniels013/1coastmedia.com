@@ -408,6 +408,47 @@
           <h2 class="text-2xl font-bold mb-2">⚙️ Services</h2>
           <p class="text-sm text-gray-400 mb-6">Manage every service category that renders on /services. The reserved <code class="text-yellow-300">monthly-addons</code> and <code class="text-yellow-300">specialty-projects</code> categories render in their own sections. Anything else you add (like <code class="text-yellow-300">specials</code>) renders in the Specials section at the bottom. Changes publish instantly.</p>
 
+          <!-- Package Images -->
+          <div class="bg-white/5 border border-white/20 rounded-lg p-5 mb-8">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-xl font-semibold text-blue-300">🖼️ Package Images</h3>
+              <button @click="saveContent()" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1.5 rounded-md">Save images</button>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">Optional image shown at the top of each of the 4 main packages on /services. Upload a JPG / PNG / WebP (max 10 MB) or paste a URL.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <template x-for="pkg in [
+                { key: 'content-presence', label: 'Content Presence · $1,000 / mo' },
+                { key: 'content-growth',   label: 'Content Growth · $1,750 / mo' },
+                { key: 'growth-machine',   label: 'Growth Machine · $3,250 / mo' },
+                { key: 'growth-partner',   label: 'Growth Partner · $5,000 / mo' }
+              ]" :key="pkg.key">
+                <div class="bg-white/5 border border-white/10 rounded-md p-3">
+                  <div class="text-sm font-semibold text-white mb-2" x-text="pkg.label"></div>
+                  <div class="flex flex-col sm:flex-row gap-2 items-stretch mb-2">
+                    <input
+                      :value="content.packageImages && content.packageImages[pkg.key] ? content.packageImages[pkg.key] : ''"
+                      @input="if (!content.packageImages) content.packageImages = {}; content.packageImages[pkg.key] = $event.target.value"
+                      class="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white text-sm"
+                      placeholder='/uploads/... or https://...'
+                    >
+                    <label class="cursor-pointer inline-flex items-center justify-center px-3 py-2 rounded-md bg-yellow-600/80 hover:bg-yellow-600 text-white text-xs font-medium whitespace-nowrap transition-colors">
+                      <span x-show="uploadingFor !== 'pkg:' + pkg.key">📤 Upload</span>
+                      <span x-show="uploadingFor === 'pkg:' + pkg.key">Uploading…</span>
+                      <input type="file" accept="image/*" class="hidden"
+                             @change="uploadPackageImage($event, pkg.key)">
+                    </label>
+                  </div>
+                  <div x-show="content.packageImages && content.packageImages[pkg.key]">
+                    <img :src="content.packageImages && content.packageImages[pkg.key]" alt="" class="max-h-24 rounded border border-white/10" />
+                    <button type="button"
+                            @click="if (content.packageImages) { content.packageImages[pkg.key] = ''; saveContent(); }"
+                            class="text-xs text-red-400 hover:text-red-300 mt-1">Remove</button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
           <!-- Service Categories -->
           <div class="space-y-6 mb-8">
             <div class="flex items-center justify-between">
@@ -647,14 +688,27 @@
                       <!-- Image URL -->
                       <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-300 mb-2">
-                          🖼️ Image URL (optional)
+                          🖼️ Image (optional)
                         </label>
-                        <input
-                          x-model="service.image"
-                          class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                          placeholder='https://... or /assets/my-image.jpg'
-                        >
-                        <p class="text-xs text-gray-400 mt-1">Optional image displayed at the top of the card. Upload via your image host and paste the URL here (native upload coming soon).</p>
+                        <div class="flex flex-col sm:flex-row gap-2 items-stretch">
+                          <input
+                            x-model="service.image"
+                            class="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            placeholder='/uploads/... or https://...'
+                          >
+                          <label class="cursor-pointer inline-flex items-center justify-center px-4 py-2 rounded-md bg-yellow-600/80 hover:bg-yellow-600 text-white text-sm font-medium whitespace-nowrap transition-colors">
+                            <span x-show="!uploadingFor || uploadingFor !== service.key">📤 Upload</span>
+                            <span x-show="uploadingFor === service.key">Uploading…</span>
+                            <input type="file" accept="image/*" class="hidden"
+                                   @change="uploadImageFor($event, service)">
+                          </label>
+                        </div>
+                        <div x-show="service.image" class="mt-2">
+                          <img :src="service.image" alt="" class="max-h-32 rounded border border-white/10" />
+                          <button type="button" @click="service.image = ''; saveServices()"
+                                  class="text-xs text-red-400 hover:text-red-300 mt-1">Remove image</button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Upload a JPG / PNG / WebP (max 10 MB) or paste an existing URL. Image renders at the top of the card on /services.</p>
                       </div>
                       
                       <!-- Service Preview -->
