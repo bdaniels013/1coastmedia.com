@@ -21,7 +21,7 @@
        to the module's timeline (0 → duration) via postMessage. */
     .vsm-scroll {
       position: relative;
-      height: 1300vh;            /* scroll budget: 13 viewports for a slow, deliberate scrub */
+      height: 1900vh;            /* scroll budget: 19 viewports — paired with lerp smoothing for a silky cinematic scrub */
       background: #000;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -49,7 +49,7 @@
        iframe fill the whole sticky viewport so the Stage inside can scale to
        a near-fullscreen portrait. No 16:9 box, no double letterbox. */
     @media (max-width: 600px) {
-      .vsm-scroll { height: 1000vh; }
+      .vsm-scroll { height: 1500vh; }
       .vsm-iframe {
         width: 100%;
         height: 100vh;
@@ -192,66 +192,96 @@
   </script>
 
   <script>
-    /* Drive the Visual Sales Module from scroll position.
-       Progress = how far through .vsm-scroll the viewport has scrolled (0..1).
-       On each scroll frame, post that to the iframe which sets its timeline. */
+    /* Drive the Visual Sales Module from scroll position, with lerp smoothing.
+       targetProgress  = where raw scroll says we should be (0..1).
+       currentProgress = where we're actually telling the iframe to be —
+                         eased toward target so wheel/touchpad jitter,
+                         momentum, and frame drops all feel buttery instead
+                         of jumpy. The cinematic scrub also feels slower
+                         because the timeline lags scroll by ~250ms. */
     (function() {
       var section = document.getElementById('vsm');
       var iframe  = document.getElementById('vsm-iframe');
       if (!section || !iframe) return;
 
-      var lastProgress = -1;
-      var rafId = 0;
-      var iframeReady = false;
+      var targetProgress  = 0;
+      var currentProgress = 0;
+      var lastSent        = -1;
+      var rafId           = 0;
+      var SMOOTH          = 0.085;   // per-frame lerp factor (lower = silkier + more lag)
+      var EPS             = 0.0007;
 
-      function send(progress) {
+      function send(p) {
         if (!iframe.contentWindow) return;
         try {
-          iframe.contentWindow.postMessage({ type: 'vsm:scrub', progress: progress }, '*');
+          iframe.contentWindow.postMessage({ type: 'vsm:scrub', progress: p }, '*');
         } catch (e) { /* swallow */ }
       }
 
-      function compute() {
-        rafId = 0;
+      function readScroll() {
         var rect = section.getBoundingClientRect();
-        // Scroll budget = section height minus the sticky viewport. As the section
-        // enters the viewport, rect.top goes from +vh to -(budget). Map that to 0..1.
+        // Scroll budget = section height minus the sticky viewport.
         var budget = rect.height - window.innerHeight;
-        if (budget <= 0) return;
+        if (budget <= 0) return 0;
         var scrolled = -rect.top;
         var p = scrolled / budget;
-        if (p < 0) p = 0;
-        else if (p > 1) p = 1;
-        // Avoid flooding the iframe with identical messages.
-        if (Math.abs(p - lastProgress) < 0.0005) return;
-        lastProgress = p;
-        send(p);
+        if (p < 0) p = 0; else if (p > 1) p = 1;
+        return p;
       }
 
-      function onScrollOrResize() {
-        if (!rafId) rafId = requestAnimationFrame(compute);
+      function tick() {
+        targetProgress = readScroll();
+        var diff = targetProgress - currentProgress;
+        if (Math.abs(diff) < EPS) {
+          // Snap to target and stop the loop until next scroll event.
+          currentProgress = targetProgress;
+          rafId = 0;
+          if (Math.abs(currentProgress - lastSent) >= EPS) {
+            lastSent = currentProgress;
+            send(currentProgress);
+          }
+          return;
+        }
+        currentProgress += diff * SMOOTH;
+        if (Math.abs(currentProgress - lastSent) >= EPS) {
+          lastSent = currentProgress;
+          send(currentProgress);
+        }
+        rafId = requestAnimationFrame(tick);
       }
 
-      // The iframe will postMessage `vsm:ready` once its listener is bound.
+      function kick() {
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+
+      // Iframe handshake: snap to actual scroll position the moment it's ready.
       window.addEventListener('message', function(e) {
         if (e.source !== iframe.contentWindow) return;
         if (e.data && e.data.type === 'vsm:ready') {
-          iframeReady = true;
-          // Push current progress immediately so the first visible frame matches scroll.
-          lastProgress = -1;
-          compute();
+          currentProgress = readScroll();
+          targetProgress  = currentProgress;
+          lastSent        = -1;
+          send(currentProgress);
         }
       });
 
-      // Also send once when the iframe load event fires, as a fallback if the
-      // ready handshake race-conditions.
+      // Fallback if the ready handshake race-conditions
       iframe.addEventListener('load', function() {
-        setTimeout(function(){ lastProgress = -1; compute(); }, 60);
+        setTimeout(function(){
+          currentProgress = readScroll();
+          targetProgress  = currentProgress;
+          lastSent        = -1;
+          send(currentProgress);
+        }, 60);
       });
 
-      window.addEventListener('scroll', onScrollOrResize, { passive: true });
-      window.addEventListener('resize', onScrollOrResize);
-      compute();
+      window.addEventListener('scroll', kick, { passive: true });
+      window.addEventListener('resize', kick);
+      // Bootstrap the first frame
+      currentProgress = readScroll();
+      targetProgress  = currentProgress;
+      send(currentProgress);
+      lastSent = currentProgress;
     })();
   </script>
 
