@@ -112,8 +112,12 @@ function Sprite({ start, end, children }){
 function Stage({ width=1920, height=1080, duration=48, background=BG, persistKey, children }){
   const fitRef = useRef(null);
   const [scale, setScale] = useState(1);
-  // Always start fresh from 0 each load — this is a sales video, not a "resume where you left off" experience.
-  const [playing, setPlaying] = useState(true);
+  // SCROLL MODE: when the parent loads this iframe with `?scroll=1`, time is
+  // driven by parent scroll position via postMessage. Auto-play is disabled.
+  // Standalone the module still auto-plays from 0.
+  const isScrollMode = (typeof window !== 'undefined') &&
+    new URLSearchParams(window.location.search).has('scroll');
+  const [playing, setPlaying] = useState(!isScrollMode);
   const [time, setTime] = useState(0);
   const rafRef = useRef(0);
   const lastRef = useRef(0);
@@ -154,10 +158,27 @@ function Stage({ width=1920, height=1080, duration=48, background=BG, persistKey
     return () => cancelAnimationFrame(rafRef.current);
   }, [playing, duration]);
 
-  // Pause automatically the moment we hit the end of the timeline
+  // Pause automatically the moment we hit the end of the timeline (auto-play mode only)
   useEffect(() => {
+    if(isScrollMode) return;
     if(playing && time >= duration - 0.001) setPlaying(false);
-  }, [time, duration, playing]);
+  }, [time, duration, playing, isScrollMode]);
+
+  // SCROLL MODE: listen for postMessage from parent and scrub the timeline.
+  // Parent sends { type: 'vsm:scrub', progress: 0..1 } on every scroll frame.
+  useEffect(() => {
+    if(!isScrollMode) return;
+    const onMsg = (e) => {
+      const d = e.data;
+      if(!d || d.type !== 'vsm:scrub') return;
+      const p = Math.max(0, Math.min(1, Number(d.progress) || 0));
+      setTime(p * duration);
+    };
+    window.addEventListener('message', onMsg);
+    // Tell the parent we're ready so it can send the initial progress
+    try { window.parent.postMessage({ type: 'vsm:ready' }, '*'); } catch(_) {}
+    return () => window.removeEventListener('message', onMsg);
+  }, [duration, isScrollMode]);
 
   // Keyboard shortcuts (invisible power-user controls; UI bar is hidden)
   useEffect(() => {
@@ -171,7 +192,8 @@ function Stage({ width=1920, height=1080, duration=48, background=BG, persistKey
 
   const tlValue = useMemo(() => ({ time, duration, playing, setTime, setPlaying, debug:false }), [time, duration, playing]);
 
-  const ended = !playing && time >= duration - 0.05;
+  // In scroll mode, the "end" is just "you scrolled to the bottom" — no Replay button; scroll back up to replay.
+  const ended = !isScrollMode && !playing && time >= duration - 0.05;
   const replay = () => { setTime(0); setPlaying(true); };
 
   return (
