@@ -64,10 +64,12 @@ img { max-width: 100%; display: block; }
   gap: 24px;
 }
 .nav-brand {
-  display: flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 10px;
   font-weight: 800; font-size: 18px; letter-spacing: -0.01em;
 }
-.nav-brand img { height: 28px; width: 28px; object-fit: contain; border-radius: 4px; }
+/* Lockup carries its own "1Coast Media" text — let the image flow to
+   its natural width so the gold curve underline reads cleanly. */
+.nav-brand img { height: 36px; width: auto; object-fit: contain; display: block; }
 .nav-links { display: flex; align-items: center; gap: 28px; }
 .nav-links a {
   font-size: 14px; font-weight: 500; color: var(--text-muted);
