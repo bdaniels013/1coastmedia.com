@@ -529,15 +529,12 @@ function contentManager() {
             this.services = data.services;
           }
 
-          // Ensure packageImages always exists so admin UI binds cleanly
-          if (!this.content.packageImages) {
-            this.content.packageImages = {
-              'content-presence': '',
-              'content-growth': '',
-              'growth-machine': '',
-              'growth-partner': ''
-            };
-          }
+          // Ensure packageImages always exists with every expected slot so admin UI binds cleanly
+          if (!this.content.packageImages) this.content.packageImages = {};
+          ['content-presence', 'content-growth', 'growth-machine', 'growth-partner',
+           'personal-brand-authority', 'weekly-video-podcast'].forEach((k) => {
+            if (typeof this.content.packageImages[k] !== 'string') this.content.packageImages[k] = '';
+          });
 
           console.log('✅ Content and services loaded successfully');
         } else {

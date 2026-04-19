@@ -257,6 +257,90 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         sla: '',
         acceptance: '',
         minTerm: 0
+      },
+      {
+        key: 'additional-filming-day',
+        name: 'Additional Filming Day',
+        outcome: 'Add an extra production day to any active retainer for more content volume, a special event, or a campaign push.',
+        price: { oneTime: 750, monthly: 0 },
+        priceDisplay: '$750',
+        priceNote: 'per day',
+        deliverables: [],
+        badge: 'Filming',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'extra-short-form-clip-batch',
+        name: 'Extra Short-Form Clip Batch',
+        outcome: 'A bonus batch of cutdowns when you need more posting volume for a launch, trend, or campaign moment.',
+        price: { oneTime: 400, monthly: 0 },
+        priceDisplay: '$400',
+        priceNote: 'per batch (10 clips)',
+        deliverables: [],
+        badge: 'Clips',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'extra-podcast-episode',
+        name: 'Extra Podcast Episode',
+        outcome: 'Produce an additional podcast episode beyond your weekly cadence. Same edit, thumbnail, and short-form treatment.',
+        price: { oneTime: 750, monthly: 0 },
+        priceDisplay: '$750',
+        priceNote: 'per episode',
+        deliverables: [],
+        badge: 'Podcast',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'additional-long-form-episode',
+        name: 'Additional Long-Form Episode',
+        outcome: 'One extra long-form anchor piece per month — interview, deep dive, or YouTube-style episode beyond your standard cadence.',
+        price: { oneTime: 1250, monthly: 0 },
+        priceDisplay: '$1,250',
+        priceNote: 'per episode',
+        deliverables: [],
+        badge: 'Long-form',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'rush-turnaround',
+        name: 'Rush Turnaround',
+        outcome: '24- to 48-hour priority editing on any deliverable. Jumps the queue for time-sensitive launches and trend moments.',
+        price: { oneTime: 250, monthly: 0 },
+        priceDisplay: '$250',
+        priceNote: 'per project',
+        deliverables: [],
+        badge: 'Rush',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'additional-platform-distribution',
+        name: 'Additional Platform Distribution',
+        outcome: 'Expand publishing to one more platform (YouTube, LinkedIn, Pinterest, Threads, etc.) with native posting and analytics.',
+        price: { oneTime: 0, monthly: 200 },
+        priceDisplay: '$200',
+        priceNote: '/ month per platform',
+        deliverables: [],
+        badge: 'Distribution',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
       }
     ]
   },
@@ -328,6 +412,90 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         sla: '',
         acceptance: '',
         minTerm: 0
+      },
+      {
+        key: 'brand-video-production',
+        name: 'Brand Video Production',
+        outcome: 'Story-driven brand film built around your business — founder story, product showcase, mission piece.',
+        price: { oneTime: 1500, monthly: 0 },
+        priceDisplay: 'Custom scope',
+        priceNote: 'typical range $1,500 to $5,000+',
+        deliverables: [],
+        badge: 'Video',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'event-coverage',
+        name: 'Event Coverage',
+        outcome: 'Full event capture: highlight reel, social cutdowns, photos, and recap content for grand openings, conferences, fundraisers, or community events.',
+        price: { oneTime: 1500, monthly: 0 },
+        priceDisplay: 'Custom scope',
+        priceNote: 'typical range $1,500 to $4,500',
+        deliverables: [],
+        badge: 'Event',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'commercial-promo-video',
+        name: 'Commercial / Promo Video',
+        outcome: 'Polished 30 to 90 second commercial or promotional spot built for social ads, web, or broadcast.',
+        price: { oneTime: 2500, monthly: 0 },
+        priceDisplay: 'Custom scope',
+        priceNote: 'typical range $2,500 to $7,500+',
+        deliverables: [],
+        badge: 'Commercial',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'property-showcase-video',
+        name: 'Property Showcase (Listing) Video',
+        outcome: 'Professional listing walkthrough with cinematic camera work, drone, and edited cutdowns for MLS, IG, and TikTok.',
+        price: { oneTime: 750, monthly: 0 },
+        priceDisplay: 'From $750',
+        priceNote: 'per listing',
+        deliverables: [],
+        badge: 'Real Estate',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'luxury-listing-real-estate',
+        name: 'Luxury Listing & Real Estate Content',
+        outcome: 'Premium photo + video package for high-end listings: cinematic walkthrough, twilight exteriors, drone, lifestyle shots, social cutdowns.',
+        price: { oneTime: 2500, monthly: 0 },
+        priceDisplay: 'From $2,500',
+        priceNote: 'per listing',
+        deliverables: [],
+        badge: 'Luxury',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
+      },
+      {
+        key: 'development-community-promo',
+        name: 'Development & Community Promo Video',
+        outcome: 'Big-vision promo for new developments, master-planned communities, mixed-use projects, or tourism / destination campaigns.',
+        price: { oneTime: 5000, monthly: 0 },
+        priceDisplay: 'Custom scope',
+        priceNote: 'typical range $5,000 to $15,000+',
+        deliverables: [],
+        badge: 'Development',
+        image: '',
+        sla: '',
+        acceptance: '',
+        minTerm: 0
       }
     ]
   }
@@ -345,16 +513,32 @@ function ensureRequiredCategories() {
 
     let changed = false;
     for (const [key, template] of Object.entries(REQUIRED_CATEGORY_TEMPLATES)) {
-      if (!data.serviceCategories[key]) {
-        data.serviceCategories[key] = template;
+      const existing = data.serviceCategories[key];
+      if (!existing) {
+        // Brand-new category: insert the whole template.
+        data.serviceCategories[key] = JSON.parse(JSON.stringify(template));
         changed = true;
         console.log(`✅ Seeded missing required category: ${key}`);
+        continue;
+      }
+
+      // Category exists. Additively sync any new template services that aren't in
+      // the stored data yet (matched by service.key). Never overwrites or removes
+      // existing services — Blake's edits and ordering are preserved.
+      if (!Array.isArray(existing.services)) existing.services = [];
+      const existingKeys = new Set(existing.services.map((svc) => svc && svc.key).filter(Boolean));
+      for (const templateSvc of (template.services || [])) {
+        if (templateSvc && templateSvc.key && !existingKeys.has(templateSvc.key)) {
+          existing.services.push(JSON.parse(JSON.stringify(templateSvc)));
+          changed = true;
+          console.log(`✅ Added new service to ${key}: ${templateSvc.key}`);
+        }
       }
     }
 
     if (changed) {
       fs.writeFileSync(SERVICES_FILE, JSON.stringify(data, null, 2));
-      console.log('✅ Required categories written to services-data.json');
+      console.log('✅ services-data.json updated with required categories / services');
     }
   } catch (err) {
     console.error('❌ ensureRequiredCategories failed:', err);
