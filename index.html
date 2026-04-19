@@ -13,6 +13,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./assets/boring.css" />
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    /* Visual Sales Module embed (homepage only) */
+    .vsm-section {
+      background: #000;
+      padding: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .vsm-frame {
+      width: 100%;
+      max-width: 1920px;
+      margin: 0 auto;
+      /* The module is designed at 1920x1080 (16:9) and auto-scales to fit
+         this container, so we lock the aspect ratio. */
+      aspect-ratio: 16 / 9;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+    .vsm-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #000;
+    }
+    /* On tall narrow phones the 16:9 box gets very short. Give it more vertical
+       room by switching to 4:5 portrait so the module's text stays readable. */
+    @media (max-width: 600px) {
+      .vsm-frame { aspect-ratio: 4 / 5; }
+    }
+  </style>
 </head>
 <body x-data="app()" x-init="init(); cartOpen = false">
 
@@ -58,6 +90,20 @@
       <a href="tel:+12283578505" class="btn btn-ghost btn-lg">Call (228) 357-8505</a>
     </div>
   </header>
+
+  <!-- Visual Sales Module (interactive React embed; lazy-loaded so it doesn't slow first paint) -->
+  <section class="vsm-section" aria-label="The Visual Sales Module">
+    <div class="vsm-frame">
+      <iframe
+        src="/assets/visual-sales-module.html"
+        title="1Coast Media · The Visual Sales Module"
+        loading="lazy"
+        allow="autoplay"
+        allowfullscreen
+        scrolling="no"
+      ></iframe>
+    </div>
+  </section>
 
   <!-- Marquee tagline -->
   <div class="marquee" aria-hidden="true">
