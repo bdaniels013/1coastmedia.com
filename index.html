@@ -21,7 +21,7 @@
        to the module's timeline (0 → duration) via postMessage. */
     .vsm-scroll {
       position: relative;
-      height: 500vh;             /* scroll budget: 5 viewports to play through ~48s */
+      height: 800vh;             /* scroll budget: 8 viewports for a slower, more deliberate scrub */
       background: #000;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -48,7 +48,7 @@
     /* On tall narrow phones drop to a more vertical box so the module's text
        stays readable, and give a little more scroll budget. */
     @media (max-width: 600px) {
-      .vsm-scroll { height: 420vh; }
+      .vsm-scroll { height: 650vh; }
       .vsm-iframe { aspect-ratio: 4 / 5; }
     }
     /* Small scroll hint in the corner so visitors know to keep scrolling */
@@ -122,6 +122,20 @@
       <a href="tel:+12283578505" class="btn btn-ghost btn-lg">Call (228) 357-8505</a>
     </div>
   </header>
+
+  <!-- Marquee tagline (between hero and VSM) -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>No templates.</span><span class="dot">•</span>
+      <span>No fluff.</span><span class="dot">•</span>
+      <span>Just results.</span><span class="dot">•</span>
+      <span>Built on the Coast.</span><span class="dot">•</span>
+      <span>No templates.</span><span class="dot">•</span>
+      <span>No fluff.</span><span class="dot">•</span>
+      <span>Just results.</span><span class="dot">•</span>
+      <span>Built on the Coast.</span><span class="dot">•</span>
+    </div>
+  </div>
 
   <!-- Visual Sales Module · scroll-driven
        Scroll progress through .vsm-scroll scrubs the iframe timeline (0 → 48s). -->
@@ -208,20 +222,6 @@
       compute();
     })();
   </script>
-
-  <!-- Marquee tagline -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>No templates.</span><span class="dot">•</span>
-      <span>No fluff.</span><span class="dot">•</span>
-      <span>Just results.</span><span class="dot">•</span>
-      <span>Built on the Coast.</span><span class="dot">•</span>
-      <span>No templates.</span><span class="dot">•</span>
-      <span>No fluff.</span><span class="dot">•</span>
-      <span>Just results.</span><span class="dot">•</span>
-      <span>Built on the Coast.</span><span class="dot">•</span>
-    </div>
-  </div>
 
   <!-- Call CTA -->
   <section class="section-tight">
