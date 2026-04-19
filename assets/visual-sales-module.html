@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>1Coast Media — The Visual Sales Module</title>
+<title>1Coast Media · Your Gulf Coast growth partner.</title>
 <meta name="description" content="You don't need another videographer. You need a revenue system. Built on the Gulf Coast.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,18 @@
   @keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
   @keyframes drift{0%{transform:translateX(-3%)}100%{transform:translateX(3%)}}
   @keyframes pulse-ring{0%{transform:scale(.9);opacity:.8}100%{transform:scale(2.4);opacity:0}}
+  @keyframes particleRise{
+    0%  {transform:translateY(0)        scale(.6); opacity:0}
+    10% {opacity:.85}
+    50% {transform:translateY(-540px)   scale(1)}
+    90% {opacity:.55}
+    100%{transform:translateY(-1080px)  scale(.7); opacity:0}
+  }
+  @keyframes haloPulse{
+    0%,100%{opacity:.18; transform:translateX(-50%) scale(1)}
+    50%    {opacity:.34; transform:translateX(-50%) scale(1.08)}
+  }
+  @keyframes orbitConic{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
   .shimmer{background:linear-gradient(90deg,#d4af37 0%,#f3d066 25%,#fff9d6 50%,#f3d066 75%,#d4af37 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gshimmer 6s linear infinite}
   .scroll-hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.32em;color:rgba(212,175,55,.6);text-transform:uppercase;pointer-events:none;opacity:.8}
 </style>
@@ -279,7 +291,6 @@ function Chrome({ num, total, chapter }){
           <span>REC</span>
           <span style={{width:28,height:1,background:LINE_HOT}}/>
           <span style={{color:GOLD}}>1Coast Media</span>
-          <span style={{color:INK_DIM}}>· Visual Sales Module</span>
         </div>
         <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.32em',color:GOLD,textTransform:'uppercase'}}>
           Ch. {num}/{total} · {chapter}
@@ -349,7 +360,7 @@ function S01_Hook(){
             </div>
             <div style={{display:'flex',alignItems:'center',gap:22,marginTop:64,opacity:subT}}>
               <span style={{width:60,height:1,background:GOLD}}/>
-              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.42em',color:INK_DIM,textTransform:'uppercase'}}>Content · Distribution · Conversion — Built as one</span>
+              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.42em',color:INK_DIM,textTransform:'uppercase'}}>Content · Distribution · Conversion · Built as one</span>
             </div>
           </div>
         </div>
@@ -385,7 +396,19 @@ function S02_Problem(){
       return (
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="2" total="8" chapter="The Problem"/>
-          <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT,transform:`translateY(${(1-titleT)*12}px)`}}>
+          {/* Soft pulsing halo behind the headline — adds drama without competing with the text */}
+          <div aria-hidden="true" style={{
+            position:'absolute', top:60, left:'50%',
+            width:1200, height:380,
+            transform:'translateX(-50%)',
+            background:`radial-gradient(ellipse at center, rgba(212,175,55,.22) 0%, rgba(212,175,55,.08) 35%, transparent 70%)`,
+            filter:'blur(40px)',
+            opacity:op*titleT*0.9,
+            animation:'haloPulse 4.5s ease-in-out infinite',
+            pointerEvents:'none',
+            zIndex:1
+          }}/>
+          <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT,transform:`translateY(${(1-titleT)*12}px)`,zIndex:2}}>
             <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:12}}>Right now, you're running the scattered stack.</div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:80,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.018em',maxWidth:1700}}>
               Seven <span className="gold">vendors.</span> Seven invoices. <span style={{color:INK_DIM}}>Zero</span> <span className="gold">system.</span>
@@ -467,6 +490,14 @@ function S03_Answer(){
       return (
         <div style={{position:'absolute',inset:0,background:`radial-gradient(ellipse at 50% 45%,#15100a 0%,#000 70%)`,display:'grid',placeItems:'center',overflow:'hidden'}}>
           <Chrome num="3" total="8" chapter="The Answer"/>
+          {/* Slowly rotating conic light — adds cinematic depth behind the logo */}
+          <div aria-hidden="true" style={{
+            position:'absolute', inset:0,
+            backgroundImage:'conic-gradient(from 0deg, transparent 0deg, rgba(212,175,55,.10) 40deg, transparent 80deg, transparent 200deg, rgba(212,175,55,.10) 240deg, transparent 280deg)',
+            animation:'orbitConic 22s linear infinite',
+            opacity:op*0.85,
+            pointerEvents:'none'
+          }}/>
           <BgField/>
           {/* Shockwaves */}
           {[wave1,wave2].map((w,i) => w>0 && w<1 && (
@@ -511,14 +542,16 @@ function S04_System(){
   const pillars = [
     {n:'01', k:'Create',   h:'Tell the story',    delay:.7,  detail:'Brand films, reels, photos, UGC, Coast Creators. Every asset built to sell.'},
     {n:'02', k:'Distribute',h:'Everywhere, daily', delay:1.5, detail:'Instagram, TikTok, YouTube, Facebook, LinkedIn. Posted for you, on rhythm.'},
-    {n:'03', k:'Capture',  h:'Turn reach into leads', delay:2.3, detail:'Landing pages, lead magnets, forms, booking flows — wired into your CRM.'},
+    {n:'03', k:'Capture',  h:'Turn reach into leads', delay:2.3, detail:'Landing pages, lead magnets, forms, booking flows. Wired into your CRM.'},
     {n:'04', k:'Convert',  h:'Nurture to revenue', delay:3.1, detail:'Email + SMS sequences that follow up until they book. Hands-off, always on.'},
   ];
   return (
     <Sprite start={15.4} end={23.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.3,0,1) * clamp((duration-localTime)/0.5,0,1);
       const titleT = clamp(localTime/0.5,0,1);
-      const footer = clamp((localTime-6.4)/0.6,0,1);
+      // Bring the Attention → Reach → Leads → Revenue strip in early so it has
+       // time to read; was flashing for under a second before the scene ended.
+      const footer = clamp((localTime-2.8)/0.6,0,1);
       return (
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="4" total="8" chapter="The System"/>
@@ -573,18 +606,20 @@ function S04_System(){
    ================================================= */
 function S05_Packages(){
   const packs = [
-    {tier:'FOUNDATION',  name:'Content Presence', price:'$1,000', sub:'/mo', tag:'Start showing up', bullets:['4 videos', 'Daily posts', 'Brand kit'], glow:false},
-    {tier:'GROWTH',      name:'Content Growth',   price:'$2,000', sub:'/mo', tag:'Get discovered',   bullets:['8 videos', 'Paid ads layer', 'SEO pages'], glow:false},
-    {tier:'ACCELERATOR', name:'Growth Machine',   price:'$3,000', sub:'/mo', tag:'Full funnel',      bullets:['Full shoot day', 'Landing pages', 'CRM + email'], glow:true},
-    {tier:'FULL PARTNER',name:'Growth Partner',   price:'$5,000', sub:'/mo', tag:'We run everything',bullets:['Dedicated team', 'All channels', 'Revenue ops'], glow:false},
-    {tier:'SPECIALTY',   name:'Brand Authority',  price:'Custom', sub:'',    tag:'Founder-led',      bullets:['YouTube engine', 'Thought leadership', 'PR stack'], glow:false},
-    {tier:'SPECIALTY',   name:'Podcast Engine',   price:'Custom', sub:'',    tag:'Weekly show',      bullets:['Full production', 'Multi-clip rollout', 'Guest funnel'], glow:false},
+    {tier:'FOUNDATION',  name:'Content Presence',          price:'$1,000', sub:'/mo', tag:'Start showing up',  bullets:['1 shoot day', '15 to 20 videos', 'Daily content calendar'], glow:false},
+    {tier:'GROWTH',      name:'Content Growth',            price:'$1,750', sub:'/mo', tag:'Build momentum',    bullets:['2 shoot days', '30 videos enhanced', 'Monthly strategy call'], glow:false},
+    {tier:'ACCELERATOR', name:'Growth Machine',            price:'$3,250', sub:'/mo', tag:'Full marketing',    bullets:['3 to 4 shoot days', 'Social mgmt + landing pages', 'Lead capture system'], glow:true},
+    {tier:'FULL PARTNER',name:'Growth Partner',            price:'$5,000', sub:'/mo', tag:'We run everything', bullets:['4 to 6 shoot days', 'Email + SMS + ad campaigns', 'Website mgmt'], glow:false},
+    {tier:'SPECIALTY',   name:'Personal Brand',            price:'$3,000+', sub:'/mo', tag:'YouTube authority', bullets:['Weekly long-form YouTube', 'Multi-platform cutdowns', 'Channel mgmt'], glow:false},
+    {tier:'SPECIALTY',   name:'Weekly Video Podcast',      price:'$3,000+', sub:'/mo', tag:'Weekly show',       bullets:['Full episode production', 'Multi-clip rollout', 'Spotify + Apple + YouTube'], glow:false},
   ];
   return (
     <Sprite start={23.4} end={30.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.25,0,1) * clamp((duration-localTime)/0.45,0,1);
       const titleT = clamp(localTime/0.5,0,1);
-      const tailT = clamp((localTime-5.6)/0.5,0,1);
+      // "All plans · Month-to-month" footer comes in right after the cards
+       // are all on screen, so it's readable for ~3s instead of flashing.
+       const tailT = clamp((localTime-3.0)/0.5,0,1);
       return (
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="5" total="8" chapter="The Packages"/>
@@ -656,11 +691,11 @@ function S05_Packages(){
    ================================================= */
 function S06_Manifest(){
   const lines = [
-    {k:'We create the content — brand films, reels, photos, UGC, Coast Creators', n:'MONTHLY'},
-    {k:'We post it daily — IG, TikTok, YouTube, Facebook, LinkedIn',             n:'DAILY'},
+    {k:'We create the content. Brand films, reels, photos, UGC, Coast Creators', n:'MONTHLY'},
+    {k:'We post it daily. IG, TikTok, YouTube, Facebook, LinkedIn',             n:'DAILY'},
     {k:'We build the landing pages & lead magnets that convert the reach',       n:'BUILT IN'},
-    {k:'We capture the leads — forms, opt-ins, booking flows, CRM',              n:'AUTOMATED'},
-    {k:'We nurture & convert — email, SMS, follow-up until they book',           n:'ONGOING'},
+    {k:'We capture the leads. Forms, opt-ins, booking flows, CRM',              n:'AUTOMATED'},
+    {k:'We nurture & convert. Email, SMS, follow-up until they book',           n:'ONGOING'},
   ];
   return (
     <Sprite start={30.4} end={35.4}>{({localTime,duration})=>{
@@ -719,7 +754,8 @@ function S07_Proof(){
       const divT   = clamp((localTime-1.2)/0.4,0,1);
       const rightT = clamp((localTime-1.7)/0.6,0,1);
       const statsT = clamp((localTime-3.2)/0.5,0,1);
-      const qT     = clamp((localTime-5.4)/0.5,0,1);
+      // Quote comes in earlier so the testimonial actually has time to land.
+       const qT     = clamp((localTime-4.2)/0.5,0,1);
       return (
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="7" total="8" chapter="The Proof"/>
@@ -776,9 +812,9 @@ function S07_Proof(){
           {/* Quote */}
           <div style={{position:'absolute',bottom:100,left:72,right:72,opacity:qT*op,transform:`translateY(${(1-qT)*14}px)`}}>
             <div style={{fontFamily:'Instrument Serif,serif',fontStyle:'italic',fontSize:22,color:INK,lineHeight:1.35,maxWidth:1500}}>
-              "1Coast didn't just post our videos. They built the whole machine — content, landing pages, follow-up — and it just runs. We're booked solid."
+              "1Coast didn't just post our videos. They built the whole machine. Content, landing pages, follow-up. And it just runs. We're booked solid."
             </div>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,color:GOLD,letterSpacing:'.34em',textTransform:'uppercase',marginTop:10,fontWeight:500}}>— 1Coast client · Biloxi, MS</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,color:GOLD,letterSpacing:'.34em',textTransform:'uppercase',marginTop:10,fontWeight:500}}>1Coast client · Biloxi, MS</div>
           </div>
         </div>
       );
@@ -793,18 +829,6 @@ function S07_Proof(){
    final frame freezes for the Replay overlay.
    ================================================= */
 function S08_Close(){
-  // Cities placed roughly along their real positions on the MS Gulf Coast.
-  // viewBox is 800x110: x runs west (Bay St. Louis) → east (Ocean Springs);
-  // y runs south (water) → north (inland). D'Iberville sits north of Biloxi.
-  const cities = [
-    {n:'Bay St. Louis', x: 60, y: 78, lblY: 96},
-    {n:'Pass Christian',x:170, y: 73, lblY: 91},
-    {n:'Long Beach',    x:255, y: 70, lblY: 88},
-    {n:'Gulfport',      x:340, y: 66, lblY: 84},
-    {n:'Biloxi',        x:540, y: 62, lblY: 80},
-    {n:"D'Iberville",   x:540, y: 38, lblY: 28},
-    {n:'Ocean Springs', x:720, y: 60, lblY: 78},
-  ];
   return (
     <Sprite start={42.4} end={48}>{({localTime,duration})=>{
       // Fade in only — no fade-out — so the final frame freezes cleanly when
@@ -842,49 +866,34 @@ function S08_Close(){
                 1coastmedia.com
               </a>
             </div>
-            {/* MS Gulf Coast mini-map */}
-            <div style={{marginTop:18,opacity:footT,width:'100%',maxWidth:780}}>
-              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:10,letterSpacing:'.42em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500,marginBottom:14,textAlign:'center'}}>
-                Built on the MS Gulf Coast
-              </div>
-              <svg viewBox="0 0 800 115" style={{width:'100%',height:'auto',display:'block'}} aria-hidden="true">
-                {/* Water tint below the coastline */}
-                <path d="M0,82 Q160,73 340,72 T800,72 L800,115 L0,115 Z" fill="rgba(212,175,55,.04)"/>
-                {/* Coastline (dashed gold curve) */}
-                <path d="M0,82 Q160,73 340,72 T800,72"
-                      stroke="rgba(212,175,55,.55)" strokeWidth="1.4" fill="none"
-                      strokeDasharray="3 5"/>
-                {/* Cities */}
-                {cities.map((c,i) => (
-                  <g key={c.n}>
-                    {/* Outer pulse ring */}
-                    <circle cx={c.x} cy={c.y} r="9" fill="none"
-                            stroke={GOLD} strokeOpacity=".25" strokeWidth="1"/>
-                    {/* Solid dot */}
-                    <circle cx={c.x} cy={c.y} r="3.5" fill={GOLD}/>
-                    {/* Connector line to label */}
-                    <line x1={c.x} y1={c.y} x2={c.x} y2={c.lblY > c.y ? c.lblY - 5 : c.lblY + 4}
-                          stroke="rgba(212,175,55,.4)" strokeWidth=".7"/>
-                    {/* Label */}
-                    <text x={c.x} y={c.lblY}
-                          fill={GOLD_LT}
-                          fontFamily="JetBrains Mono,monospace"
-                          fontSize="9"
-                          fontWeight="500"
-                          letterSpacing="2"
-                          textAnchor="middle"
-                          style={{textTransform:'uppercase'}}>
-                      {c.n.toUpperCase()}
-                    </text>
-                  </g>
-                ))}
-                {/* Compass tag west / east */}
-                <text x="6" y="108" fill="rgba(212,175,55,.45)"
-                      fontFamily="JetBrains Mono,monospace" fontSize="8" letterSpacing="2">W</text>
-                <text x="794" y="108" fill="rgba(212,175,55,.45)"
-                      fontFamily="JetBrains Mono,monospace" fontSize="8" letterSpacing="2" textAnchor="end">E</text>
-              </svg>
+            {/* Footer tag */}
+            <div style={{marginTop:14,display:'flex',alignItems:'center',gap:18,opacity:footT,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.42em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500,justifyContent:'center'}}>
+              <span style={{width:30,height:1,background:GOLD_LT}}/>
+              <span>Built on the MS Gulf Coast</span>
+              <span style={{width:30,height:1,background:GOLD_LT}}/>
             </div>
+            {/* Floating gold particles (rising) */}
+            {[...Array(16)].map((_,i)=>{
+              const left = (i*7+11)%96;
+              const sz = 2 + (i%4);
+              const dur = 7 + (i%6);
+              const delay = (i*0.55)%8;
+              return (
+                <span key={i} aria-hidden="true" style={{
+                  position:'absolute',
+                  left:`${left}%`,
+                  bottom:0,
+                  width:sz, height:sz,
+                  background:GOLD,
+                  borderRadius:'50%',
+                  boxShadow:`0 0 ${4+sz}px ${GOLD}`,
+                  opacity:0,
+                  animation:`particleRise ${dur}s linear ${delay}s infinite`,
+                  pointerEvents:'none',
+                  zIndex:5
+                }}/>
+              );
+            })}
           </div>
         </div>
       );
