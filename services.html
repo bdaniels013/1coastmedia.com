@@ -339,7 +339,7 @@
       <div class="grid grid-3" x-show="(serviceCategories['monthly-addons']?.services?.length || 0) > 0">
         <template x-for="svc in (serviceCategories['monthly-addons']?.services || [])" :key="svc.key">
           <article class="card" x-data="{ open: false }">
-            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
             <div class="card-eyebrow" x-text="svc.badge || 'Monthly'"></div>
             <h3 x-text="svc.name"></h3>
             <p x-text="svc.outcome"></p>
@@ -379,6 +379,7 @@
       <div class="grid grid-3">
 
         <div class="card" x-data="{ open: false }">
+          <img src="/assets/services/icon-ai-assistants.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
           <div class="card-eyebrow">Productized</div>
           <h3>AI Assistants</h3>
           <p>Pre-built AI that answers customer questions, captures leads, and handles calls. Ready to deploy on your website, social, and phone.</p>
@@ -397,6 +398,7 @@
         </div>
 
         <div class="card">
+          <img src="/assets/services/icon-ai-custom-integration.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
           <div class="card-eyebrow">Custom</div>
           <h3>Custom AI Integration</h3>
           <p>Build AI into any part of your business. Customer support, scheduling, sales qualification, internal ops, data analysis. Integrated with the tools and systems you already use.</p>
@@ -407,6 +409,7 @@
         </div>
 
         <div class="card">
+          <img src="/assets/services/icon-ai-offline-on-premise.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
           <div class="card-eyebrow">Sensitive Data</div>
           <h3>Offline / On-Premise AI</h3>
           <p>AI that runs locally on your hardware. Zero customer data leaves your infrastructure. Built for healthcare, legal, financial, and any business handling private records.</p>
@@ -431,7 +434,7 @@
       <div class="grid grid-3" x-show="(serviceCategories['specialty-projects']?.services?.length || 0) > 0">
         <template x-for="svc in (serviceCategories['specialty-projects']?.services || [])" :key="svc.key">
           <article class="card" x-data="{ open: false }">
-            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
             <div class="card-eyebrow" x-text="svc.badge || 'Project'"></div>
             <h3 x-text="svc.name"></h3>
             <p x-text="svc.outcome"></p>
@@ -480,6 +483,7 @@
           <div class="grid grid-2">
             <template x-for="svc in entry.cat.services" :key="svc.key">
               <div class="card">
+                <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
                 <div class="card-eyebrow" x-text="titleCase(entry.key)"></div>
                 <h3 x-text="svc.name"></h3>
                 <p x-text="svc.outcome"></p>

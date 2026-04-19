@@ -225,21 +225,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
           '$1,500 / mo: 3 platforms, full community management, trend monitoring'
         ],
         badge: 'Social',
-        image: '',
-        sla: '',
-        acceptance: '',
-        minTerm: 0
-      },
-      {
-        key: 'ad-campaign-management',
-        name: 'Ad Campaign Management',
-        outcome: 'Meta, Google, and TikTok ad creative, launch, and optimization. Priced on platforms and ad budget. Ad spend billed separately.',
-        price: { oneTime: 0, monthly: 750 },
-        priceDisplay: '$750 – $2,500',
-        priceNote: '/ month',
-        deliverables: [],
-        badge: 'Ads',
-        image: '',
+        image: '/assets/services/icon-addon-social-media.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -253,7 +239,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: '/ month',
         deliverables: [],
         badge: 'PR',
-        image: '',
+        image: '/assets/services/icon-addon-pr-retainer.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -267,7 +253,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per day',
         deliverables: [],
         badge: 'Filming',
-        image: '',
+        image: '/assets/services/icon-addon-filming-day.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -281,7 +267,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per batch (10 clips)',
         deliverables: [],
         badge: 'Clips',
-        image: '',
+        image: '/assets/services/icon-addon-shortform-clips.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -295,7 +281,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per episode',
         deliverables: [],
         badge: 'Podcast',
-        image: '',
+        image: '/assets/services/icon-addon-podcast-episode.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -303,13 +289,13 @@ const REQUIRED_CATEGORY_TEMPLATES = {
       {
         key: 'additional-long-form-episode',
         name: 'Additional Long-Form Episode',
-        outcome: 'One extra long-form anchor piece per month — interview, deep dive, or YouTube-style episode beyond your standard cadence.',
+        outcome: 'One extra long-form anchor piece per month. Interview, deep dive, or YouTube-style episode beyond your standard cadence.',
         price: { oneTime: 1250, monthly: 0 },
         priceDisplay: '$1,250',
         priceNote: 'per episode',
         deliverables: [],
         badge: 'Long-form',
-        image: '',
+        image: '/assets/services/icon-addon-longform-episode.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -323,7 +309,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per project',
         deliverables: [],
         badge: 'Rush',
-        image: '',
+        image: '/assets/services/icon-addon-rush-turnaround.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -337,7 +323,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: '/ month per platform',
         deliverables: [],
         badge: 'Distribution',
-        image: '',
+        image: '/assets/services/icon-addon-platform-dist.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -357,7 +343,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'typical range $3,500 to $12,000',
         deliverables: [],
         badge: 'Web',
-        image: '',
+        image: '/assets/services/icon-specialty-website.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -375,7 +361,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
           'National: $2,500'
         ],
         badge: 'PR',
-        image: '',
+        image: '/assets/services/icon-specialty-press-release.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -389,7 +375,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per session',
         deliverables: [],
         badge: 'Photo',
-        image: '',
+        image: '/assets/services/icon-specialty-photo-session.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -408,7 +394,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
           '$1,250 → +100,000 views'
         ],
         badge: 'Distribution',
-        image: '',
+        image: '/assets/services/icon-specialty-ugc-boost.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -416,13 +402,13 @@ const REQUIRED_CATEGORY_TEMPLATES = {
       {
         key: 'brand-video-production',
         name: 'Brand Video Production',
-        outcome: 'Story-driven brand film built around your business — founder story, product showcase, mission piece.',
+        outcome: 'Story-driven brand film built around your business. Founder story, product showcase, mission piece.',
         price: { oneTime: 1500, monthly: 0 },
         priceDisplay: 'Custom scope',
         priceNote: 'typical range $1,500 to $5,000+',
         deliverables: [],
         badge: 'Video',
-        image: '',
+        image: '/assets/services/icon-specialty-brand-video.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -436,7 +422,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'typical range $1,500 to $4,500',
         deliverables: [],
         badge: 'Event',
-        image: '',
+        image: '/assets/services/icon-specialty-event-coverage.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -450,7 +436,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'typical range $2,500 to $7,500+',
         deliverables: [],
         badge: 'Commercial',
-        image: '',
+        image: '/assets/services/icon-specialty-commercial.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -464,7 +450,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per listing',
         deliverables: [],
         badge: 'Real Estate',
-        image: '',
+        image: '/assets/services/icon-specialty-property-video.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -478,7 +464,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'per listing',
         deliverables: [],
         badge: 'Luxury',
-        image: '',
+        image: '/assets/services/icon-specialty-luxury-listing.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -492,7 +478,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         priceNote: 'typical range $5,000 to $15,000+',
         deliverables: [],
         badge: 'Development',
-        image: '',
+        image: '/assets/services/icon-specialty-community-promo.png',
         sla: '',
         acceptance: '',
         minTerm: 0
@@ -526,12 +512,25 @@ function ensureRequiredCategories() {
       // the stored data yet (matched by service.key). Never overwrites or removes
       // existing services — Blake's edits and ordering are preserved.
       if (!Array.isArray(existing.services)) existing.services = [];
-      const existingKeys = new Set(existing.services.map((svc) => svc && svc.key).filter(Boolean));
+      const existingByKey = new Map();
+      for (const svc of existing.services) {
+        if (svc && svc.key) existingByKey.set(svc.key, svc);
+      }
       for (const templateSvc of (template.services || [])) {
-        if (templateSvc && templateSvc.key && !existingKeys.has(templateSvc.key)) {
+        if (!templateSvc || !templateSvc.key) continue;
+        const existingSvc = existingByKey.get(templateSvc.key);
+        if (!existingSvc) {
           existing.services.push(JSON.parse(JSON.stringify(templateSvc)));
           changed = true;
           console.log(`✅ Added new service to ${key}: ${templateSvc.key}`);
+          continue;
+        }
+        // Backfill the image field if it's empty AND the template provides one.
+        // Never overwrites a non-empty image (preserves Blake's manual uploads).
+        if ((!existingSvc.image || existingSvc.image === '') && templateSvc.image) {
+          existingSvc.image = templateSvc.image;
+          changed = true;
+          console.log(`🖼  Backfilled image for ${key}/${templateSvc.key}: ${templateSvc.image}`);
         }
       }
     }

@@ -23,20 +23,6 @@
           "minTerm": 0
         },
         {
-          "key": "ad-campaign-management",
-          "name": "Ad Campaign Management",
-          "outcome": "Meta, Google, and TikTok ad creative, launch, and optimization. Priced on platforms and ad budget. Ad spend billed separately.",
-          "price": { "oneTime": 0, "monthly": 750 },
-          "priceDisplay": "$750 – $2,500",
-          "priceNote": "/ month",
-          "deliverables": [],
-          "badge": "Ads",
-          "image": "",
-          "sla": "",
-          "acceptance": "",
-          "minTerm": 0
-        },
-        {
           "key": "ongoing-pr-retainer",
           "name": "Ongoing PR Retainer",
           "outcome": "1 to 2 press releases per month plus active media outreach and relationship building. Local, regional, and national targeting.",
