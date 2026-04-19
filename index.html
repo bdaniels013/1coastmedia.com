@@ -45,20 +45,22 @@
       display: block;
       background: #000;
     }
-    /* On tall narrow phones drop to a more vertical box so the module's text
-       stays readable, and give a little more scroll budget. */
+    /* On phones we load the dedicated portrait variant (1080x1920). Let the
+       iframe fill the whole sticky viewport so the Stage inside can scale to
+       a near-fullscreen portrait. No 16:9 box, no double letterbox. */
     @media (max-width: 600px) {
       .vsm-scroll { height: 1000vh; }
       .vsm-iframe {
-        /* Match the content design (1920x1080) so we don't double-letterbox */
-        aspect-ratio: 16 / 9;
+        width: 100%;
+        height: 100vh;
+        aspect-ratio: auto;        /* override desktop's 16/9 so portrait fills */
+        max-width: none;
         max-height: 100vh;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 0 1px rgba(212,175,55,.18), 0 24px 60px rgba(0,0,0,.6);
+        border-radius: 0;          /* edge-to-edge for the cinematic feel */
+        box-shadow: none;
       }
       .vsm-sticky {
-        padding: 0 12px;
+        padding: 0;
       }
       .vsm-scroll-hint {
         font-size: 9px;
