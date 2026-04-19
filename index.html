@@ -49,7 +49,22 @@
        stays readable, and give a little more scroll budget. */
     @media (max-width: 600px) {
       .vsm-scroll { height: 1000vh; }
-      .vsm-iframe { aspect-ratio: 4 / 5; }
+      .vsm-iframe {
+        /* Match the content design (1920x1080) so we don't double-letterbox */
+        aspect-ratio: 16 / 9;
+        max-height: 100vh;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 0 1px rgba(212,175,55,.18), 0 24px 60px rgba(0,0,0,.6);
+      }
+      .vsm-sticky {
+        padding: 0 12px;
+      }
+      .vsm-scroll-hint {
+        font-size: 9px;
+        letter-spacing: .28em;
+        bottom: 18px;
+      }
     }
     /* Small scroll hint in the corner so visitors know to keep scrolling */
     .vsm-scroll-hint {
