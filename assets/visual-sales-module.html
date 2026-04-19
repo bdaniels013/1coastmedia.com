@@ -42,7 +42,7 @@ const { useEffect, useLayoutEffect, useMemo, useRef, useState, useContext, creat
 
 /* ============================================================
    1COAST MEDIA · THE VISUAL SALES MODULE · v2 PRODUCTION
-   8 scenes · 46s · 1920x1080 (auto-scales to viewport)
+   8 scenes · 48s · 1920x1080 (auto-scales to viewport)
    ============================================================ */
 
 const LOGO_SRC = (document.getElementById('logo-src-holder').textContent || '').trim();
@@ -97,13 +97,12 @@ function Sprite({ start, end, children }){
   );
 }
 
-function Stage({ width=1920, height=1080, duration=46, background=BG, persistKey, children }){
+function Stage({ width=1920, height=1080, duration=48, background=BG, persistKey, children }){
   const fitRef = useRef(null);
   const [scale, setScale] = useState(1);
+  // Always start fresh from 0 each load — this is a sales video, not a "resume where you left off" experience.
   const [playing, setPlaying] = useState(true);
-  const [time, setTime] = useState(() => {
-    try{ const v = parseFloat(localStorage.getItem(persistKey+':t')); return isFinite(v) ? v : 0; } catch { return 0; }
-  });
+  const [time, setTime] = useState(0);
   const rafRef = useRef(0);
   const lastRef = useRef(0);
 
@@ -124,7 +123,7 @@ function Stage({ width=1920, height=1080, duration=46, background=BG, persistKey
     return () => { ro.disconnect(); window.removeEventListener('resize', fit); };
   }, [width, height]);
 
-  // RAF
+  // RAF — advance time, but STOP at the end instead of looping (replay button takes over)
   useEffect(() => {
     const tick = (ts) => {
       if(!lastRef.current) lastRef.current = ts;
@@ -133,8 +132,7 @@ function Stage({ width=1920, height=1080, duration=46, background=BG, persistKey
       if(playing){
         setTime(t => {
           let nt = t + dt;
-          if(nt > duration) nt = 0; // loop
-          try{ localStorage.setItem(persistKey+':t', String(nt)); } catch {}
+          if(nt >= duration) nt = duration; // clamp to end (no loop)
           return nt;
         });
       }
@@ -144,13 +142,15 @@ function Stage({ width=1920, height=1080, duration=46, background=BG, persistKey
     return () => cancelAnimationFrame(rafRef.current);
   }, [playing, duration]);
 
-  // Keyboard shortcuts
+  // Pause automatically the moment we hit the end of the timeline
+  useEffect(() => {
+    if(playing && time >= duration - 0.001) setPlaying(false);
+  }, [time, duration, playing]);
+
+  // Keyboard shortcuts (invisible power-user controls; UI bar is hidden)
   useEffect(() => {
     const h = (e) => {
       if(e.code==='Space'){ e.preventDefault(); setPlaying(p => !p); }
-      if(e.code==='ArrowLeft'){ setTime(t => Math.max(0, t-1)); }
-      if(e.code==='ArrowRight'){ setTime(t => Math.min(duration, t+1)); }
-      if(e.code==='Home'){ setTime(0); }
       if(e.code==='KeyR'){ setTime(0); setPlaying(true); }
     };
     window.addEventListener('keydown', h);
@@ -158,6 +158,9 @@ function Stage({ width=1920, height=1080, duration=46, background=BG, persistKey
   }, [duration]);
 
   const tlValue = useMemo(() => ({ time, duration, playing, setTime, setPlaying, debug:false }), [time, duration, playing]);
+
+  const ended = !playing && time >= duration - 0.05;
+  const replay = () => { setTime(0); setPlaying(true); };
 
   return (
     <TLCtx.Provider value={tlValue}>
@@ -181,7 +184,33 @@ function Stage({ width=1920, height=1080, duration=46, background=BG, persistKey
             {children}
           </div>
         </div>
-        <Playbar />
+        {/* Replay overlay — appears at the bottom of the iframe once the video has finished */}
+        {ended && (
+          <button
+            onClick={replay}
+            aria-label="Replay video"
+            style={{
+              position:'fixed', left:'50%', bottom:30,
+              transform:'translateX(-50%)',
+              display:'inline-flex', alignItems:'center', gap:10,
+              padding:'12px 22px',
+              background:'rgba(10,10,10,.85)',
+              color:GOLD_LT,
+              border:`1px solid ${GOLD}`,
+              fontFamily:'JetBrains Mono,monospace',
+              fontSize:11, fontWeight:600,
+              letterSpacing:'.32em', textTransform:'uppercase',
+              cursor:'pointer',
+              backdropFilter:'blur(10px)',
+              boxShadow:'0 12px 40px rgba(0,0,0,.6), 0 0 24px rgba(212,175,55,.25)',
+              zIndex:1001,
+              animation:'glow 2.4s ease-in-out infinite'
+            }}
+          >
+            <span style={{fontSize:14}}>⟲</span>
+            <span>Replay</span>
+          </button>
+        )}
       </div>
     </TLCtx.Provider>
   );
@@ -330,8 +359,10 @@ function S01_Hook(){
 }
 
 /* =================================================
-   SCENE 02 · THE PROBLEM  (4.2 – 9.2s)
+   SCENE 02 · THE PROBLEM  (4.2 – 11.2s)
    Tangled vendor stack → "One partner"
+   Slowed by ~2s so the "Seven vendors" headline reads,
+   the chaos sits, and the "One partner" stamp lingers.
    ================================================= */
 function S02_Problem(){
   const vendors = [
@@ -344,12 +375,13 @@ function S02_Problem(){
     {t:'Email / CRM',n:'$400/mo',x:42,y:74,r:6},
   ];
   return (
-    <Sprite start={4.2} end={9.2}>{({localTime,duration})=>{
+    <Sprite start={4.2} end={11.2}>{({localTime,duration})=>{
       const op = clamp(localTime/0.3,0,1) * clamp((duration-localTime)/0.5,0,1);
       const titleT = clamp(localTime/0.6,0,1);
-      const collapseT = clamp((localTime-2.9)/0.8,0,1);
-      const stampT = clamp((localTime-3.7)/0.5,0,1);
-      const sweepT = clamp((localTime-3.4)/0.5,0,1);
+      // Pushed back +1s so vendors stay scattered longer (more time to read the headline)
+      const collapseT = clamp((localTime-3.9)/0.8,0,1);
+      const stampT = clamp((localTime-4.7)/0.5,0,1);
+      const sweepT = clamp((localTime-4.4)/0.5,0,1);
       return (
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="2" total="8" chapter="The Problem"/>
@@ -418,12 +450,12 @@ function S02_Problem(){
 }
 
 /* =================================================
-   SCENE 03 · THE ANSWER  (9.2 – 13.4s)
+   SCENE 03 · THE ANSWER  (11.2 – 15.4s)
    Logo slam + shockwave + one-line claim
    ================================================= */
 function S03_Answer(){
   return (
-    <Sprite start={9.2} end={13.4}>{({localTime,duration})=>{
+    <Sprite start={11.2} end={15.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.15,0,1) * clamp((duration-localTime)/0.5,0,1);
       const logoT = clamp(localTime/0.45,0,1);
       const logoE = Easing.easeOutBack(logoT);
@@ -472,7 +504,7 @@ function S03_Answer(){
 }
 
 /* =================================================
-   SCENE 04 · THE SYSTEM  (13.4 – 21.4s)
+   SCENE 04 · THE SYSTEM  (15.4 – 23.4s)
    4 pillars under one system
    ================================================= */
 function S04_System(){
@@ -483,7 +515,7 @@ function S04_System(){
     {n:'04', k:'Convert',  h:'Nurture to revenue', delay:3.1, detail:'Email + SMS sequences that follow up until they book. Hands-off, always on.'},
   ];
   return (
-    <Sprite start={13.4} end={21.4}>{({localTime,duration})=>{
+    <Sprite start={15.4} end={23.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.3,0,1) * clamp((duration-localTime)/0.5,0,1);
       const titleT = clamp(localTime/0.5,0,1);
       const footer = clamp((localTime-6.4)/0.6,0,1);
@@ -536,7 +568,7 @@ function S04_System(){
 }
 
 /* =================================================
-   SCENE 05 · THE PACKAGES  (21.4 – 28.4s)
+   SCENE 05 · THE PACKAGES  (23.4 – 30.4s)
    Real 6 packages revealing in sequence
    ================================================= */
 function S05_Packages(){
@@ -549,7 +581,7 @@ function S05_Packages(){
     {tier:'SPECIALTY',   name:'Podcast Engine',   price:'Custom', sub:'',    tag:'Weekly show',      bullets:['Full production', 'Multi-clip rollout', 'Guest funnel'], glow:false},
   ];
   return (
-    <Sprite start={21.4} end={28.4}>{({localTime,duration})=>{
+    <Sprite start={23.4} end={30.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.25,0,1) * clamp((duration-localTime)/0.45,0,1);
       const titleT = clamp(localTime/0.5,0,1);
       const tailT = clamp((localTime-5.6)/0.5,0,1);
@@ -619,7 +651,7 @@ function S05_Packages(){
 }
 
 /* =================================================
-   SCENE 06 · THE MANIFEST  (28.4 – 33.4s)
+   SCENE 06 · THE MANIFEST  (30.4 – 35.4s)
    What you get every month
    ================================================= */
 function S06_Manifest(){
@@ -631,7 +663,7 @@ function S06_Manifest(){
     {k:'We nurture & convert — email, SMS, follow-up until they book',           n:'ONGOING'},
   ];
   return (
-    <Sprite start={28.4} end={33.4}>{({localTime,duration})=>{
+    <Sprite start={30.4} end={35.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.25,0,1) * clamp((duration-localTime)/0.4,0,1);
       const titleT = clamp(localTime/0.5,0,1);
       return (
@@ -663,7 +695,7 @@ function S06_Manifest(){
 }
 
 /* =================================================
-   SCENE 07 · THE PROOF  (33.4 – 40.4s)
+   SCENE 07 · THE PROOF  (35.4 – 42.4s)
    Before / After + 3 stats + Gulf Coast quote
    ================================================= */
 function S07_Proof(){
@@ -680,7 +712,7 @@ function S07_Proof(){
     {l:'Owner hours / week',   b:'15+',         a:'2'},
   ];
   return (
-    <Sprite start={33.4} end={40.4}>{({localTime,duration})=>{
+    <Sprite start={35.4} end={42.4}>{({localTime,duration})=>{
       const op = clamp(localTime/0.25,0,1) * clamp((duration-localTime)/0.45,0,1);
       const titleT = clamp(localTime/0.5,0,1);
       const leftT  = clamp((localTime-0.5)/0.6,0,1);
@@ -755,17 +787,33 @@ function S07_Proof(){
 }
 
 /* =================================================
-   SCENE 08 · THE CLOSE  (40.4 – 46s)
-   Logo + promise + CTA
+   SCENE 08 · THE CLOSE  (42.4 – 48s)
+   Logo + promise + CTA + MS Gulf Coast mini-map
+   Stays at full opacity through the end so the
+   final frame freezes for the Replay overlay.
    ================================================= */
 function S08_Close(){
+  // Cities placed roughly along their real positions on the MS Gulf Coast.
+  // viewBox is 800x110: x runs west (Bay St. Louis) → east (Ocean Springs);
+  // y runs south (water) → north (inland). D'Iberville sits north of Biloxi.
+  const cities = [
+    {n:'Bay St. Louis', x: 60, y: 78, lblY: 96},
+    {n:'Pass Christian',x:170, y: 73, lblY: 91},
+    {n:'Long Beach',    x:255, y: 70, lblY: 88},
+    {n:'Gulfport',      x:340, y: 66, lblY: 84},
+    {n:'Biloxi',        x:540, y: 62, lblY: 80},
+    {n:"D'Iberville",   x:540, y: 38, lblY: 28},
+    {n:'Ocean Springs', x:720, y: 60, lblY: 78},
+  ];
   return (
-    <Sprite start={40.4} end={46}>{({localTime,duration})=>{
-      const op = clamp(localTime/0.3,0,1) * clamp((duration-localTime)/0.5,0,1);
+    <Sprite start={42.4} end={48}>{({localTime,duration})=>{
+      // Fade in only — no fade-out — so the final frame freezes cleanly when
+      // playback ends and the Replay overlay appears.
+      const op    = clamp(localTime/0.3,0,1);
       const logoT = clamp(localTime/0.6,0,1);
-      const l1 = clamp((localTime-0.8)/0.5,0,1);
-      const l2 = clamp((localTime-1.5)/0.5,0,1);
-      const cta = clamp((localTime-2.4)/0.5,0,1);
+      const l1    = clamp((localTime-0.8)/0.5,0,1);
+      const l2    = clamp((localTime-1.5)/0.5,0,1);
+      const cta   = clamp((localTime-2.4)/0.5,0,1);
       const footT = clamp((localTime-3.3)/0.5,0,1);
       return (
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at 50% 50%,#191105 0%,#000 75%)',display:'grid',placeItems:'center',overflow:'hidden'}}>
@@ -774,24 +822,68 @@ function S08_Close(){
           <div style={{position:'absolute',inset:0,backgroundImage:'linear-gradient(rgba(212,175,55,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,.05) 1px,transparent 1px)',backgroundSize:'96px 96px',opacity:op*0.7}}/>
           {/* Conic rotating light */}
           <div style={{position:'absolute',inset:0,backgroundImage:'conic-gradient(from 0deg,transparent 0deg,rgba(212,175,55,.09) 30deg,transparent 60deg,transparent 120deg,rgba(212,175,55,.09) 150deg,transparent 180deg,transparent 240deg,rgba(212,175,55,.09) 270deg,transparent 300deg)',animation:'spin 26s linear infinite',opacity:op*0.7}}/>
-          <div style={{position:'relative',display:'flex',flexDirection:'column',alignItems:'center',gap:28,textAlign:'center',padding:'0 80px',maxWidth:1500}}>
+          <div style={{position:'relative',display:'flex',flexDirection:'column',alignItems:'center',gap:24,textAlign:'center',padding:'0 80px',maxWidth:1500}}>
             <div style={{transform:`scale(${0.82+logoT*0.18})`,opacity:logoT*op,filter:`drop-shadow(0 0 60px ${GOLD})`}}>
-              <Logo size={170} animate/>
+              <Logo size={150} animate/>
             </div>
-            <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:72,lineHeight:.98,letterSpacing:'-.018em',color:INK,textTransform:'uppercase',opacity:l1,transform:`translateY(${(1-l1)*12}px)`}}>
+            <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:64,lineHeight:.98,letterSpacing:'-.018em',color:INK,textTransform:'uppercase',opacity:l1,transform:`translateY(${(1-l1)*12}px)`}}>
               You run <span className="gold">the business.</span>
             </div>
-            <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:72,lineHeight:.98,letterSpacing:'-.018em',color:INK,textTransform:'uppercase',opacity:l2,transform:`translateY(${(1-l2)*12}px)`,marginTop:-10}}>
+            <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:64,lineHeight:.98,letterSpacing:'-.018em',color:INK,textTransform:'uppercase',opacity:l2,transform:`translateY(${(1-l2)*12}px)`,marginTop:-8}}>
               We run <span className="gold">the growth.</span>
             </div>
-            <div style={{marginTop:28,display:'flex',alignItems:'center',gap:24,opacity:cta,transform:`translateY(${(1-cta)*10}px)`,flexWrap:'wrap',justifyContent:'center'}}>
-              <span style={{display:'inline-block',padding:'18px 40px',background:GOLD,color:'#000',fontFamily:'Oswald',fontWeight:700,fontSize:22,letterSpacing:'.22em',textTransform:'uppercase',boxShadow:'0 20px 40px rgba(212,175,55,.25)'}}>Book your call now</span>
-              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:15,letterSpacing:'.32em',color:INK,textTransform:'uppercase',fontWeight:500}}>1coastmedia.com</span>
+            <div style={{marginTop:24,display:'flex',alignItems:'center',gap:24,opacity:cta,transform:`translateY(${(1-cta)*10}px)`,flexWrap:'wrap',justifyContent:'center'}}>
+              <a href="https://calendly.com/bdaniels013/30min" target="_blank" rel="noopener noreferrer"
+                 style={{display:'inline-block',padding:'18px 40px',background:GOLD,color:'#000',fontFamily:'Oswald',fontWeight:700,fontSize:22,letterSpacing:'.22em',textTransform:'uppercase',boxShadow:'0 20px 40px rgba(212,175,55,.25)',textDecoration:'none',cursor:'pointer'}}>
+                Book your call now
+              </a>
+              <a href="https://1coastmedia.com" target="_blank" rel="noopener noreferrer"
+                 style={{fontFamily:'JetBrains Mono,monospace',fontSize:15,letterSpacing:'.32em',color:INK,textTransform:'uppercase',fontWeight:500,textDecoration:'none'}}>
+                1coastmedia.com
+              </a>
             </div>
-            <div style={{marginTop:14,display:'flex',alignItems:'center',gap:18,opacity:footT,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.42em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500}}>
-              <span style={{width:30,height:1,background:GOLD_LT}}/>
-              <span>Biloxi · Mobile · Pensacola · New Orleans</span>
-              <span style={{width:30,height:1,background:GOLD_LT}}/>
+            {/* MS Gulf Coast mini-map */}
+            <div style={{marginTop:18,opacity:footT,width:'100%',maxWidth:780}}>
+              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:10,letterSpacing:'.42em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500,marginBottom:14,textAlign:'center'}}>
+                Built on the MS Gulf Coast
+              </div>
+              <svg viewBox="0 0 800 115" style={{width:'100%',height:'auto',display:'block'}} aria-hidden="true">
+                {/* Water tint below the coastline */}
+                <path d="M0,82 Q160,73 340,72 T800,72 L800,115 L0,115 Z" fill="rgba(212,175,55,.04)"/>
+                {/* Coastline (dashed gold curve) */}
+                <path d="M0,82 Q160,73 340,72 T800,72"
+                      stroke="rgba(212,175,55,.55)" strokeWidth="1.4" fill="none"
+                      strokeDasharray="3 5"/>
+                {/* Cities */}
+                {cities.map((c,i) => (
+                  <g key={c.n}>
+                    {/* Outer pulse ring */}
+                    <circle cx={c.x} cy={c.y} r="9" fill="none"
+                            stroke={GOLD} strokeOpacity=".25" strokeWidth="1"/>
+                    {/* Solid dot */}
+                    <circle cx={c.x} cy={c.y} r="3.5" fill={GOLD}/>
+                    {/* Connector line to label */}
+                    <line x1={c.x} y1={c.y} x2={c.x} y2={c.lblY > c.y ? c.lblY - 5 : c.lblY + 4}
+                          stroke="rgba(212,175,55,.4)" strokeWidth=".7"/>
+                    {/* Label */}
+                    <text x={c.x} y={c.lblY}
+                          fill={GOLD_LT}
+                          fontFamily="JetBrains Mono,monospace"
+                          fontSize="9"
+                          fontWeight="500"
+                          letterSpacing="2"
+                          textAnchor="middle"
+                          style={{textTransform:'uppercase'}}>
+                      {c.n.toUpperCase()}
+                    </text>
+                  </g>
+                ))}
+                {/* Compass tag west / east */}
+                <text x="6" y="108" fill="rgba(212,175,55,.45)"
+                      fontFamily="JetBrains Mono,monospace" fontSize="8" letterSpacing="2">W</text>
+                <text x="794" y="108" fill="rgba(212,175,55,.45)"
+                      fontFamily="JetBrains Mono,monospace" fontSize="8" letterSpacing="2" textAnchor="end">E</text>
+              </svg>
             </div>
           </div>
         </div>
@@ -819,7 +911,7 @@ function Scanline(){
 
 function App(){
   return (
-    <Stage width={1920} height={1080} duration={46} background="#000" persistKey="1cm-vsm-v2">
+    <Stage width={1920} height={1080} duration={48} background="#000" persistKey="1cm-vsm-v2">
       <S01_Hook/>
       <S02_Problem/>
       <S03_Answer/>
