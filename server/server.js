@@ -218,7 +218,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
       {
         key: 'social-media-management',
         name: 'Social Media Management',
-        outcome: 'Posting, scheduling, community engagement, comments, and DMs. Built into Growth Machine and Growth Partner. Add it to Content Presence or Content Growth.',
+        outcome: 'Posting, scheduling, community engagement, comments, and DMs. Built into Growth Machine and Growth Partner. Add it to Content Presence or Content Momentum.',
         price: { oneTime: 0, monthly: 500 },
         priceDisplay: '$500 – $1,500',
         priceNote: '/ month',

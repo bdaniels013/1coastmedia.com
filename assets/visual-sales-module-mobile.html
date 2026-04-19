@@ -575,10 +575,10 @@ function S03_Answer(){
    ================================================= */
 function S04_System(){
   const pillars = [
-    {n:'01', k:'Create',    h:'Tell the story',         delay:.7,  detail:'Brand films, reels, photos, UGC, Coast Creators.'},
-    {n:'02', k:'Distribute',h:'Everywhere, daily',       delay:1.5, detail:'IG, TikTok, YouTube, Facebook, LinkedIn. On rhythm.'},
-    {n:'03', k:'Capture',   h:'Turn reach into leads',   delay:2.3, detail:'Landing pages, lead magnets, forms, booking flows.'},
-    {n:'04', k:'Convert',   h:'Nurture to revenue',      delay:3.1, detail:'Email + SMS that follow up until they book.'},
+    {n:'01', k:'Create',    h:'Tell the story',         delay:.7,  detail:'1 to 6 shoot days a month. Brand films, reels, photos, UGC. Edited fast, all rights yours.'},
+    {n:'02', k:'Distribute',h:'Everywhere, daily',      delay:1.5, detail:'Posted and tagged across IG, TikTok, YouTube Shorts, Facebook, LinkedIn on a daily cadence.'},
+    {n:'03', k:'Capture',   h:'Turn reach into leads',  delay:2.3, detail:'Landing pages, lead magnets, opt-in forms, booking flows. Wired into your CRM with every click measured.'},
+    {n:'04', k:'Convert',   h:'Nurture to revenue',     delay:3.1, detail:'Email and SMS sequences that follow up until they book. Written in your voice. Always on.'},
   ];
   return (
     <Sprite start={15.4} end={23.4}>{({localTime,duration})=>{
@@ -636,7 +636,7 @@ function S04_System(){
 function S05_Packages(){
   const packs = [
     {tier:'FOUNDATION',  name:'Content Presence',          price:'$1,000', sub:'/mo', tag:'Start showing up',  bullets:['1 shoot day', '15 to 20 videos', 'Daily content calendar'], glow:false},
-    {tier:'GROWTH',      name:'Content Growth',            price:'$1,750', sub:'/mo', tag:'Build momentum',    bullets:['2 shoot days', '30 videos enhanced', 'Monthly strategy call'], glow:false},
+    {tier:'GROWTH',      name:'Content Momentum',          price:'$1,750', sub:'/mo', tag:'Build the engine',  bullets:['2 shoot days', '30 videos enhanced', 'Monthly strategy call'], glow:false},
     {tier:'ACCELERATOR', name:'Growth Machine',            price:'$3,250', sub:'/mo', tag:'Full marketing',    bullets:['3 to 4 shoot days', 'Social mgmt + landing pages', 'Lead capture system'], glow:true},
     {tier:'FULL PARTNER',name:'Growth Partner',            price:'$5,000', sub:'/mo', tag:'We run everything', bullets:['4 to 6 shoot days', 'Email + SMS + ad campaigns', 'Website mgmt'], glow:false},
     {tier:'SPECIALTY',   name:'Personal Brand',            price:'$3,000+', sub:'/mo', tag:'YouTube authority', bullets:['Weekly long-form YouTube', 'Multi-platform cutdowns', 'Channel mgmt'], glow:false},
@@ -706,7 +706,7 @@ function S05_Packages(){
           {/* Tail line — stacked for portrait */}
           <div style={{position:'absolute',bottom:160,left:60,right:60,display:'flex',flexDirection:'column',alignItems:'center',gap:10,opacity:tailT*op,fontFamily:'JetBrains Mono,monospace',fontSize:18,letterSpacing:'.32em',color:INK_DIM,textTransform:'uppercase',fontWeight:500,textAlign:'center'}}>
             <span>All plans · Month-to-month · Cancel anytime</span>
-            <span className="gold">Every plan includes the full system</span>
+            <span className="gold">Core packages run the full system · Specialty plans focus deep</span>
           </div>
         </div>
       );
@@ -720,8 +720,8 @@ function S05_Packages(){
    ================================================= */
 function S06_Manifest(){
   const lines = [
-    {k:'We create the content. Brand films, reels, photos, UGC, Coast Creators', n:'MONTHLY'},
-    {k:'We post it daily. IG, TikTok, YouTube, Facebook, LinkedIn',             n:'DAILY'},
+    {k:'We produce every asset. Brand films, reels, photos, UGC. Shot, edited, delivered.', n:'MONTHLY'},
+    {k:'We publish it for you. Captioned, scheduled, optimized for every platform.',          n:'DAILY'},
     {k:'We build the landing pages & lead magnets that convert the reach',       n:'BUILT IN'},
     {k:'We capture the leads. Forms, opt-ins, booking flows, CRM',              n:'AUTOMATED'},
     {k:'We nurture & convert. Email, SMS, follow-up until they book',           n:'ONGOING'},
@@ -957,6 +957,79 @@ function Scanline(){
   );
 }
 
+/* ============ Scene Transitions =============================
+   Same explosive pulse as the desktop module — flash, gold edge,
+   sweeping bar, expanding rings, scanline glitch — tuned for the
+   1080x1920 portrait canvas. Fires within ±0.45s of every scene
+   boundary so each cut feels like an impact instead of a fade. */
+const SCENE_BOUNDARIES = [4.2, 11.2, 15.4, 23.4, 30.4, 35.4, 42.4];
+const TRANSITION_HALF  = 0.45;
+function SceneTransitions(){
+  const tl = useTimeline();
+  if(!tl) return null;
+  let nearest = SCENE_BOUNDARIES[0];
+  let dist = Math.abs(tl.time - nearest);
+  for(let i=1;i<SCENE_BOUNDARIES.length;i++){
+    const d = Math.abs(tl.time - SCENE_BOUNDARIES[i]);
+    if(d < dist){ dist = d; nearest = SCENE_BOUNDARIES[i]; }
+  }
+  if(dist > TRANSITION_HALF) return null;
+  const u = dist / TRANSITION_HALF;
+  const k = (1 - u) * (1 - u);
+  const dir = tl.time < nearest ? -1 : 1;
+  const after = Math.max(0, tl.time - nearest);
+  const ringP = Math.min(1, after / TRANSITION_HALF);
+  return (
+    <div style={{position:'absolute',inset:0,pointerEvents:'none',zIndex:60,overflow:'hidden'}}>
+      {/* White radial flash */}
+      <div style={{
+        position:'absolute',inset:0,
+        background:`radial-gradient(circle at 50% 50%, rgba(255,255,255,${k*0.55}), rgba(255,255,255,${k*0.10}) 38%, transparent 72%)`,
+        mixBlendMode:'screen'
+      }}/>
+      {/* Gold edge glow */}
+      <div style={{
+        position:'absolute',inset:0,
+        boxShadow:`inset 0 0 ${180*k}px ${42*k}px rgba(212,175,55,${k*0.65})`,
+      }}/>
+      {/* Horizontal sweeping bar (top-down for portrait feel) */}
+      <div style={{
+        position:'absolute',left:0,right:0,
+        height:'10%',
+        top: dir > 0 ? `${(1-k)*100 - 5}%` : `${k*100 - 5}%`,
+        background:`linear-gradient(180deg, transparent, rgba(212,175,55,${k*0.85}), rgba(255,255,255,${k}), rgba(212,175,55,${k*0.85}), transparent)`,
+        opacity: k,
+        transform:`skewY(${(dir>0?-8:8)*k}deg)`,
+        filter:`blur(${5*k}px)`
+      }}/>
+      {/* Expanding rings sized for 1080x1920 portrait stage */}
+      {[0, 0.18, 0.36].map((delay, idx) => {
+        const t = Math.max(0, ringP - delay);
+        if(t <= 0) return null;
+        const size = 220 + t * 2200;
+        const op   = (1 - t) * 0.45;
+        return (
+          <div key={idx} style={{
+            position:'absolute', top:'50%', left:'50%',
+            width:size, height:size,
+            transform:'translate(-50%,-50%)',
+            border:`3px solid rgba(212,175,55,${op})`,
+            borderRadius:'50%',
+            boxShadow:`0 0 28px rgba(212,175,55,${op*0.55})`
+          }}/>
+        );
+      })}
+      {/* Scanline glitch */}
+      <div style={{
+        position:'absolute',inset:0,
+        background:`repeating-linear-gradient(0deg, transparent 0, transparent 4px, rgba(255,255,255,${k*0.07}) 4px, rgba(255,255,255,${k*0.07}) 5px)`,
+        opacity:k,
+        mixBlendMode:'overlay'
+      }}/>
+    </div>
+  );
+}
+
 function App(){
   return (
     <Stage width={1080} height={1920} duration={48} background="#000" persistKey="1cm-vsm-mobile-v1">
@@ -970,6 +1043,7 @@ function App(){
       <S08_Close/>
       <Scanline/>
       <GlobalGrain/>
+      <SceneTransitions/>
     </Stage>
   );
 }
