@@ -309,7 +309,7 @@ function Chrome({ num, total, chapter }){
   // Portrait chrome — tighter padding, smaller text, stacks chapter info on its own row
   return (
     <>
-      {/* Top bar */}
+      {/* Top bar — chapter number + title intentionally removed per design call */}
       <div style={{position:'absolute',top:36,left:48,right:48,display:'flex',justifyContent:'space-between',alignItems:'center',zIndex:20,pointerEvents:'none'}}>
         <div style={{display:'flex',alignItems:'center',gap:12,fontFamily:'JetBrains Mono,monospace',fontSize:18,letterSpacing:'.28em',color:INK_DIM,textTransform:'uppercase'}}>
           <div style={{width:12,height:12,borderRadius:'50%',background:GOLD,boxShadow:`0 0 14px ${GOLD}`}}/>
@@ -317,13 +317,6 @@ function Chrome({ num, total, chapter }){
           <span style={{width:24,height:1,background:LINE_HOT}}/>
           <span style={{color:GOLD}}>1Coast Media</span>
         </div>
-        <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:16,letterSpacing:'.28em',color:GOLD,textTransform:'uppercase'}}>
-          {num}/{total}
-        </div>
-      </div>
-      {/* Chapter line */}
-      <div style={{position:'absolute',top:84,left:48,right:48,fontFamily:'JetBrains Mono,monospace',fontSize:16,letterSpacing:'.32em',color:GOLD,textTransform:'uppercase',zIndex:20,pointerEvents:'none'}}>
-        Ch. {chapter}
       </div>
       {/* Frame hairlines */}
       <div style={{position:'absolute',top:120,left:48,right:48,height:1,background:LINE,zIndex:10,pointerEvents:'none'}}/>
@@ -575,7 +568,7 @@ function S03_Answer(){
    ================================================= */
 function S04_System(){
   const pillars = [
-    {n:'01', k:'Create',    h:'Tell the story',         delay:.7,  detail:'1 to 6 shoot days a month. Brand films, reels, photos, UGC. Edited fast, all rights yours.'},
+    {n:'01', k:'Create',    h:'Tell the story',         delay:.7,  detail:'1 to 6 shoot days a month. Brand films, reels, photos, graphics. Edited fast, all rights yours.'},
     {n:'02', k:'Distribute',h:'Everywhere, daily',      delay:1.5, detail:'Posted and tagged across IG, TikTok, YouTube Shorts, Facebook, LinkedIn on a daily cadence.'},
     {n:'03', k:'Capture',   h:'Turn reach into leads',  delay:2.3, detail:'Landing pages, lead magnets, opt-in forms, booking flows. Wired into your CRM with every click measured.'},
     {n:'04', k:'Convert',   h:'Nurture to revenue',     delay:3.1, detail:'Email and SMS sequences that follow up until they book. Written in your voice. Always on.'},
@@ -706,7 +699,7 @@ function S05_Packages(){
           {/* Tail line — stacked for portrait */}
           <div style={{position:'absolute',bottom:160,left:60,right:60,display:'flex',flexDirection:'column',alignItems:'center',gap:10,opacity:tailT*op,fontFamily:'JetBrains Mono,monospace',fontSize:18,letterSpacing:'.32em',color:INK_DIM,textTransform:'uppercase',fontWeight:500,textAlign:'center'}}>
             <span>All plans · Month-to-month · Cancel anytime</span>
-            <span className="gold">Core packages run the full system · Specialty plans focus deep</span>
+            <span className="gold">Core packages scale from content to full growth support</span>
           </div>
         </div>
       );
@@ -720,7 +713,7 @@ function S05_Packages(){
    ================================================= */
 function S06_Manifest(){
   const lines = [
-    {k:'We produce every asset. Brand films, reels, photos, UGC. Shot, edited, delivered.', n:'MONTHLY'},
+    {k:'We produce every asset. Brand films, reels, photos, graphics. Shot, edited, delivered.', n:'MONTHLY'},
     {k:'We publish it for you. Captioned, scheduled, optimized for every platform.',          n:'DAILY'},
     {k:'We build the landing pages & lead magnets that convert the reach',       n:'BUILT IN'},
     {k:'We capture the leads. Forms, opt-ins, booking flows, CRM',              n:'AUTOMATED'},

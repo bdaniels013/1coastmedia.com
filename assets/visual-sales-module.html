@@ -306,16 +306,13 @@ function Logo({ size=120, animate=false }){
 function Chrome({ num, total, chapter }){
   return (
     <>
-      {/* Top bar */}
+      {/* Top bar — chapter indicator intentionally removed per design call */}
       <div style={{position:'absolute',top:32,left:72,right:72,display:'flex',justifyContent:'space-between',alignItems:'center',zIndex:20,pointerEvents:'none'}}>
         <div style={{display:'flex',alignItems:'center',gap:14,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.32em',color:INK_DIM,textTransform:'uppercase'}}>
           <div style={{width:8,height:8,borderRadius:'50%',background:GOLD,boxShadow:`0 0 12px ${GOLD}`}}/>
           <span>REC</span>
           <span style={{width:28,height:1,background:LINE_HOT}}/>
           <span style={{color:GOLD}}>1Coast Media</span>
-        </div>
-        <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.32em',color:GOLD,textTransform:'uppercase'}}>
-          Ch. {num}/{total} · {chapter}
         </div>
       </div>
       {/* Frame hairlines */}
@@ -562,7 +559,7 @@ function S03_Answer(){
    ================================================= */
 function S04_System(){
   const pillars = [
-    {n:'01', k:'Create',   h:'Tell the story',         delay:.7,  detail:'We shoot 1 to 6 days a month. Brand films, reels, photos, UGC. Edited fast, all rights yours.'},
+    {n:'01', k:'Create',   h:'Tell the story',         delay:.7,  detail:'We shoot 1 to 6 days a month. Brand films, reels, photos, graphics. Edited fast, all rights yours.'},
     {n:'02', k:'Distribute',h:'Everywhere, daily',      delay:1.5, detail:'Posted, captioned, and tagged across IG, TikTok, YouTube Shorts, Facebook, LinkedIn on a daily cadence.'},
     {n:'03', k:'Capture',  h:'Turn reach into leads',   delay:2.3, detail:'Landing pages, lead magnets, opt-in forms, booking flows. Wired straight into your CRM with every click measured.'},
     {n:'04', k:'Convert',  h:'Nurture to revenue',      delay:3.1, detail:'Email and SMS sequences that follow up until they book. Written in your voice. Automated, always on.'},
@@ -699,7 +696,7 @@ function S05_Packages(){
           {/* Tail line */}
           <div style={{position:'absolute',bottom:108,left:72,right:72,display:'flex',justifyContent:'space-between',alignItems:'center',opacity:tailT*op,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.36em',color:INK_DIM,textTransform:'uppercase',fontWeight:500}}>
             <span>All plans · Month-to-month · Cancel anytime</span>
-            <span className="gold">Core packages run the full system · Specialty plans focus deep →</span>
+            <span className="gold">Core packages scale from content to full growth support →</span>
           </div>
         </div>
       );
@@ -713,7 +710,7 @@ function S05_Packages(){
    ================================================= */
 function S06_Manifest(){
   const lines = [
-    {k:'We produce every asset. Brand films, reels, photos, UGC. Shot, edited, delivered.', n:'MONTHLY'},
+    {k:'We produce every asset. Brand films, reels, photos, graphics. Shot, edited, delivered.', n:'MONTHLY'},
     {k:'We publish it for you. Captioned, scheduled, and optimized for every platform.',     n:'DAILY'},
     {k:'We build the landing pages & lead magnets that convert the reach',       n:'BUILT IN'},
     {k:'We capture the leads. Forms, opt-ins, booking flows, CRM',              n:'AUTOMATED'},
