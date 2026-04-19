@@ -21,7 +21,7 @@
        to the module's timeline (0 → duration) via postMessage. */
     .vsm-scroll {
       position: relative;
-      height: 800vh;             /* scroll budget: 8 viewports for a slower, more deliberate scrub */
+      height: 1300vh;            /* scroll budget: 13 viewports for a slow, deliberate scrub */
       background: #000;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -48,7 +48,7 @@
     /* On tall narrow phones drop to a more vertical box so the module's text
        stays readable, and give a little more scroll budget. */
     @media (max-width: 600px) {
-      .vsm-scroll { height: 650vh; }
+      .vsm-scroll { height: 1000vh; }
       .vsm-iframe { aspect-ratio: 4 / 5; }
     }
     /* Small scroll hint in the corner so visitors know to keep scrolling */
@@ -292,20 +292,6 @@
     </div>
   </section>
 
-  <!-- Marquee 2 -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Grow the Coast.</span><span class="dot">•</span>
-      <span>Elevate the Coast.</span><span class="dot">•</span>
-      <span>Unite the Coast.</span><span class="dot">•</span>
-      <span>Rise together.</span><span class="dot">•</span>
-      <span>Grow the Coast.</span><span class="dot">•</span>
-      <span>Elevate the Coast.</span><span class="dot">•</span>
-      <span>Unite the Coast.</span><span class="dot">•</span>
-      <span>Rise together.</span><span class="dot">•</span>
-    </div>
-  </div>
-
   <!-- Mission -->
   <section class="section">
     <div class="wrap">
@@ -347,6 +333,20 @@
       </div>
     </div>
   </section>
+
+  <!-- Marquee 2 (below Founder letter) -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Grow the Coast.</span><span class="dot">•</span>
+      <span>Elevate the Coast.</span><span class="dot">•</span>
+      <span>Unite the Coast.</span><span class="dot">•</span>
+      <span>Rise together.</span><span class="dot">•</span>
+      <span>Grow the Coast.</span><span class="dot">•</span>
+      <span>Elevate the Coast.</span><span class="dot">•</span>
+      <span>Unite the Coast.</span><span class="dot">•</span>
+      <span>Rise together.</span><span class="dot">•</span>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">
