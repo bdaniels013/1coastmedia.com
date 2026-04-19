@@ -159,7 +159,8 @@
       <iframe
         id="vsm-iframe"
         class="vsm-iframe"
-        src="/assets/visual-sales-module.html?scroll=1"
+        data-src-desktop="/assets/visual-sales-module.html?scroll=1"
+        data-src-mobile="/assets/visual-sales-module-mobile.html?scroll=1"
         title="Why 1Coast Media"
         loading="lazy"
         allow="autoplay"
@@ -173,6 +174,20 @@
       </div>
     </div>
   </section>
+
+  <script>
+    /* Pick the right Visual Sales Module variant based on viewport.
+       Desktop → 1920x1080 landscape file. Mobile (≤600px) → 1080x1920 portrait file.
+       We resolve src here, before the scroll controller runs, so the iframe
+       loads exactly one variant (no double-fetch). */
+    (function() {
+      var iframe = document.getElementById('vsm-iframe');
+      if (!iframe) return;
+      var isMobile = window.matchMedia('(max-width: 600px)').matches;
+      var src = isMobile ? iframe.getAttribute('data-src-mobile') : iframe.getAttribute('data-src-desktop');
+      if (src) iframe.setAttribute('src', src);
+    })();
+  </script>
 
   <script>
     /* Drive the Visual Sales Module from scroll position.
