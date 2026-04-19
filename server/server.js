@@ -151,7 +151,10 @@ app.use((req, res, next) => {
 // Security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
+  // SAMEORIGIN (not DENY) so we can embed our own pages in iframes — e.g. the
+  // Visual Sales Module on the homepage. Still blocks foreign sites from
+  // iframing us (clickjacking protection).
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   next();
