@@ -100,6 +100,12 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
+  /* Cinematic fallback while the video is buffering — a dark gold-tinted
+     radial pulse that matches the particle video's aesthetic so the hero
+     never looks empty, even before the first frame paints. */
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(80, 58, 22, 0.55) 0%, rgba(20, 14, 6, 0.9) 45%, #000 80%),
+    #000;
 }
 .hero-video-wrap video {
   position: absolute;
