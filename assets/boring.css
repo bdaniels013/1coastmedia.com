@@ -152,8 +152,8 @@ img { max-width: 100%; display: block; }
   margin: 28px auto 0;
   max-width: 56ch;
   color: var(--text-muted);
-  font-size: clamp(16px, 1.6vw, 19px);
-  line-height: 1.5;
+  font-size: clamp(17px, 1.7vw, 21px);
+  line-height: 1.55;
 }
 .hero-ctas {
   margin-top: 36px;
@@ -164,7 +164,7 @@ img { max-width: 100%; display: block; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 14px 26px; border-radius: 999px;
-  font-weight: 600; font-size: 15px;
+  font-weight: 600; font-size: 16px;
   border: 1px solid transparent;
   cursor: pointer;
   transition: transform .15s ease, opacity .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
@@ -176,8 +176,8 @@ img { max-width: 100%; display: block; }
 .btn-ghost:hover { border-color: var(--text); }
 .btn-call { background: var(--accent-warm); color: var(--accent-ink); }
 .btn-call:hover { opacity: .88; }
-.btn-sm { padding: 10px 18px; font-size: 13px; }
-.btn-lg { padding: 18px 32px; font-size: 17px; }
+.btn-sm { padding: 10px 18px; font-size: 14px; }
+.btn-lg { padding: 18px 32px; font-size: 18px; }
 
 /* -------- Marquee ticker -------- */
 .marquee {
@@ -215,7 +215,7 @@ img { max-width: 100%; display: block; }
 .section-tight { padding: 48px 0; }
 .section-head { text-align: center; margin-bottom: 48px; }
 .section-eyebrow {
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--text-dim); margin-bottom: 14px;
 }
 .section-title {
@@ -230,8 +230,8 @@ img { max-width: 100%; display: block; }
   margin: 18px auto 0;
   max-width: 60ch;
   color: var(--text-muted);
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 /* -------- Product / offer grid -------- */
@@ -256,37 +256,37 @@ img { max-width: 100%; display: block; }
 }
 .card:hover { border-color: var(--border-strong); }
 .card-eyebrow {
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--text-dim); margin-bottom: 10px;
 }
 .card h3 {
-  margin: 0 0 10px; font-size: 22px; font-weight: 700;
+  margin: 0 0 10px; font-size: 24px; font-weight: 700;
   letter-spacing: -0.01em;
 }
-.card p { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 1.5; }
+.card p { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 1.55; }
 .card-price {
   margin-top: auto; padding-top: 20px;
-  font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+  font-size: 30px; font-weight: 800; letter-spacing: -0.02em;
 }
-.card-price small { font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+.card-price small { font-size: 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
 .card-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
 .card-badge {
   display: inline-block; padding: 4px 10px; border-radius: 999px;
-  font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
   background: var(--accent-warm); color: var(--accent-ink);
   margin-bottom: 12px;
   box-shadow: 0 0 24px rgba(212, 163, 92, 0.35);
 }
 .card ul {
   margin: 16px 0 0; padding: 0; list-style: none;
-  font-size: 14px; color: var(--text-muted);
+  font-size: 15px; color: var(--text-muted);
 }
 .card ul li {
-  padding: 6px 0; border-top: 1px solid var(--border);
+  padding: 7px 0; border-top: 1px solid var(--border);
   display: flex; gap: 10px;
 }
 .card ul li::before {
-  content: '✓'; color: var(--text); font-weight: 700; font-size: 12px;
+  content: '✓'; color: var(--text); font-weight: 700; font-size: 13px;
 }
 .card ul li:first-child { border-top: 0; }
 
@@ -307,7 +307,7 @@ img { max-width: 100%; display: block; }
 }
 .stars { letter-spacing: 2px; color: var(--text); font-size: 22px; }
 .rating-text {
-  font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--text-muted);
 }
 
@@ -318,17 +318,17 @@ img { max-width: 100%; display: block; }
   border-radius: 18px;
   padding: 28px;
 }
-.testimonial p { margin: 0 0 20px; font-size: 16px; line-height: 1.6; }
+.testimonial p { margin: 0 0 20px; font-size: 17px; line-height: 1.6; }
 .testimonial footer {
   display: flex; align-items: center; gap: 12px;
-  font-size: 13px; color: var(--text-muted);
+  font-size: 14px; color: var(--text-muted);
 }
 .testimonial-avatar {
   width: 36px; height: 36px; border-radius: 50%;
   background: var(--border-strong);
   display: inline-flex; align-items: center; justify-content: center;
   font-weight: 700; color: var(--text);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* -------- Split content block -------- */
@@ -345,7 +345,7 @@ img { max-width: 100%; display: block; }
   margin: 0 0 20px;
   text-transform: uppercase;
 }
-.split p { color: var(--text-muted); font-size: 17px; line-height: 1.6; margin: 0 0 12px; }
+.split p { color: var(--text-muted); font-size: 18px; line-height: 1.6; margin: 0 0 12px; }
 
 /* -------- Simple feature row -------- */
 .features {
@@ -354,14 +354,14 @@ img { max-width: 100%; display: block; }
 }
 @media (max-width: 900px) { .features { grid-template-columns: 1fr; } }
 .feature h4 {
-  margin: 0 0 8px; font-size: 18px; font-weight: 700;
+  margin: 0 0 8px; font-size: 20px; font-weight: 700;
   letter-spacing: -0.01em;
 }
-.feature p { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 1.55; }
+.feature p { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 1.6; }
 .feature-num {
   display: inline-block;
   font-variant-numeric: tabular-nums;
-  font-size: 14px; font-weight: 700;
+  font-size: 15px; font-weight: 700;
   color: var(--text-dim);
   margin-bottom: 12px;
   letter-spacing: .1em;
@@ -373,7 +373,7 @@ img { max-width: 100%; display: block; }
   padding: 64px 0 32px;
   margin-top: 96px;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 .footer-grid {
   display: grid;
@@ -382,7 +382,7 @@ img { max-width: 100%; display: block; }
 }
 @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 .footer h5 {
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--text); margin: 0 0 16px; font-weight: 700;
 }
 .footer ul { list-style: none; padding: 0; margin: 0; }
@@ -392,7 +392,7 @@ img { max-width: 100%; display: block; }
   margin-top: 48px; padding-top: 24px;
   border-top: 1px solid var(--border);
   display: flex; justify-content: space-between; gap: 16px;
-  font-size: 12px; color: var(--text-dim); flex-wrap: wrap;
+  font-size: 13px; color: var(--text-dim); flex-wrap: wrap;
 }
 
 /* -------- Modal -------- */
@@ -480,18 +480,18 @@ img { max-width: 100%; display: block; }
   .section-tight { padding: 36px 0; }
   /* Tighter card padding on phones so content doesn't feel cramped against edges */
   .card { padding: 22px; border-radius: 16px; }
-  .card-price { font-size: 24px; padding-top: 16px; }
+  .card-price { font-size: 26px; padding-top: 16px; }
   /* Make CTAs full-width inside narrow card actions so they don't get clipped */
   .card-actions .btn { flex: 1 1 auto; }
   /* Buttons get a bit smaller on phones; keep tap target >= 44px */
-  .btn { padding: 12px 22px; font-size: 14px; min-height: 44px; }
-  .btn-sm { padding: 10px 16px; font-size: 13px; min-height: 40px; }
-  .btn-lg { padding: 16px 26px; font-size: 16px; }
+  .btn { padding: 12px 22px; font-size: 15px; min-height: 44px; }
+  .btn-sm { padding: 10px 16px; font-size: 14px; min-height: 40px; }
+  .btn-lg { padding: 16px 26px; font-size: 17px; }
   /* Marquee text scales down so it doesn't blow out small screens */
   .marquee { padding: 18px 0; }
   .marquee-track { gap: 32px; padding-left: 32px; }
   /* Mission / prose blocks */
-  .prose { font-size: 16px; line-height: 1.65; }
+  .prose { font-size: 17px; line-height: 1.65; }
 }
 
 /* -------- Small phones: stack the footer fully and tighten hero -------- */
@@ -500,9 +500,9 @@ img { max-width: 100%; display: block; }
   .footer { padding: 48px 0 28px; margin-top: 64px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
   .hero { padding: 40px 18px 32px; }
-  .hero-eyebrow { margin-bottom: 18px; font-size: 11px; padding: 5px 12px; }
+  .hero-eyebrow { margin-bottom: 18px; font-size: 12px; padding: 5px 12px; }
   .hero h1 { font-size: clamp(38px, 11vw, 64px); line-height: 1.0; }
-  .hero-sub { margin-top: 18px; font-size: 16px; line-height: 1.5; }
+  .hero-sub { margin-top: 18px; font-size: 17px; line-height: 1.55; }
   .hero-ctas { margin-top: 24px; }
   .section-title { font-size: clamp(28px, 7vw, 40px); }
   .section-head { margin-bottom: 32px; }

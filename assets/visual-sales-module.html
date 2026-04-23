@@ -308,8 +308,8 @@ function Chrome({ num, total, chapter }){
     <>
       {/* Top bar — chapter indicator intentionally removed per design call */}
       <div style={{position:'absolute',top:32,left:72,right:72,display:'flex',justifyContent:'space-between',alignItems:'center',zIndex:20,pointerEvents:'none'}}>
-        <div style={{display:'flex',alignItems:'center',gap:14,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.32em',color:INK_DIM,textTransform:'uppercase'}}>
-          <div style={{width:8,height:8,borderRadius:'50%',background:GOLD,boxShadow:`0 0 12px ${GOLD}`}}/>
+        <div style={{display:'flex',alignItems:'center',gap:14,fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.32em',color:INK_DIM,textTransform:'uppercase'}}>
+          <div style={{width:10,height:10,borderRadius:'50%',background:GOLD,boxShadow:`0 0 12px ${GOLD}`}}/>
           <span>REC</span>
           <span style={{width:28,height:1,background:LINE_HOT}}/>
           <span style={{color:GOLD}}>1Coast Media</span>
@@ -320,10 +320,10 @@ function Chrome({ num, total, chapter }){
       <div style={{position:'absolute',bottom:72,left:72,right:72,height:1,background:LINE,zIndex:10,pointerEvents:'none'}}/>
       {/* Bottom bar */}
       <div style={{position:'absolute',bottom:32,left:72,right:72,display:'flex',justifyContent:'space-between',alignItems:'center',zIndex:20,pointerEvents:'none'}}>
-        <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:10,letterSpacing:'.36em',color:INK_DIM,textTransform:'uppercase'}}>
+        <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.36em',color:INK_DIM,textTransform:'uppercase'}}>
           Biloxi, MS · 30°23′N / 88°53′W
         </div>
-        <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:10,letterSpacing:'.36em',color:GOLD,textTransform:'uppercase'}}>
+        <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.36em',color:GOLD,textTransform:'uppercase'}}>
           Grow the Coast
         </div>
       </div>
@@ -365,7 +365,7 @@ function S01_Hook(){
           <Chrome num="1" total="8" chapter="The Hook"/>
           <BgField/>
           <div style={{position:'absolute',inset:'140px 72px 140px 72px',display:'flex',flexDirection:'column',justifyContent:'center',opacity:op}}>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:32,opacity:preT,transform:`translateY(${(1-preT)*18}px)`}}>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:32,opacity:preT,transform:`translateY(${(1-preT)*18}px)`}}>
               For Gulf Coast founders who are done <em style={{fontStyle:'normal',color:INK_DIM}}>wasting ad spend.</em>
             </div>
             <div style={{position:'relative',fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:76,lineHeight:1,color:INK,textTransform:'uppercase',letterSpacing:'-.018em',opacity:l1T,transform:`translateY(${(1-l1T)*14}px)`,maxWidth:1700}}>
@@ -379,7 +379,7 @@ function S01_Hook(){
             </div>
             <div style={{display:'flex',alignItems:'center',gap:22,marginTop:64,opacity:subT}}>
               <span style={{width:60,height:1,background:GOLD}}/>
-              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.42em',color:INK_DIM,textTransform:'uppercase'}}>Content · Distribution · Conversion · Built as one</span>
+              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.42em',color:INK_DIM,textTransform:'uppercase'}}>Content · Distribution · Conversion · Built as one</span>
             </div>
           </div>
         </div>
@@ -428,7 +428,7 @@ function S02_Problem(){
             zIndex:1
           }}/>
           <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT,transform:`translateY(${(1-titleT)*12}px)`,zIndex:2}}>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:12}}>Right now, you're running the scattered stack.</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:12}}>Right now, you're running the scattered stack.</div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:80,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.018em',maxWidth:1700}}>
               Seven <span className="gold">vendors.</span> Seven invoices. <span style={{color:INK_DIM}}>Zero</span> <span className="gold">system.</span>
             </div>
@@ -458,7 +458,7 @@ function S02_Problem(){
                     minWidth:200,
                     boxShadow:'0 16px 40px rgba(0,0,0,.7)'
                   }}>
-                    <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:10,letterSpacing:'.28em',color:'#ff8573',textTransform:'uppercase',marginBottom:8,fontWeight:500}}>{v.t}</div>
+                    <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.28em',color:'#ff8573',textTransform:'uppercase',marginBottom:8,fontWeight:500}}>{v.t}</div>
                     <div style={{fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:22,color:INK,textTransform:'uppercase',letterSpacing:'-.005em'}}>{v.n}</div>
                   </div>
                 </div>
@@ -479,7 +479,7 @@ function S02_Problem(){
               background:'rgba(212,175,55,.03)',
               boxShadow:`0 0 80px rgba(212,175,55,.35)`
             }}>
-              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.38em',color:GOLD,textTransform:'uppercase',textAlign:'center',marginBottom:8,fontWeight:500}}>Replace them all with</div>
+              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.38em',color:GOLD,textTransform:'uppercase',textAlign:'center',marginBottom:8,fontWeight:500}}>Replace them all with</div>
               <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:68,lineHeight:.94,textTransform:'uppercase',letterSpacing:'-.02em',textAlign:'center'}} className="gold">
                 One partner.
               </div>
@@ -532,7 +532,7 @@ function S03_Answer(){
             <div style={{transform:`scale(${0.5 + logoE*0.5})`,opacity:logoT*op,filter:`drop-shadow(0 0 70px ${GOLD})`}}>
               <Logo size={220} animate/>
             </div>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.42em',color:GOLD,textTransform:'uppercase',opacity:titleT*op,fontWeight:500}}>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:15,letterSpacing:'.42em',color:GOLD,textTransform:'uppercase',opacity:titleT*op,fontWeight:500}}>
               Meet 1Coast Media
             </div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:94,lineHeight:.96,color:INK,textTransform:'uppercase',letterSpacing:'-.02em',opacity:titleT*op,transform:`translateY(${(1-titleT)*18}px)`,marginTop:-8,maxWidth:1500}}>
@@ -543,7 +543,7 @@ function S03_Answer(){
             </div>
             <div style={{display:'flex',alignItems:'center',gap:18,marginTop:14,opacity:foot*op}}>
               <span style={{width:34,height:1,background:GOLD}}/>
-              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.42em',color:GOLD,textTransform:'uppercase',fontWeight:500}}>Content · Reach · Leads · Revenue</span>
+              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.42em',color:GOLD,textTransform:'uppercase',fontWeight:500}}>Content · Reach · Leads · Revenue</span>
               <span style={{width:34,height:1,background:GOLD}}/>
             </div>
           </div>
@@ -575,7 +575,7 @@ function S04_System(){
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="4" total="8" chapter="The System"/>
           <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT,transform:`translateY(${(1-titleT)*14}px)`}}>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>How 1Coast works</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>How 1Coast works</div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:82,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.018em',maxWidth:1700}}>
               One <span className="gold">system.</span> Four stages. <span style={{color:INK_DIM}}>Zero</span> <span className="gold">gaps.</span>
             </div>
@@ -589,16 +589,16 @@ function S04_System(){
               return (
                 <div key={i} style={{padding:'36px 26px 32px',borderLeft:i>0?`1px solid ${LINE}`:'none',position:'relative',minHeight:280,opacity:t,transform:`translateY(${(1-e)*22}px)`,overflow:'hidden'}}>
                   {active && <div style={{position:'absolute',top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${GOLD_LT},transparent)`,opacity:.9}}/>}
-                  <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.3em',color:GOLD,textTransform:'uppercase',marginBottom:18,fontWeight:500}}>{p.n}</div>
+                  <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.3em',color:GOLD,textTransform:'uppercase',marginBottom:18,fontWeight:500}}>{p.n}</div>
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:54,lineHeight:.92,color:INK,textTransform:'uppercase',letterSpacing:'-.01em'}}>{p.k}</div>
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:500,fontSize:20,lineHeight:1.05,marginTop:8,textTransform:'uppercase',letterSpacing:'-.002em'}} className="gold">{p.h}</div>
-                  <div style={{fontFamily:'Inter Tight,sans-serif',fontSize:13,color:INK_DIM,marginTop:18,lineHeight:1.5,fontWeight:400}}>{p.detail}</div>
+                  <div style={{fontFamily:'Inter Tight,sans-serif',fontSize:15,color:INK_DIM,marginTop:18,lineHeight:1.55,fontWeight:400}}>{p.detail}</div>
                 </div>
               );
             })}
           </div>
           {/* Flow strip */}
-          <div style={{position:'absolute',bottom:120,left:72,right:72,display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.36em',color:GOLD,textTransform:'uppercase',opacity:footer*op,fontWeight:500}}>
+          <div style={{position:'absolute',bottom:120,left:72,right:72,display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.36em',color:GOLD,textTransform:'uppercase',opacity:footer*op,fontWeight:500}}>
             <span>Attention</span>
             <span style={{flex:1,height:1,background:LINE,margin:'0 16px'}}/>
             <span>→</span>
@@ -643,7 +643,7 @@ function S05_Packages(){
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="5" total="8" chapter="The Packages"/>
           <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT,transform:`translateY(${(1-titleT)*14}px)`}}>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>Every stage of growth has a plan</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>Every stage of growth has a plan</div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:78,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.018em'}}>
               Pick the <span className="gold">altitude</span> you're ready for.
             </div>
@@ -668,7 +668,7 @@ function S05_Packages(){
                 }}>
                   {p.glow && <div style={{position:'absolute',top:-1,left:-1,right:-1,height:3,background:`linear-gradient(90deg,transparent,${GOLD_LT},transparent)`}}/>}
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10,gap:8}}>
-                    <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:10,letterSpacing:'.3em',color:p.glow?GOLD_LT:GOLD,textTransform:'uppercase',fontWeight:500}}>{p.tier}</span>
+                    <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.3em',color:p.glow?GOLD_LT:GOLD,textTransform:'uppercase',fontWeight:500}}>{p.tier}</span>
                     {p.glow && <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:9,letterSpacing:'.28em',color:'#000',background:GOLD,padding:'3px 8px',textTransform:'uppercase',fontWeight:600,whiteSpace:'nowrap'}}>Most chosen</span>}
                   </div>
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:34,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.015em'}}>
@@ -679,11 +679,11 @@ function S05_Packages(){
                   </div>
                   <div style={{display:'flex',alignItems:'baseline',gap:2,marginTop:14}}>
                     <span style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:38,lineHeight:.9,color:INK,letterSpacing:'-.02em'}}>{p.price}</span>
-                    <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,color:INK_DIM,letterSpacing:'.2em',textTransform:'uppercase'}}>{p.sub}</span>
+                    <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,color:INK_DIM,letterSpacing:'.2em',textTransform:'uppercase'}}>{p.sub}</span>
                   </div>
                   <div style={{marginTop:12,borderTop:`1px solid ${LINE}`,paddingTop:10,display:'flex',flexDirection:'column',gap:4}}>
                     {p.bullets.map((b,j) => (
-                      <div key={j} style={{fontFamily:'Inter Tight,sans-serif',fontSize:12,color:INK,display:'flex',alignItems:'center',gap:8,fontWeight:400}}>
+                      <div key={j} style={{fontFamily:'Inter Tight,sans-serif',fontSize:14,color:INK,display:'flex',alignItems:'center',gap:8,fontWeight:400}}>
                         <span style={{width:4,height:4,background:GOLD,borderRadius:'50%',flexShrink:0}}/>
                         {b}
                       </div>
@@ -694,7 +694,7 @@ function S05_Packages(){
             })}
           </div>
           {/* Tail line */}
-          <div style={{position:'absolute',bottom:108,left:72,right:72,display:'flex',justifyContent:'space-between',alignItems:'center',opacity:tailT*op,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.36em',color:INK_DIM,textTransform:'uppercase',fontWeight:500}}>
+          <div style={{position:'absolute',bottom:108,left:72,right:72,display:'flex',justifyContent:'space-between',alignItems:'center',opacity:tailT*op,fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.36em',color:INK_DIM,textTransform:'uppercase',fontWeight:500}}>
             <span>All plans · Month-to-month · Cancel anytime</span>
             <span className="gold">Core packages scale from content to full growth support →</span>
           </div>
@@ -724,7 +724,7 @@ function S06_Manifest(){
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="6" total="8" chapter="The Manifest"/>
           <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT}}>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>Every month, delivered</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>Every month, delivered</div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:82,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.018em'}}>
               What you <span className="gold">actually get.</span>
             </div>
@@ -735,9 +735,9 @@ function S06_Manifest(){
               const e = Easing.easeOutCubic(t);
               return (
                 <div key={i} style={{display:'flex',alignItems:'baseline',gap:32,padding:'22px 0',borderBottom:`1px solid ${LINE}`,opacity:t*op,transform:`translateY(${(1-e)*14}px)`}}>
-                  <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.3em',color:GOLD,textTransform:'uppercase',width:80,flexShrink:0,fontWeight:500}}>0{i+1}</div>
+                  <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.3em',color:GOLD,textTransform:'uppercase',width:80,flexShrink:0,fontWeight:500}}>0{i+1}</div>
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:34,color:INK,lineHeight:1.1,textTransform:'uppercase',letterSpacing:'-.01em',flex:1}}>{l.k}</div>
-                  <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.3em',color:GOLD_LT,textTransform:'uppercase',width:130,textAlign:'right',flexShrink:0,fontWeight:500}}>{l.n}</div>
+                  <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.3em',color:GOLD_LT,textTransform:'uppercase',width:140,textAlign:'right',flexShrink:0,fontWeight:500}}>{l.n}</div>
                 </div>
               );
             })}
@@ -779,7 +779,7 @@ function S07_Proof(){
         <div style={{position:'absolute',inset:0,background:BG}}>
           <Chrome num="7" total="8" chapter="The Proof"/>
           <div style={{position:'absolute',top:120,left:72,right:72,opacity:op*titleT}}>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:12,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>Before 1Coast / After 1Coast</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:14,letterSpacing:'.4em',color:GOLD,textTransform:'uppercase',marginBottom:14}}>Before 1Coast / After 1Coast</div>
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:82,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.018em'}}>
               From hidden <span style={{color:INK_DIM}}>to</span> <span className="gold">unavoidable.</span>
             </div>
@@ -788,11 +788,11 @@ function S07_Proof(){
           <div style={{position:'absolute',top:310,left:72,right:72,display:'grid',gridTemplateColumns:'1fr 70px 1fr',gap:0}}>
             {/* Before */}
             <div style={{padding:26,borderTop:`1px solid rgba(255,74,58,.3)`,borderBottom:`1px solid rgba(255,74,58,.3)`,background:'rgba(255,74,58,.02)',opacity:leftT*op,transform:`translateX(${(1-leftT)*-20}px)`}}>
-              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.32em',color:'#ff4a3a',textTransform:'uppercase',marginBottom:4,fontWeight:500}}>Before</div>
+              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.32em',color:'#ff4a3a',textTransform:'uppercase',marginBottom:4,fontWeight:500}}>Before</div>
               <div style={{fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:30,color:'rgba(255,255,255,.45)',textTransform:'uppercase',letterSpacing:'-.01em',marginBottom:14}}>Scattered.</div>
               {rows.map((s,i)=>(
                 <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'9px 0',borderBottom:'1px solid rgba(255,74,58,.08)',fontFamily:'Inter Tight,sans-serif'}}>
-                  <span style={{fontSize:14,color:'rgba(255,255,255,.5)',fontWeight:400}}>{s.l}</span>
+                  <span style={{fontSize:16,color:'rgba(255,255,255,.5)',fontWeight:400}}>{s.l}</span>
                   <span style={{fontFamily:'Oswald',fontWeight:600,fontSize:15,color:'#ff8573',textTransform:'uppercase',letterSpacing:'.01em'}}>{s.b}</span>
                 </div>
               ))}
@@ -802,11 +802,11 @@ function S07_Proof(){
             </div>
             {/* After */}
             <div style={{padding:26,borderTop:`1px solid ${GOLD}`,borderBottom:`1px solid ${GOLD}`,background:`linear-gradient(135deg,rgba(212,175,55,.07),rgba(212,175,55,.02))`,opacity:rightT*op,transform:`translateX(${(1-rightT)*20}px)`,boxShadow:`0 30px 60px rgba(212,175,55,.08)`}}>
-              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.32em',color:GOLD_LT,textTransform:'uppercase',marginBottom:4,fontWeight:500}}>With 1Coast</div>
+              <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.32em',color:GOLD_LT,textTransform:'uppercase',marginBottom:4,fontWeight:500}}>With 1Coast</div>
               <div style={{fontFamily:'Oswald,sans-serif',fontWeight:600,fontSize:30,textTransform:'uppercase',letterSpacing:'-.01em',marginBottom:14}} className="gold">System.</div>
               {rows.map((s,i)=>(
                 <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'9px 0',borderBottom:`1px solid ${LINE}`,fontFamily:'Inter Tight,sans-serif'}}>
-                  <span style={{fontSize:14,color:INK,fontWeight:500}}>{s.l}</span>
+                  <span style={{fontSize:16,color:INK,fontWeight:500}}>{s.l}</span>
                   <span style={{fontFamily:'Oswald',fontWeight:600,fontSize:15,color:GOLD_LT,textTransform:'uppercase',letterSpacing:'.01em'}}>{s.a}</span>
                 </div>
               ))}
@@ -823,7 +823,7 @@ function S07_Proof(){
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:72,lineHeight:.9,letterSpacing:'-.035em'}} className="gold">
                     {val}<span style={{fontSize:42}}>{s.suf}</span>
                   </div>
-                  <div style={{fontFamily:'Inter Tight,sans-serif',fontSize:13,color:INK_DIM,marginTop:4,fontWeight:500,textTransform:'uppercase',letterSpacing:'.14em'}}>{s.l}</div>
+                  <div style={{fontFamily:'Inter Tight,sans-serif',fontSize:15,color:INK_DIM,marginTop:4,fontWeight:500,textTransform:'uppercase',letterSpacing:'.14em'}}>{s.l}</div>
                 </div>
               );
             })}
@@ -833,7 +833,7 @@ function S07_Proof(){
             <div style={{fontFamily:'Instrument Serif,serif',fontStyle:'italic',fontSize:22,color:INK,lineHeight:1.35,maxWidth:1500}}>
               "1Coast didn't just post our videos. They built the whole machine. Content, landing pages, follow-up. And it just runs. We're booked solid."
             </div>
-            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:11,color:GOLD,letterSpacing:'.34em',textTransform:'uppercase',marginTop:10,fontWeight:500}}>1Coast client · Biloxi, MS</div>
+            <div style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,color:GOLD,letterSpacing:'.34em',textTransform:'uppercase',marginTop:10,fontWeight:500}}>1Coast client · Biloxi, MS</div>
           </div>
         </div>
       );
@@ -886,7 +886,7 @@ function S08_Close(){
               </a>
             </div>
             {/* Footer tag */}
-            <div style={{marginTop:14,display:'flex',alignItems:'center',gap:18,opacity:footT,fontFamily:'JetBrains Mono,monospace',fontSize:11,letterSpacing:'.42em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500,justifyContent:'center'}}>
+            <div style={{marginTop:14,display:'flex',alignItems:'center',gap:18,opacity:footT,fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.42em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500,justifyContent:'center'}}>
               <span style={{width:30,height:1,background:GOLD_LT}}/>
               <span>Built on the MS Gulf Coast</span>
               <span style={{width:30,height:1,background:GOLD_LT}}/>

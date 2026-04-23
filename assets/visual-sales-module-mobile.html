@@ -672,7 +672,7 @@ function S05_Packages(){
                   {p.glow && <div style={{position:'absolute',top:-1,left:-1,right:-1,height:4,background:`linear-gradient(90deg,transparent,${GOLD_LT},transparent)`}}/>}
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:12,gap:8}}>
                     <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:16,letterSpacing:'.28em',color:p.glow?GOLD_LT:GOLD,textTransform:'uppercase',fontWeight:500}}>{p.tier}</span>
-                    {p.glow && <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:13,letterSpacing:'.24em',color:'#000',background:GOLD,padding:'5px 12px',textTransform:'uppercase',fontWeight:600,whiteSpace:'nowrap'}}>Top pick</span>}
+                    {p.glow && <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:15,letterSpacing:'.24em',color:'#000',background:GOLD,padding:'6px 14px',textTransform:'uppercase',fontWeight:600,whiteSpace:'nowrap'}}>Top pick</span>}
                   </div>
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:46,lineHeight:.95,color:INK,textTransform:'uppercase',letterSpacing:'-.015em'}}>
                     {p.name}
@@ -836,7 +836,7 @@ function S07_Proof(){
                   <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:64,lineHeight:.9,letterSpacing:'-.035em'}} className="gold">
                     {val}<span style={{fontSize:38}}>{s.suf}</span>
                   </div>
-                  <div style={{fontFamily:'Inter Tight,sans-serif',fontSize:14,color:INK_DIM,marginTop:6,fontWeight:500,textTransform:'uppercase',letterSpacing:'.12em',lineHeight:1.3}}>{s.l}</div>
+                  <div style={{fontFamily:'Inter Tight,sans-serif',fontSize:16,color:INK_DIM,marginTop:6,fontWeight:500,textTransform:'uppercase',letterSpacing:'.12em',lineHeight:1.3}}>{s.l}</div>
                 </div>
               );
             })}
