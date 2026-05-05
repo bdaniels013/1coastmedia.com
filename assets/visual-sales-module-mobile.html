@@ -888,15 +888,17 @@ function S08_Close(){
             <div style={{fontFamily:'Oswald,sans-serif',fontWeight:700,fontSize:96,lineHeight:.96,letterSpacing:'-.018em',color:INK,textTransform:'uppercase',opacity:l2,transform:`translateY(${(1-l2)*12}px)`,marginTop:-10}}>
               We run <span className="gold">the growth.</span>
             </div>
-            <div style={{marginTop:32,display:'flex',flexDirection:'column',alignItems:'center',gap:22,opacity:cta,transform:`translateY(${(1-cta)*10}px)`}}>
-              <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" rel="noopener noreferrer"
-                 style={{display:'inline-block',padding:'26px 54px',background:GOLD,color:'#000',fontFamily:'Oswald',fontWeight:700,fontSize:32,letterSpacing:'.22em',textTransform:'uppercase',boxShadow:'0 20px 50px rgba(212,175,55,.3)',textDecoration:'none',cursor:'pointer'}}>
-                Book your call now
+            {/* Single CTA into the diagnostic funnel. target="_top" breaks
+                out of the embedded iframe so the funnel takes the full
+                browser window. */}
+            <div style={{marginTop:32,display:'flex',flexDirection:'column',alignItems:'center',gap:18,opacity:cta,transform:`translateY(${(1-cta)*10}px)`}}>
+              <a href="/funnel" target="_top" rel="noopener"
+                 style={{display:'inline-block',padding:'30px 56px',background:GOLD,color:'#000',fontFamily:'Oswald',fontWeight:700,fontSize:34,letterSpacing:'.18em',textTransform:'uppercase',boxShadow:'0 22px 54px rgba(212,175,55,.34)',textDecoration:'none',cursor:'pointer'}}>
+                Start the fit check →
               </a>
-              <a href="https://1coastmedia.com" target="_blank" rel="noopener noreferrer"
-                 style={{fontFamily:'JetBrains Mono,monospace',fontSize:22,letterSpacing:'.32em',color:INK,textTransform:'uppercase',fontWeight:500,textDecoration:'none'}}>
-                1coastmedia.com
-              </a>
+              <span style={{fontFamily:'JetBrains Mono,monospace',fontSize:18,letterSpacing:'.3em',color:INK_DIM,textTransform:'uppercase',fontWeight:500,textAlign:'center'}}>
+                90 seconds. Five honest questions.
+              </span>
             </div>
             {/* Footer tag */}
             <div style={{marginTop:20,display:'flex',alignItems:'center',gap:18,opacity:footT,fontFamily:'JetBrains Mono,monospace',fontSize:18,letterSpacing:'.36em',color:GOLD_LT,textTransform:'uppercase',fontWeight:500,justifyContent:'center'}}>
