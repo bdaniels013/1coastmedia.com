@@ -93,6 +93,70 @@
       0%, 100% { opacity: .3; transform: translateY(0); }
       50%      { opacity: 1;  transform: translateY(6px); }
     }
+
+    /* ============================================================
+       Founder video player. Embeds the YouTube video with all native
+       controls hidden. A click-shield catches all pointer events on
+       the iframe so YouTube's hover-triggered chrome never appears.
+       Our custom gold button is the only way to play/pause.
+       ============================================================ */
+    .founder-video {
+      position: relative;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(212, 175, 55, 0.18);
+    }
+    .founder-video iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      border: 0;
+      display: block;
+    }
+    /* Click-shield: catches every pointer event so the YouTube player
+       chrome never surfaces. Sits between the iframe and the play button. */
+    .founder-shield {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .founder-play-btn {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 96px; height: 96px;
+      border-radius: 999px;
+      background: var(--accent-warm);
+      color: #000;
+      border: 0;
+      cursor: pointer;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 18px 40px rgba(212, 175, 55, 0.5);
+      transition: transform .15s ease, opacity .2s ease, width .2s ease, height .2s ease, left .25s ease, top .25s ease, right .25s ease, bottom .25s ease;
+      font-family: inherit;
+      padding: 0;
+    }
+    .founder-play-btn:hover { transform: translate(-50%, -50%) scale(1.06); }
+    .founder-play-btn .icon-play  { width: 36px; height: 36px; margin-left: 4px; display: block; }
+    .founder-play-btn .icon-pause { width: 28px; height: 28px; display: none; }
+    /* Once playing, shrink and reposition to the corner so the video can breathe */
+    .founder-play-btn.is-playing {
+      width: 56px; height: 56px;
+      left: auto; right: 18px; top: auto; bottom: 18px;
+      transform: none;
+      opacity: 0.85;
+    }
+    .founder-play-btn.is-playing:hover { transform: scale(1.08); opacity: 1; }
+    .founder-play-btn.is-playing .icon-play  { display: none; }
+    .founder-play-btn.is-playing .icon-pause { display: block; }
   </style>
 </head>
 <body x-data="app()" x-init="init(); cartOpen = false">
@@ -153,6 +217,87 @@
     </div>
   </div>
 
+
+  <!-- Founder video. Embeds Blake's "Do What's Right, Even When It's Hard"
+       message with all native YouTube controls hidden. Shield + custom
+       gold play/pause button is the only way to interact. -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">A message from Blake</div>
+        <h2 class="section-title">Do what's right, even when it's hard.</h2>
+        <p class="section-sub">Five minutes from Blake on the discipline behind every project we ship.</p>
+      </div>
+      <div class="founder-video" id="founder-video">
+        <div id="founder-video-player"></div>
+        <div class="founder-shield" aria-hidden="true"></div>
+        <button id="founder-play-btn" class="founder-play-btn" type="button" aria-label="Play video">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="6,4 20,12 6,20" />
+          </svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="4" height="16" rx="1"/>
+            <rect x="14" y="4" width="4" height="16" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- YouTube IFrame Player API. Loads asynchronously and triggers
+       onYouTubeIframeAPIReady() globally. Do not change script src. -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    /* Founder video controller. Uses youtube-nocookie.com host so no
+       tracking cookies are set until the user interacts. controls=0
+       hides every native YouTube control; the gold play/pause button
+       and the click-shield are the entire interaction surface. */
+    var founderPlayer = null;
+    var founderReady  = false;
+    function onYouTubeIframeAPIReady() {
+      founderPlayer = new YT.Player('founder-video-player', {
+        videoId: 'Qnr09wXIKD0',
+        host: 'https://www.youtube-nocookie.com',
+        playerVars: {
+          controls: 0,           // hide every native control
+          rel: 0,                // never show related-video grid
+          modestbranding: 1,     // legacy hint to reduce branding
+          playsinline: 1,        // iOS: don't go fullscreen on tap
+          iv_load_policy: 3,     // hide annotations
+          disablekb: 1,          // disable keyboard shortcuts
+          fs: 0,                 // hide fullscreen button (none anyway)
+          cc_load_policy: 0      // captions off by default
+        },
+        events: {
+          onReady: function() { founderReady = true; },
+          onStateChange: function(e) {
+            var btn = document.getElementById('founder-play-btn');
+            if (!btn) return;
+            if (e.data === YT.PlayerState.PLAYING) {
+              btn.classList.add('is-playing');
+              btn.setAttribute('aria-label', 'Pause video');
+            } else {
+              btn.classList.remove('is-playing');
+              btn.setAttribute('aria-label', 'Play video');
+            }
+          }
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      var btn    = document.getElementById('founder-play-btn');
+      var shield = document.querySelector('.founder-shield');
+      function toggle() {
+        if (!founderReady || !founderPlayer || typeof founderPlayer.getPlayerState !== 'function') return;
+        var state = founderPlayer.getPlayerState();
+        // 1 = PLAYING. Pause if currently playing, otherwise play.
+        if (state === 1) founderPlayer.pauseVideo();
+        else founderPlayer.playVideo();
+      }
+      if (btn)    btn.addEventListener('click', toggle);
+      if (shield) shield.addEventListener('click', toggle);
+    });
+  </script>
 
   <!-- Founder letter -->
   <section class="section">
