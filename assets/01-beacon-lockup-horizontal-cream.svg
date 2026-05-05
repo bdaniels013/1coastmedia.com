@@ -1,0 +1,46 @@
+<svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beacon horizontal lockup on cream">
+  <title>1Coast Media — Beacon Horizontal Lockup</title>
+  <desc>The Beacon lighthouse mark on the left, divider line, and 1Coast Media wordmark on the right.</desc>
+  <rect width="760" height="240" fill="#F4ECDC"/>
+  <defs>
+    <linearGradient id="bhl" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#D4A35C" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#D4A35C" stop-opacity="1"/>
+      <stop offset="1" stop-color="#D4A35C" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark on left, scaled into 60-220 -->
+  <g transform="translate(60, 20) scale(0.55)">
+    <line x1="-50" y1="80" x2="410" y2="80" stroke="url(#bhl)" stroke-width="3.6"/>
+    <g fill="#1F1F22">
+      <path d="M 178 40 L 182 40 L 180 30 Z"/><circle cx="180" cy="44" r="2.2"/>
+      <path d="M 164 64 Q 180 44 196 64 L 192 67 L 168 67 Z"/>
+      <rect x="162" y="67" width="36" height="2.5"/>
+      <rect x="166" y="69.5" width="28" height="22"/>
+    </g>
+    <rect x="170" y="73" width="20" height="15" fill="#D4A35C"/>
+    <line x1="180" y1="69.5" x2="180" y2="91.5" stroke="#1F1F22" stroke-width="1.6"/>
+    <line x1="166" y1="80" x2="194" y2="80" stroke="#1F1F22" stroke-width="1.6"/>
+    <g fill="#1F1F22">
+      <rect x="160" y="91.5" width="40" height="3"/>
+      <rect x="168" y="94.5" width="24" height="13"/>
+      <path d="M 156 107.5 L 204 107.5 L 200 115 L 160 115 Z"/>
+      <path d="M 164 115 L 196 115 L 208 235 L 152 235 Z"/>
+      <rect x="145" y="235" width="70" height="10"/>
+    </g>
+    <rect x="167" y="143" width="32" height="2.2" fill="#F4ECDC"/>
+    <rect x="166" y="172" width="34" height="2.2" fill="#F4ECDC"/>
+    <rect x="164" y="201" width="38" height="2.2" fill="#F4ECDC"/>
+    <path d="M 174 235 L 174 222 Q 174 218 180 218 Q 186 218 186 222 L 186 235 Z" fill="#F4ECDC"/>
+    <g stroke="#D4A35C" fill="none" stroke-linecap="round">
+      <path d="M 70 270 Q 110 263 150 270 T 230 270 T 300 270" stroke-width="3"/>
+    </g>
+  </g>
+  <!-- Divider -->
+  <line x1="290" y1="70" x2="290" y2="170" stroke="#1F1F22" stroke-width=".7" stroke-opacity=".25"/>
+  <!-- Wordmark -->
+  <text x="320" y="130" font-family="'Cormorant Garamond', Garamond, serif" font-size="78" font-weight="500" fill="#1F1F22">
+    <tspan font-style="italic" fill="#B8854A">1</tspan><tspan dx="8">Coast</tspan>
+  </text>
+  <text x="320" y="168" font-family="Inter, Helvetica, sans-serif" font-size="13" font-weight="500" letter-spacing="10" fill="#1F1F22">M E D I A</text>
+</svg>

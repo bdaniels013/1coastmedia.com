@@ -1202,7 +1202,7 @@ function autoReplyBody(path, contactName) {
     '2': `${greet}\n\nGot your fit check. Real quick: what's eating the most of your time today? Want to make sure we lead with the right thing on the call.\n\nReply to this email or text me at (228) 357-8505.${sig}`,
     '3': `${greet}\n\nGot the project details. Before I send a quote, one question: is there a hard deadline tied to this, or is the timeline you gave me your ideal?\n\nReply to this email or text me at (228) 357-8505. I'll have a quote back within 24 hours.${sig}`,
     '4': `${greet}\n\nSaw your fit check come through. Before we get on a call, what does dominating the market look like to you specifically? Helps me come prepared with the right plan.\n\nReply to this email or text me at (228) 357-8505.${sig}`,
-    '5': `${greet}\n\nAppreciate you taking the time to fill that out. No pitch from me. If anything specific comes up later, you have my number: (228) 357-8505.\n\nIn the meantime, the public services overview is here: https://1coastmedia.com/services${sig}`
+    '5': `${greet}\n\nAppreciate you taking the time to fill that out. No pitch from me. If anything specific comes up later, you have my number: (228) 357-8505.\n\nIn the meantime, here's a free resource you might actually use:\n\nThe Integrated Business Growth Playbook\nhttps://1coastmedia.com/playbook\n\nIt's the same framework we use with every client. No opt-in, no upsell. Just the system, written down.${sig}`
   };
   return bodies[path] || bodies['5'];
 }

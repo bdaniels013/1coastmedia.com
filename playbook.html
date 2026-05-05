@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The Integrated Business Growth Playbook. A free resource from 1Coast Media for local Gulf Coast businesses. How modern systems work together to attract attention, earn trust, and convert customers." />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="icon" type="image/png" href="./assets/1coast-seal-cream-2x.png" />
+<link rel="apple-touch-icon" href="./assets/1coast-seal-cream-2x.png" />
+<title>The Integrated Business Growth Playbook · 1Coast Media</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     1COAST MEDIA · BRAND TOKENS
+     ========================================================= */
+  :root {
+    --cream: #F4ECDC;
+    --cream-soft: #EFE6D2;
+    --cream-line: #E2D6BB;
+    --paper: #FBF6E9;
+    --champagne: #D4A35C;
+    --champagne-deep: #B8854A;
+    --champagne-light: #E8C896;
+    --charcoal: #1F1F22;
+    --slate: #2A2D33;
+    --ink: #36332C;
+    --ink-soft: #5C5848;
+
+    --serif: 'Bodoni Moda', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --shadow-card: 0 4px 24px rgba(31,31,34,.06), 0 1px 0 rgba(31,31,34,.04);
+    --rule: 1px solid var(--cream-line);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* =========================================================
+     TOP PROGRESS BAR
+     ========================================================= */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: transparent;
+    z-index: 200;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--champagne);
+    transition: width .35s ease;
+  }
+
+  /* =========================================================
+     MASTHEAD
+     ========================================================= */
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 36px;
+    background: rgba(244, 236, 220, .92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: var(--rule);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+  }
+  .masthead-logo {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+  @media (max-width: 720px) {
+    .masthead-logo { height: 36px; }
+  }
+  .masthead-right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .masthead-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: .55;
+  }
+  .nav-toggle {
+    background: transparent;
+    border: 1px solid var(--cream-line);
+    color: var(--charcoal);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all .2s ease;
+  }
+  .nav-toggle:hover {
+    background: var(--charcoal);
+    color: var(--cream);
+    border-color: var(--charcoal);
+  }
+
+  /* =========================================================
+     CHAPTER INDEX (DRAWER)
+     ========================================================= */
+  .index-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(31,31,34,.4);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .index-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .chapter-index {
+    position: fixed;
+    top: 0;
+    right: -460px;
+    width: 440px;
+    max-width: 90vw;
+    height: 100vh;
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(31,31,34,.12);
+    z-index: 160;
+    transition: right .3s ease;
+    overflow-y: auto;
+    padding: 36px 36px 60px;
+  }
+  .chapter-index.open { right: 0; }
+  .index-close {
+    background: transparent;
+    border: none;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 32px;
+  }
+  .index-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 14px;
+  }
+  .index-title {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    color: var(--charcoal);
+    margin: 0 0 28px;
+  }
+  .index-title em { font-style: italic; color: var(--champagne-deep); }
+  .index-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .index-item {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: var(--rule);
+    cursor: pointer;
+    color: var(--charcoal);
+    text-decoration: none;
+    transition: opacity .2s ease;
+  }
+  .index-item:hover { opacity: .65; }
+  .index-item.active .index-item-num,
+  .index-item.active .index-item-title { color: var(--champagne-deep); }
+  .index-item-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .22em;
+    color: var(--ink);
+    opacity: .6;
+  }
+  .index-item-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--charcoal);
+  }
+  .index-item-status {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    opacity: 0;
+  }
+  .index-item.read .index-item-status { opacity: 1; }
+  .index-item.read .index-item-status::before { content: "READ"; }
+
+  /* =========================================================
+     PAGE & TYPE SYSTEM
+     ========================================================= */
+  main { max-width: 100%; }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 36px 120px;
+  }
+  .page[hidden] { display: none; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+  .part-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: .55;
+    margin-bottom: 10px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--charcoal);
+    margin: 0;
+    letter-spacing: -.015em;
+    line-height: 1.08;
+  }
+  h1 { font-size: clamp(40px, 6vw, 72px); letter-spacing: -.025em; }
+  h2 { font-size: clamp(30px, 4.4vw, 48px); margin-bottom: 16px; }
+  h3 { font-size: 26px; margin: 40px 0 14px; }
+  h4 { font-size: 16px; font-family: var(--sans); font-weight: 600; margin: 28px 0 10px; }
+  em { font-style: italic; color: var(--champagne-deep); }
+  h1 em, h2 em, h3 em { color: var(--champagne-deep); }
+
+  p { margin: 0 0 18px; max-width: 64ch; color: var(--ink); }
+  p strong { color: var(--charcoal); font-weight: 600; }
+
+  .lede {
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.6vw, 24px);
+    line-height: 1.45;
+    color: var(--charcoal);
+    font-weight: 400;
+    letter-spacing: -.005em;
+    max-width: 28ch;
+    margin: 0 0 36px;
+  }
+  .lede em { font-style: italic; }
+
+  .rule {
+    height: 1px;
+    background: var(--champagne);
+    width: 100%;
+    margin: 36px 0;
+    opacity: .55;
+  }
+  .rule.short { width: 64px; opacity: .85; }
+
+  ul, ol { padding-left: 22px; margin: 0 0 22px; }
+  li { margin-bottom: 8px; max-width: 62ch; }
+  ul.tight li, ol.tight li { margin-bottom: 4px; }
+
+  /* =========================================================
+     PULL QUOTE
+     ========================================================= */
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--charcoal);
+    border-left: 2px solid var(--champagne);
+    padding: 6px 0 6px 24px;
+    margin: 36px 0;
+    max-width: 22ch;
+    font-weight: 500;
+  }
+
+  /* =========================================================
+     PRINCIPLE BOX
+     ========================================================= */
+  .principle {
+    background: var(--cream-soft);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin: 32px 0;
+    border-left: 3px solid var(--champagne);
+  }
+  .principle-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 10px;
+  }
+  .principle p { margin: 0; font-family: var(--serif); font-size: 18px; line-height: 1.55; color: var(--charcoal); }
+
+  /* =========================================================
+     "WHAT 1COAST DOES" BOX
+     ========================================================= */
+  .onecoast {
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 6px;
+    padding: 32px 36px;
+    margin: 40px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .onecoast::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--champagne);
+  }
+  .onecoast-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--champagne);
+    margin-bottom: 12px;
+  }
+  .onecoast h4 {
+    color: var(--cream);
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 14px;
+  }
+  .onecoast p { color: var(--cream); opacity: .92; margin: 0 0 12px; max-width: none; }
+  .onecoast p:last-child { margin-bottom: 0; }
+  .onecoast strong { color: var(--champagne-light); font-weight: 500; }
+
+  /* =========================================================
+     TABLES
+     ========================================================= */
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table th, table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: var(--rule);
+    vertical-align: top;
+  }
+  table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    font-weight: 500;
+    background: var(--cream-soft);
+  }
+  table td:first-child { font-weight: 500; color: var(--charcoal); }
+
+  /* =========================================================
+     MAKE IT REAL CHECKLIST
+     ========================================================= */
+  .makeitreal {
+    background: var(--paper);
+    border: 1px solid var(--cream-line);
+    border-radius: 6px;
+    padding: 36px 40px;
+    margin: 60px 0 0;
+    box-shadow: var(--shadow-card);
+  }
+  .makeitreal-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 10px;
+  }
+  .makeitreal h3 {
+    font-family: var(--serif);
+    font-size: 28px;
+    margin: 0 0 8px;
+  }
+  .makeitreal-sub {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+  }
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: var(--rule);
+    align-items: flex-start;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist input[type="checkbox"] {
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--cream-line);
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 2px;
+    transition: all .15s ease;
+    background: var(--paper);
+  }
+  .checklist input[type="checkbox"]:hover { border-color: var(--champagne); }
+  .checklist input[type="checkbox"]:checked {
+    background: var(--champagne);
+    border-color: var(--champagne);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='M3 8l3 3 7-7'/></svg>");
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .checklist label {
+    flex: 1;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    transition: color .2s ease;
+  }
+  .checklist input:checked + label {
+    color: var(--ink-soft);
+    text-decoration: line-through;
+    text-decoration-color: var(--champagne);
+    text-decoration-thickness: 1px;
+  }
+
+  /* =========================================================
+     PART NAVIGATION (PREV/NEXT)
+     ========================================================= */
+  .part-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 80px 0 0;
+    padding: 32px 0 0;
+    border-top: var(--rule);
+  }
+  .part-nav a {
+    display: block;
+    text-decoration: none;
+    color: var(--charcoal);
+    padding: 18px 22px;
+    border: 1px solid var(--cream-line);
+    border-radius: 6px;
+    transition: all .2s ease;
+    background: var(--paper);
+  }
+  .part-nav a:hover {
+    border-color: var(--champagne);
+    transform: translateY(-1px);
+  }
+  .part-nav .next { text-align: right; }
+  .part-nav .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 6px;
+  }
+  .part-nav .title {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--charcoal);
+    line-height: 1.2;
+  }
+  .part-nav .empty { background: transparent; border-color: transparent; cursor: default; pointer-events: none; }
+
+  /* =========================================================
+     COVER PAGE
+     ========================================================= */
+  .cover {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 60px 36px 80px;
+  }
+  .cover-cipher {
+    display: block;
+    height: 180px;
+    width: auto;
+    margin: 0 0 32px -8px;
+    background: transparent;
+    mix-blend-mode: multiply;
+  }
+  @media (max-width: 720px) {
+    .cover-cipher { height: 140px; margin-bottom: 24px; }
+  }
+  .cover-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 28px;
+  }
+  .cover h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: .98;
+    letter-spacing: -.03em;
+    margin-bottom: 32px;
+    max-width: 12ch;
+  }
+  .cover-byline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 36px 0 48px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: .7;
+  }
+  .cover-byline .dot { width: 4px; height: 4px; background: var(--champagne); border-radius: 50%; }
+
+  .gate-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 10px;
+  }
+  .gate-sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 24px; }
+
+  /* =========================================================
+     INLINE FORMS — single-line email capture used at every
+     high-intent moment in the playbook.
+     ========================================================= */
+  .inline-form {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    width: 100%;
+    margin: 8px 0 0;
+  }
+  .inline-form input[type="email"], .inline-form input[type="tel"] {
+    flex: 1;
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid var(--cream-line);
+    border-radius: 4px;
+    background: var(--cream);
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--charcoal);
+    transition: border-color .2s ease;
+  }
+  .inline-form input:focus {
+    outline: none;
+    border-color: var(--champagne);
+    background: var(--paper);
+  }
+  .inline-form .btn {
+    flex-shrink: 0;
+    padding: 13px 22px;
+  }
+  .inline-form.sent input,
+  .inline-form.sent .btn { display: none; }
+  .inline-form-success {
+    display: none;
+    padding: 13px 16px;
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .inline-form.sent + .inline-form-success { display: block; }
+  @media (max-width: 540px) {
+    .inline-form { flex-direction: column; gap: 8px; }
+    .inline-form .btn { width: 100%; }
+  }
+  .inline-skip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    color: var(--ink-soft);
+    margin: 14px 0 0;
+  }
+  .inline-skip a { color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--cream-line); }
+  .inline-skip a:hover { color: var(--champagne-deep); }
+
+  /* Assessment capture step */
+  .assess-capture {
+    display: none;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--cream-line);
+  }
+  .assess-capture.shown { display: block; }
+  .assess-capture-msg {
+    font-size: 14px;
+    color: var(--ink);
+    margin: 0 0 14px;
+    max-width: 56ch;
+  }
+
+  /* Cover skip line */
+  .cover-skip {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--ink-soft);
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--cream-line);
+  }
+  .cover-skip a { color: var(--champagne-deep); }
+
+  /* End-of-Part subscribe — small, contextual */
+  .next-prompt {
+    background: var(--cream-soft);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin: 56px 0 0;
+    border-left: 3px solid var(--champagne);
+  }
+  .next-prompt-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 6px;
+  }
+  .next-prompt-msg {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--charcoal);
+    margin: 0 0 14px;
+    font-weight: 500;
+  }
+
+  /* Closing stay-in-touch */
+  .stay {
+    background: var(--paper);
+    border: 1px solid var(--cream-line);
+    border-radius: 8px;
+    padding: 36px 40px;
+    margin: 48px 0 0;
+    box-shadow: var(--shadow-card);
+  }
+  .stay-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--champagne-deep);
+    margin-bottom: 10px;
+  }
+  .stay h3 { font-size: 24px; margin: 0 0 8px; }
+  .stay-sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 18px; }
+  .stay-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 540px) { .stay-row { grid-template-columns: 1fr; } }
+  .stay-input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid var(--cream-line);
+    border-radius: 4px;
+    background: var(--cream);
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--charcoal);
+    transition: border-color .2s ease;
+  }
+  .stay-input:focus { outline: none; border-color: var(--champagne); background: var(--paper); }
+  .stay-checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 14px 0 18px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .stay-checkbox-row input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--cream-line);
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
+    background: var(--paper);
+  }
+  .stay-checkbox-row input:checked {
+    background: var(--champagne);
+    border-color: var(--champagne);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='M3 8l3 3 7-7'/></svg>");
+    background-size: 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .stay-fineprint {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    margin: 12px 0 0;
+  }
+  .btn {
+    display: inline-block;
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 16px 28px;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .2s ease;
+  }
+  .btn:hover { background: var(--champagne-deep); color: var(--paper); }
+  .btn.full { width: 100%; }
+  .btn.ghost { background: transparent; color: var(--charcoal); border: 1px solid var(--charcoal); }
+  .btn.ghost:hover { background: var(--charcoal); color: var(--cream); }
+  .gate-fineprint {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin: 14px 0 0;
+    line-height: 1.5;
+    font-family: var(--mono);
+    letter-spacing: .04em;
+  }
+
+  /* =========================================================
+     SELF-ASSESSMENT
+     ========================================================= */
+  .assess {
+    background: var(--paper);
+    border: 1px solid var(--cream-line);
+    border-radius: 8px;
+    padding: 40px 44px;
+    margin: 48px 0;
+    box-shadow: var(--shadow-card);
+  }
+  .assess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-top: 20px; }
+  @media (max-width: 640px) { .assess-grid { grid-template-columns: 1fr; } }
+  .assess-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: var(--rule);
+  }
+  .assess-pillar { font-size: 14px; color: var(--charcoal); }
+  .assess-stars { display: flex; gap: 4px; }
+  .assess-star {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--cream-soft);
+    border: 1px solid var(--cream-line);
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .assess-star.active { background: var(--champagne); border-color: var(--champagne-deep); }
+  .assess-result {
+    margin-top: 28px;
+    padding: 24px;
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 6px;
+    display: none;
+  }
+  .assess-result.shown { display: block; }
+  .assess-result h4 { color: var(--cream); font-family: var(--serif); font-size: 22px; margin: 0 0 10px; }
+  .assess-result p { color: var(--cream); opacity: .92; margin: 0 0 8px; font-size: 14px; }
+  .assess-result a { color: var(--champagne-light); }
+
+  /* =========================================================
+     CLOSING / 1COAST CTA
+     ========================================================= */
+  .cta-block {
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 56px 48px;
+    margin: 60px 0 0;
+    text-align: center;
+  }
+  .cta-block .eyebrow { color: var(--champagne); margin-bottom: 14px; }
+  .cta-block h3 {
+    color: var(--cream);
+    font-family: var(--serif);
+    font-size: 36px;
+    margin: 0 0 18px;
+    letter-spacing: -.015em;
+  }
+  .cta-block h3 em { color: var(--champagne); font-style: italic; }
+  .cta-block p { color: var(--cream); opacity: .9; max-width: 50ch; margin: 0 auto 28px; }
+  .cta-block .btn { background: var(--champagne); color: var(--charcoal); }
+  .cta-block .btn:hover { background: var(--champagne-light); }
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  footer {
+    border-top: var(--rule);
+    padding: 40px 36px 56px;
+    text-align: center;
+    margin-top: 80px;
+  }
+  .footer-logo {
+    height: 56px;
+    width: auto;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .footer-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: .55;
+  }
+  .footer-tag a { color: var(--ink); text-decoration: none; }
+
+  /* =========================================================
+     UTILITIES
+     ========================================================= */
+  .anchor-link {
+    display: inline-block;
+    margin-left: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--champagne-deep);
+    opacity: 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity .2s ease;
+  }
+  h3:hover .anchor-link { opacity: 1; }
+
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 14px 22px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    z-index: 300;
+    transition: transform .3s ease;
+    box-shadow: 0 8px 32px rgba(31,31,34,.2);
+  }
+  .toast.shown { transform: translateX(-50%) translateY(0); }
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+  @media (max-width: 720px) {
+    .masthead { padding: 14px 20px; }
+    .masthead-meta { display: none; }
+    .page { padding: 40px 24px 80px; }
+    .cover { padding: 32px 24px 60px; }
+    .gate, .assess { padding: 28px 24px; }
+    .makeitreal { padding: 28px 24px; }
+    .onecoast { padding: 24px 22px; }
+    .pullquote { font-size: 22px; padding-left: 18px; margin: 28px 0; }
+    h3 { font-size: 22px; }
+    .cta-block { padding: 36px 24px; }
+    .cta-block h3 { font-size: 28px; }
+  }
+
+  /* =========================================================
+     PRINT
+     ========================================================= */
+  @media print {
+    .masthead, .progress-bar, .chapter-index, .index-overlay, .nav-toggle,
+    .part-nav, .gate, .assess, footer { display: none !important; }
+    body { background: var(--paper); font-size: 12pt; }
+    .page { display: block !important; max-width: 100%; padding: 24px 0; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+    .onecoast { background: var(--cream-soft); color: var(--ink); border: 1px solid var(--champagne); }
+    .onecoast h4, .onecoast p, .onecoast strong { color: var(--charcoal); }
+    .makeitreal { box-shadow: none; }
+    a { color: var(--ink); text-decoration: none; }
+    .pullquote { color: var(--charcoal); }
+    .cta-block { background: var(--cream-soft); color: var(--charcoal); }
+    .cta-block h3, .cta-block p { color: var(--charcoal); }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Top progress bar -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Masthead -->
+<header class="masthead">
+  <a href="/" class="wordmark" aria-label="Back to 1Coast Media">
+    <img src="./assets/01-beacon-lockup-horizontal-cream.svg" alt="1Coast Media" class="masthead-logo" />
+  </a>
+  <div class="masthead-right">
+    <div class="masthead-meta">The Integrated Growth Playbook · Vol. 01</div>
+    <a href="/" class="masthead-back" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted, var(--ink));text-decoration:none;padding:6px 12px;border:1px solid currentColor;border-radius:999px;opacity:.65;margin-right:10px;transition:opacity .15s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.65'">&larr; 1coastmedia.com</a>
+    <button class="nav-toggle" id="navToggle">Contents</button>
+  </div>
+</header>
+
+<!-- Chapter index drawer -->
+<div class="index-overlay" id="indexOverlay"></div>
+<aside class="chapter-index" id="chapterIndex" aria-label="Chapter index">
+  <button class="index-close" id="indexClose">← Close</button>
+  <div class="index-eyebrow">Contents · Volume 01</div>
+  <h2 class="index-title">The Integrated <em>Business Growth</em> Playbook</h2>
+  <ol class="index-list" id="indexList">
+    <li><a class="index-item" data-target="/" href="#/">
+      <span class="index-item-num">00</span>
+      <span class="index-item-title">Cover &amp; Self-Assessment</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/foundation" href="#/foundation">
+      <span class="index-item-num">01</span>
+      <span class="index-item-title">Foundation — Why Systems Beat Tactics</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/brand" href="#/brand">
+      <span class="index-item-num">02</span>
+      <span class="index-item-title">The Brand Layer</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/awareness" href="#/awareness">
+      <span class="index-item-num">03</span>
+      <span class="index-item-title">The Awareness Pillars</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/conversion" href="#/conversion">
+      <span class="index-item-num">04</span>
+      <span class="index-item-title">The Conversion Pillars</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/nurture" href="#/nurture">
+      <span class="index-item-num">05</span>
+      <span class="index-item-title">The Nurture Pillars</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/integration" href="#/integration">
+      <span class="index-item-num">06</span>
+      <span class="index-item-title">The Integration Layer</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/ai" href="#/ai">
+      <span class="index-item-num">07</span>
+      <span class="index-item-title">Where AI Fits In</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/roadmap" href="#/roadmap">
+      <span class="index-item-num">08</span>
+      <span class="index-item-title">Implementation Roadmap</span>
+      <span class="index-item-status"></span>
+    </a></li>
+    <li><a class="index-item" data-target="/closing" href="#/closing">
+      <span class="index-item-num">09</span>
+      <span class="index-item-title">Closing &amp; What Comes Next</span>
+      <span class="index-item-status"></span>
+    </a></li>
+  </ol>
+</aside>
+
+<main id="main">
+
+<!-- =========================================================
+     COVER
+     ========================================================= -->
+<section class="cover page" id="page-cover" data-route="/">
+  <img src="./assets/lighthouse-cipher-cream.svg" alt="" aria-hidden="true" class="cover-cipher" />
+  <div class="cover-eyebrow">Volume 01 · A Resource for Local Business Owners</div>
+  <h1>The Integrated <em>Business Growth</em> Playbook</h1>
+  <p class="lede" style="max-width: 38ch;">
+    How modern systems work together to attract attention, earn trust, and convert customers — explained the way we'd explain it to a friend over coffee.
+  </p>
+  <div class="cover-byline">
+    <span>Prepared by Blake Daniels</span>
+    <span class="dot"></span>
+    <span>1Coast Media</span>
+    <span class="dot"></span>
+    <span>Built on the Coast</span>
+  </div>
+
+  <div class="rule short"></div>
+
+  <h3 style="margin-top: 36px;">A note before you begin</h3>
+  <p>
+    Most marketing advice is fragmented. Someone tells you to post more on Instagram. Someone else tells you email is dead, then someone else swears it's the only thing that works. You end up doing a little of everything, doing none of it well, and wondering why your phone isn't ringing.
+  </p>
+  <p>
+    This playbook takes a different approach. It treats your business as an ecosystem and your marketing as a system of interconnected parts. Each pillar can produce results on its own. None of them produce sustainable, compounding results in isolation.
+  </p>
+  <p>
+    Anyone can make short, quick strides. To win the long game, every part has to work together.
+  </p>
+
+  <p style="font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--charcoal); margin-top: 28px;">
+    Read this carefully. Mark it up. Come back to it. <strong style="font-style: normal;">Then build slowly and consistently.</strong>
+  </p>
+
+  <!-- Self-assessment — the primary capture moment -->
+  <div class="assess" id="assess">
+    <div class="gate-eyebrow">Sixty-second self-assessment</div>
+    <h3 style="margin: 0 0 6px;">Where are you <em>strongest</em>?</h3>
+    <p class="gate-sub">Rate each of the eleven pillars from 1 (weak / non-existent) to 4 (strong / consistent). We'll suggest which Part to read first.</p>
+    <div class="assess-grid" id="assessGrid"></div>
+    <button class="btn ghost" id="assessSubmit" style="margin-top: 28px;">See my reading order →</button>
+
+    <!-- Inline email step — appears after they click "See my reading order" -->
+    <div class="assess-capture" id="assessCapture">
+      <div class="assess-capture-inner">
+        <p class="assess-capture-msg">One moment — leave an email and we'll send your reading order along with the next Part each week. We won't share it. You can leave at any time.</p>
+        <form class="inline-form" data-source="Cover · Self-assessment" data-include-assessment="true">
+          <input type="email" name="email" placeholder="you@yourbusiness.com" required aria-label="Email address" />
+          <button type="submit" class="btn">Send</button>
+        </form>
+        <p class="inline-skip"><a href="#" id="assessSkip">Or skip this and just show me my reading order →</a></p>
+      </div>
+    </div>
+
+    <div class="assess-result" id="assessResult"></div>
+  </div>
+
+  <!-- Quiet "start reading" link — no form -->
+  <p class="cover-skip">
+    Prefer to dive in? <a href="#/foundation">Start at Part 1 — Foundation →</a> &nbsp;The whole playbook is free, no email required.
+  </p>
+</section>
+
+
+<!-- =========================================================
+     PART 1 · FOUNDATION
+     ========================================================= -->
+<section class="page" id="page-foundation" data-route="/foundation" hidden>
+  <div class="part-num">Part 01 · 09</div>
+  <div class="eyebrow">Foundation</div>
+  <h2>Why <em>systems</em> beat tactics</h2>
+  <p class="lede">Tactics spike attention. Systems sustain a business. The difference is everything.</p>
+
+  <p>Tactics are individual actions. A post. An ad. A flyer. A booth at a festival. Tactics can spike attention but they cannot sustain a business. <strong>Systems are how tactics connect to each other</strong> so the energy you spend in one place produces results in another.</p>
+
+  <p>Think of it like an orchestra. A single trumpet playing a perfect note isn't music. Music happens when every instrument is playing in time, in key, and in service of the same song. Your business marketing works the same way. One pillar firing alone produces noise. Pillars firing together produce momentum.</p>
+
+  <h3 id="three-movements">The three movements of modern marketing<a class="anchor-link" data-copy="/foundation#three-movements">copy link</a></h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width: 22%;">Movement</th><th>What it does</th><th style="width: 38%;">Where it lives</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Awareness</td><td>People have to know you exist.</td><td>Social, PR, events, signage, vehicle wraps, creators</td></tr>
+        <tr><td>Conversion</td><td>People have to take a clear next step.</td><td>Website, landing pages, funnels, QR codes, in-person capture</td></tr>
+        <tr><td>Nurture</td><td>People rarely buy on the first encounter.</td><td>SMS, email, referrals, loyalty, consistent content</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Every pillar in this playbook serves one or more of these movements. <strong>A weakness in any movement collapses the others.</strong> You cannot nurture leads you never captured. You cannot convert traffic that never arrived. You cannot earn awareness if your brand looks unprofessional the moment someone notices you.</p>
+
+  <h3 id="compounding">The compounding effect</h3>
+  <p>Most business owners want results fast. Modern marketing rewards the opposite. The systems in this document are designed to compound. Month one feels slow. Month three starts to show. Month twelve produces results that look impossible to people who quit at month two.</p>
+
+  <div class="principle">
+    <div class="principle-label">The Principle</div>
+    <p>Consistency beats intensity. Showing up well every day for a year will outperform a brilliant burst of effort followed by silence. Build for the long horizon.</p>
+  </div>
+
+  <h3 id="eleven-pillars">The eleven pillars covered in this playbook</h3>
+  <ol>
+    <li>Brand and visual identity (logo, colors, slogan, vehicle wraps, signage)</li>
+    <li>Social media and platform strategy</li>
+    <li>Content systems and posting cadence</li>
+    <li>PR and earned media</li>
+    <li>Events (hosted and attended)</li>
+    <li>Creator and influencer partnerships</li>
+    <li>Website and user experience</li>
+    <li>Landing pages and conversion funnels</li>
+    <li>In-person lead capture (QR codes, signage, business cards)</li>
+    <li>SMS and email nurture systems</li>
+    <li>Referrals, reviews, and loyalty</li>
+  </ol>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We build the orchestra, not the trumpet</h4>
+    <p>Most agencies sell a single instrument — social posts, ads, a website. We don't. <strong>1Coast Media builds the integrated system</strong> where awareness, conversion, and nurture all reinforce each other. We start by mapping which of the eleven pillars you have, which are weak, and which are missing. Then we build in the right order so each new pillar makes the previous ones stronger.</p>
+    <p>If you only need a single piece, we'll tell you. If we're not the right fit, we'll point you to who is. <strong>No templates. No fluff. Just results.</strong></p>
+  </div>
+
+  <div class="pullquote">"One pillar firing alone produces noise. Pillars firing together produce momentum."</div>
+
+  <!-- Make It Real -->
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 01</div>
+    <h3>Before Part 2, do this</h3>
+    <p class="makeitreal-sub">Five minutes. Honest answers. Saved to your browser as you check items off.</p>
+    <ul class="checklist" data-part="foundation">
+      <li><input type="checkbox" id="ck-1-1" /><label for="ck-1-1">Of the three movements (Awareness, Conversion, Nurture), I can name which one is my weakest.</label></li>
+      <li><input type="checkbox" id="ck-1-2" /><label for="ck-1-2">I'm willing to commit to a 12-month horizon, not a 12-day campaign.</label></li>
+      <li><input type="checkbox" id="ck-1-3" /><label for="ck-1-3">I've stopped looking for a single tactic that fixes everything.</label></li>
+      <li><input type="checkbox" id="ck-1-4" /><label for="ck-1-4">I've shared this playbook with one person whose feedback I trust.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want the next Part in your inbox next week? No spam — just one email when the next Part is ready to read.</p>
+    <form class="inline-form" data-source="Part 01 · Foundation">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 02</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/" class="prev">
+      <div class="label">← Back to</div>
+      <div class="title">Cover</div>
+    </a>
+    <a href="#/brand" class="next">
+      <div class="label">Next · Part 02</div>
+      <div class="title">The Brand Layer</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 2 · THE BRAND LAYER
+     ========================================================= -->
+<section class="page" id="page-brand" data-route="/brand" hidden>
+  <div class="part-num">Part 02 · 09</div>
+  <div class="eyebrow">The Brand Layer</div>
+  <h2>What people see <em>before</em> they hear you</h2>
+  <p class="lede">A polished brand makes every other dollar work harder. A weak brand makes every other dollar work less.</p>
+
+  <p>Before any of the digital systems in this playbook can work, your brand has to look like a business worth paying attention to. <strong>Branding is not vanity.</strong> It is the visual signal that tells a stranger whether you take your work seriously enough for them to take you seriously.</p>
+
+  <h3 id="logo">The logo</h3>
+  <p>Your logo is a flag, not a portrait. It needs to be recognizable at thumbnail size on a phone screen, readable on the side of a vehicle from across a parking lot, and clean enough to embroider on a hat or stitch into a uniform.</p>
+
+  <h4>What you need, practically</h4>
+  <ul class="tight">
+    <li>A primary version (full logo with brand name)</li>
+    <li>A secondary mark (icon only, for small spaces like social profile pictures)</li>
+    <li>A horizontal version (for headers and email signatures)</li>
+    <li>A stacked version (for square and vertical applications)</li>
+    <li>Both light and dark color versions</li>
+    <li>A black-and-white version for printing where color isn't possible</li>
+    <li>Vector files (SVG, AI, EPS) for any printer or sign maker, plus PNG with transparent background for digital</li>
+  </ul>
+
+  <h3 id="colors">Color palette</h3>
+  <p>Pick a primary color, one or two supporting colors, and one accent. Use them consistently everywhere. The reason national brands feel familiar isn't that you love them — it's that you've seen the same colors a thousand times. You can manufacture that familiarity for a local business with discipline.</p>
+  <p>Document the exact hex, RGB, CMYK, and Pantone values. Hand them to anyone who touches your brand.</p>
+
+  <h3 id="typography">Typography</h3>
+  <p>Pick a primary font for headlines and a secondary font for body copy. Keep it to two. Make sure both render well on web, on print, and on signage. Avoid trendy fonts that will look dated in two years.</p>
+
+  <h3 id="slogan">The slogan</h3>
+  <p>A great slogan is short, true, and yours. It should communicate either what you do, who you do it for, or what feeling you create.</p>
+
+  <h4>What makes a slogan work</h4>
+  <ul class="tight">
+    <li>Six words or fewer is ideal. Twelve is the absolute ceiling.</li>
+    <li>It passes the eavesdrop test. If a customer overheard it without context, it should still make sense.</li>
+    <li>It makes a promise you actually keep. Slogans that overpromise damage trust faster than no slogan at all.</li>
+    <li>It works in writing and out loud. Read it. Say it. If it sounds awkward, rewrite it.</li>
+  </ul>
+
+  <div class="principle">
+    <div class="principle-label">A few examples by industry</div>
+    <p style="font-family: var(--sans); font-size: 14px; line-height: 1.7;">
+      Roofing — "Built right. Built once."<br/>
+      Restaurant — "Family-owned. Coast-grown."<br/>
+      Cleaning — "We clean what other crews skip."<br/>
+      Real estate — "Local roots. Honest answers."<br/>
+      Plumbing — "On time, every time, or it's free."
+    </p>
+  </div>
+
+  <h3 id="vehicles">Vehicle wraps and signage</h3>
+  <p>A wrapped vehicle is the most cost-efficient billboard a local business can own. It works while you drive to lunch, while it sits in a customer's driveway, while it's parked at a job site. <strong>Done well, it produces leads for years.</strong> Done poorly, it advertises that you cut corners.</p>
+
+  <h4>Wrap rules that actually matter</h4>
+  <ul class="tight">
+    <li>Phone number and website must be readable from at least 30 feet</li>
+    <li>One simple value statement, not a list of services</li>
+    <li>Brand colors and logo dominate; resist the urge to crowd</li>
+    <li>QR code on the rear panel (the panel cars behind you can scan)</li>
+    <li>Match the wrap to the rest of your visual identity</li>
+  </ul>
+
+  <h3 id="uniforms">Uniforms and team appearance</h3>
+  <p>If your team interacts with customers, what they wear is part of your brand. A clean polo with an embroidered logo costs little and signals professionalism that no website can match. A torn t-shirt and faded cap signal the opposite, no matter how good your work is.</p>
+
+  <h3 id="signage">Storefront and signage</h3>
+  <p>If you have a physical location, your sign is doing brand work twenty-four hours a day. Make sure it's lit at night. Make sure the lettering is current. Make sure the colors match your digital presence. The most common branding mistake we see is a business with a beautiful website and a faded, mismatched sign out front. The two should look like the same company.</p>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We build brands that hold up across every surface</h4>
+    <p>1Coast Media builds the full visual system — logo suite, color palette, typography, slogan, photography direction — and we apply it everywhere it shows up. <strong>Vehicle wrap, storefront sign, polo embroidery, business cards, social profile, email signature, invoice template.</strong> Every surface a customer sees should feel like the same business.</p>
+    <p>Our brand engagements end with a single PDF brand guidelines document and a folder of logo files in every format you'll ever need. Hand it to a printer, a sign maker, a new hire — they'll know exactly what to do.</p>
+  </div>
+
+  <div class="pullquote">"Your logo is a flag, not a portrait."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 02</div>
+    <h3>Brand layer audit</h3>
+    <p class="makeitreal-sub">Walk around your business — physical and digital — and answer honestly.</p>
+    <ul class="checklist" data-part="brand">
+      <li><input type="checkbox" id="ck-2-1" /><label for="ck-2-1">My logo is recognizable at the size of a phone profile picture (40px square).</label></li>
+      <li><input type="checkbox" id="ck-2-2" /><label for="ck-2-2">I have my brand colors documented as hex codes (not "kinda blue").</label></li>
+      <li><input type="checkbox" id="ck-2-3" /><label for="ck-2-3">I have vector logo files (.svg or .ai) I can hand to a sign maker today.</label></li>
+      <li><input type="checkbox" id="ck-2-4" /><label for="ck-2-4">My website, business card, and storefront look like the same company.</label></li>
+      <li><input type="checkbox" id="ck-2-5" /><label for="ck-2-5">My team has clean, branded uniforms or shirts.</label></li>
+      <li><input type="checkbox" id="ck-2-6" /><label for="ck-2-6">I have a slogan I'd say out loud without flinching.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want Part 03 — The Awareness Pillars — in your inbox next week?</p>
+    <form class="inline-form" data-source="Part 02 · Brand Layer">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 03</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/foundation" class="prev">
+      <div class="label">← Part 01</div>
+      <div class="title">Foundation</div>
+    </a>
+    <a href="#/awareness" class="next">
+      <div class="label">Next · Part 03</div>
+      <div class="title">The Awareness Pillars</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 3 · AWARENESS PILLARS
+     ========================================================= -->
+<section class="page" id="page-awareness" data-route="/awareness" hidden>
+  <div class="part-num">Part 03 · 09</div>
+  <div class="eyebrow">The Awareness Pillars</div>
+  <h2>Getting <em>noticed</em>, the right way</h2>
+  <p class="lede">Five pillars produce awareness: social, content, PR, events, and creators. Each rewards consistency more than cleverness.</p>
+
+  <p>Awareness is the first movement — people have to know you exist before anything else can happen. The temptation is to chase whichever platform is loudest this month. Resist it. Awareness compounds when you pick a small number of channels and show up there <strong>every single week, for years</strong>.</p>
+
+  <h3 id="social">3.1 Social media</h3>
+  <p>You don't need to be on every platform. Pick two primary platforms where your customers actually spend time, plus one experimental platform where you're learning. For most local Gulf Coast businesses, the answer is some combination of Instagram, Facebook, TikTok, YouTube, and (for B2B) LinkedIn.</p>
+
+  <h4>Choose by where your customers are, not where you are</h4>
+  <p>A 60-year-old roofing customer is on Facebook, not TikTok. A 28-year-old salon customer is on Instagram and TikTok, not Facebook. Pick where they are.</p>
+
+  <h4>Cadence beats brilliance</h4>
+  <p>One thoughtful post a day on a primary platform will outperform five posts a day across seven platforms. Pick a cadence you can sustain through a busy season, then hold it.</p>
+
+  <h3 id="content">3.2 Content systems and posting cadence</h3>
+  <p>The single biggest reason businesses give up on social is that they treat each post like a one-off creative act. <strong>You will run out of energy</strong>. Build a content system instead.</p>
+
+  <h4>Content pillars</h4>
+  <p>Pick three to five content pillars — recurring categories of content that align with your business. A roofer's pillars might be: (1) Recent jobs, (2) Education ("how to read your roof"), (3) Storm prep, (4) Behind the scenes, (5) Customer stories.</p>
+
+  <h4>Batch production</h4>
+  <p>Block one day every two weeks to film, photograph, and write a fortnight's worth of content. This is non-negotiable. Daily content production is unsustainable. <strong>Bi-weekly batching is sustainable for years.</strong></p>
+
+  <h3 id="pr">3.3 PR and earned media</h3>
+  <p>Earned media — coverage in local newspapers, TV, podcasts, and blogs — carries more trust than any ad you can buy. It's also free. The catch is that it requires a story worth telling.</p>
+
+  <h4>Stories that get covered</h4>
+  <ul class="tight">
+    <li>You hit a milestone (10 years, 1,000th customer, expansion)</li>
+    <li>You did something for the community (sponsored a school team, donated services)</li>
+    <li>You took a contrarian position on something local (and can defend it)</li>
+    <li>You have data nobody else has (a survey of your customers, trends you've noticed)</li>
+    <li>You're an expert source on a story already breaking</li>
+  </ul>
+
+  <p>Build a list of five local journalists or podcast hosts who cover your industry. Send them a useful tip every quarter. When you have your own story, they'll already know your name.</p>
+
+  <h3 id="events">3.4 Events — hosted and attended</h3>
+  <p>Events compress months of trust-building into a single afternoon. Attended events put you in front of new audiences. Hosted events put you at the center of one.</p>
+
+  <h4>Attended events</h4>
+  <p>Festivals, farmers' markets, chamber events, charity runs. Show up with a presence: a branded tent, signage, a way to capture leads (QR code on a clipboard sign), and a small giveaway. Don't try to sell — try to be remembered.</p>
+
+  <h4>Hosted events</h4>
+  <p>Host one event per quarter, on the same calendar dates each year. A roofer can host a "Storm Prep Saturday" before hurricane season. A salon can host a styling night. Make it useful, make it shareable, make it consistent. <strong>Year three of a hosted event is when it becomes a tradition.</strong></p>
+
+  <h3 id="creators">3.5 Creator and influencer partnerships</h3>
+  <p>National influencers are expensive and irrelevant to a local business. Local creators — micro-influencers with 1,000–50,000 followers in your zip code — are where the real leverage is. Their audiences trust them. Their audiences live in your service area. Their rates are reasonable, and many will partner for product or service exchange.</p>
+
+  <h4>Picking creators</h4>
+  <ul class="tight">
+    <li>Audience location actually matters more than audience size</li>
+    <li>Engagement rate (comments + saves, not just likes) matters more than follower count</li>
+    <li>Tonal fit with your brand matters most of all — the wrong creator damages trust</li>
+    <li>Look for creators who already mention places like yours organically</li>
+  </ul>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We run the awareness engine for you</h4>
+    <p>1Coast Media builds and operates the full awareness system: <strong>content pillar strategy, bi-weekly batched production, two-platform posting cadence, PR pitching, event presence kits, and creator partnerships</strong> with our local Gulf Coast roster.</p>
+    <p>Because we work with local creators every week, we know who's reliable, who's on-brand, who has the audience you actually need. Our creators are paid fairly. Our businesses get authentic coverage. <strong>That's how we elevate the Coast.</strong></p>
+  </div>
+
+  <div class="pullquote">"Cadence beats brilliance. Build a system you can sustain."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 03</div>
+    <h3>Build the awareness rhythm</h3>
+    <p class="makeitreal-sub">Pick a rhythm you can hold for twelve months — not the rhythm that sounds impressive.</p>
+    <ul class="checklist" data-part="awareness">
+      <li><input type="checkbox" id="ck-3-1" /><label for="ck-3-1">I've picked two primary social platforms (no more) where my customers actually are.</label></li>
+      <li><input type="checkbox" id="ck-3-2" /><label for="ck-3-2">I've defined three to five content pillars I can produce against indefinitely.</label></li>
+      <li><input type="checkbox" id="ck-3-3" /><label for="ck-3-3">I've blocked one batch-production day every two weeks on my calendar.</label></li>
+      <li><input type="checkbox" id="ck-3-4" /><label for="ck-3-4">I've identified three local journalists or podcast hosts I could pitch.</label></li>
+      <li><input type="checkbox" id="ck-3-5" /><label for="ck-3-5">I have one hosted event idea on the calendar for the next 90 days.</label></li>
+      <li><input type="checkbox" id="ck-3-6" /><label for="ck-3-6">I've named two local creators whose audience overlaps with mine.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want Part 04 — The Conversion Pillars — in your inbox next week?</p>
+    <form class="inline-form" data-source="Part 03 · Awareness">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 04</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/brand" class="prev">
+      <div class="label">← Part 02</div>
+      <div class="title">The Brand Layer</div>
+    </a>
+    <a href="#/conversion" class="next">
+      <div class="label">Next · Part 04</div>
+      <div class="title">The Conversion Pillars</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 4 · CONVERSION PILLARS
+     ========================================================= -->
+<section class="page" id="page-conversion" data-route="/conversion" hidden>
+  <div class="part-num">Part 04 · 09</div>
+  <div class="eyebrow">The Conversion Pillars</div>
+  <h2>Turning attention <em>into action</em></h2>
+  <p class="lede">Awareness without conversion is a popularity contest. Conversion without awareness is a beautifully empty room.</p>
+
+  <p>Once people know you exist, they need a clean, fast, obvious way to take the next step. Every friction point is a customer lost. Every confused page is a phone call that never happened.</p>
+
+  <h3 id="website">4.1 Your website</h3>
+  <p>Your website is your storefront for the 90% of customers who will check you out before they ever call. <strong>If it's slow, ugly, or confusing, you've lost them before they ever met you.</strong></p>
+
+  <h4>Non-negotiables for any local business website</h4>
+  <ul class="tight">
+    <li>Loads in under three seconds on a mobile connection</li>
+    <li>Phone number visible in the top right corner of every page, click-to-call on mobile</li>
+    <li>One clear primary action above the fold ("Get a quote", "Book now", "Call us")</li>
+    <li>Location (city, zip codes you serve) visible without scrolling</li>
+    <li>Real photos of you, your team, your work — not stock photography</li>
+    <li>Reviews and testimonials with names and faces, not anonymous quotes</li>
+    <li>Mobile design that's tested on an actual phone, not a desktop browser pretending to be one</li>
+  </ul>
+
+  <h3 id="landing-pages">4.2 Landing pages</h3>
+  <p>A landing page is a single-purpose page built for a single offer. Your homepage tries to serve every visitor. A landing page serves one campaign, one audience, one message. <strong>You should have a different landing page for every different offer you run.</strong></p>
+
+  <h4>Anatomy of a landing page that converts</h4>
+  <ul class="tight">
+    <li>One headline that names the customer's problem in their words</li>
+    <li>One photo that proves you're real</li>
+    <li>Three to five reasons to trust you (years in business, customers served, awards, certifications)</li>
+    <li>One clear next step (form, call button, calendar link)</li>
+    <li>No navigation menu — nothing to click except the next step</li>
+    <li>Social proof near the action button (review, testimonial, logo wall)</li>
+  </ul>
+
+  <h3 id="funnels">4.3 Conversion funnels</h3>
+  <p>A funnel is the series of small steps a customer walks through from "stranger" to "buyer." Most local businesses don't have a funnel — they have a leaky bucket where most leads disappear. Map yours on paper, then close every leak.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width: 24%;">Stage</th><th>Goal</th><th style="width: 30%;">Common leak</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Stranger</td><td>Get noticed</td><td>Inconsistent posting</td></tr>
+        <tr><td>Visitor</td><td>Get on the website</td><td>Slow site, no call to action</td></tr>
+        <tr><td>Lead</td><td>Capture name and contact</td><td>No form, no offer, no follow-up</td></tr>
+        <tr><td>Prospect</td><td>Reply to first follow-up</td><td>Generic email, no real value</td></tr>
+        <tr><td>Customer</td><td>First purchase or booking</td><td>Friction at checkout / scheduling</td></tr>
+        <tr><td>Repeat</td><td>Second purchase</td><td>Zero post-sale communication</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="in-person">4.4 In-person lead capture</h3>
+  <p>Most local businesses have constant in-person opportunities to capture leads — and almost always waste them. The customer who walks into your shop, attends your event, or sees your booth at a festival is the warmest lead you'll ever get. Capture them.</p>
+
+  <h4>QR codes done right</h4>
+  <p>Place QR codes everywhere a customer's eye lands: receipts, signage, business cards, vehicle wraps, packaging. Each QR code should land on a specific page that <em>knows what brought the visitor there</em>. The QR on your truck should land on a different page than the QR on your business card. <strong>Track every scan.</strong></p>
+
+  <h4>Business cards as portable landing pages</h4>
+  <p>A traditional business card is a name and number. A modern business card is a tiny landing page in a pocket. Front: your name and one clear value statement. Back: a QR code to your booking page or top offer. Hand them out aggressively. They cost cents. They produce calls.</p>
+
+  <h3 id="reviews-capture">4.5 Reviews and Google Business Profile</h3>
+  <p>Your Google Business Profile (the listing that appears in the right rail when someone searches your business) is your second-most-important conversion asset after your website — sometimes the first. Optimize it relentlessly.</p>
+
+  <ul class="tight">
+    <li>Photos updated quarterly (real ones, geo-tagged when possible)</li>
+    <li>Hours always accurate, including holidays</li>
+    <li>Services list complete and matched to what customers actually search for</li>
+    <li>Posts published weekly (yes, Google rewards this)</li>
+    <li>Every review responded to within 48 hours, positive and negative</li>
+    <li>An automated post-service text or email asking for a review with a direct link</li>
+  </ul>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We close the leaks</h4>
+    <p>1Coast Media builds and tests the full conversion stack: <strong>fast, mobile-first websites; campaign-specific landing pages; QR-coded touchpoints across vehicles, signage, and print; and review-request automations</strong> that turn happy customers into a steady flow of fresh five-star reviews.</p>
+    <p>We map your funnel on paper before we touch the website. Then we close the leaks one at a time, in order of how much money each one is costing you. <strong>Every dollar of awareness you spend should land somewhere that converts.</strong></p>
+  </div>
+
+  <div class="pullquote">"Most businesses don't have a funnel. They have a leaky bucket."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 04</div>
+    <h3>Conversion stack audit</h3>
+    <p class="makeitreal-sub">Open your phone. Pretend you're a stranger. Try to give yourself money.</p>
+    <ul class="checklist" data-part="conversion">
+      <li><input type="checkbox" id="ck-4-1" /><label for="ck-4-1">I just opened my website on my phone — it loaded in under three seconds.</label></li>
+      <li><input type="checkbox" id="ck-4-2" /><label for="ck-4-2">My phone number is one tap from anywhere on the site.</label></li>
+      <li><input type="checkbox" id="ck-4-3" /><label for="ck-4-3">I have at least one campaign-specific landing page (not just a homepage).</label></li>
+      <li><input type="checkbox" id="ck-4-4" /><label for="ck-4-4">I drew my funnel on paper and identified the biggest leak.</label></li>
+      <li><input type="checkbox" id="ck-4-5" /><label for="ck-4-5">There's a QR code on at least three of my customer touchpoints.</label></li>
+      <li><input type="checkbox" id="ck-4-6" /><label for="ck-4-6">My Google Business Profile is fully filled out and has fresh photos.</label></li>
+      <li><input type="checkbox" id="ck-4-7" /><label for="ck-4-7">Every customer gets an automatic review request within 48 hours of service.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want Part 05 — The Nurture Pillars — in your inbox next week?</p>
+    <form class="inline-form" data-source="Part 04 · Conversion">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 05</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/awareness" class="prev">
+      <div class="label">← Part 03</div>
+      <div class="title">The Awareness Pillars</div>
+    </a>
+    <a href="#/nurture" class="next">
+      <div class="label">Next · Part 05</div>
+      <div class="title">The Nurture Pillars</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 5 · NURTURE PILLARS
+     ========================================================= -->
+<section class="page" id="page-nurture" data-route="/nurture" hidden>
+  <div class="part-num">Part 05 · 09</div>
+  <div class="eyebrow">The Nurture Pillars</div>
+  <h2>Where most of the <em>real money</em> lives</h2>
+  <p class="lede">Most customers don't buy on the first encounter. The businesses that win are the ones who stay in front of them after.</p>
+
+  <p>Awareness gets you noticed. Conversion gets you the lead. <strong>Nurture is what turns leads into customers and customers into a community.</strong> It's also where almost every local business leaves the most money on the table.</p>
+
+  <h3 id="sms">5.1 SMS</h3>
+  <p>Text messages have open rates of 95%+. Email open rates hover around 25%. SMS is the most direct, most respected, and most easily abused channel you have. Use it sparingly and well.</p>
+
+  <h4>SMS rules that build trust</h4>
+  <ul class="tight">
+    <li>Never message someone who didn't explicitly opt in</li>
+    <li>Identify yourself in every message</li>
+    <li>Send fewer than four messages a month unless transactional</li>
+    <li>Make the unsubscribe path obvious — and honor it instantly</li>
+    <li>Lead with usefulness, not promotion</li>
+  </ul>
+
+  <h4>What to actually send</h4>
+  <ul class="tight">
+    <li>Appointment reminders (24 hours and 2 hours out)</li>
+    <li>Order or service status updates</li>
+    <li>Time-sensitive offers worth the interruption (limited stock, weather window, last few seats)</li>
+    <li>Genuine community news (you're hosting an event, you sponsored a local team)</li>
+  </ul>
+
+  <h3 id="email">5.2 Email</h3>
+  <p>Email isn't dead. <strong>Bad email is dead.</strong> Email is still the best long-term nurture channel: low cost, easy to segment, easy to automate, owned by you (unlike a social account that can vanish overnight).</p>
+
+  <h4>The three email systems every business needs</h4>
+  <ol class="tight">
+    <li><strong>Welcome sequence</strong> — 4 to 6 emails over 14 days, automatic, sent to every new contact. Tells your story, sets expectations, delivers value, asks for the first action.</li>
+    <li><strong>Regular newsletter</strong> — weekly or bi-weekly, mostly useful content, occasional promotion. Builds the relationship.</li>
+    <li><strong>Segmented sequences</strong> — different paths for different customer types (new lead, past customer, VIP, lapsed customer). Each segment hears from you differently.</li>
+  </ol>
+
+  <h3 id="referrals">5.3 Referrals</h3>
+  <p>Word of mouth is the most powerful customer acquisition channel ever invented. The mistake most businesses make is treating it as a happy accident instead of a system. <strong>Referrals can be engineered.</strong></p>
+
+  <h4>A referral program that works</h4>
+  <ul class="tight">
+    <li>Reward both sides — the referrer and the new customer get something</li>
+    <li>Make the offer easy to remember and easy to share (one sentence, one link)</li>
+    <li>Ask at the moment of highest customer satisfaction (right after a great service, right after a five-star review)</li>
+    <li>Make it personal — a hand-written card with a referral card beats a digital prompt every time for high-touch businesses</li>
+    <li>Track everything so you know which customers are your real evangelists</li>
+  </ul>
+
+  <h3 id="loyalty">5.4 Loyalty</h3>
+  <p>A loyalty program isn't a punch card. It's a system for making your best customers feel like insiders. Done well, loyalty programs can double the lifetime value of an average customer.</p>
+
+  <h4>Loyalty principles</h4>
+  <ul class="tight">
+    <li>Make it digital and tied to your point-of-sale or booking system</li>
+    <li>Reward frequency, not just spend</li>
+    <li>Add small surprises — unannounced rewards beat predictable ones for emotional loyalty</li>
+    <li>Give early access to new offers, events, and product drops</li>
+    <li>Make members feel like a community, not a database</li>
+  </ul>
+
+  <h3 id="reviews-nurture">5.5 Reviews as nurture</h3>
+  <p>Reviews aren't just a conversion asset (Part 4). They're a nurture asset. Responding to reviews — every single one, positive and negative — keeps you visible to the customer who left it and signals to every future customer that you actually pay attention.</p>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We make sure no lead falls through the cracks</h4>
+    <p>1Coast Media sets up the full nurture stack: <strong>SMS welcome flows, multi-email welcome sequences, segmented newsletters, referral program mechanics, and loyalty integrations</strong> with the systems you already use to take payments or book appointments.</p>
+    <p>We write the messages in your voice (after a working session with you). We segment your list properly. We hook up the automations. <strong>Then we step back and let the system pay you back month after month, while you focus on the work you actually love.</strong></p>
+  </div>
+
+  <div class="pullquote">"Email isn't dead. Bad email is dead."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 05</div>
+    <h3>Nurture systems audit</h3>
+    <p class="makeitreal-sub">Most businesses fail every one of these. Honest answers.</p>
+    <ul class="checklist" data-part="nurture">
+      <li><input type="checkbox" id="ck-5-1" /><label for="ck-5-1">I have a working SMS platform with proper opt-in.</label></li>
+      <li><input type="checkbox" id="ck-5-2" /><label for="ck-5-2">Every new email contact gets a welcome sequence automatically.</label></li>
+      <li><input type="checkbox" id="ck-5-3" /><label for="ck-5-3">I send a regular newsletter on a predictable cadence.</label></li>
+      <li><input type="checkbox" id="ck-5-4" /><label for="ck-5-4">I have a structured referral program with a reward both sides understand.</label></li>
+      <li><input type="checkbox" id="ck-5-5" /><label for="ck-5-5">My loyalty program (if any) lives in the customer's phone, not on a paper card.</label></li>
+      <li><input type="checkbox" id="ck-5-6" /><label for="ck-5-6">I respond to every review — five star and one star — within 48 hours.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want Part 06 — The Integration Layer — in your inbox next week?</p>
+    <form class="inline-form" data-source="Part 05 · Nurture">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 06</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/conversion" class="prev">
+      <div class="label">← Part 04</div>
+      <div class="title">The Conversion Pillars</div>
+    </a>
+    <a href="#/integration" class="next">
+      <div class="label">Next · Part 06</div>
+      <div class="title">The Integration Layer</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 6 · INTEGRATION LAYER
+     ========================================================= -->
+<section class="page" id="page-integration" data-route="/integration" hidden>
+  <div class="part-num">Part 06 · 09</div>
+  <div class="eyebrow">The Integration Layer</div>
+  <h2>How every pillar <em>feeds</em> the others</h2>
+  <p class="lede">A pillar standing alone is a pillar. A pillar wired to the other ten is a system. Systems compound.</p>
+
+  <p>The previous five Parts described the eleven pillars one at a time. This Part describes how they connect. The connection is where the leverage lives. Most businesses with strong individual pillars still underperform because the pillars don't talk to each other.</p>
+
+  <h3 id="example-integration">A worked example</h3>
+  <p>Imagine a roofer who runs a hosted event called Storm Prep Saturday before hurricane season. Watch how every pillar feeds the next.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width: 24%;">Pillar</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td>Brand</td><td>Branded event tent, signage, polos so the team is unmistakable</td></tr>
+        <tr><td>Social</td><td>Two weeks of pre-event teaser content across both primary platforms</td></tr>
+        <tr><td>Content</td><td>The event itself produces a quarter's worth of behind-the-scenes content</td></tr>
+        <tr><td>PR</td><td>Local TV and the paper get a press release with a free expert quote on storm prep</td></tr>
+        <tr><td>Events</td><td>The event runs on its scheduled Saturday, year over year</td></tr>
+        <tr><td>Creators</td><td>Two local creators attend and post coverage organically</td></tr>
+        <tr><td>Website</td><td>A landing page captures RSVPs and quotes prior to the event</td></tr>
+        <tr><td>In-person capture</td><td>QR codes on the tent, on signs, and on handouts feed into the system</td></tr>
+        <tr><td>SMS / email</td><td>Everyone who RSVPs is enrolled in a follow-up sequence with storm prep tips</td></tr>
+        <tr><td>Referrals</td><td>Attendees who book a roof inspection get a "bring a neighbor" double-reward offer</td></tr>
+        <tr><td>Loyalty</td><td>Past customers get early registration and a VIP tent</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>One event activates eleven pillars.</strong> The marketing math is no longer "an event got us thirty leads." It's "an event got us thirty leads, six PR mentions, three months of content, two creator partnerships, a fully populated email list segment, a stack of new five-star reviews, and a measurable bump in repeat business." That's integration.</p>
+
+  <h3 id="integration-rules">Three rules of integration</h3>
+
+  <h4>1. Every awareness asset has a conversion path</h4>
+  <p>Every social post, billboard, vehicle wrap, event tent, and PR story should lead somewhere specific — a URL, a QR code, a phone number, an offer. Awareness without a conversion path is paid entertainment.</p>
+
+  <h4>2. Every conversion has a nurture sequence</h4>
+  <p>Every form submission, phone call, walk-in, or QR scan should trigger an automated nurture sequence. Without it, you're paying to acquire leads that never hear from you again.</p>
+
+  <h4>3. Every customer becomes a content source</h4>
+  <p>Every job, transaction, and customer interaction is content. Photograph it (with permission). Write about it (with permission). Quote it (with permission). The single greatest source of authentic content is the work you're already doing.</p>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We wire the system, not just the parts</h4>
+    <p>This is the difference between hiring eleven specialists and hiring 1Coast Media. <strong>We don't hand you a logo and walk away. We don't run ads in a vacuum. We build the wiring.</strong></p>
+    <p>We map every awareness asset to a conversion path. We map every conversion to a nurture sequence. We instrument the whole thing so you can see, monthly, which pillars are pulling the most weight and which need attention. <strong>This is what "integrated" means.</strong></p>
+  </div>
+
+  <div class="pullquote">"One event activates eleven pillars. That's integration."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 06</div>
+    <h3>Map your integrations</h3>
+    <p class="makeitreal-sub">Pick one upcoming event, campaign, or seasonal push and map it across the eleven pillars.</p>
+    <ul class="checklist" data-part="integration">
+      <li><input type="checkbox" id="ck-6-1" /><label for="ck-6-1">I picked one upcoming event/campaign and listed which of the eleven pillars it touches.</label></li>
+      <li><input type="checkbox" id="ck-6-2" /><label for="ck-6-2">Every awareness piece in that campaign has a specific conversion path attached.</label></li>
+      <li><input type="checkbox" id="ck-6-3" /><label for="ck-6-3">Every conversion has a nurture sequence ready to fire.</label></li>
+      <li><input type="checkbox" id="ck-6-4" /><label for="ck-6-4">I've designated a way to capture content from the campaign while it's happening.</label></li>
+      <li><input type="checkbox" id="ck-6-5" /><label for="ck-6-5">I know which one metric I'll use to judge whether the integration worked.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want Part 07 — Where AI Fits In — in your inbox next week?</p>
+    <form class="inline-form" data-source="Part 06 · Integration">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 07</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/nurture" class="prev">
+      <div class="label">← Part 05</div>
+      <div class="title">The Nurture Pillars</div>
+    </a>
+    <a href="#/ai" class="next">
+      <div class="label">Next · Part 07</div>
+      <div class="title">Where AI Fits In</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 7 · WHERE AI FITS IN
+     ========================================================= -->
+<section class="page" id="page-ai" data-route="/ai" hidden>
+  <div class="part-num">Part 07 · 09</div>
+  <div class="eyebrow">Where AI Fits In</div>
+  <h2>A <em>tool</em>, not a replacement</h2>
+  <p class="lede">AI is the most useful business tool to arrive in a generation. It's also the most overhyped. The truth is in between.</p>
+
+  <p>AI handled with discernment is a force multiplier. AI used as a shortcut produces forgettable content, broken automations, and businesses that sound like everyone else. The job is to know where to use it and where not to.</p>
+
+  <h3 id="ai-strengths">7.1 Where AI is genuinely useful</h3>
+  <ul class="tight">
+    <li>Drafting first versions of emails, posts, and landing pages</li>
+    <li>Editing and tightening your own writing</li>
+    <li>Summarizing long content into shorter formats</li>
+    <li>Brainstorming a list of angles, hooks, headlines, or content ideas</li>
+    <li>Translating between formats (a long video into post captions, a long email into a text)</li>
+    <li>Pattern-finding in your own customer data</li>
+    <li>Customer service triage at the first touch</li>
+    <li>Image generation for concepts, mood boards, and supporting graphics</li>
+    <li>Transcription, captioning, and basic video edits</li>
+  </ul>
+
+  <h3 id="ai-no-go">7.2 The no-go zone</h3>
+  <p>Some things must remain human. <strong>Always.</strong></p>
+  <ul class="tight">
+    <li>Your brand voice on critical communications</li>
+    <li>Sensitive customer interactions, complaints, and conflict resolution</li>
+    <li>Hiring decisions, partnership decisions, and major investments</li>
+    <li>Anything that requires judgment about a person you know personally</li>
+  </ul>
+
+  <h3 id="ai-caution">7.3 The caution zone</h3>
+  <ul class="tight">
+    <li>Generic AI copy is identifiable and forgettable. Always edit. Always inject your voice.</li>
+    <li>Automation without strategy creates noise. Set up the system first, automate second.</li>
+    <li>Over-reliance on AI for ideas leads to a business that sounds like every other business.</li>
+    <li>Don't build your business so dependent on one tool that you cannot operate without it.</li>
+    <li>Always verify factual claims. AI confidently produces wrong information.</li>
+  </ul>
+
+  <h3 id="ai-stack">7.4 A practical AI stack for a local business</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width: 32%;">Function</th><th>Tool category</th></tr></thead>
+      <tbody>
+        <tr><td>Writing &amp; ideation</td><td>A general-purpose AI assistant for drafting, editing, brainstorming, research</td></tr>
+        <tr><td>Image generation</td><td>An AI image tool for graphics and concept visuals (always confirm rights and brand fit)</td></tr>
+        <tr><td>Video &amp; audio</td><td>Auto-captioning, transcription, and basic editing tools to speed up production</td></tr>
+        <tr><td>Email &amp; SMS</td><td>A marketing platform with built-in AI for subject line testing and send-time optimization</td></tr>
+        <tr><td>Analytics</td><td>A reporting tool that turns raw data into plain-language summaries</td></tr>
+        <tr><td>Customer service</td><td>A chatbot for first-touch inquiries, handing off to humans for anything sensitive</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We use AI as a craft tool, not a shortcut</h4>
+    <p>1Coast Media uses AI in our production process to draft, edit, summarize, and produce faster — but <strong>every word that goes out the door has been read by a human who knows your business</strong>. We won't ship generic AI copy under your name. We won't automate sensitive customer touches.</p>
+    <p>What we will do: use AI to make our team faster, your costs lower, and your output more consistent. <strong>That's how a small Coast media company competes with national agencies and wins.</strong></p>
+  </div>
+
+  <div class="pullquote">"Generic AI copy is identifiable and forgettable. Always edit. Always inject your voice."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 07</div>
+    <h3>AI sanity check</h3>
+    <p class="makeitreal-sub">Before you automate anything, run through this list.</p>
+    <ul class="checklist" data-part="ai">
+      <li><input type="checkbox" id="ck-7-1" /><label for="ck-7-1">I've identified one task AI could speed up by 50% (drafting, editing, summarizing).</label></li>
+      <li><input type="checkbox" id="ck-7-2" /><label for="ck-7-2">I've identified one task that must stay 100% human (sensitive customer reply, hiring).</label></li>
+      <li><input type="checkbox" id="ck-7-3" /><label for="ck-7-3">Anything AI drafts gets edited by a human before publishing.</label></li>
+      <li><input type="checkbox" id="ck-7-4" /><label for="ck-7-4">I'm not so dependent on a single tool that losing access would break my business.</label></li>
+      <li><input type="checkbox" id="ck-7-5" /><label for="ck-7-5">I verify factual claims AI gives me before passing them on.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">One a week</div>
+    <p class="next-prompt-msg">Want Part 08 — Implementation Roadmap — in your inbox next week?</p>
+    <form class="inline-form" data-source="Part 07 · AI">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me Part 08</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/integration" class="prev">
+      <div class="label">← Part 06</div>
+      <div class="title">The Integration Layer</div>
+    </a>
+    <a href="#/roadmap" class="next">
+      <div class="label">Next · Part 08</div>
+      <div class="title">Implementation Roadmap</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     PART 8 · IMPLEMENTATION ROADMAP
+     ========================================================= -->
+<section class="page" id="page-roadmap" data-route="/roadmap" hidden>
+  <div class="part-num">Part 08 · 09</div>
+  <div class="eyebrow">Implementation Roadmap</div>
+  <h2>Twelve months. <em>Five phases.</em></h2>
+  <p class="lede">A roadmap that assumes you're starting from scratch. If pieces exist, skip ahead. If they're weak, rebuild before adding new layers.</p>
+
+  <h3 id="phase-1">Phase 1 · Foundation (Months 1–2)</h3>
+  <ul class="tight">
+    <li>Finalize logo, colors, typography, slogan, and brand voice</li>
+    <li>Build or rebuild the website with mobile-first design and clear conversion paths</li>
+    <li>Claim and optimize Google Business Profile</li>
+    <li>Order branded uniforms and basic signage</li>
+    <li>Wrap one work vehicle (if applicable) with a QR code on the rear panel</li>
+    <li>Set up basic analytics and tracking</li>
+  </ul>
+
+  <h3 id="phase-2">Phase 2 · Conversion path (Months 2–3)</h3>
+  <ul class="tight">
+    <li>Build one landing page with one clear offer</li>
+    <li>Set up SMS or email platform with welcome sequence</li>
+    <li>Place QR codes at every customer touchpoint</li>
+    <li>Redesign business cards as portable landing pages</li>
+    <li>Set up Google review request automation</li>
+  </ul>
+
+  <h3 id="phase-3">Phase 3 · Awareness engine (Months 3–6)</h3>
+  <ul class="tight">
+    <li>Choose two primary social platforms and one experimental</li>
+    <li>Define three to five content pillars</li>
+    <li>Establish a posting cadence you can sustain</li>
+    <li>Begin batched content production every two weeks</li>
+    <li>Identify three PR opportunities and pitch them</li>
+    <li>Plan one hosted event or attend one major local event with a capture system</li>
+  </ul>
+
+  <h3 id="phase-4">Phase 4 · Amplification (Months 6–12)</h3>
+  <ul class="tight">
+    <li>Identify two to three local creators for partnership</li>
+    <li>Launch a referral program with a structured incentive</li>
+    <li>Launch a loyalty program tied to your point of sale or booking system</li>
+    <li>Add segmented email sequences for different customer types</li>
+    <li>Run quarterly events as fixed dates on the calendar</li>
+    <li>Begin pursuing awards and "Best Of" lists in your category</li>
+  </ul>
+
+  <h3 id="phase-5">Phase 5 · Compound (Month 12 and beyond)</h3>
+  <ul class="tight">
+    <li>Review every metric monthly. Cut what doesn't work, double what does.</li>
+    <li>Develop signature content series that audiences look forward to</li>
+    <li>Build deeper partnerships with respected local businesses, media, and creators</li>
+    <li>Train team members so the system doesn't depend on one person</li>
+    <li>Document your processes so the business can scale</li>
+  </ul>
+
+  <div class="onecoast">
+    <div class="onecoast-eyebrow">What 1Coast does about this</div>
+    <h4>We run the roadmap with you, in order</h4>
+    <p>Most businesses skip phases. They jump to ads before they have a website. They hire creators before they have a brand. <strong>We don't.</strong></p>
+    <p>1Coast Media engagements follow this exact phase order. We won't sell you Phase 4 work if your Phase 1 isn't done. <strong>We'd rather lose the engagement than waste your money.</strong> When you're ready, we move you through the phases at the pace your business can actually sustain — and then we step into Phase 5 with you for the long haul.</p>
+  </div>
+
+  <div class="pullquote">"Month one feels slow. Month twelve produces results that look impossible."</div>
+
+  <div class="makeitreal">
+    <div class="makeitreal-eyebrow">Make It Real · Part 08</div>
+    <h3>Pick your phase</h3>
+    <p class="makeitreal-sub">Honestly, where are you? The fastest way to fail is to skip ahead.</p>
+    <ul class="checklist" data-part="roadmap">
+      <li><input type="checkbox" id="ck-8-1" /><label for="ck-8-1">I'm in Phase 1 — brand, website, and basic infrastructure still need work.</label></li>
+      <li><input type="checkbox" id="ck-8-2" /><label for="ck-8-2">I'm in Phase 2 — foundation is done, conversion path needs to be built.</label></li>
+      <li><input type="checkbox" id="ck-8-3" /><label for="ck-8-3">I'm in Phase 3 — building the awareness engine, finding my cadence.</label></li>
+      <li><input type="checkbox" id="ck-8-4" /><label for="ck-8-4">I'm in Phase 4 — adding amplification through creators, referrals, loyalty.</label></li>
+      <li><input type="checkbox" id="ck-8-5" /><label for="ck-8-5">I'm in Phase 5 — compounding, refining, scaling the team.</label></li>
+      <li><input type="checkbox" id="ck-8-6" /><label for="ck-8-6">I've committed to building in order, not skipping ahead.</label></li>
+    </ul>
+  </div>
+
+  <div class="next-prompt">
+    <div class="next-prompt-eyebrow">Final part</div>
+    <p class="next-prompt-msg">Want the closing — Build the System, Trust the Compounding — sent to your inbox?</p>
+    <form class="inline-form" data-source="Part 08 · Roadmap">
+      <input type="email" name="email" placeholder="you@yourbusiness.com" required />
+      <button type="submit" class="btn">Send me the closing</button>
+    </form>
+    <div class="inline-form-success">✓ Sent. Check your inbox.</div>
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/ai" class="prev">
+      <div class="label">← Part 07</div>
+      <div class="title">Where AI Fits In</div>
+    </a>
+    <a href="#/closing" class="next">
+      <div class="label">Next · Part 09</div>
+      <div class="title">Closing &amp; What Comes Next</div>
+    </a>
+  </nav>
+</section>
+
+
+<!-- =========================================================
+     CLOSING
+     ========================================================= -->
+<section class="page" id="page-closing" data-route="/closing" hidden>
+  <div class="part-num">Part 09 · 09</div>
+  <div class="eyebrow">Closing</div>
+  <h2>Build the system. <em>Trust the compounding.</em></h2>
+  <p class="lede">Most businesses fail at marketing not because they lack effort but because they lack a system. The ones that compound are the ones that show up consistently across every pillar, with patience for the long horizon and discipline for the daily work.</p>
+
+  <p>They post when they remember. They run an ad when sales dip. They print business cards they hand out twice. They build a website and never update it. None of that compounds.</p>
+
+  <p>The businesses that compound are the ones that show up consistently across every pillar in this playbook, with patience for the long horizon and discipline for the daily work. <strong>None of this is glamorous. All of it works.</strong></p>
+
+  <div class="rule"></div>
+
+  <h3 id="why-coast">Why we made this</h3>
+  <p>I grew up on the Mississippi Gulf Coast. The people, the small businesses, the food, the beaches, the music — it's all part of who I am. I've always believed the Coast has more potential than it's been given credit for. But I also know how hard it is to grow a business here. Too many great businesses stay hidden. Too many good ideas never reach the people who'd love them.</p>
+  <p>1Coast Media exists to change that. <strong>When our businesses grow, our entire Coast grows.</strong> This playbook is the same methodology we use with the businesses we serve, written down so anyone — client or not — can use it.</p>
+
+  <p style="font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--charcoal); margin-top: 28px;">
+    Build the system. Trust the compounding. <strong style="font-style: normal;">Then keep showing up.</strong>
+  </p>
+
+  <div style="margin-top: 24px; font-family: var(--serif); font-size: 18px; font-style: italic; color: var(--charcoal);">— Blake Daniels</div>
+  <div style="font-family: var(--mono); font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: var(--ink); opacity: .6; margin-top: 4px;">Founder · 1Coast Media</div>
+
+  <div class="cta-block">
+    <div class="eyebrow">When you're ready to build</div>
+    <h3>We don't pitch. <em>We listen.</em></h3>
+    <p>If anything in this playbook felt useful and you want help putting it into practice, get in touch. We'll hear what you're trying to grow, tell you honestly whether we're the right fit, and point you somewhere else if we're not. No pressure. No pitch. Just a conversation.</p>
+    <a href="https://1coastmedia.com/contact" class="btn">Talk with 1Coast →</a>
+  </div>
+
+  <div class="stay">
+    <div class="stay-eyebrow">Stay in touch</div>
+    <h3>One thoughtful note a month. <em>That's it.</em></h3>
+    <p class="stay-sub">If you found this useful and want to hear when we publish more, leave your email. Phone is optional — we'll text you only when we'd want to be texted ourselves.</p>
+    <form class="inline-form-block" id="stayForm" data-source="Closing · Stay in touch">
+      <div class="stay-row">
+        <input type="email" class="stay-input" name="email" placeholder="you@yourbusiness.com" required aria-label="Email" />
+        <input type="tel" class="stay-input" name="phone" placeholder="Phone (optional)" aria-label="Phone" />
+      </div>
+      <div class="stay-checkbox-row">
+        <input type="checkbox" id="stay-kit" name="kit" />
+        <label for="stay-kit">Tell me when the Implementation Kit launches — templates, checklists, sequences. I'll be one of the first to see it.</label>
+      </div>
+      <button type="submit" class="btn full">Stay in touch</button>
+      <p class="stay-fineprint">No spam · No selling your email · Leave at any time · Built on the Coast</p>
+    </form>
+    <div class="inline-form-success" style="margin-top: 12px;">✓ You're in. We'll be in touch.</div>
+  </div>
+
+  <div style="margin-top: 60px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--ink); opacity: .55;">
+    Built on the Coast · No templates, no fluff, just results
+  </div>
+
+  <nav class="part-nav">
+    <a href="#/roadmap" class="prev">
+      <div class="label">← Part 08</div>
+      <div class="title">Implementation Roadmap</div>
+    </a>
+    <a href="#/" class="next">
+      <div class="label">Return to</div>
+      <div class="title">Cover</div>
+    </a>
+  </nav>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <img src="./assets/01-beacon-lockup-horizontal-cream.svg" alt="1Coast Media" class="footer-logo" />
+  <div class="footer-tag">Built on the Coast · <a href="https://1coastmedia.com">1coastmedia.com</a> · Volume 01</div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">Saved</div>
+
+
+<script>
+/* =========================================================
+   CONFIG — paste your signup endpoint URL below.
+   Examples:
+     'https://1coast-playbook-signup.onrender.com/api/playbook-signup'
+     '/api/playbook-signup'    (if the API runs on the same domain)
+   See deploy-instructions.md for the Render setup.
+   ========================================================= */
+const CONFIG = {
+  endpoint: 'PASTE_YOUR_RENDER_ENDPOINT_URL_HERE'
+};
+
+/* =========================================================
+   ROUTING — hash-based, each Part has its own URL
+   ========================================================= */
+const routes = ['/', '/foundation', '/brand', '/awareness', '/conversion', '/nurture', '/integration', '/ai', '/roadmap', '/closing'];
+
+function pageIdFor(route) {
+  if (route === '/') return 'page-cover';
+  return 'page-' + route.slice(1);
+}
+
+function showRoute(route) {
+  if (!routes.includes(route)) route = '/';
+  document.querySelectorAll('main > section.page').forEach(sec => {
+    sec.hidden = sec.id !== pageIdFor(route);
+  });
+  // Mark active in chapter index
+  document.querySelectorAll('.index-item').forEach(it => {
+    it.classList.toggle('active', it.dataset.target === route);
+  });
+  // Mark prior parts as read
+  const idx = routes.indexOf(route);
+  document.querySelectorAll('.index-item').forEach((it, i) => {
+    if (i > 0 && i < idx) {
+      it.classList.add('read');
+      try { localStorage.setItem('1coast.read.' + routes[i], '1'); } catch(e) {}
+    }
+  });
+  // Restore previously read state
+  routes.forEach((r, i) => {
+    if (i === 0) return;
+    try {
+      if (localStorage.getItem('1coast.read.' + r) === '1') {
+        const item = document.querySelector('.index-item[data-target="' + r + '"]');
+        if (item) item.classList.add('read');
+      }
+    } catch(e) {}
+  });
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+function currentRoute() {
+  const h = window.location.hash;
+  if (!h || h === '#') return '/';
+  return h.replace(/^#/, '') || '/';
+}
+
+window.addEventListener('hashchange', () => showRoute(currentRoute()));
+document.addEventListener('DOMContentLoaded', () => {
+  showRoute(currentRoute());
+  buildAssessment();
+  hydrateChecklists();
+  bindInlineForms();
+  bindAnchorLinks();
+});
+
+/* =========================================================
+   PROGRESS BAR — across all 9 sections
+   ========================================================= */
+function updateProgress() {
+  const route = currentRoute();
+  const idx = routes.indexOf(route);
+  const total = routes.length - 1; // 0 = cover, 9 routes -> 8 pages of progress
+  const pct = total > 0 ? Math.max(0, Math.min(100, (idx / total) * 100)) : 0;
+  const fill = document.getElementById('progressFill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+/* =========================================================
+   CHAPTER INDEX DRAWER
+   ========================================================= */
+const navToggle = document.getElementById('navToggle');
+const indexEl = document.getElementById('chapterIndex');
+const indexOverlay = document.getElementById('indexOverlay');
+const indexClose = document.getElementById('indexClose');
+function openIndex() { indexEl.classList.add('open'); indexOverlay.classList.add('open'); }
+function closeIndex() { indexEl.classList.remove('open'); indexOverlay.classList.remove('open'); }
+navToggle.addEventListener('click', openIndex);
+indexClose.addEventListener('click', closeIndex);
+indexOverlay.addEventListener('click', closeIndex);
+document.querySelectorAll('.index-item').forEach(it => {
+  it.addEventListener('click', closeIndex);
+});
+
+/* =========================================================
+   CHECKLISTS — saved per Part to localStorage
+   ========================================================= */
+function hydrateChecklists() {
+  document.querySelectorAll('.checklist').forEach(list => {
+    const part = list.dataset.part;
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      const key = '1coast.check.' + part + '.' + cb.id;
+      try {
+        if (localStorage.getItem(key) === '1') cb.checked = true;
+      } catch(e) {}
+      cb.addEventListener('change', () => {
+        try {
+          if (cb.checked) localStorage.setItem(key, '1');
+          else localStorage.removeItem(key);
+        } catch(e) {}
+        showToast(cb.checked ? 'Saved' : 'Removed');
+      });
+    });
+  });
+}
+
+/* =========================================================
+   INLINE FORM SUBMISSION — single handler for every signup
+   Posts to the Apps Script endpoint as form-encoded data
+   (avoids CORS preflight). Apps Script reads e.parameter.*
+   ========================================================= */
+function bindInlineForms() {
+  document.querySelectorAll('.inline-form, #stayForm').forEach(form => {
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      submitInlineForm(form);
+    });
+  });
+}
+
+async function submitInlineForm(form) {
+  const fd = new FormData(form);
+  const email = (fd.get('email') || '').toString().trim();
+  if (!email) return;
+
+  const payload = {
+    type: 'playbook_signup',
+    email,
+    phone: (fd.get('phone') || '').toString().trim(),
+    kit_interest: form.querySelector('[name="kit"]')?.checked ? 'yes' : 'no',
+    source: form.dataset.source || 'Unknown',
+    page_url: window.location.href,
+    timestamp_iso: new Date().toISOString(),
+    user_agent: navigator.userAgent
+  };
+
+  // Include assessment data if this form requests it (cover assessment capture)
+  if (form.dataset.includeAssessment === 'true') {
+    try {
+      const scores = JSON.parse(localStorage.getItem('1coast.assess') || '{}');
+      payload.assessment_scores = JSON.stringify(scores);
+      const enriched = enrichAssessment(scores);
+      payload.weakest_pillars = enriched.weakestLabels.join(', ');
+      payload.suggested_reading = enriched.suggestedParts.join(', ');
+    } catch(e) {}
+  }
+
+  // Save the most recent submission locally (so we can pre-fill if reader returns)
+  try { localStorage.setItem('1coast.last_submit', JSON.stringify(payload)); } catch(e) {}
+
+  // POST to Apps Script as URL-encoded form data — avoids CORS preflight
+  const endpoint = CONFIG.endpoint;
+  if (endpoint && endpoint.indexOf('PASTE') === -1) {
+    try {
+      const params = new URLSearchParams();
+      Object.keys(payload).forEach(k => params.append(k, payload[k] == null ? '' : String(payload[k])));
+      // Use no-cors mode + simple form post — Apps Script accepts this
+      await fetch(endpoint, {
+        method: 'POST',
+        body: params,
+        // headers intentionally omitted — URLSearchParams sets the right one
+      });
+    } catch(err) {
+      console.warn('Submit failed (will still mark UI as sent):', err);
+    }
+  } else {
+    console.info('CONFIG.endpoint not set — submission would have included:', payload);
+  }
+
+  // Mark UI as sent
+  form.classList.add('sent');
+  showToast('Sent. Check your inbox.');
+
+  // If this is the assessment capture, reveal results
+  if (form.dataset.includeAssessment === 'true') {
+    revealAssessmentResult();
+  }
+}
+
+/* =========================================================
+   SELF-ASSESSMENT — eleven pillars, 1-4 scale
+   ========================================================= */
+const PILLARS = [
+  { id: 'brand',     label: 'Brand & visual identity',  route: '/brand' },
+  { id: 'social',    label: 'Social media',             route: '/awareness' },
+  { id: 'content',   label: 'Content systems',          route: '/awareness' },
+  { id: 'pr',        label: 'PR & earned media',        route: '/awareness' },
+  { id: 'events',    label: 'Events',                   route: '/awareness' },
+  { id: 'creators',  label: 'Creator partnerships',     route: '/awareness' },
+  { id: 'website',   label: 'Website / UX',             route: '/conversion' },
+  { id: 'landing',   label: 'Landing pages',            route: '/conversion' },
+  { id: 'inperson',  label: 'In-person lead capture',   route: '/conversion' },
+  { id: 'sms_email', label: 'SMS & email nurture',      route: '/nurture' },
+  { id: 'loyalty',   label: 'Referrals & loyalty',      route: '/nurture' }
+];
+
+function buildAssessment() {
+  const grid = document.getElementById('assessGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const saved = (() => { try { return JSON.parse(localStorage.getItem('1coast.assess') || '{}'); } catch(e) { return {}; } })();
+
+  PILLARS.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'assess-row';
+    const label = document.createElement('div');
+    label.className = 'assess-pillar';
+    label.textContent = p.label;
+    const stars = document.createElement('div');
+    stars.className = 'assess-stars';
+    for (let i = 1; i <= 4; i++) {
+      const s = document.createElement('div');
+      s.className = 'assess-star';
+      s.dataset.value = i;
+      s.dataset.pillar = p.id;
+      if (saved[p.id] && i <= saved[p.id]) s.classList.add('active');
+      s.addEventListener('click', () => {
+        const v = parseInt(s.dataset.value, 10);
+        // visually fill 1..v in this row
+        stars.querySelectorAll('.assess-star').forEach(st => {
+          st.classList.toggle('active', parseInt(st.dataset.value, 10) <= v);
+        });
+        // save
+        const cur = (() => { try { return JSON.parse(localStorage.getItem('1coast.assess') || '{}'); } catch(e) { return {}; } })();
+        cur[p.id] = v;
+        try { localStorage.setItem('1coast.assess', JSON.stringify(cur)); } catch(e) {}
+      });
+      stars.appendChild(s);
+    }
+    row.appendChild(label);
+    row.appendChild(stars);
+    grid.appendChild(row);
+  });
+
+  // "See my reading order" — first reveal the email capture step
+  document.getElementById('assessSubmit').addEventListener('click', () => {
+    const cur = (() => { try { return JSON.parse(localStorage.getItem('1coast.assess') || '{}'); } catch(e) { return {}; } })();
+    const ratedCount = Object.keys(cur).length;
+    if (ratedCount < 6) {
+      const result = document.getElementById('assessResult');
+      result.innerHTML = '<h4>A few more to go</h4><p>Rate at least six pillars to get a useful reading order.</p>';
+      result.classList.add('shown');
+      return;
+    }
+    // Show the inline email step
+    document.getElementById('assessCapture').classList.add('shown');
+    document.getElementById('assessSubmit').style.display = 'none';
+    // Scroll into view
+    document.getElementById('assessCapture').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // Skip email — just show results
+  const skipBtn = document.getElementById('assessSkip');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      document.getElementById('assessCapture').style.display = 'none';
+      revealAssessmentResult();
+    });
+  }
+}
+
+/* =========================================================
+   ASSESSMENT HELPERS — used by both reveal and submission
+   ========================================================= */
+function enrichAssessment(scores) {
+  const scored = PILLARS.map(p => ({ ...p, score: scores[p.id] || 0 }));
+  const rated = scored.filter(p => p.score > 0);
+  rated.sort((a, b) => a.score - b.score);
+  const weakest = rated.slice(0, 3);
+  const partNames = {
+    '/brand': 'Part 2 — The Brand Layer',
+    '/awareness': 'Part 3 — The Awareness Pillars',
+    '/conversion': 'Part 4 — The Conversion Pillars',
+    '/nurture': 'Part 5 — The Nurture Pillars'
+  };
+  const routesToVisit = [...new Set(weakest.map(w => w.route))];
+  return {
+    weakest,
+    weakestLabels: weakest.map(w => w.label),
+    suggestedParts: routesToVisit.map(r => partNames[r] || r),
+    routesToVisit,
+    partNames
+  };
+}
+
+function revealAssessmentResult() {
+  const cur = (() => { try { return JSON.parse(localStorage.getItem('1coast.assess') || '{}'); } catch(e) { return {}; } })();
+  const enriched = enrichAssessment(cur);
+  const result = document.getElementById('assessResult');
+  let html = '<h4>Your reading order</h4>';
+  html += '<p>Your three weakest pillars: <strong>' + enriched.weakestLabels.join(', ') + '</strong>. Start here:</p>';
+  html += '<ol style="margin: 8px 0 12px 20px; padding: 0; color: var(--cream); opacity: .92;">';
+  enriched.routesToVisit.forEach(r => {
+    html += '<li style="margin-bottom: 4px;"><a href="#' + r + '">' + (enriched.partNames[r] || r) + '</a></li>';
+  });
+  html += '</ol>';
+  html += '<p style="font-size: 13px; opacity: .8;">Then come back for the rest. Or just <a href="#/foundation">start at Part 1</a> and read straight through — no wrong path.</p>';
+  result.innerHTML = html;
+  result.classList.add('shown');
+  setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+}
+
+/* =========================================================
+   ANCHOR COPY-LINK BUTTONS
+   ========================================================= */
+function bindAnchorLinks() {
+  document.querySelectorAll('.anchor-link').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const path = a.dataset.copy;
+      const url = window.location.origin + window.location.pathname + '#' + path;
+      try {
+        navigator.clipboard.writeText(url);
+        showToast('Link copied');
+      } catch(err) {
+        // fallback
+        const t = document.createElement('textarea');
+        t.value = url; document.body.appendChild(t); t.select();
+        try { document.execCommand('copy'); showToast('Link copied'); } catch(e2) {}
+        document.body.removeChild(t);
+      }
+    });
+  });
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('shown');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('shown'), 1800);
+}
+
+</script>
+</body>
+</html>

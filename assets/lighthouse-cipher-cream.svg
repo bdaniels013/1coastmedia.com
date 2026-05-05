@@ -1,0 +1,65 @@
+<svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="1Coast Media — Lighthouse cipher (Biloxi) on cream">
+  <title>1Coast Media — Lighthouse Cipher</title>
+  <desc>Architectural fine-line drawing of the Biloxi Lighthouse — anatomically refined, single stroke weight, restrained detail. Used as a supporting mark beside the wordmark.</desc>
+  <rect width="200" height="400" fill="#F4ECDC"/>
+
+  <!-- Tiny champagne lantern light (the only color accent) -->
+  <rect x="90" y="80" width="20" height="32" fill="#D4A35C" opacity=".88"/>
+
+  <g stroke="#1F1F22" stroke-width=".9" fill="none" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- Finial spike (lightning rod) -->
+    <line x1="100" y1="22" x2="100" y2="50"/>
+    <!-- Ball finial -->
+    <circle cx="100" cy="52" r="2.2"/>
+    <!-- Dome -->
+    <path d="M 76 66 A 24 22 0 0 1 124 66"/>
+    <!-- Connection from ball to dome top -->
+    <line x1="100" y1="54" x2="100" y2="62"/>
+    <!-- Cap base double rule -->
+    <line x1="74" y1="66" x2="126" y2="66"/>
+    <line x1="74" y1="68.5" x2="126" y2="68.5"/>
+    <!-- Lantern room frame -->
+    <path d="M 78 68.5 L 78 120 L 122 120 L 122 68.5"/>
+    <!-- Lantern crossbars (window mullions) -->
+    <line x1="100" y1="68.5" x2="100" y2="120"/>
+    <line x1="78" y1="94" x2="122" y2="94"/>
+    <!-- Lantern floor double rule -->
+    <line x1="74" y1="120" x2="126" y2="120"/>
+    <line x1="74" y1="122.5" x2="126" y2="122.5"/>
+    <!-- Watch room -->
+    <path d="M 82 122.5 L 82 145 L 118 145 L 118 122.5"/>
+    <!-- Watch room small window -->
+    <line x1="92" y1="130" x2="108" y2="130"/>
+    <line x1="92" y1="138" x2="108" y2="138"/>
+    <line x1="92" y1="130" x2="92" y2="138"/>
+    <line x1="108" y1="130" x2="108" y2="138"/>
+    <!-- Gallery deck triple rule -->
+    <line x1="68" y1="145" x2="132" y2="145"/>
+    <line x1="66" y1="148" x2="134" y2="148"/>
+    <line x1="68" y1="151" x2="132" y2="151"/>
+    <!-- Gallery railing posts -->
+    <line x1="74" y1="145" x2="74" y2="151"/>
+    <line x1="86" y1="145" x2="86" y2="151"/>
+    <line x1="98" y1="145" x2="98" y2="151"/>
+    <line x1="102" y1="145" x2="102" y2="151"/>
+    <line x1="114" y1="145" x2="114" y2="151"/>
+    <line x1="126" y1="145" x2="126" y2="151"/>
+    <!-- Tower body (tapered) -->
+    <path d="M 84 151 L 76 332 L 124 332 L 116 151"/>
+    <!-- Tower section bands (cast-iron joint suggestion) -->
+    <line x1="80" y1="194" x2="120" y2="194"/>
+    <line x1="80" y1="196" x2="120" y2="196"/>
+    <line x1="78.5" y1="240" x2="121.5" y2="240"/>
+    <line x1="78.5" y1="242" x2="121.5" y2="242"/>
+    <line x1="77" y1="288" x2="123" y2="288"/>
+    <line x1="77" y1="290" x2="123" y2="290"/>
+    <!-- Door (rounded top) -->
+    <path d="M 92 332 L 92 314 Q 92 308 100 308 Q 108 308 108 314 L 108 332"/>
+    <!-- Base plinth -->
+    <path d="M 68 332 L 68 344 L 132 344 L 132 332"/>
+    <!-- Lower step / foundation -->
+    <path d="M 60 344 L 60 356 L 140 356 L 140 344"/>
+    <!-- Ground line -->
+    <line x1="14" y1="356" x2="186" y2="356"/>
+  </g>
+</svg>
