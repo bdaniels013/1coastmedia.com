@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Take the 90-second fit check · 1Coast Media</title>
+  <meta name="description" content="Tell us what's actually broken. We'll tell you whether we're the right team to fix it. 90 seconds, no spam, no pitch." />
+  <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
+  <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/boring.css" />
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    /* =============================================================
+       1Coast funnel — single-page, mobile-first, problem-first
+       Stages: hook → diagnostic → branched questions → trust →
+       segmented solution. Built on Alpine for state, vanilla CSS
+       for layout. No external deps beyond what the rest of the
+       site already loads.
+       ============================================================= */
+
+    html, body { background: #000; min-height: 100vh; }
+    body { overflow-x: hidden; }
+
+    /* Fixed top brand bar — kept minimal so there's no escape hatch */
+    .fnl-topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(212,175,55,0.12);
+    }
+    .fnl-topbar .brand img { height: 30px; width: auto; display: block; }
+    .fnl-topbar .progress {
+      flex: 1; max-width: 360px; margin: 0 18px;
+      height: 4px; background: rgba(212,175,55,0.12); border-radius: 999px; overflow: hidden;
+    }
+    .fnl-topbar .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-warm), #f3d066);
+      border-radius: 999px;
+      transition: width .55s cubic-bezier(.22,.61,.36,1);
+      box-shadow: 0 0 18px rgba(212,175,55,0.45);
+    }
+    .fnl-topbar .progress.hidden { visibility: hidden; }
+    .fnl-topbar .step-meta {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--accent-warm);
+      white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      .fnl-topbar { padding: 12px 14px; }
+      .fnl-topbar .brand img { height: 26px; }
+      .fnl-topbar .progress { margin: 0 12px; }
+      .fnl-topbar .step-meta { font-size: 10px; letter-spacing: .2em; }
+    }
+
+    /* Stage shell — every stage centers its content within one viewport */
+    .fnl-stage {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 88px 24px 32px;
+      box-sizing: border-box;
+    }
+    .fnl-stage[x-cloak] { display: none; }
+
+    .fnl-inner {
+      width: 100%;
+      max-width: 720px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+
+    /* Hook stage typography */
+    .fnl-eyebrow {
+      display: inline-block;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px; letter-spacing: .36em; text-transform: uppercase;
+      color: var(--accent-warm);
+      padding: 6px 14px;
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+    .fnl-h1 {
+      font-size: clamp(36px, 7.5vw, 76px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.02;
+      text-transform: uppercase;
+      margin: 0 0 22px;
+    }
+    .fnl-h1 .gold { color: var(--accent-warm); }
+    .fnl-sub {
+      font-size: clamp(17px, 1.7vw, 21px);
+      line-height: 1.55;
+      color: var(--text-muted);
+      max-width: 56ch;
+      margin: 0 0 36px;
+    }
+    @media (max-width: 600px) {
+      .fnl-h1 { font-size: clamp(34px, 9vw, 56px); }
+      .fnl-sub { font-size: 17px; line-height: 1.5; margin-bottom: 28px; }
+    }
+
+    /* Question card */
+    .fnl-q-eyebrow {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--accent-warm);
+      margin-bottom: 18px;
+    }
+    .fnl-q-headline {
+      font-size: clamp(26px, 4.2vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.018em;
+      line-height: 1.15;
+      margin: 0 0 28px;
+      max-width: 24ch;
+    }
+    .fnl-options {
+      width: 100%;
+      display: flex; flex-direction: column; gap: 10px;
+      max-width: 540px;
+    }
+    .fnl-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 22px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.02);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 16px; font-weight: 500;
+      text-align: left; line-height: 1.4;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, transform .12s ease;
+      width: 100%;
+      font-family: inherit;
+    }
+    .fnl-option:hover {
+      border-color: var(--accent-warm);
+      background: rgba(212,175,55,0.05);
+      transform: translateY(-1px);
+    }
+    .fnl-option.is-selected {
+      border-color: var(--accent-warm);
+      background: rgba(212,175,55,0.08);
+      box-shadow: 0 0 0 1px var(--accent-warm), 0 12px 32px rgba(212,175,55,0.12);
+    }
+    .fnl-option .check {
+      width: 22px; height: 22px; border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all .15s ease;
+    }
+    .fnl-option.is-selected .check {
+      border-color: var(--accent-warm);
+      background: var(--accent-warm);
+      color: #000;
+    }
+    .fnl-option .check::before { content: '✓'; font-size: 14px; font-weight: 700; opacity: 0; transition: opacity .15s ease; }
+    .fnl-option.is-selected .check::before { opacity: 1; }
+
+    /* Free-text and contact-form fields */
+    .fnl-field {
+      width: 100%;
+      max-width: 540px;
+      margin-bottom: 14px;
+    }
+    .fnl-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-align: left;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .fnl-input, .fnl-textarea {
+      width: 100%;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 17px;
+      font-family: inherit;
+      transition: border-color .15s ease, background .15s ease;
+      box-sizing: border-box;
+    }
+    .fnl-input:focus, .fnl-textarea:focus {
+      outline: none;
+      border-color: var(--accent-warm);
+      background: rgba(212,175,55,0.04);
+    }
+    .fnl-textarea { min-height: 110px; resize: vertical; line-height: 1.45; }
+    .fnl-input::placeholder, .fnl-textarea::placeholder { color: rgba(245,241,230,0.35); }
+
+    /* Action button row */
+    .fnl-actions {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 540px;
+      justify-content: space-between;
+    }
+    .fnl-actions .left, .fnl-actions .right { display: flex; gap: 10px; }
+    .fnl-back {
+      background: transparent; border: 0; color: var(--text-muted);
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; padding: 8px 4px;
+      font-family: inherit;
+    }
+    .fnl-back:hover { color: var(--text); }
+    .fnl-back::before { content: '← '; opacity: 0.6; }
+
+    .fnl-cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 18px 32px;
+      background: var(--accent-warm);
+      color: #000;
+      border: 0; border-radius: 999px;
+      font-size: 17px; font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      box-shadow: 0 18px 40px rgba(212,175,55,0.28);
+      transition: transform .12s ease, box-shadow .15s ease, opacity .15s ease;
+      font-family: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .fnl-cta:hover { transform: translateY(-1px); box-shadow: 0 20px 50px rgba(212,175,55,0.35); }
+    .fnl-cta:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .fnl-cta-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      box-shadow: none;
+    }
+    .fnl-cta-ghost:hover { border-color: var(--text); background: rgba(255,255,255,0.04); box-shadow: none; }
+    .fnl-cta-lg { padding: 22px 38px; font-size: 19px; }
+    @media (max-width: 600px) {
+      .fnl-cta, .fnl-cta-lg { padding: 18px 28px; font-size: 17px; width: 100%; }
+      .fnl-actions { flex-direction: column-reverse; align-items: stretch; }
+      .fnl-actions .left, .fnl-actions .right { justify-content: center; width: 100%; }
+    }
+
+    /* Trust stage */
+    .fnl-trust-result {
+      max-width: 600px;
+      padding: 28px 28px;
+      background: rgba(212,175,55,0.04);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 18px;
+      margin: 0 0 28px;
+    }
+    .fnl-trust-result .stat-eyebrow {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--accent-warm); margin-bottom: 10px;
+    }
+    .fnl-trust-result .stat-body {
+      font-size: 19px; line-height: 1.5; color: var(--text);
+      font-weight: 500;
+    }
+    .fnl-logo-strip {
+      display: flex; align-items: center; justify-content: center;
+      gap: 36px; flex-wrap: wrap;
+      padding: 22px 0;
+      margin-bottom: 24px;
+      filter: grayscale(100%);
+      opacity: 0.55;
+    }
+    .fnl-logo-strip .client-name {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13px; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--text);
+    }
+    .fnl-philosophy {
+      font-size: 17px; line-height: 1.55; color: var(--text-muted);
+      max-width: 56ch; margin: 0 0 36px;
+      font-style: italic;
+    }
+
+    /* Solution stage */
+    .fnl-solution-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px; letter-spacing: .36em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
+    }
+    .fnl-solution-tag.t-hot { color: #ff8573; border: 1px solid rgba(255,74,58,0.45); background: rgba(255,74,58,0.05); }
+    .fnl-solution-tag.t-warm { color: var(--accent-warm); border: 1px solid rgba(212,175,55,0.4); background: rgba(212,175,55,0.05); }
+    .fnl-solution-tag.t-cool { color: #9ad7ff; border: 1px solid rgba(154,215,255,0.35); background: rgba(154,215,255,0.05); }
+    .fnl-solution-tag.t-project { color: #f3d066; border: 1px solid rgba(243,208,102,0.4); background: rgba(243,208,102,0.05); }
+
+    .fnl-solution-body {
+      font-size: clamp(17px, 1.7vw, 19px); line-height: 1.65; color: var(--text);
+      max-width: 60ch; text-align: left; margin: 0 0 32px;
+    }
+    .fnl-solution-body p { margin: 0 0 14px; }
+    .fnl-solution-body ul { margin: 14px 0 18px; padding-left: 0; list-style: none; }
+    .fnl-solution-body ul li {
+      padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 16px; color: var(--text-muted);
+    }
+    .fnl-solution-body ul li::before {
+      content: attr(data-week);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--accent-warm);
+      min-width: 60px; padding-top: 3px; flex-shrink: 0;
+    }
+    .fnl-solution-body ul li:first-child { border-top: 0; }
+
+    .fnl-solution-actions {
+      display: flex; flex-direction: column; gap: 12px; align-items: stretch;
+      width: 100%; max-width: 460px;
+      margin-top: 8px;
+    }
+    .fnl-solution-actions .fnl-cta { width: 100%; box-sizing: border-box; }
+
+    .fnl-secondary-link {
+      font-size: 14px; color: var(--text-muted); text-decoration: underline;
+      text-underline-offset: 4px; text-decoration-color: rgba(255,255,255,0.2);
+      margin-top: 14px;
+    }
+    .fnl-secondary-link:hover { color: var(--text); text-decoration-color: var(--accent-warm); }
+
+    .fnl-submit-status {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 18px;
+    }
+    .fnl-submit-status.ok { color: var(--accent-warm); }
+    .fnl-submit-status.err { color: #ff8573; }
+
+    /* Smooth scene-to-scene transitions */
+    [x-transition\\:enter] { transition: opacity .35s ease, transform .35s ease; }
+    [x-transition\\:enter-start] { opacity: 0; transform: translateY(12px); }
+    [x-transition\\:enter-end] { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body x-data="funnel()" x-init="init()" x-cloak>
+
+  <!-- Fixed top bar: brand on the left, progress in the middle, step counter on the right -->
+  <div class="fnl-topbar">
+    <a href="/" class="brand" aria-label="1Coast Media home">
+      <img src="./assets/1coast-lockup-gold-1x.jpg"
+           srcset="./assets/1coast-lockup-gold-1x.jpg 1x, ./assets/1coast-lockup-gold-2x.jpg 2x"
+           alt="1Coast Media" />
+    </a>
+    <div class="progress" :class="{ hidden: step === 'hook' || step === 'solution' }">
+      <div class="progress-fill" :style="`width: ${progressPct}%`"></div>
+    </div>
+    <span class="step-meta" x-text="stepMetaLabel"></span>
+  </div>
+
+  <!-- ================ STAGE 1: HOOK ================ -->
+  <section class="fnl-stage" x-show="step === 'hook'" x-transition>
+    <div class="fnl-inner">
+      <span class="fnl-eyebrow">90-second fit check</span>
+      <h1 class="fnl-h1">Your business deserves more than a logo and a <span class="gold">Facebook page.</span></h1>
+      <p class="fnl-sub">Take 90 seconds. We'll tell you what you actually need — and whether we're the right team to do it.</p>
+      <button @click="start()" class="fnl-cta fnl-cta-lg">Start the fit check →</button>
+    </div>
+  </section>
+
+  <!-- ================ STAGE 2: DIAGNOSTIC ================ -->
+  <section class="fnl-stage" x-show="step === 'diagnostic'" x-transition>
+    <div class="fnl-inner">
+      <div class="fnl-q-eyebrow">First question</div>
+      <h2 class="fnl-q-headline">What's the real reason you're here today?</h2>
+      <div class="fnl-options">
+        <template x-for="opt in diagnosticOptions" :key="opt.path">
+          <button class="fnl-option" @click="selectPath(opt.path)">
+            <span class="check"></span>
+            <span x-text="opt.label"></span>
+          </button>
+        </template>
+      </div>
+      <div class="fnl-actions" style="justify-content:flex-start">
+        <button class="fnl-back" @click="back()">Back</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ STAGE 3: BRANCHED QUESTIONS ================ -->
+  <section class="fnl-stage" x-show="step === 'questions' && currentQuestion" x-transition :key="`${path}-${qIndex}`">
+    <div class="fnl-inner">
+      <div class="fnl-q-eyebrow" x-text="`Question ${qIndex + 2} of ${totalSteps}`"></div>
+      <h2 class="fnl-q-headline" x-text="currentQuestion?.q"></h2>
+
+      <!-- SINGLE SELECT -->
+      <template x-if="currentQuestion?.kind === 'single'">
+        <div class="fnl-options">
+          <template x-for="opt in currentQuestion.options" :key="opt">
+            <button class="fnl-option" :class="{ 'is-selected': answers[currentQuestion.id] === opt }" @click="answerAndAdvance(currentQuestion.id, opt)">
+              <span class="check"></span>
+              <span x-text="opt"></span>
+            </button>
+          </template>
+        </div>
+      </template>
+
+      <!-- MULTI SELECT -->
+      <template x-if="currentQuestion?.kind === 'multi'">
+        <div style="width:100%;max-width:540px">
+          <div class="fnl-options">
+            <template x-for="opt in currentQuestion.options" :key="opt">
+              <button class="fnl-option" :class="{ 'is-selected': isMultiSelected(currentQuestion.id, opt) }" @click="toggleMulti(currentQuestion.id, opt)">
+                <span class="check"></span>
+                <span x-text="opt"></span>
+              </button>
+            </template>
+          </div>
+          <div class="fnl-actions">
+            <button class="fnl-back" @click="back()">Back</button>
+            <button class="fnl-cta" @click="next()" :disabled="!multiHasAnswer(currentQuestion.id)">Continue →</button>
+          </div>
+        </div>
+      </template>
+
+      <!-- FREE TEXT -->
+      <template x-if="currentQuestion?.kind === 'text'">
+        <form @submit.prevent="next()" style="width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center">
+          <div class="fnl-field">
+            <textarea class="fnl-textarea"
+                      x-model="answers[currentQuestion.id]"
+                      :placeholder="currentQuestion.placeholder || 'Type here...'"
+                      rows="3"
+                      autofocus></textarea>
+          </div>
+          <div class="fnl-actions">
+            <button type="button" class="fnl-back" @click="back()">Back</button>
+            <button type="submit" class="fnl-cta" :disabled="!answers[currentQuestion.id]?.trim()">Continue →</button>
+          </div>
+        </form>
+      </template>
+
+      <!-- CONTACT FORM (last step of every path except 5) -->
+      <template x-if="currentQuestion?.kind === 'contact'">
+        <form @submit.prevent="next()" style="width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center">
+          <div class="fnl-field">
+            <label for="fnl-name">Your name</label>
+            <input id="fnl-name" type="text" class="fnl-input" required
+                   x-model="contact.name" placeholder="First and last">
+          </div>
+          <div class="fnl-field">
+            <label for="fnl-email">Email</label>
+            <input id="fnl-email" type="email" class="fnl-input"
+                   :required="currentQuestion.requireEmail !== false"
+                   x-model="contact.email" placeholder="you@business.com">
+          </div>
+          <template x-if="currentQuestion.requirePhone !== false">
+            <div class="fnl-field">
+              <label for="fnl-phone">Phone (text-friendly)</label>
+              <input id="fnl-phone" type="tel" class="fnl-input"
+                     x-model="contact.phone" placeholder="(228) 555-0101">
+            </div>
+          </template>
+          <div class="fnl-actions">
+            <button type="button" class="fnl-back" @click="back()">Back</button>
+            <button type="submit" class="fnl-cta">Get my recommendation →</button>
+          </div>
+        </form>
+      </template>
+
+      <!-- OPTIONAL CONTACT (Path 5) -->
+      <template x-if="currentQuestion?.kind === 'contactOptional'">
+        <form @submit.prevent="next()" style="width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center">
+          <div class="fnl-field">
+            <label for="fnl-email-opt">Email (optional)</label>
+            <input id="fnl-email-opt" type="email" class="fnl-input"
+                   x-model="contact.email" placeholder="Only if you'd like a follow-up">
+          </div>
+          <div class="fnl-actions">
+            <button type="button" class="fnl-back" @click="back()">Back</button>
+            <button type="submit" class="fnl-cta">Done</button>
+          </div>
+        </form>
+      </template>
+    </div>
+  </section>
+
+  <!-- ================ STAGE 4: TRUST INJECTION ================ -->
+  <section class="fnl-stage" x-show="step === 'trust'" x-transition>
+    <div class="fnl-inner">
+      <div class="fnl-q-eyebrow">You're in good company</div>
+      <h2 class="fnl-q-headline">Real Gulf Coast businesses. Real results.</h2>
+
+      <!-- Featured client result. Refresh quarterly. -->
+      <div class="fnl-trust-result">
+        <div class="stat-eyebrow">Recent Campaign</div>
+        <div class="stat-body">Captain Al's Mardi Gras campaign hit 51,000 followers and a viral run that generated weeks of organic reach.</div>
+      </div>
+
+      <!-- Logo strip. Replace .client-name divs with real <img> tags
+           (drop logo files into /assets/clients/) when available. -->
+      <div class="fnl-logo-strip">
+        <span class="client-name">Captain Al's</span>
+        <span class="client-name">Captain's Wharf Marina</span>
+        <span class="client-name">+ more</span>
+      </div>
+
+      <p class="fnl-philosophy">"We don't do bloated retainers or busywork. We build what moves the needle, and we cut what doesn't."</p>
+
+      <div class="fnl-actions" style="justify-content:center">
+        <button class="fnl-back" @click="back()">Back</button>
+        <button class="fnl-cta fnl-cta-lg" @click="toSolution()">See your recommendation →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ STAGE 5: SOLUTION (segmented) ================ -->
+  <section class="fnl-stage" x-show="step === 'solution'" x-transition>
+    <div class="fnl-inner">
+
+      <!-- HOT VARIANT -->
+      <template x-if="temperature === 'HOT'">
+        <div style="width:100%;max-width:680px;display:flex;flex-direction:column;align-items:center">
+          <span class="fnl-solution-tag t-hot">Hot lead · highest priority</span>
+          <h2 class="fnl-h1" style="font-size:clamp(32px,5.5vw,52px);margin-bottom:22px">Here's what I'd do for you in the first 30 days.</h2>
+          <div class="fnl-solution-body">
+            <p>Based on what you shared, you're not in research mode — you need movement. Here's the play:</p>
+            <ul>
+              <li data-week="Week 1">Audit what you've got, identify the leaks, and lock in the strategy.</li>
+              <li data-week="Week 2">Production sprint — content, creative, or campaign assets built and ready.</li>
+              <li data-week="Week 3">Launch. Whether it's ads, organic, or a full rollout.</li>
+              <li data-week="Week 4">Measure, refine, and set the pace for month two.</li>
+            </ul>
+            <p>This is real work, not a deck. If you want it, the fastest path is to text me directly.</p>
+          </div>
+          <div class="fnl-solution-actions">
+            <a class="fnl-cta fnl-cta-lg" :href="smsHref" target="_blank">📱 Text Blake now</a>
+            <a class="fnl-cta fnl-cta-ghost" :href="calLong" target="_blank">Or book a 30-min call →</a>
+          </div>
+        </div>
+      </template>
+
+      <!-- WARM VARIANT -->
+      <template x-if="temperature === 'WARM'">
+        <div style="width:100%;max-width:680px;display:flex;flex-direction:column;align-items:center">
+          <span class="fnl-solution-tag t-warm">Strong fit · let's talk</span>
+          <h2 class="fnl-h1" style="font-size:clamp(32px,5.5vw,52px);margin-bottom:22px">Here's what fits you.</h2>
+          <div class="fnl-solution-body">
+            <p>You've got a clear need and you're moving deliberately — that's the right way to do this. Based on your answers, the best fit is likely our <strong x-text="recommendedPackage || 'Growth Machine'"></strong> tier. We'd want a 30-minute call to walk through the specifics, show you exactly what's included, and confirm whether we're the right team for you.</p>
+            <p>No pressure, no pitch deck. Just a real conversation.</p>
+          </div>
+          <div class="fnl-solution-actions">
+            <a class="fnl-cta fnl-cta-lg" :href="calLong" target="_blank">Book a 30-min call →</a>
+            <a class="fnl-cta fnl-cta-ghost" :href="smsHref" target="_blank">Or text Blake first</a>
+          </div>
+        </div>
+      </template>
+
+      <!-- COOL VARIANT -->
+      <template x-if="temperature === 'COOL'">
+        <div style="width:100%;max-width:680px;display:flex;flex-direction:column;align-items:center">
+          <span class="fnl-solution-tag t-cool">Just exploring · low-commitment intro</span>
+          <h2 class="fnl-h1" style="font-size:clamp(32px,5.5vw,52px);margin-bottom:22px">Let's just talk.</h2>
+          <div class="fnl-solution-body">
+            <p>You're still figuring out the shape of what you need — and that's the right time to have a conversation, not a sales pitch. Book a 15-minute call. No deck, no pressure. We'll talk through what you're working on and tell you honestly whether we can help, or point you somewhere that can.</p>
+          </div>
+          <div class="fnl-solution-actions">
+            <a class="fnl-cta fnl-cta-lg" :href="calShort" target="_blank">Book a 15-min intro call →</a>
+          </div>
+          <a class="fnl-secondary-link" :href="`mailto:hello@1coastmedia.com?subject=${emailSubject}`">Or send a quick email instead.</a>
+        </div>
+      </template>
+
+      <!-- PROJECT VARIANT -->
+      <template x-if="temperature === 'PROJECT'">
+        <div style="width:100%;max-width:680px;display:flex;flex-direction:column;align-items:center">
+          <span class="fnl-solution-tag t-project">One-off project · 24-hour quote</span>
+          <h2 class="fnl-h1" style="font-size:clamp(32px,5.5vw,52px);margin-bottom:22px">Let's scope it out.</h2>
+          <div class="fnl-solution-body">
+            <p>For one-off projects, we'll get you a quote within 24 hours. We've got everything we need to start the conversation — Blake will reach out with the next step.</p>
+          </div>
+          <div class="fnl-solution-actions">
+            <a class="fnl-cta fnl-cta-lg" :href="calLong" target="_blank">Confirm the project on a 30-min call →</a>
+            <a class="fnl-cta fnl-cta-ghost" :href="smsHref" target="_blank">Or text Blake to talk it through</a>
+          </div>
+        </div>
+      </template>
+
+      <p class="fnl-submit-status"
+         :class="{ ok: submitState === 'ok', err: submitState === 'err' }"
+         x-text="submitStatusText"></p>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       Funnel state machine + path definitions + segmentation logic
+       ============================================================= -->
+  <script>
+    function funnel() {
+      // Path definitions — ordered question lists per the spec.
+      // `kind` drives which renderer to use; `id` keys the answer.
+      const paths = {
+        '1': [
+          { id:'businessType', kind:'text', q:'What kind of business are you running?', placeholder:'e.g., boutique fitness studio in Biloxi' },
+          { id:'whatBroken',   kind:'single', q:"When you look at your marketing right now, what's actually broken?", options:[
+            "Nobody's seeing it",
+            "People see it but don't act",
+            "It looks unprofessional",
+            "I don't even have anything running",
+            "All of the above, honestly"
+          ]},
+          { id:'cost6mo',      kind:'single', q:"What's the cost of leaving this unfixed for another 6 months?", options:[
+            "We'd survive but stay stuck",
+            "We'd start losing ground to competitors",
+            "We could be in real trouble",
+            "I'm not sure"
+          ]},
+          { id:'budget',       kind:'single', q:"What's a realistic monthly investment to fix this?", options:[
+            "Under $1,000",
+            "$1,000–$3,000",
+            "$3,000–$7,000",
+            "$7,000+",
+            "I need help figuring that out"
+          ]},
+          { id:'timeline',     kind:'single', q:"When do you need movement?", options:[
+            "Yesterday",
+            "In the next 30 days",
+            "This quarter",
+            "Just exploring"
+          ]},
+          { id:'contact',      kind:'contact', q:"Last step — how do we reach you?" }
+        ],
+        '2': [
+          { id:'timeEater',    kind:'single', q:"What's eating most of your time right now?", options:[
+            "Posting on social",
+            "Responding to messages and comments",
+            "Making graphics or videos",
+            "Updating the website",
+            "All of it"
+          ]},
+          { id:'currentHelp',  kind:'single', q:"Who's helping you currently?", options:[
+            "Just me",
+            "Me and a spouse or family member",
+            "One employee",
+            "A freelancer here and there"
+          ]},
+          { id:'tenHours',     kind:'text', q:"If you got 10 hours back every week, what would you do with them?", placeholder:"Tells us what you actually value." },
+          { id:'budget',       kind:'single', q:"What's a realistic monthly investment to take this off your plate?", options:[
+            "Under $1,000",
+            "$1,000–$3,000",
+            "$3,000+",
+            "I need help figuring that out"
+          ]},
+          { id:'contact',      kind:'contact', q:"Last step — how do we reach you?" }
+        ],
+        '3': [
+          { id:'projectType',  kind:'single', q:"What do you need built or produced?", options:[
+            "A website or landing page",
+            "A video or video series",
+            "A photo shoot",
+            "Graphics or branding",
+            "An ad campaign",
+            "Something else"
+          ]},
+          { id:'deadline',     kind:'single', q:"When does this need to be done?", options:[
+            "Within 2 weeks",
+            "Within a month",
+            "Within 90 days",
+            "Flexible"
+          ]},
+          { id:'budget',       kind:'single', q:"Do you have a budget in mind?", options:[
+            "Under $2,500",
+            "$2,500–$7,500",
+            "$7,500+",
+            "Need a quote first"
+          ]},
+          { id:'contact',      kind:'contact', q:"Last step — how do we reach you?" }
+        ],
+        '4': [
+          { id:'companySize',  kind:'single', q:"Where's the business right now?", options:[
+            "Solo, ready to grow",
+            "2–10 people",
+            "10–50 people",
+            "50+"
+          ]},
+          { id:'inMotion',     kind:'multi', q:"What's already in motion? (pick all that apply)", options:[
+            "Social media (someone posting)",
+            "A website",
+            "Paid ads",
+            "PR or media presence",
+            "Email marketing",
+            "None of the above"
+          ]},
+          { id:'aggression',   kind:'single', q:"How aggressive do you want to be?", options:[
+            "Test the waters carefully",
+            "Steady, sustainable growth",
+            "Dominate the market"
+          ]},
+          { id:'budget',       kind:'single', q:"What's your monthly marketing budget look like?", options:[
+            "Under $3,000",
+            "$3,000–$7,000",
+            "$7,000–$15,000",
+            "$15,000+"
+          ]},
+          { id:'timeline',     kind:'single', q:"When do you want to start?", options:[
+            "Immediately",
+            "Next 30 days",
+            "Next quarter",
+            "Planning ahead"
+          ]},
+          { id:'contact',      kind:'contact', q:"Last step — how do we reach you?" }
+        ],
+        '5': [
+          { id:'businessType', kind:'text', q:"What kind of business are you in?", placeholder:"e.g., real estate, restaurant, agency" },
+          { id:'whyHere',      kind:'text', q:"What got you here today? Curious, comparing, or something specific on your mind?", placeholder:"No wrong answer." },
+          { id:'contact',      kind:'contactOptional', q:"Want us to follow up?", requirePhone:false, requireEmail:false }
+        ]
+      };
+
+      // Pre-defined diagnostic options (Stage 2 single-select)
+      const diagnosticOptions = [
+        { path:'1', label:"My marketing isn't bringing in business" },
+        { path:'2', label:"I'm drowning trying to do it all myself" },
+        { path:'3', label:"I've got a specific project I need handled" },
+        { path:'4', label:"I'm ready to scale and need a real team behind me" },
+        { path:'5', label:"Honestly, I'm just looking around" }
+      ];
+
+      // Single Google Calendar booking link (used for both 30-min and 15-min;
+      // when Blake creates a separate 15-min appointment type, swap calShort).
+      const CAL_LONG  = 'https://calendar.app.google/Ju7YT3cHtrb3ev2A7';
+      const CAL_SHORT = 'https://calendar.app.google/Ju7YT3cHtrb3ev2A7';
+      const PHONE     = '+12283578505';
+
+      return {
+        // ===== state =====
+        step: 'hook',          // 'hook' | 'diagnostic' | 'questions' | 'trust' | 'solution'
+        path: null,            // '1'..'5' once chosen
+        qIndex: 0,
+        answers: {},
+        contact: { name:'', email:'', phone:'' },
+        temperature: null,     // 'HOT' | 'WARM' | 'COOL' | 'PROJECT'
+        submitState: null,     // null | 'pending' | 'ok' | 'err'
+
+        diagnosticOptions,
+        paths,
+
+        init() {
+          // Fresh start every visit per Blake — no localStorage persistence.
+          // Listen for browser back gesture so the funnel feels native.
+          window.addEventListener('popstate', (e) => {
+            // If the user pops back into the funnel from outside, do nothing.
+            // Internal "back" is handled via the back button.
+          });
+        },
+
+        // ===== navigation =====
+        start() { this.step = 'diagnostic'; },
+
+        selectPath(p) {
+          this.path = p;
+          this.answers = { diagnostic: p };
+          this.qIndex = 0;
+          this.step = 'questions';
+        },
+
+        answerAndAdvance(qId, value) {
+          this.answers[qId] = value;
+          // Tiny delay so the user sees the selected state before transitioning
+          setTimeout(() => this.next(), 180);
+        },
+
+        toggleMulti(qId, opt) {
+          const current = Array.isArray(this.answers[qId]) ? this.answers[qId] : [];
+          const idx = current.indexOf(opt);
+          if (idx >= 0) current.splice(idx, 1); else current.push(opt);
+          this.answers[qId] = [...current];
+        },
+
+        isMultiSelected(qId, opt) {
+          return Array.isArray(this.answers[qId]) && this.answers[qId].includes(opt);
+        },
+
+        multiHasAnswer(qId) {
+          return Array.isArray(this.answers[qId]) && this.answers[qId].length > 0;
+        },
+
+        next() {
+          // If we just answered the contact step, save it onto answers
+          const cur = this.currentQuestion;
+          if (cur && (cur.kind === 'contact' || cur.kind === 'contactOptional')) {
+            this.answers.contact = { ...this.contact };
+          }
+          const list = paths[this.path] || [];
+          if (this.qIndex < list.length - 1) {
+            this.qIndex++;
+          } else {
+            this.step = 'trust';
+          }
+        },
+
+        back() {
+          if (this.step === 'questions' && this.qIndex > 0) { this.qIndex--; }
+          else if (this.step === 'questions') { this.step = 'diagnostic'; this.path = null; this.qIndex = 0; }
+          else if (this.step === 'diagnostic') { this.step = 'hook'; }
+          else if (this.step === 'trust') { this.step = 'questions'; this.qIndex = (paths[this.path] || []).length - 1; }
+        },
+
+        toSolution() {
+          this.computeTemperature();
+          this.step = 'solution';
+          this.submit(); // fire-and-forget; UI doesn't block on success
+        },
+
+        // ===== segmentation logic =====
+        // HOT     = Path 1 or 4 + top-2 budget + "yesterday" / "next 30 days"
+        // WARM    = Path 1, 2, or 4 + mid budget + "this quarter" (or generally a real prospect with budget)
+        // COOL    = Path 1, 2, 4 with "not sure" budget OR all of Path 5
+        // PROJECT = any Path 3 submission
+        computeTemperature() {
+          const p = this.path;
+          if (p === '3') { this.temperature = 'PROJECT'; return; }
+          if (p === '5') { this.temperature = 'COOL';    return; }
+
+          const b = this.answers.budget || '';
+          const t = this.answers.timeline || '';
+          const noBudget = /not sure|need help|figuring/i.test(b);
+
+          const TOP_BUDGETS = {
+            '1': ['$3,000–$7,000', '$7,000+'],
+            '2': ['$3,000+'],
+            '4': ['$7,000–$15,000', '$15,000+']
+          };
+          const MID_BUDGETS = {
+            '1': ['$1,000–$3,000'],
+            '2': ['$1,000–$3,000'],
+            '4': ['$3,000–$7,000']
+          };
+          const HOT_TIMELINES  = ['Yesterday', 'In the next 30 days', 'Immediately', 'Next 30 days'];
+          const WARM_TIMELINES = ['This quarter', 'Next quarter'];
+
+          const isHotBudget  = (TOP_BUDGETS[p] || []).includes(b);
+          const isMidBudget  = (MID_BUDGETS[p] || []).includes(b);
+          const isHotTime    = HOT_TIMELINES.includes(t);
+          const isWarmTime   = WARM_TIMELINES.includes(t);
+
+          if ((p === '1' || p === '4') && isHotBudget && isHotTime) {
+            this.temperature = 'HOT';
+          } else if (noBudget) {
+            this.temperature = 'COOL';
+          } else if ((p === '1' || p === '2' || p === '4') && (isHotBudget || isMidBudget)) {
+            this.temperature = 'WARM';
+          } else {
+            // Catch-all: if they answered everything but didn't fit hot/cool, treat as warm
+            this.temperature = 'WARM';
+          }
+        },
+
+        // ===== submission =====
+        async submit() {
+          if (this.submitState === 'pending' || this.submitState === 'ok') return;
+          this.submitState = 'pending';
+          try {
+            const res = await fetch('/api/funnel-submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                path: this.path,
+                temperature: this.temperature,
+                recommendedPackage: this.recommendedPackage,
+                answers: this.answers,
+                contact: this.contact,
+                submittedAt: new Date().toISOString(),
+                userAgent: navigator.userAgent
+              })
+            });
+            this.submitState = res.ok ? 'ok' : 'err';
+          } catch (_) {
+            this.submitState = 'err';
+          }
+        },
+
+        // ===== computed =====
+        get currentQuestion() {
+          if (this.step !== 'questions' || !this.path) return null;
+          return (paths[this.path] || [])[this.qIndex] || null;
+        },
+        get totalSteps() {
+          return 1 + (paths[this.path] || []).length + 1; // diagnostic + path Qs + trust
+        },
+        get progressPct() {
+          if (this.step === 'hook') return 0;
+          if (this.step === 'diagnostic') return Math.round((1 / this.totalSteps) * 100);
+          if (this.step === 'questions') return Math.round(((2 + this.qIndex) / this.totalSteps) * 100);
+          if (this.step === 'trust') return Math.round(((1 + (paths[this.path] || []).length + 1) / this.totalSteps) * 100);
+          return 100;
+        },
+        get stepMetaLabel() {
+          if (this.step === 'hook') return 'Step 1';
+          if (this.step === 'diagnostic') return `Step 1 of ${this.totalSteps}`;
+          if (this.step === 'questions') return `Step ${2 + this.qIndex} of ${this.totalSteps}`;
+          if (this.step === 'trust') return 'Almost there';
+          return 'Done';
+        },
+
+        // SMS prefill body — path-specific summary
+        get smsHref() {
+          const summary = this.smsSummary();
+          const name = this.contact.name ? ` — ${this.contact.name}` : '';
+          const body = `Hey Blake — just filled out your fit check. ${summary}${name}`;
+          return `sms:${PHONE}?&body=${encodeURIComponent(body)}`;
+        },
+        smsSummary() {
+          const p = this.path;
+          const a = this.answers;
+          if (p === '1') return `Real reason: marketing isn't bringing in business. Budget: ${a.budget || 'flexible'}. Timeline: ${a.timeline || 'TBD'}.`;
+          if (p === '2') return `Real reason: drowning trying to do it all. Time eater: ${a.timeEater || 'TBD'}. Budget: ${a.budget || 'flexible'}.`;
+          if (p === '3') return `Project: ${a.projectType || 'TBD'}. Need by: ${a.deadline || 'TBD'}. Budget: ${a.budget || 'TBD'}.`;
+          if (p === '4') return `Ready to scale. Size: ${a.companySize || 'TBD'}. Pace: ${a.aggression || 'TBD'}. Budget: ${a.budget || 'TBD'}.`;
+          if (p === '5') return `Just looking around. Wanted to introduce myself.`;
+          return '';
+        },
+
+        get calLong()  { return CAL_LONG; },
+        get calShort() { return CAL_SHORT; },
+
+        // Recommended package (only shown on WARM variant)
+        get recommendedPackage() {
+          if (this.temperature !== 'WARM') return null;
+          const b = this.answers.budget || '';
+          if (this.path === '4') {
+            if (b.includes('15,000') || b.includes('7,000–$15')) return 'Growth Partner';
+            if (b.includes('3,000–$7')) return 'Growth Machine';
+            return 'Growth Machine';
+          }
+          if (this.path === '1' || this.path === '2') {
+            if (b.includes('3,000–$7') || b.includes('$3,000+') || b.includes('7,000+')) return 'Growth Machine';
+            return 'Content Momentum';
+          }
+          return 'Growth Machine';
+        },
+
+        get emailSubject() {
+          return encodeURIComponent('1Coast fit check — quick question');
+        },
+
+        get submitStatusText() {
+          if (this.submitState === 'pending') return 'Sending your answers...';
+          if (this.submitState === 'ok')      return 'Sent. Blake will reach out shortly.';
+          if (this.submitState === 'err')     return 'Couldn\'t auto-send. Please use one of the buttons above.';
+          return '';
+        }
+      };
+    }
+  </script>
+
+</body>
+</html>
