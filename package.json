@@ -16,7 +16,8 @@
     "stripe": "^14.0.0",
     "cookie-parser": "^1.4.6",
     "googleapis": "^128.0.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16"
   },
   "keywords": ["1coastmedia", "offers", "services", "nodejs"],
   "author": "1CoastMedia",

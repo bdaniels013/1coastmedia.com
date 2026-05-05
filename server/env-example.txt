@@ -16,6 +16,17 @@ GA4_PROJECT_ID=your_project_id_here
 GA4_CLIENT_EMAIL=your_service_account_email@project.iam.gserviceaccount.com
 GA4_PRIVATE_KEY=path_to_your_private_key.json
 
+# Funnel SMTP (Gmail App Password)
+# /api/funnel-submit emails Blake every funnel completion + sends a
+# path-specific auto-reply to the prospect. Requires 2FA on the Gmail
+# account; generate the App Password at:
+#   https://myaccount.google.com/apppasswords
+GMAIL_USER=1coastmedia@gmail.com
+GMAIL_APP_PASSWORD=put_the_16_char_app_password_here_no_spaces
+# Optional. Defaults shown.
+# FUNNEL_NOTIFY_TO=1coastmedia@gmail.com
+# FUNNEL_FROM_NAME=1Coast Funnel
+
 # Environment
 NODE_ENV=production
 PORT=3000

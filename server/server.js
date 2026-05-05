@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 const { google } = require('googleapis');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1121,6 +1122,174 @@ app.post('/api/checkout', async (req, res) => {
       error: 'Failed to create checkout session',
       details: error.message 
     });
+  }
+});
+
+/* ============================================================
+   FUNNEL SUBMISSIONS ─ /api/funnel-submit
+
+   The diagnostic funnel at /funnel POSTs the full Q&A payload
+   here when the visitor reaches the solution page. We send two
+   emails via Gmail SMTP:
+
+   1. Notification to Blake (FUNNEL_NOTIFY_TO, defaults to GMAIL_USER)
+      with the full answer dump, lead temperature, recommended
+      package, and contact info.
+
+   2. Path-specific auto-reply to the prospect (only if they
+      provided an email). Reads as a personal note, not an
+      automated form receipt.
+
+   Required env vars:
+     GMAIL_USER          ─ Gmail address that auths the SMTP send
+     GMAIL_APP_PASSWORD  ─ 16-char Google App Password (not the
+                           regular account password)
+
+   Optional env vars:
+     FUNNEL_NOTIFY_TO    ─ Where Blake's notifications go
+                           (defaults to GMAIL_USER)
+     FUNNEL_FROM_NAME    ─ Display name on outgoing email
+                           (defaults to "1Coast Funnel")
+   ============================================================ */
+
+// Lazily build the SMTP transport on first use so the server still
+// boots cleanly when the funnel env vars aren't set yet.
+let _funnelMailer = null;
+function getFunnelMailer() {
+  if (_funnelMailer) return _funnelMailer;
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !pass) return null;
+  _funnelMailer = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user, pass }
+  });
+  return _funnelMailer;
+}
+
+// Pretty-print the answers payload for the Blake notification email.
+// Skips the raw `path` and `diagnostic` keys since they're already
+// surfaced higher up. Multi-select arrays render as comma lists.
+function formatAnswersForEmail(answers) {
+  if (!answers || typeof answers !== 'object') return '(none)';
+  const skip = new Set(['path', 'diagnostic', 'contact']);
+  const lines = [];
+  for (const [k, v] of Object.entries(answers)) {
+    if (skip.has(k) || v == null || v === '') continue;
+    const label = k.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
+    const value = Array.isArray(v) ? v.join(', ') : String(v);
+    lines.push(`${label}: ${value}`);
+  }
+  return lines.length ? lines.join('\n') : '(no answers)';
+}
+
+const PATH_LABELS = {
+  '1': "Marketing isn't bringing in business",
+  '2': "Drowning trying to do it all themselves",
+  '3': "Specific project they need handled",
+  '4': "Ready to scale, needs a real team",
+  '5': "Just looking around"
+};
+
+// Path-specific auto-reply templates. Each one opens with a question
+// tied to what the prospect just said so the message reads personal,
+// not automated. From the funnel spec.
+function autoReplyBody(path, contactName) {
+  const greet = contactName ? `Hey ${contactName.split(' ')[0]},` : 'Hey there,';
+  const sig   = '\n\nBlake\n1Coast Media\n(228) 357-8505';
+  const bodies = {
+    '1': `${greet}\n\nSaw your fit check come through. Quick one before we talk: when you said marketing isn't bringing in business, are you running any ads right now or is it all organic?\n\nReply to this email or text me at (228) 357-8505. I'll get back to you within the hour.${sig}`,
+    '2': `${greet}\n\nGot your fit check. Real quick: what's eating the most of your time today? Want to make sure we lead with the right thing on the call.\n\nReply to this email or text me at (228) 357-8505.${sig}`,
+    '3': `${greet}\n\nGot the project details. Before I send a quote, one question: is there a hard deadline tied to this, or is the timeline you gave me your ideal?\n\nReply to this email or text me at (228) 357-8505. I'll have a quote back within 24 hours.${sig}`,
+    '4': `${greet}\n\nSaw your fit check come through. Before we get on a call, what does dominating the market look like to you specifically? Helps me come prepared with the right plan.\n\nReply to this email or text me at (228) 357-8505.${sig}`,
+    '5': `${greet}\n\nAppreciate you taking the time to fill that out. No pitch from me. If anything specific comes up later, you have my number: (228) 357-8505.\n\nIn the meantime, the public services overview is here: https://1coastmedia.com/services${sig}`
+  };
+  return bodies[path] || bodies['5'];
+}
+
+const SUBJECT_BY_PATH = {
+  '1': 'Quick question on your marketing',
+  '2': 'Quick question before we talk',
+  '3': 'On your project',
+  '4': 'Before our call',
+  '5': 'Thanks for stopping by 1Coast Media'
+};
+
+app.post('/api/funnel-submit', async (req, res) => {
+  try {
+    const payload = req.body || {};
+    const { path: funnelPath, temperature, recommendedPackage, answers, contact, submittedAt, userAgent } = payload;
+
+    // Build the notification email body for Blake
+    const tempLabel = temperature || 'unscored';
+    const pathLabel = PATH_LABELS[funnelPath] || `Path ${funnelPath || '?'}`;
+    const contactBlock = contact && (contact.name || contact.email || contact.phone)
+      ? `Name:  ${contact.name || '(not given)'}\nEmail: ${contact.email || '(not given)'}\nPhone: ${contact.phone || '(not given)'}`
+      : '(no contact info provided)';
+    const answersBlock = formatAnswersForEmail(answers);
+    const recBlock = recommendedPackage ? `Recommended package: ${recommendedPackage}` : '';
+
+    const blakeBody = [
+      `New funnel submission — ${tempLabel} lead`,
+      '',
+      `Path: ${pathLabel}`,
+      recBlock,
+      '',
+      '--- Contact ---',
+      contactBlock,
+      '',
+      '--- Answers ---',
+      answersBlock,
+      '',
+      '--- Meta ---',
+      `Submitted: ${submittedAt || new Date().toISOString()}`,
+      `User-Agent: ${userAgent || '(unknown)'}`
+    ].filter(Boolean).join('\n');
+
+    const blakeSubject = `[${tempLabel}] Funnel: ${contact?.name || pathLabel}`;
+
+    const mailer = getFunnelMailer();
+    if (!mailer) {
+      console.error('[funnel] GMAIL_USER / GMAIL_APP_PASSWORD not set — cannot send notification');
+      return res.status(503).json({ ok: false, error: 'mail-transport-unavailable' });
+    }
+
+    const fromName = process.env.FUNNEL_FROM_NAME || '1Coast Funnel';
+    const notifyTo = process.env.FUNNEL_NOTIFY_TO || process.env.GMAIL_USER;
+    const fromAddr = `"${fromName}" <${process.env.GMAIL_USER}>`;
+
+    // 1) Send Blake the notification
+    await mailer.sendMail({
+      from: fromAddr,
+      to: notifyTo,
+      // Reply-to is the prospect when they gave one, so Blake can hit
+      // reply and the email goes to the prospect, not back to himself.
+      replyTo: contact?.email || undefined,
+      subject: blakeSubject,
+      text: blakeBody
+    });
+
+    // 2) Send the prospect a path-specific auto-reply (only if they
+    // gave an email). Don't fail the request if this errors — Blake
+    // already has the lead.
+    if (contact?.email) {
+      try {
+        await mailer.sendMail({
+          from: `"Blake Daniels" <${process.env.GMAIL_USER}>`,
+          to: contact.email,
+          replyTo: process.env.GMAIL_USER,
+          subject: SUBJECT_BY_PATH[funnelPath] || 'Thanks for your fit check',
+          text: autoReplyBody(funnelPath, contact.name)
+        });
+      } catch (autoErr) {
+        console.warn('[funnel] auto-reply send failed (non-fatal):', autoErr.message);
+      }
+    }
+
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error('[funnel] submission failed:', err);
+    return res.status(500).json({ ok: false, error: err.message });
   }
 });
 
