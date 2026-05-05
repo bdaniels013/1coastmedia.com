@@ -1293,6 +1293,118 @@ app.post('/api/funnel-submit', async (req, res) => {
   }
 });
 
+/* ============================================================
+   PLAYBOOK SIGNUPS ─ /api/playbook-signup
+
+   Every chapter of /playbook has an inline form (name="email")
+   that POSTs URL-encoded form data here. Forms use no-cors mode
+   to avoid CORS preflight, so the response body is ignored ─
+   we just need a 2xx for the connection to close cleanly.
+
+   Two emails per signup:
+   1. Notification to Blake with the chapter source, optional
+      assessment scores, and metadata.
+   2. Personal-feeling thank-you to the prospect with the
+      playbook URL and an invite to text Blake direct.
+   ============================================================ */
+
+// Body parser for URL-encoded form posts (the playbook uses
+// URLSearchParams which sends application/x-www-form-urlencoded).
+// JSON body parser is already mounted globally; this just adds the
+// urlencoded one alongside it.
+app.use('/api/playbook-signup', express.urlencoded({ extended: false }));
+
+app.post('/api/playbook-signup', async (req, res) => {
+  try {
+    const p = req.body || {};
+    const email = (p.email || '').trim();
+    if (!email || !/.+@.+\..+/.test(email)) {
+      return res.status(400).send('invalid email');
+    }
+
+    const source       = p.source || 'Unknown chapter';
+    const phone        = (p.phone || '').trim();
+    const kitInterest  = p.kit_interest === 'yes';
+    const pageUrl      = p.page_url || '';
+    const submittedAt  = p.timestamp_iso || new Date().toISOString();
+    const userAgent    = p.user_agent || '';
+    const weakest      = p.weakest_pillars || '';
+    const suggested    = p.suggested_reading || '';
+
+    const blakeBody = [
+      `New playbook signup: ${email}`,
+      '',
+      `Source chapter:  ${source}`,
+      phone        ? `Phone:           ${phone}`            : null,
+      kitInterest  ? `Kit interest:    YES (wants the print kit)` : null,
+      weakest      ? `Weakest pillars: ${weakest}`          : null,
+      suggested    ? `Suggested next:  ${suggested}`        : null,
+      '',
+      '--- Meta ---',
+      `Page URL:    ${pageUrl}`,
+      `Submitted:   ${submittedAt}`,
+      `User-Agent:  ${userAgent}`
+    ].filter(Boolean).join('\n');
+
+    const mailer = getFunnelMailer();
+    if (!mailer) {
+      console.error('[playbook] GMAIL_USER / GMAIL_APP_PASSWORD not set');
+      // Still return 200 so the form UI doesn't appear broken to the visitor.
+      // Blake just won't get the notification, which we'll log loudly.
+      return res.status(200).send('ok-no-mail');
+    }
+
+    const fromName = process.env.FUNNEL_FROM_NAME || '1Coast Playbook';
+    const notifyTo = process.env.FUNNEL_NOTIFY_TO || process.env.GMAIL_USER;
+    const fromAddr = `"${fromName}" <${process.env.GMAIL_USER}>`;
+
+    // 1) Notification to Blake
+    await mailer.sendMail({
+      from: fromAddr,
+      to: notifyTo,
+      replyTo: email, // hitting reply goes to the prospect, not back to Blake
+      subject: `[Playbook] ${email} (${source})`,
+      text: blakeBody
+    });
+
+    // 2) Thank-you to the prospect (non-fatal if it errors)
+    try {
+      const thanksBody = [
+        `Hey,`,
+        '',
+        `Thanks for grabbing the playbook. The full version is here whenever you want to come back to it:`,
+        '',
+        `https://1coastmedia.com/playbook`,
+        '',
+        `It's the same framework we use with every client. Twelve months, five phases, one system. No upsells in there ─ just the playbook.`,
+        '',
+        `If you want to talk through how any of it would actually work for your business, the fastest path is to text me at (228) 357-8505 or reply to this email.`,
+        '',
+        `Blake`,
+        `1Coast Media`,
+        `(228) 357-8505`
+      ].join('\n');
+
+      await mailer.sendMail({
+        from: `"Blake Daniels" <${process.env.GMAIL_USER}>`,
+        to: email,
+        replyTo: process.env.GMAIL_USER,
+        subject: 'Thanks for grabbing the playbook',
+        text: thanksBody
+      });
+    } catch (thanksErr) {
+      console.warn('[playbook] thank-you send failed (non-fatal):', thanksErr.message);
+    }
+
+    return res.status(200).send('ok');
+  } catch (err) {
+    console.error('[playbook] signup failed:', err);
+    // Return 200 even on internal error so the form UI doesn't break for
+    // the visitor. The error is logged for Blake to see in Render logs.
+    return res.status(200).send('ok-error-logged');
+  }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 

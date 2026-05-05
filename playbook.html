@@ -2062,7 +2062,8 @@
    See deploy-instructions.md for the Render setup.
    ========================================================= */
 const CONFIG = {
-  endpoint: 'PASTE_YOUR_RENDER_ENDPOINT_URL_HERE'
+  // Same-origin POST to Express server. Form is URL-encoded so no CORS preflight.
+  endpoint: '/api/playbook-signup'
 };
 
 /* =========================================================
