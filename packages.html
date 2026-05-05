@@ -564,35 +564,39 @@
   <footer class="footer">
     <div class="wrap">
       <div class="footer-grid">
+        <!-- Brand block: lockup + tagline + back to public site -->
         <div>
-          <a href="/" class="nav-brand" aria-label="1Coast Media home"><img src="./assets/1coast-lockup-gold-1x.jpg" srcset="./assets/1coast-lockup-gold-1x.jpg 1x, ./assets/1coast-lockup-gold-2x.jpg 2x" alt="1Coast Media" /></a>
-          <p style="max-width:36ch; margin-top:12px">Your Gulf Coast growth partner. Marketing, content, and growth systems built to elevate the Coast.</p>
+          <a href="/" class="nav-brand" style="margin-bottom:14px" aria-label="1Coast Media home">
+            <img src="./assets/1coast-lockup-gold-1x.jpg"
+                 srcset="./assets/1coast-lockup-gold-1x.jpg 1x, ./assets/1coast-lockup-gold-2x.jpg 2x"
+                 alt="1Coast Media" style="height:44px; width:auto;" />
+          </a>
+          <p style="max-width:36ch; margin:14px 0 0; line-height:1.55;">Private sales-presentation page. Share by direct URL only.</p>
+          <a href="/" class="footer-cta">Back to the public site</a>
         </div>
+        <!-- Private cross-links (Blake uses these while presenting) -->
         <div>
-          <h5>Services</h5>
+          <h5>Private sales tools</h5>
           <ul>
-            <li><a href="/services">Core services</a></li>
+            <li><a href="/packages">All packages</a></li>
+            <li><a href="/offer-comparison">Compare packages</a></li>
             <li><a href="/enterprise-solutions">Enterprise</a></li>
-            <li><a href="/offer-comparison">Compare offers</a></li>
           </ul>
         </div>
+        <!-- Contact column -->
         <div>
-          <h5>Company</h5>
+          <h5>Contact</h5>
           <ul>
-            <li><a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank">Book a call</a></li>
             <li><a href="tel:+12283578505">(228) 357-8505</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5>Coast</h5>
-          <ul>
+            <li><a href="sms:+12283578505?body=Hey%20Blake%2C">Text Blake direct</a></li>
+            <li><a href="mailto:hello@1coastmedia.com">hello@1coastmedia.com</a></li>
             <li>Mississippi Gulf Coast</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© <span id="year"></span> 1CoastMedia. All rights reserved.</div>
-        <div>Built on the Coast.</div>
+        <span>&copy; <span x-text="new Date().getFullYear()">2026</span> 1Coast Media. All rights reserved.</span>
+        <span>Built on the Coast.</span>
       </div>
     </div>
   </footer>

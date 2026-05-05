@@ -369,27 +369,55 @@ img { max-width: 100%; display: block; }
 
 /* -------- Footer -------- */
 .footer {
+  position: relative;
   border-top: 1px solid var(--border);
-  padding: 64px 0 32px;
+  padding: 72px 0 32px;
   margin-top: 96px;
   color: var(--text-muted);
   font-size: 15px;
+  /* Subtle gold accent at the very top so the footer reads as part of
+     the brand instead of generic boilerplate. */
+  background:
+    linear-gradient(180deg, rgba(212, 163, 92, 0.04) 0%, rgba(212, 163, 92, 0) 90px),
+    var(--bg);
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 163, 92, 0.55), transparent);
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
 }
-@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 28px; } }
 .footer h5 {
   font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--text); margin: 0 0 16px; font-weight: 700;
 }
 .footer ul { list-style: none; padding: 0; margin: 0; }
 .footer ul li { padding: 6px 0; }
-.footer ul a:hover { color: var(--text); }
+.footer ul a { color: var(--text-muted); }
+.footer ul a:hover { color: var(--accent-warm); }
+/* Gold mini-CTA inside the footer brand block (Take the fit check) */
+.footer-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  padding: 12px 22px; border-radius: 999px;
+  background: var(--accent-warm); color: #000;
+  font-weight: 700; font-size: 14px;
+  letter-spacing: .04em;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(212, 163, 92, 0.25);
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+.footer-cta:hover { transform: translateY(-1px); box-shadow: 0 16px 36px rgba(212, 163, 92, 0.32); color: #000; }
 .footer-bottom {
-  margin-top: 48px; padding-top: 24px;
+  margin-top: 56px; padding-top: 24px;
   border-top: 1px solid var(--border);
   display: flex; justify-content: space-between; gap: 16px;
   font-size: 13px; color: var(--text-dim); flex-wrap: wrap;

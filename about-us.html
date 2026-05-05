@@ -402,11 +402,15 @@
     </div>
   </section>
 
-  <!-- Call CTA -->
+  <!-- Closing CTA. Fit check is the primary path; the call button stays
+       as a secondary option for visitors who want to talk directly. -->
   <section class="section-tight">
     <div class="wrap center">
-      <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now for a free consultation</a>
-      <p class="muted mt-4" style="font-size:14px">Or dial (228) 357-8505</p>
+      <div style="display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;">
+        <a href="/funnel" class="btn btn-primary btn-lg">Take the 90-second fit check &rarr;</a>
+        <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Or call now</a>
+      </div>
+      <p class="muted mt-4" style="font-size:14px">Or text Blake direct: <a href="sms:+12283578505" style="color:var(--accent-warm)">(228) 357-8505</a></p>
     </div>
   </section>
 
@@ -428,39 +432,40 @@
   <footer class="footer">
     <div class="wrap">
       <div class="footer-grid">
+        <!-- Brand block: lockup + tagline + funnel CTA -->
         <div>
-          <a href="/" class="nav-brand" style="margin-bottom:16px" aria-label="1Coast Media home">
+          <a href="/" class="nav-brand" style="margin-bottom:14px" aria-label="1Coast Media home">
             <img src="./assets/1coast-lockup-gold-1x.jpg"
                  srcset="./assets/1coast-lockup-gold-1x.jpg 1x, ./assets/1coast-lockup-gold-2x.jpg 2x"
                  alt="1Coast Media" style="height:44px; width:auto;" />
           </a>
-          <p style="max-width:36ch; margin-top:12px">Your Gulf Coast growth partner. Marketing, content, and growth systems built to elevate the Coast.</p>
+          <p style="max-width:36ch; margin:14px 0 0; line-height:1.55;">Your Gulf Coast growth partner. Content, marketing, and growth systems built to elevate the Coast.</p>
+          <a href="/funnel" class="footer-cta">Take the fit check &rarr;</a>
         </div>
+        <!-- Site links -->
         <div>
-          <h5>Services</h5>
+          <h5>Site</h5>
           <ul>
-            <li><a href="/services">Core services</a></li>
-            <li><a href="/enterprise-solutions">Enterprise</a></li>
-            <li><a href="/offer-comparison">Compare offers</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/about-us">About</a></li>
+            <li><a href="/funnel">Take the fit check</a></li>
+            <li><a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" rel="noopener">Book a call</a></li>
           </ul>
         </div>
+        <!-- Contact column -->
         <div>
-          <h5>Company</h5>
+          <h5>Contact</h5>
           <ul>
-            <li><a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank">Book a call</a></li>
             <li><a href="tel:+12283578505">(228) 357-8505</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5>Coast</h5>
-          <ul>
+            <li><a href="sms:+12283578505?body=Hey%20Blake%2C%20I%20saw%20your%20site%20and%20I%27d%20like%20to%20talk%20about%20">Text Blake direct</a></li>
+            <li><a href="mailto:hello@1coastmedia.com">hello@1coastmedia.com</a></li>
             <li>Mississippi Gulf Coast</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <div>© <span x-text="new Date().getFullYear()"></span> 1CoastMedia. All rights reserved.</div>
-        <div>Built on the Coast.</div>
+        <span>&copy; <span x-text="new Date().getFullYear()">2026</span> 1Coast Media. All rights reserved.</span>
+        <span>Built on the Coast.</span>
       </div>
     </div>
   </footer>
