@@ -14,14 +14,14 @@
   <link rel="stylesheet" href="./assets/boring.css" />
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
-    /* Visual Sales Module — scroll-driven embed (homepage only)
+    /* Visual Sales Module. Scroll-driven embed (homepage only)
        Outer .vsm-scroll is tall (500vh). The inner .vsm-sticky pins to the
        top of the viewport for the full length of the outer section. A small
        script in the body maps the user's scroll progress through .vsm-scroll
        to the module's timeline (0 → duration) via postMessage. */
     .vsm-scroll {
       position: relative;
-      height: 1900vh;            /* scroll budget: 19 viewports — paired with lerp smoothing for a silky cinematic scrub */
+      height: 1900vh;            /* scroll budget: 19 viewports paired with lerp smoothing for a silky cinematic scrub */
       background: #000;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -193,7 +193,7 @@
   <script>
     /* Drive the Visual Sales Module from scroll position, with lerp smoothing.
        targetProgress  = where raw scroll says we should be (0..1).
-       currentProgress = where we're actually telling the iframe to be —
+       currentProgress = where we're actually telling the iframe to be.
                          eased toward target so wheel/touchpad jitter,
                          momentum, and frame drops all feel buttery instead
                          of jumpy. The cinematic scrub also feels slower
@@ -283,6 +283,23 @@
       lastSent = currentProgress;
     })();
   </script>
+
+  <!-- Funnel entry. Sits right under the VSM as the "exit ramp" off the
+       cinematic. Single, high-contrast CTA into the diagnostic funnel. -->
+  <section style="padding: 88px 24px; background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,.08), transparent 60%), #000; border-top: 1px solid rgba(212,175,55,0.18); border-bottom: 1px solid rgba(212,175,55,0.18); text-align: center;">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <span style="display:inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .36em; text-transform: uppercase; color: var(--accent-warm); padding: 6px 14px; border: 1px solid rgba(212,175,55,0.3); border-radius: 999px; margin-bottom: 22px;">Take the fit check</span>
+      <h2 style="font-size: clamp(34px, 5.5vw, 60px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; text-transform: uppercase; margin: 0 0 18px;">
+        Want to know what your business <span style="color: var(--accent-warm);">actually needs?</span>
+      </h2>
+      <p style="font-size: clamp(17px, 1.7vw, 20px); line-height: 1.55; color: var(--text-muted); max-width: 56ch; margin: 0 auto 32px;">
+        90 seconds. Five honest questions. We'll tell you what fits, and whether we're the right team to do it. No pitch deck, no spam.
+      </p>
+      <a href="/funnel" style="display: inline-flex; align-items: center; gap: 10px; padding: 22px 38px; background: var(--accent-warm); color: #000; border-radius: 999px; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; text-decoration: none; box-shadow: 0 22px 48px rgba(212,175,55,0.32);">
+        Start the fit check →
+      </a>
+    </div>
+  </section>
 
   <!-- Call CTA -->
   <section class="section-tight">
