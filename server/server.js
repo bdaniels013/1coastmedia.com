@@ -1167,6 +1167,117 @@ function getFunnelMailer() {
   return _funnelMailer;
 }
 
+/* ============================================================
+   BRANDED EMAIL TEMPLATE
+
+   Wraps a plain-text body in a 1Coast-branded HTML email shell:
+   centered 600px card, cream background, lockup at the top,
+   gold accent line, contact footer. Inline styles only because
+   email clients strip <style> blocks. Table-based outer layout
+   for Outlook compatibility.
+
+   Usage:
+     wrapEmailHtml({
+       preheader: 'A short preview line shown in the inbox',
+       body: 'Plain-text body. Newlines become <br>. Blank lines split paragraphs.'
+     })
+   ============================================================ */
+const SITE_URL  = process.env.PUBLIC_SITE_URL || 'https://1coastmedia.com';
+const LOGO_URL  = `${SITE_URL}/assets/1coast-lockup-cream-2x.png`;
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Convert a plain-text body into HTML paragraphs. Blank lines split
+// paragraphs; single newlines become <br>. Auto-link URLs.
+function bodyToHtml(text) {
+  const escaped = escapeHtml(text);
+  const linked  = escaped.replace(
+    /(https?:\/\/[^\s<]+)/g,
+    '<a href="$1" style="color:#9a7b3a;text-decoration:underline;">$1</a>'
+  );
+  return linked
+    .split(/\n\s*\n/)
+    .map(p => `<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#1f1f22;">${p.replace(/\n/g, '<br>')}</p>`)
+    .join('\n');
+}
+
+function wrapEmailHtml({ preheader = '', body = '' } = {}) {
+  const bodyHtml = bodyToHtml(body);
+  const pre = preheader ? `<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}</div>` : '';
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>1Coast Media</title>
+</head>
+<body style="margin:0;padding:0;background:#f4ecdc;font-family:Georgia,'Times New Roman',serif;color:#1f1f22;-webkit-font-smoothing:antialiased;">
+${pre}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4ecdc;padding:32px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border:1px solid #e8d9b6;border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(31,31,34,0.06);">
+
+        <!-- Header: lockup -->
+        <tr>
+          <td align="center" style="padding:36px 40px 12px;background:#f4ecdc;">
+            <a href="${SITE_URL}" style="text-decoration:none;display:inline-block;">
+              <img src="${LOGO_URL}" alt="1Coast Media" width="220" style="display:block;width:220px;max-width:60%;height:auto;border:0;outline:none;" />
+            </a>
+          </td>
+        </tr>
+
+        <!-- Gold accent line -->
+        <tr>
+          <td style="padding:0 40px;background:#f4ecdc;">
+            <div style="height:1px;background:linear-gradient(90deg,transparent,#c8a96b 30%,#c8a96b 70%,transparent);line-height:1px;font-size:1px;">&nbsp;</div>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:32px 40px 28px;background:#ffffff;font-family:Georgia,'Times New Roman',serif;color:#1f1f22;">
+            ${bodyHtml}
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:24px 40px 32px;background:#1f1f22;color:#e6e1d3;font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="vertical-align:top;">
+                  <div style="font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#c8a96b;margin-bottom:8px;">1Coast Media</div>
+                  <div style="color:#e6e1d3;">Blake Daniels &middot; Founder</div>
+                  <div style="color:#a39d8c;margin-top:4px;">Mississippi Gulf Coast</div>
+                </td>
+                <td align="right" style="vertical-align:top;font-size:13px;">
+                  <a href="tel:+12283578505" style="color:#e6e1d3;text-decoration:none;">(228) 357-8505</a><br>
+                  <a href="sms:+12283578505" style="color:#a39d8c;text-decoration:none;">Text Blake direct</a><br>
+                  <a href="${SITE_URL}" style="color:#a39d8c;text-decoration:none;">1coastmedia.com</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>`;
+}
+
 // Pretty-print the answers payload for the Blake notification email.
 // Skips the raw `path` and `diagnostic` keys since they're already
 // surfaced higher up. Multi-select arrays render as comma lists.
@@ -1266,7 +1377,11 @@ app.post('/api/funnel-submit', async (req, res) => {
       // reply and the email goes to the prospect, not back to himself.
       replyTo: contact?.email || undefined,
       subject: blakeSubject,
-      text: blakeBody
+      text: blakeBody,
+      html: wrapEmailHtml({
+        preheader: `${tempLabel} lead from the funnel.`,
+        body: blakeBody
+      })
     });
 
     // 2) Send the prospect a path-specific auto-reply (only if they
@@ -1274,12 +1389,17 @@ app.post('/api/funnel-submit', async (req, res) => {
     // already has the lead.
     if (contact?.email) {
       try {
+        const autoText = autoReplyBody(funnelPath, contact.name);
         await mailer.sendMail({
           from: `"Blake Daniels" <${process.env.GMAIL_USER}>`,
           to: contact.email,
           replyTo: process.env.GMAIL_USER,
           subject: SUBJECT_BY_PATH[funnelPath] || 'Thanks for your fit check',
-          text: autoReplyBody(funnelPath, contact.name)
+          text: autoText,
+          html: wrapEmailHtml({
+            preheader: SUBJECT_BY_PATH[funnelPath] || 'Thanks for your fit check',
+            body: autoText
+          })
         });
       } catch (autoErr) {
         console.warn('[funnel] auto-reply send failed (non-fatal):', autoErr.message);
@@ -1331,42 +1451,24 @@ app.post('/api/playbook-signup', async (req, res) => {
     const weakest      = p.weakest_pillars || '';
     const suggested    = p.suggested_reading || '';
 
-    // Per-chapter follow-up suggestions. Match by prefix so "Part 01 · Foundation"
-    // hits the same template as just "Part 01". Blake gets a clear next-step
-    // task instead of having to guess what to send and when.
+    // Universal next-step instruction. The chapter source tells Blake what
+    // the prospect was thinking about; his job is to open a conversation,
+    // not deliver a pre-built asset he doesn't have. When he builds out
+    // chapter-specific resources later, swap this for a lookup table.
     function nextStepFor(src) {
+      // Window length scales with how late in the playbook they signed up.
+      // Cover / Part 01 / Closing = 24h. Mid-book chapters = 48h. Late chapters = 72h.
       const s = (src || '').toLowerCase();
-      if (s.includes('cover') || s.includes('self-assess')) {
-        return { send: 'Personal welcome email + a deeper read on their #1 weakest pillar from the assessment. Pick one specific tactical fix they can do this week.', when: 'Within 24 hours.' };
+      let when = 'Within 48 hours.';
+      if (s.includes('cover') || s.includes('self-assess') || s.includes('part 01') || s.includes('foundation') || s.includes('closing') || s.includes('stay in touch')) {
+        when = 'Within 24 hours.';
+      } else if (s.includes('part 06') || s.includes('integration') || s.includes('part 07') || s.includes('part 08') || s.includes('roadmap') || s.includes(' ai')) {
+        when = 'Within 72 hours.';
       }
-      if (s.includes('part 01') || s.includes('foundation')) {
-        return { send: 'A "where to start in the next 30 days" snapshot tailored to their business type. Two or three priority moves, no full plan yet.', when: 'Within 24 hours.' };
-      }
-      if (s.includes('part 02') || s.includes('brand')) {
-        return { send: 'A 3-bullet brand teardown of what you noticed about their current presence (logo, IG bio, website hero). Honest but kind.', when: 'Within 48 hours.' };
-      }
-      if (s.includes('part 03') || s.includes('awareness')) {
-        return { send: 'A sample 7-day content calendar matched to their industry, plus the cadence they should aim for.', when: 'Within 48 hours.' };
-      }
-      if (s.includes('part 04') || s.includes('conversion')) {
-        return { send: 'A 5-minute audit of one of their existing landing pages or booking flows. Two things to fix.', when: 'Within 48 hours.' };
-      }
-      if (s.includes('part 05') || s.includes('nurture')) {
-        return { send: 'A sample 5-email nurture sequence template they can adapt. Or offer to write theirs.', when: 'Within 72 hours.' };
-      }
-      if (s.includes('part 06') || s.includes('integration')) {
-        return { send: 'The 11-pillar integration diagram (or sketch one) + ask which 2 pillars feel most broken right now.', when: 'Within 72 hours.' };
-      }
-      if (s.includes('part 07') || s.includes(' ai')) {
-        return { send: 'Three AI tools you actually use + a one-line use case for each. Offer to set one up for them.', when: 'Within 72 hours.' };
-      }
-      if (s.includes('part 08') || s.includes('roadmap')) {
-        return { send: 'The blank 12-month roadmap template + invite to a 30-min call to fill it in together.', when: 'Within 72 hours.' };
-      }
-      if (s.includes('closing') || s.includes('stay in touch')) {
-        return { send: 'Quick personal note: "saw you finished the playbook, here\'s the one move I\'d make first". One specific suggestion.', when: 'Within 24 hours.' };
-      }
-      return { send: 'Personal hello + one specific thing you noticed about their submission.', when: 'Within 48 hours.' };
+      return {
+        when,
+        send: `Reach out personally. A 2-3 sentence note acknowledging the chapter they read and one specific question about their business. Don't pitch. Don't send a template you don't have. The reply (if any) tells you what to send next.`
+      };
     }
 
     const next = nextStepFor(source);
@@ -1419,7 +1521,11 @@ app.post('/api/playbook-signup', async (req, res) => {
       to: notifyTo,
       replyTo: email, // hitting reply goes to the prospect, not back to Blake
       subject: `[Playbook] ${email} (${source})`,
-      text: blakeBody
+      text: blakeBody,
+      html: wrapEmailHtml({
+        preheader: `New playbook signup from ${source}.`,
+        body: blakeBody
+      })
     });
 
     // 2) Thank-you to the prospect (non-fatal if it errors)
@@ -1431,7 +1537,7 @@ app.post('/api/playbook-signup', async (req, res) => {
         '',
         `https://1coastmedia.com/playbook`,
         '',
-        `It's the same framework we use with every client. Twelve months, five phases, one system. No upsells in there ─ just the playbook.`,
+        `It's the same framework we use with every client. Twelve months, five phases, one system. No upsells in there, just the playbook.`,
         '',
         `If you want to talk through how any of it would actually work for your business, the fastest path is to text me at (228) 357-8505 or reply to this email.`,
         '',
@@ -1445,7 +1551,11 @@ app.post('/api/playbook-signup', async (req, res) => {
         to: email,
         replyTo: process.env.GMAIL_USER,
         subject: 'Thanks for grabbing the playbook',
-        text: thanksBody
+        text: thanksBody,
+        html: wrapEmailHtml({
+          preheader: 'Thanks for grabbing the playbook.',
+          body: thanksBody
+        })
       });
     } catch (thanksErr) {
       console.warn('[playbook] thank-you send failed (non-fatal):', thanksErr.message);
