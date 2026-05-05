@@ -6,8 +6,9 @@
   <!-- Warm the GCS connection so the hero video starts streaming faster -->
   <link rel="preconnect" href="https://storage.googleapis.com" crossorigin>
   <link rel="dns-prefetch" href="https://storage.googleapis.com">
-  <title>Compare Packages • 1CoastMedia</title>
-  <meta name="description" content="Side-by-side comparison of every 1CoastMedia package. Content Presence $1K, Content Momentum $1.75K, Growth Machine $3.25K, Growth Partner $5K, and custom Enterprise engagements." />
+  <title>Package Comparison (Private) • 1CoastMedia</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Private side-by-side package comparison. Share by direct URL only." />
   <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
   <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -189,16 +190,17 @@
       </a>
       <div class="nav-links">
         <a href="/services">Services</a>
+        <a href="/packages">Packages</a>
         <a href="/enterprise-solutions">Enterprise</a>
-        <a href="/offer-comparison">Compare</a>
         <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="nav-cta">Book a call</a>
       </div>
       <button class="nav-toggle" @click="menuOpen = !menuOpen">Menu</button>
       <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
         <a href="/">Home</a>
         <a href="/services">Services</a>
-        <a href="/enterprise-solutions">Enterprise</a>
+        <a href="/packages">All Packages</a>
         <a href="/offer-comparison">Compare</a>
+        <a href="/enterprise-solutions">Enterprise</a>
         <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank">Book a call</a>
       </div>
     </div>
@@ -246,7 +248,7 @@
       </div>
 
       <div style="display:flex; justify-content:flex-end; margin-bottom:16px; gap:10px; flex-wrap:wrap">
-        <a href="/services" class="btn btn-ghost btn-sm">See package details →</a>
+        <a href="/packages" class="btn btn-ghost btn-sm">See package details →</a>
         <button id="download-pdf-btn" class="btn btn-primary btn-sm">Download PDF</button>
       </div>
 
@@ -413,10 +415,10 @@
             </tr>
             <tr>
               <th class="row-label"></th>
-              <td><a href="/services#pkg-content-presence" class="btn btn-ghost btn-sm">Details</a></td>
-              <td><a href="/services#pkg-content-growth" class="btn btn-ghost btn-sm">Details</a></td>
-              <td class="featured-col"><a href="/services#pkg-growth-machine" class="btn btn-primary btn-sm">Details</a></td>
-              <td><a href="/services#pkg-growth-partner" class="btn btn-ghost btn-sm">Details</a></td>
+              <td><a href="/packages#pkg-content-presence" class="btn btn-ghost btn-sm">Details</a></td>
+              <td><a href="/packages#pkg-content-growth" class="btn btn-ghost btn-sm">Details</a></td>
+              <td class="featured-col"><a href="/packages#pkg-growth-machine" class="btn btn-primary btn-sm">Details</a></td>
+              <td><a href="/packages#pkg-growth-partner" class="btn btn-ghost btn-sm">Details</a></td>
               <td><a href="/enterprise-solutions" class="btn btn-ghost btn-sm">Enterprise</a></td>
             </tr>
           </tbody>
@@ -434,7 +436,7 @@
         <p class="section-sub">Pick the statement that sounds the most like you.</p>
       </div>
       <div class="quick-match">
-        <a href="/services#pkg-content-presence" class="qm-card" style="text-decoration:none; color:inherit;">
+        <a href="/packages#pkg-content-presence" class="qm-card" style="text-decoration:none; color:inherit;">
           <div class="qm-eyebrow">If you say</div>
           <h4>"I just need content that shows up online."</h4>
           <p>Consistent posting, professional quality, no management overhead.</p>
@@ -442,7 +444,7 @@
           <div class="muted" style="font-size:12px">→ Content Presence</div>
         </a>
 
-        <a href="/services#pkg-content-growth" class="qm-card" style="text-decoration:none; color:inherit;">
+        <a href="/packages#pkg-content-growth" class="qm-card" style="text-decoration:none; color:inherit;">
           <div class="qm-eyebrow">If you say</div>
           <h4>"I need more volume and a real content strategy."</h4>
           <p>More shoots, more edits, monthly strategy call, quick turnarounds.</p>
@@ -450,7 +452,7 @@
           <div class="muted" style="font-size:12px">→ Content Momentum</div>
         </a>
 
-        <a href="/services#pkg-growth-machine" class="qm-card" style="text-decoration:none; color:inherit; border-color: var(--text);">
+        <a href="/packages#pkg-growth-machine" class="qm-card" style="text-decoration:none; color:inherit; border-color: var(--text);">
           <div class="qm-eyebrow">Most popular</div>
           <h4>"I want content plus marketing support."</h4>
           <p>Content, social management, landing pages, lead capture, strategy.</p>
@@ -458,7 +460,7 @@
           <div class="muted" style="font-size:12px">→ Growth Machine</div>
         </a>
 
-        <a href="/services#pkg-growth-partner" class="qm-card" style="text-decoration:none; color:inherit;">
+        <a href="/packages#pkg-growth-partner" class="qm-card" style="text-decoration:none; color:inherit;">
           <div class="qm-eyebrow">If you say</div>
           <h4>"I want everything handled. End to end."</h4>
           <p>Full done-for-you. Content, social, web, email, text, and offer campaigns.</p>

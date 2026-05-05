@@ -1143,9 +1143,26 @@ app.get('/api/health', (req, res) => {
 });
 
 // URL Rewriting - Clean URLs without .html extension
-// Legacy /growth-machine redirects to /services (the Growth Machine package section)
+// Legacy /growth-machine routes (kept as 301 for any old links / SEO).
+// Strategic shift: pricing is now private, so these legacy URLs should
+// land on the new public services overview instead of the private packages page.
 app.get('/growth-machine', (req, res) => {
-  res.redirect(301, '/services#pkg-growth-machine');
+  res.redirect(301, '/services');
+});
+
+// /about-us serves the current homepage content. Phase 2 will introduce a
+// dedicated funnel at /, at which point this alias is no longer needed and
+// about-us.html should become its own real file.
+app.get('/about-us', (req, res) => {
+  const aboutPath = path.join(__dirname, '..', 'about-us.html');
+  const fallback  = path.join(__dirname, '..', 'index.html');
+  if (fs.existsSync(aboutPath)) {
+    res.sendFile(aboutPath);
+  } else if (fs.existsSync(fallback)) {
+    res.sendFile(fallback);
+  } else {
+    res.status(404).json({ error: 'about-us page not found' });
+  }
 });
 
 app.get('/admin', (req, res) => {
@@ -1181,8 +1198,10 @@ app.get('/', (req, res) => {
   }
 });
 
-// Serve static files from parent directory (root of project)
-app.use(express.static(path.join(__dirname, '..')));
+// Serve static files from parent directory (root of project).
+// extensions:['html'] lets /packages, /services, /offer-comparison, etc.
+// resolve to their .html files without forcing the visitor to type the extension.
+app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
 
 // Specific route for index.html (fallback)
 app.get('/index.html', (req, res) => {

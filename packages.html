@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Warm the GCS connection so the hero video starts streaming faster -->
+  <link rel="preconnect" href="https://storage.googleapis.com" crossorigin>
+  <link rel="dns-prefetch" href="https://storage.googleapis.com">
+  <title>Packages (Private) • 1CoastMedia</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Private package pricing reference. Share by direct URL only." />
+  <link rel="icon" type="image/jpeg" href="./assets/1coastmedia logo.jpg" />
+  <link rel="apple-touch-icon" href="./assets/1coastmedia logo.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/boring.css" />
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body x-data="catalogServices()" x-init="init()">
+
+  <!-- Navigation -->
+  <nav class="nav" x-data="{ menuOpen: false }">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand" aria-label="1Coast Media home">
+        <img src="./assets/1coast-lockup-gold-1x.jpg"
+             srcset="./assets/1coast-lockup-gold-1x.jpg 1x, ./assets/1coast-lockup-gold-2x.jpg 2x"
+             alt="1Coast Media" />
+      </a>
+      <div class="nav-links">
+        <a href="/services">Services</a>
+        <a href="/offer-comparison">Compare</a>
+        <a href="/enterprise-solutions">Enterprise</a>
+        <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="nav-cta">Book a call</a>
+      </div>
+      <button class="nav-toggle" @click="menuOpen = !menuOpen">Menu</button>
+      <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/packages">All Packages</a>
+        <a href="/offer-comparison">Compare</a>
+        <a href="/enterprise-solutions">Enterprise</a>
+        <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank">Book a call</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-video-wrap" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="auto">
+        <source media="(max-width: 768px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-720p.mp4" type="video/mp4" />
+        <source media="(max-width: 1440px)" src="https://storage.googleapis.com/1coastmediawebsite/hero-particle-1080p.mp4" type="video/mp4" />
+        <source src="https://storage.googleapis.com/1coastmediawebsite/297505_Particle%20Artwork%20Liquid%20Drop_By_Freeman_Footage_Artlist_4K.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <span class="hero-eyebrow">Monthly Growth Packages</span>
+    <h1>Packages that pay for themselves.</h1>
+    <p class="hero-sub">Four done-with-you packages for Gulf Coast businesses. From consistent content to full growth partnership. Start where you are. Scale when you're ready. Every package is month-to-month.</p>
+    <div class="hero-ctas">
+      <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-lg">Book a discovery call</a>
+      <a href="tel:+12283578505" class="btn btn-ghost btn-lg">Call (228) 357-8505</a>
+    </div>
+  </header>
+
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Content.</span><span class="dot">•</span>
+      <span>Management.</span><span class="dot">•</span>
+      <span>Lead gen.</span><span class="dot">•</span>
+      <span>Growth.</span><span class="dot">•</span>
+      <span>Content.</span><span class="dot">•</span>
+      <span>Management.</span><span class="dot">•</span>
+      <span>Lead gen.</span><span class="dot">•</span>
+      <span>Growth.</span><span class="dot">•</span>
+    </div>
+  </div>
+
+  <!-- Monthly Retainer Tiers -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Content to partnership · Month-to-month</div>
+        <h2 class="section-title">Pick your package.</h2>
+        <p class="section-sub">Two content-focused packages for consistent posting. Two full-service packages for real growth support. Pick where you are today. Scale when you're ready.</p>
+      </div>
+
+      <div class="grid grid-4">
+
+        <!-- Package 1: Content Presence -->
+        <article class="card" id="pkg-content-presence" x-data="{ open: false }">
+          <img x-show="pkgImage('content-presence')" :src="pkgImage('content-presence')" alt="Content Presence"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+          <div class="card-eyebrow">Package 01 · Content Presence</div>
+          <h3>Content Presence</h3>
+          <p><em>"Consistent, professional content without full management."</em></p>
+          <ul>
+            <li>1 shoot day per month</li>
+            <li>15–20 short-form videos</li>
+            <li>10–15 custom photos / graphics</li>
+            <li>30-day content calendar</li>
+            <li>Ready-to-post content delivered</li>
+          </ul>
+          <div class="card-price mt-6">$1,000<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'More info'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong>Shoot Day.</strong> On-location photo and video capture with creative direction. Multiple setups in one visit.</p>
+            <p><strong>Short-form Videos.</strong> Edited for Reels, TikTok, and Shorts. Captions burned in. Branded hook and payoff.</p>
+            <p><strong>Graphics.</strong> Branded quote cards, promos, seasonal posts, photo retouches.</p>
+            <p><strong>Delivery.</strong> Finished assets delivered via shared drive, tagged to your 30-day calendar. You post, we produce.</p>
+            <p><strong style="color:var(--text)">Ideal for:</strong> businesses that need consistent, professional posting without full management.</p>
+            <p><strong style="color:var(--text)">Want us to post?</strong> Add Social Media Management below, or step up to Growth Machine.</p>
+          </div>
+        </article>
+
+        <!-- Package 2: Content Momentum -->
+        <article class="card" id="pkg-content-growth" x-data="{ open: false }">
+          <img x-show="pkgImage('content-growth')" :src="pkgImage('content-growth')" alt="Content Momentum"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+          <div class="card-eyebrow">Package 02 · Content Momentum</div>
+          <h3>Content Momentum</h3>
+          <p><em>"More volume, stronger consistency, better momentum."</em></p>
+          <ul>
+            <li>2 shoot days per month</li>
+            <li>30 short-form videos, enhanced edits</li>
+            <li>15 custom photos / graphics</li>
+            <li>30-day content calendar</li>
+            <li>Monthly strategy call</li>
+            <li>Quick turnaround edits</li>
+          </ul>
+          <div class="card-price mt-6">$1,750<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'More info'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong>2 Shoot Days.</strong> Double the variety so content stays fresh across all 30 days.</p>
+            <p><strong>Enhanced Edits.</strong> Stronger motion, sound design, and color work on every short-form.</p>
+            <p><strong>Quick Turnaround.</strong> Priority queue so trending moments, promos, and events ship while they still matter.</p>
+            <p><strong>Monthly Strategy Call.</strong> 60-min working session to review what's performing and plan the next month's themes.</p>
+            <p><strong style="color:var(--text)">Ideal for:</strong> growing your audience and staying active online.</p>
+            <p><strong style="color:var(--text)">Want us to post and manage?</strong> Add Social Media Management below, or step up to Growth Machine.</p>
+          </div>
+        </article>
+
+        <!-- Package 3: Growth Machine (Most Popular) -->
+        <article class="card card-featured" id="pkg-growth-machine" x-data="{ open: false }">
+          <img x-show="pkgImage('growth-machine')" :src="pkgImage('growth-machine')" alt="Growth Machine"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+          <div class="card-badge">Most popular</div>
+          <div class="card-eyebrow">Package 03 · Growth Machine</div>
+          <h3>Growth Machine</h3>
+          <p><em>"Content plus real marketing support."</em></p>
+          <ul>
+            <li>3–4 shoot days per month</li>
+            <li>30 premium short-form videos</li>
+            <li>2 commercial-style videos (1–3 min each)</li>
+            <li>Social media management</li>
+            <li>Caption writing and scheduling</li>
+            <li>Monthly content and growth strategy</li>
+            <li>Landing page creation and management</li>
+            <li>Lead capture setup</li>
+            <li>Light website management (optional add-on)</li>
+          </ul>
+          <div class="card-price mt-6">$3,250<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'More info'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong>Commercial-Style Videos.</strong> 2 per month, 1 to 3 minutes each. Scripted, scored, polished. Brand stories, product showcases, founder features.</p>
+            <p><strong>Social Media Management.</strong> We post, write captions, schedule, and keep your accounts active across platforms.</p>
+            <p><strong>Landing Page + Lead Capture.</strong> Built for lead generation. We design, launch, manage, and iterate.</p>
+            <p><strong>Monthly Growth Strategy.</strong> Content plus marketing strategy reviewed and adjusted monthly.</p>
+            <p><strong>Light Website Management.</strong> Optional add-on for businesses that already have a website. Content updates, small fixes.</p>
+            <p><strong style="color:var(--text)">Ideal for:</strong> brands that want content plus real marketing support and execution.</p>
+          </div>
+        </article>
+
+        <!-- Package 4: Growth Partner -->
+        <article class="card" id="pkg-growth-partner" x-data="{ open: false }">
+          <img x-show="pkgImage('growth-partner')" :src="pkgImage('growth-partner')" alt="Growth Partner"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+          <div class="card-eyebrow">Package 04 · Growth Partner</div>
+          <h3>Growth Partner</h3>
+          <p><em>"A true done-for-you growth partner."</em></p>
+          <ul>
+            <li>4–6 shoot days per month</li>
+            <li>Premium ongoing content production</li>
+            <li>3 to 4 commercial-style videos (1–3 min each)</li>
+            <li>Full social media management</li>
+            <li>Caption writing and scheduling</li>
+            <li>Monthly content and growth strategy</li>
+            <li>Landing page creation and optimization</li>
+            <li>Lead generation funnel support</li>
+            <li>Email and text marketing for lead nurturing</li>
+            <li>Website management</li>
+            <li>Offer and promotional campaign execution</li>
+            <li>Priority support</li>
+          </ul>
+          <div class="card-price mt-6">$5,000<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'More info'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong>Full Done-for-You.</strong> Content, social, web, email, text, and offer execution. One partner for everything.</p>
+            <p><strong>Commercial-Style Videos.</strong> 3 to 4 per month, 1 to 3 minutes each. Scripted, scored, polished. Brand stories, product showcases, founder features, ad creative.</p>
+            <p><strong>Lead Generation Funnel.</strong> We build and optimize the full path. Ad, landing page, lead capture, nurture, conversion.</p>
+            <p><strong>Email + Text Marketing.</strong> List building, promos, nurture sequences, review requests. All campaigns built and sent.</p>
+            <p><strong>Website Management.</strong> Full content updates, fixes, and hosting oversight.</p>
+            <p><strong>Offer and Promo Campaigns.</strong> Seasonal pushes, limited-time offers, and promotional campaigns run for you.</p>
+            <p><strong>Priority Support.</strong> Direct line, fastest turnarounds, first to get our time.</p>
+            <p><strong style="color:var(--text)">Ideal for:</strong> businesses that want consistent content, stronger systems, and hands-on growth support.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialized Programs -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Specialized · Outcome-driven</div>
+        <h2 class="section-title">Specialized Programs.</h2>
+        <p class="section-sub">Built around a specific outcome, not a generic content stack. For founders, business owners, experts, and personalities ready to invest in long-form.</p>
+      </div>
+
+      <div class="grid grid-2">
+
+        <!-- Program 1: Full Personal Brand Authority System -->
+        <article class="card" id="prog-personal-brand" x-data="{ open: false }">
+          <img x-show="pkgImage('personal-brand-authority')" :src="pkgImage('personal-brand-authority')" alt="Full Personal Brand Authority System"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+          <div class="card-eyebrow">Program 01 · Personal Brand</div>
+          <h3>Full Personal Brand Authority System</h3>
+          <p><em>"Build trust, attention, and long-term brand equity with a consistent YouTube channel."</em></p>
+          <ul>
+            <li>YouTube content strategy</li>
+            <li>Weekly long-form YouTube production</li>
+            <li>Editing</li>
+            <li>YouTube thumbnail and packaging direction</li>
+            <li>YouTube channel publishing and management</li>
+            <li>Short-form cutdowns for IG, FB, TikTok, Shorts</li>
+            <li>Distribution support</li>
+            <li>Analytics and refinement</li>
+          </ul>
+          <div class="card-price mt-6">Starts at $3,250<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'More info'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong>YouTube Anchor.</strong> One weekly long-form YouTube episode produced and published. Interview, deep dive, founder explainer, or signature format built for your channel.</p>
+            <p><strong>Cutdowns.</strong> Multiple short-form clips per episode optimized for IG Reels, TikTok, Facebook Reels, and YouTube Shorts.</p>
+            <p><strong>YouTube Channel Management.</strong> Publishing, thumbnail and packaging direction, titles, descriptions, captions, and distribution support across platforms.</p>
+            <p><strong>Strategy and Refinement.</strong> Monthly analytics review with content direction adjusted based on what's actually growing the channel.</p>
+            <p><strong style="color:var(--text)">Best for:</strong> founders, business owners, experts, and personalities who want authority, trust, and long-term brand equity. Not just posts.</p>
+          </div>
+        </article>
+
+        <!-- Program 2: Weekly Video Podcast Production -->
+        <article class="card" id="prog-weekly-podcast" x-data="{ open: false }">
+          <img x-show="pkgImage('weekly-video-podcast')" :src="pkgImage('weekly-video-podcast')" alt="Weekly Video Podcast Production"
+               style="width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; margin-bottom:16px" />
+          <div class="card-eyebrow">Program 02 · Podcast</div>
+          <h3>Weekly Video Podcast Production</h3>
+          <p><em>"A weekly podcast engine that fuels your brand across every platform."</em></p>
+          <ul>
+            <li>One anchor video podcast episode per week</li>
+            <li>Editing and audio polish</li>
+            <li>Thumbnail and cover art per episode</li>
+            <li>Multiple short-form cutdowns per episode</li>
+            <li>Podcast platform publishing (Spotify, Apple, YouTube)</li>
+            <li>Social posting support</li>
+            <li>Show notes and key moments</li>
+            <li>Monthly analytics</li>
+          </ul>
+          <div class="card-price mt-6">Starts at $3,250<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Talk to Blake</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'More info'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-6" style="border-top:1px solid var(--border); padding-top:20px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong>Anchor Episode.</strong> One weekly long-form video podcast (30 to 60 min). Lightly edited for pacing, audio cleaned, intro / outro applied.</p>
+            <p><strong>Short-form Engine.</strong> Multiple cutdowns per episode. Best moments turned into vertical clips with captions for IG Reels, TikTok, YouTube Shorts, and Facebook Reels.</p>
+            <p><strong>Multi-platform Distribution.</strong> Published to Spotify, Apple Podcasts, YouTube, and supporting social posts to drive listeners.</p>
+            <p><strong>Show Notes.</strong> Episode summary, key moments / timestamps, and links so each episode is searchable.</p>
+            <p><strong style="color:var(--text)">Best for:</strong> founders, agencies, experts, or brands ready to build a weekly content rhythm that compounds over time.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom Callout -->
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="card" style="max-width:720px; margin:0 auto; text-align:center; padding:40px 32px; align-items:center;">
+        <div class="card-eyebrow">Custom · Scope</div>
+        <h3 style="font-size:28px; margin:0 0 12px;">Need something bigger?</h3>
+        <p style="margin:0 0 22px; max-width:52ch;">Multiple locations, YouTube series, docuseries, or a scope beyond Growth Partner? We build custom partnerships for businesses ready to scale hard.</p>
+        <div class="card-actions" style="justify-content:center;">
+          <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary">Book a discovery call</a>
+          <a href="tel:+12283578505" class="btn btn-ghost">Talk to Blake</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monthly Add-Ons -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Monthly · Recurring</div>
+        <h2 class="section-title">Monthly Add-Ons</h2>
+        <p class="section-sub" x-text="serviceCategories['monthly-addons']?.description || 'Recurring services that stack on any package.'"></p>
+      </div>
+      <div class="grid grid-3" x-show="(serviceCategories['monthly-addons']?.services?.length || 0) > 0">
+        <template x-for="svc in (serviceCategories['monthly-addons']?.services || [])" :key="svc.key">
+          <article class="card" x-data="{ open: false }">
+            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
+            <div class="card-eyebrow" x-text="svc.badge || 'Monthly'"></div>
+            <h3 x-text="svc.name"></h3>
+            <p x-text="svc.outcome"></p>
+            <div class="card-price mt-6">
+              <span x-text="priceLabel(svc)"></span><small x-show="svc.priceNote" x-text="' · ' + svc.priceNote"></small>
+            </div>
+            <div class="card-actions">
+              <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+              <button x-show="svc.deliverables && svc.deliverables.length" @click="open = !open" class="btn btn-ghost btn-sm">
+                <span x-text="open ? 'Hide' : 'Details'"></span>
+              </button>
+            </div>
+            <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+              <ul style="list-style:none; padding:0; margin:0">
+                <template x-for="item in svc.deliverables" :key="item">
+                  <li x-text="item" style="padding:4px 0"></li>
+                </template>
+              </ul>
+            </div>
+          </article>
+        </template>
+      </div>
+      <div x-show="!loading && (serviceCategories['monthly-addons']?.services?.length || 0) === 0" class="muted center" style="padding: 40px 20px">
+        <p>No monthly add-ons configured yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Integration -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Online or offline · Built for your workflow</div>
+        <h2 class="section-title">AI Integration</h2>
+        <p class="section-sub">From pre-built customer assistants to full custom AI integrated into your operations. Including fully offline systems for businesses that handle sensitive data.</p>
+      </div>
+      <div class="grid grid-3">
+
+        <div class="card" x-data="{ open: false }">
+          <img src="/assets/services/icon-ai-assistants.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
+          <div class="card-eyebrow">Productized</div>
+          <h3>AI Assistants</h3>
+          <p>Pre-built AI that answers customer questions, captures leads, and handles calls. Ready to deploy on your website, social, and phone.</p>
+          <div class="card-price mt-6">From $29<small> / month</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+            <button @click="open = !open" class="btn btn-ghost btn-sm">
+              <span x-text="open ? 'Hide' : 'See options'"></span>
+            </button>
+          </div>
+          <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+            <p><strong style="color:var(--text)">DM Assistant · $29 / mo.</strong> Answers FAQs instantly. Hours, menu, pricing, booking.</p>
+            <p><strong style="color:var(--text)">Lead Capture Assistant · $49 / mo.</strong> Collects name, phone, email. Routes hot leads to your team.</p>
+            <p><strong style="color:var(--text)">AI Voice Receptionist · $149 setup + $79 / mo.</strong> Answers calls, books appointments, qualifies leads 24/7.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/assets/services/icon-ai-custom-integration.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
+          <div class="card-eyebrow">Custom</div>
+          <h3>Custom AI Integration</h3>
+          <p>Build AI into any part of your business. Customer support, scheduling, sales qualification, internal ops, data analysis. Integrated with the tools and systems you already use.</p>
+          <div class="card-price mt-6">Custom scope<small> · priced to your workflow</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Start discovery</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/assets/services/icon-ai-offline-on-premise.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
+          <div class="card-eyebrow">Sensitive Data</div>
+          <h3>Offline / On-Premise AI</h3>
+          <p>AI that runs locally on your hardware. Zero customer data leaves your infrastructure. Built for healthcare, legal, financial, and any business handling private records.</p>
+          <div class="card-price mt-6">Custom scope<small> · priced to your infrastructure</small></div>
+          <div class="card-actions">
+            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Scope a project</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialty Projects -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Project-based · One-time</div>
+        <h2 class="section-title">Specialty Projects</h2>
+        <p class="section-sub" x-text="serviceCategories['specialty-projects']?.description || 'One-off projects and standalone productions. Stack on any package or book solo.'"></p>
+      </div>
+      <div class="grid grid-3" x-show="(serviceCategories['specialty-projects']?.services?.length || 0) > 0">
+        <template x-for="svc in (serviceCategories['specialty-projects']?.services || [])" :key="svc.key">
+          <article class="card" x-data="{ open: false }">
+            <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
+            <div class="card-eyebrow" x-text="svc.badge || 'Project'"></div>
+            <h3 x-text="svc.name"></h3>
+            <p x-text="svc.outcome"></p>
+            <div class="card-price mt-6">
+              <span x-text="priceLabel(svc)"></span><small x-show="svc.priceNote" x-text="' · ' + svc.priceNote"></small>
+            </div>
+            <div class="card-actions">
+              <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book a call</a>
+              <button x-show="svc.deliverables && svc.deliverables.length" @click="open = !open" class="btn btn-ghost btn-sm">
+                <span x-text="open ? 'Hide' : 'Details'"></span>
+              </button>
+            </div>
+            <div x-show="open" x-transition x-cloak class="mt-4" style="border-top:1px solid var(--border); padding-top:16px; font-size:14px; color:var(--text-muted); line-height:1.6;">
+              <ul style="list-style:none; padding:0; margin:0">
+                <template x-for="item in svc.deliverables" :key="item">
+                  <li x-text="item" style="padding:4px 0"></li>
+                </template>
+              </ul>
+            </div>
+          </article>
+        </template>
+      </div>
+      <div x-show="!loading && (serviceCategories['specialty-projects']?.services?.length || 0) === 0" class="muted center" style="padding: 40px 20px">
+        <p>No specialty projects configured yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specials (API-driven) -->
+  <section class="section" id="admin-services" x-show="!loading && categoriesList().length > 0" x-cloak>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Limited-time · Featured</div>
+        <h2 class="section-title">Specials</h2>
+        <p class="section-sub">Featured offers and special deals. Combine with any package.</p>
+      </div>
+
+      <template x-for="entry in categoriesList()" :key="entry.key">
+        <div style="margin-bottom:48px">
+          <!-- Only render a sub-heading when multiple Specials categories exist AND the category has a meaningful name -->
+          <div class="section-head" style="margin-bottom:24px"
+               x-show="categoriesList().length > 1 && entry.cat.name && entry.cat.name.toLowerCase() !== 'specials'">
+            <h3 style="font-size:24px; font-weight:800; letter-spacing:-0.02em; margin:0 0 6px; text-transform:uppercase;" x-text="entry.cat.name"></h3>
+            <p class="muted" x-show="entry.cat.description" x-text="entry.cat.description"></p>
+          </div>
+          <div class="grid grid-2">
+            <template x-for="svc in entry.cat.services" :key="svc.key">
+              <div class="card">
+                <img x-show="svc.image" :src="svc.image" :alt="svc.name" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
+                <div class="card-eyebrow" x-text="titleCase(entry.key)"></div>
+                <h3 x-text="svc.name"></h3>
+                <p x-text="svc.outcome"></p>
+                <ul x-show="(Array.isArray(svc.deliverables) ? svc.deliverables : (svc.deliverablesText || '').split('\n').filter(Boolean)).length">
+                  <template x-for="item in (Array.isArray(svc.deliverables) ? svc.deliverables : (svc.deliverablesText || '').split('\n').filter(Boolean))" :key="item">
+                    <li x-text="item"></li>
+                  </template>
+                </ul>
+                <div class="card-price">
+                  <span x-show="svc.price && svc.price.oneTime && svc.price.oneTime > 0" x-text="fmtUSD(svc.price.oneTime)"></span>
+                  <span x-show="svc.price && svc.price.monthly && svc.price.monthly > 0">
+                    <span x-show="svc.price.oneTime && svc.price.oneTime > 0"> · </span>
+                    <span x-text="fmtUSD(svc.price.monthly)"></span><small> / mo</small>
+                  </span>
+                </div>
+                <div class="card-actions">
+                  <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-sm">Book call</a>
+                  <a href="tel:+12283578505" class="btn btn-ghost btn-sm">Call now</a>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- Marquee 2 -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Built for the Coast.</span><span class="dot">•</span>
+      <span>No templates.</span><span class="dot">•</span>
+      <span>Just results.</span><span class="dot">•</span>
+      <span>Ready to grow?</span><span class="dot">•</span>
+      <span>Built for the Coast.</span><span class="dot">•</span>
+      <span>No templates.</span><span class="dot">•</span>
+      <span>Just results.</span><span class="dot">•</span>
+      <span>Ready to grow?</span><span class="dot">•</span>
+    </div>
+  </div>
+
+  <!-- Mission -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-eyebrow">Mission</div>
+        <h2 class="section-title">Grow the Coast.</h2>
+      </div>
+      <div class="prose">
+        <p><strong>1 Coast Media exists to grow the Mississippi Gulf Coast by helping the businesses that power it grow.</strong></p>
+        <ul>
+          <li><strong>Help local businesses get more customers</strong> through modern marketing, UGC, AI, and smart content.</li>
+          <li><strong>Empower local creators</strong> with real, paid opportunities to do what they love.</li>
+          <li><strong>Increase tourism and visibility</strong> through authentic storytelling and professional media.</li>
+          <li><strong>Strengthen the entire Coast</strong> by uniting cities, businesses, and creators into one shared ecosystem.</li>
+        </ul>
+        <p>We are not here to compete with the Coast. We are here to elevate it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section">
+    <div class="wrap center">
+      <h2 class="section-title">Ready to grow?</h2>
+      <p class="section-sub">Let's map your next 90 days and start stacking wins.</p>
+      <div class="hero-ctas">
+        <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary btn-lg">Book discovery call</a>
+        <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a href="/" class="nav-brand" aria-label="1Coast Media home"><img src="./assets/1coast-lockup-gold-1x.jpg" srcset="./assets/1coast-lockup-gold-1x.jpg 1x, ./assets/1coast-lockup-gold-2x.jpg 2x" alt="1Coast Media" /></a>
+          <p style="max-width:36ch; margin-top:12px">Your Gulf Coast growth partner. Marketing, content, and growth systems built to elevate the Coast.</p>
+        </div>
+        <div>
+          <h5>Services</h5>
+          <ul>
+            <li><a href="/services">Core services</a></li>
+            <li><a href="/enterprise-solutions">Enterprise</a></li>
+            <li><a href="/offer-comparison">Compare offers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank">Book a call</a></li>
+            <li><a href="tel:+12283578505">(228) 357-8505</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Coast</h5>
+          <ul>
+            <li>Mississippi Gulf Coast</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <span id="year"></span> 1CoastMedia. All rights reserved.</div>
+        <div>Built on the Coast.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // Categories rendered in their own dedicated sections. Filtered out of the A La Carte catch-all.
+    const RESERVED_CATEGORY_KEYS = ['monthly-addons', 'specialty-projects', 'ai-integration'];
+
+    function catalogServices() {
+      return {
+        apiBase: window.location.origin,
+        serviceCategories: {},
+        packageImages: {},
+        loading: true,
+        error: '',
+        async init() {
+          try {
+            const [svcRes, contentRes] = await Promise.all([
+              fetch(`${this.apiBase}/api/services`),
+              fetch(`${this.apiBase}/api/content`).catch(() => null)
+            ]);
+            const svcData = await svcRes.json();
+            this.serviceCategories = svcData?.serviceCategories || {};
+            if (contentRes && contentRes.ok) {
+              const contentData = await contentRes.json();
+              this.packageImages = contentData?.packageImages || {};
+            }
+          } catch (e) {
+            this.error = 'Unable to load services.';
+            console.warn('Failed to load services', e);
+          } finally {
+            this.loading = false;
+          }
+        },
+        pkgImage(key) {
+          return (this.packageImages || {})[key] || '';
+        },
+        categoriesList() {
+          // Used by the A La Carte section — shows any category NOT rendered in a dedicated section above.
+          const entries = Object.entries(this.serviceCategories || {});
+          return entries
+            .filter(([key, cat]) => !RESERVED_CATEGORY_KEYS.includes(key) && Array.isArray(cat?.services) && cat.services.length > 0)
+            .map(([key, cat]) => ({ key, cat }));
+        },
+        priceLabel(svc) {
+          if (svc?.priceDisplay) return svc.priceDisplay;
+          const oneTime = svc?.price?.oneTime || 0;
+          const monthly = svc?.price?.monthly || 0;
+          if (oneTime > 0 && monthly > 0) return this.fmtUSD(oneTime) + ' + ' + this.fmtUSD(monthly) + ' / mo';
+          if (monthly > 0) return this.fmtUSD(monthly) + ' / mo';
+          if (oneTime > 0) return this.fmtUSD(oneTime);
+          return 'Custom scope';
+        },
+        fmtUSD(n) {
+          const num = typeof n === 'number' ? n : parseFloat(n || '0');
+          if (!num || num <= 0) return '';
+          return '$' + num.toLocaleString();
+        },
+        titleCase(s) {
+          return String(s || '')
+            .replace(/[-_]/g, ' ')
+            .replace(/\b\w/g, c => c.toUpperCase());
+        }
+      };
+    }
+  </script>
+</body>
+</html>
