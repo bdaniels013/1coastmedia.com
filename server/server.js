@@ -152,7 +152,7 @@ app.use((req, res, next) => {
 // Security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  // SAMEORIGIN (not DENY) so we can embed our own pages in iframes — e.g. the
+  // SAMEORIGIN (not DENY) so we can embed our own pages in iframes. e.g. the
   // Visual Sales Module on the homepage. Still blocks foreign sites from
   // iframing us (clickjacking protection).
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
@@ -209,7 +209,7 @@ function initializeServicesFile() {
 
 // Seed required service categories (monthly-addons, specialty-projects) so the
 // admin panel and the /services page render them on first boot. Only ADDS missing
-// categories — never overwrites existing ones — so Blake's edits are preserved
+// categories. never overwrites existing ones. so Blake's edits are preserved
 // across deploys on Render's persistent disk.
 const REQUIRED_CATEGORY_TEMPLATES = {
   'monthly-addons': {
@@ -221,7 +221,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         name: 'Social Media Management',
         outcome: 'Posting, scheduling, community engagement, comments, and DMs. Built into Growth Machine and Growth Partner. Add it to Content Presence or Content Momentum.',
         price: { oneTime: 0, monthly: 500 },
-        priceDisplay: '$500 – $1,500',
+        priceDisplay: '$500. $1,500',
         priceNote: '/ month',
         deliverables: [
           '$500 / mo: 1 platform, scheduled posting, basic engagement',
@@ -239,7 +239,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         name: 'Ongoing PR Retainer',
         outcome: '1 to 2 press releases per month plus active media outreach and relationship building. Local, regional, and national targeting.',
         price: { oneTime: 0, monthly: 1500 },
-        priceDisplay: '$1,500 – $3,500',
+        priceDisplay: '$1,500. $3,500',
         priceNote: '/ month',
         deliverables: [],
         badge: 'PR',
@@ -389,7 +389,7 @@ const REQUIRED_CATEGORY_TEMPLATES = {
         name: 'UGC View Boosts',
         outcome: 'Guaranteed local views from our Gulf Coast creator network. Pay per boost, stack as needed.',
         price: { oneTime: 150, monthly: 0 },
-        priceDisplay: '$150 – $1,250',
+        priceDisplay: '$150. $1,250',
         priceNote: 'per boost',
         deliverables: [
           '$150 → +10,000 views',
@@ -514,7 +514,7 @@ function ensureRequiredCategories() {
 
       // Category exists. Additively sync any new template services that aren't in
       // the stored data yet (matched by service.key). Never overwrites or removes
-      // existing services — Blake's edits and ordering are preserved.
+      // existing services. Blake's edits and ordering are preserved.
       if (!Array.isArray(existing.services)) existing.services = [];
       const existingByKey = new Map();
       for (const svc of existing.services) {
@@ -1230,7 +1230,7 @@ app.post('/api/funnel-submit', async (req, res) => {
     const recBlock = recommendedPackage ? `Recommended package: ${recommendedPackage}` : '';
 
     const blakeBody = [
-      `New funnel submission — ${tempLabel} lead`,
+      `New funnel submission. ${tempLabel} lead`,
       '',
       `Path: ${pathLabel}`,
       recBlock,
@@ -1250,7 +1250,7 @@ app.post('/api/funnel-submit', async (req, res) => {
 
     const mailer = getFunnelMailer();
     if (!mailer) {
-      console.error('[funnel] GMAIL_USER / GMAIL_APP_PASSWORD not set — cannot send notification');
+      console.error('[funnel] GMAIL_USER / GMAIL_APP_PASSWORD not set. cannot send notification');
       return res.status(503).json({ ok: false, error: 'mail-transport-unavailable' });
     }
 
@@ -1270,7 +1270,7 @@ app.post('/api/funnel-submit', async (req, res) => {
     });
 
     // 2) Send the prospect a path-specific auto-reply (only if they
-    // gave an email). Don't fail the request if this errors — Blake
+    // gave an email). Don't fail the request if this errors. Blake
     // already has the lead.
     if (contact?.email) {
       try {
@@ -1331,19 +1331,74 @@ app.post('/api/playbook-signup', async (req, res) => {
     const weakest      = p.weakest_pillars || '';
     const suggested    = p.suggested_reading || '';
 
+    // Per-chapter follow-up suggestions. Match by prefix so "Part 01 · Foundation"
+    // hits the same template as just "Part 01". Blake gets a clear next-step
+    // task instead of having to guess what to send and when.
+    function nextStepFor(src) {
+      const s = (src || '').toLowerCase();
+      if (s.includes('cover') || s.includes('self-assess')) {
+        return { send: 'Personal welcome email + a deeper read on their #1 weakest pillar from the assessment. Pick one specific tactical fix they can do this week.', when: 'Within 24 hours.' };
+      }
+      if (s.includes('part 01') || s.includes('foundation')) {
+        return { send: 'A "where to start in the next 30 days" snapshot tailored to their business type. Two or three priority moves, no full plan yet.', when: 'Within 24 hours.' };
+      }
+      if (s.includes('part 02') || s.includes('brand')) {
+        return { send: 'A 3-bullet brand teardown of what you noticed about their current presence (logo, IG bio, website hero). Honest but kind.', when: 'Within 48 hours.' };
+      }
+      if (s.includes('part 03') || s.includes('awareness')) {
+        return { send: 'A sample 7-day content calendar matched to their industry, plus the cadence they should aim for.', when: 'Within 48 hours.' };
+      }
+      if (s.includes('part 04') || s.includes('conversion')) {
+        return { send: 'A 5-minute audit of one of their existing landing pages or booking flows. Two things to fix.', when: 'Within 48 hours.' };
+      }
+      if (s.includes('part 05') || s.includes('nurture')) {
+        return { send: 'A sample 5-email nurture sequence template they can adapt. Or offer to write theirs.', when: 'Within 72 hours.' };
+      }
+      if (s.includes('part 06') || s.includes('integration')) {
+        return { send: 'The 11-pillar integration diagram (or sketch one) + ask which 2 pillars feel most broken right now.', when: 'Within 72 hours.' };
+      }
+      if (s.includes('part 07') || s.includes(' ai')) {
+        return { send: 'Three AI tools you actually use + a one-line use case for each. Offer to set one up for them.', when: 'Within 72 hours.' };
+      }
+      if (s.includes('part 08') || s.includes('roadmap')) {
+        return { send: 'The blank 12-month roadmap template + invite to a 30-min call to fill it in together.', when: 'Within 72 hours.' };
+      }
+      if (s.includes('closing') || s.includes('stay in touch')) {
+        return { send: 'Quick personal note: "saw you finished the playbook, here\'s the one move I\'d make first". One specific suggestion.', when: 'Within 24 hours.' };
+      }
+      return { send: 'Personal hello + one specific thing you noticed about their submission.', when: 'Within 48 hours.' };
+    }
+
+    const next = nextStepFor(source);
+
+    // Urgency hint based on signals: phone given OR kit interest = HIGH,
+    // assessment submitted = MEDIUM, otherwise NORMAL.
+    let urgency = 'NORMAL';
+    if (phone || kitInterest) urgency = 'HIGH (gave phone or wants the kit)';
+    else if (weakest) urgency = 'MEDIUM (filled assessment)';
+
     const blakeBody = [
-      `New playbook signup: ${email}`,
+      `=========================================`,
+      `  NEW PLAYBOOK SIGNUP. ${urgency}`,
+      `=========================================`,
       '',
-      `Source chapter:  ${source}`,
-      phone        ? `Phone:           ${phone}`            : null,
-      kitInterest  ? `Kit interest:    YES (wants the print kit)` : null,
-      weakest      ? `Weakest pillars: ${weakest}`          : null,
-      suggested    ? `Suggested next:  ${suggested}`        : null,
+      `WHO:   ${email}`,
+      `WHERE: ${source}`,
+      phone ? `PHONE: ${phone}` : null,
       '',
-      '--- Meta ---',
+      `>>> NEXT STEP. ${next.when}`,
+      `    ${next.send}`,
+      '',
+      kitInterest  ? `[!] KIT INTEREST: They want the printed kit. Reply with details on how they get it.` : null,
+      weakest      ? `[*] Their weakest pillars (from the assessment): ${weakest}` : null,
+      suggested    ? `[*] Playbook suggested they read next: ${suggested}` : null,
+      '',
+      '--- Lead context ---',
       `Page URL:    ${pageUrl}`,
       `Submitted:   ${submittedAt}`,
-      `User-Agent:  ${userAgent}`
+      `User agent:  ${userAgent}`,
+      '',
+      `(Hit reply to email them directly. Reply-To header is set to their address.)`
     ].filter(Boolean).join('\n');
 
     const mailer = getFunnelMailer();
