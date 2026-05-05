@@ -1170,11 +1170,20 @@ function getFunnelMailer() {
 /* ============================================================
    BRANDED EMAIL TEMPLATE
 
-   Wraps a plain-text body in a 1Coast-branded HTML email shell:
-   centered 600px card, cream background, lockup at the top,
-   gold accent line, contact footer. Inline styles only because
-   email clients strip <style> blocks. Table-based outer layout
-   for Outlook compatibility.
+   Wraps a plain-text body in a 1Coast-branded HTML email shell.
+   Designed dark-on-dark (charcoal background, cream text, gold
+   accents) so dark-mode email clients (Apple Mail, Gmail mobile,
+   Outlook dark) don't aggressively invert the colors and break
+   the layout. Light-mode clients see the intentional dark email,
+   which matches the site brand.
+
+   - Charcoal #1f1f22 background (matches the site)
+   - Cream #f4ecdc body text
+   - Gold #c8a96b accents
+   - Charcoal lockup logo (cream content on dark, blends seamlessly)
+   - Inline styles only (email clients strip <style> blocks)
+   - Table-based outer layout for Outlook compatibility
+   - Mobile-first: max-width 100%, responsive padding via VW
 
    Usage:
      wrapEmailHtml({
@@ -1183,7 +1192,15 @@ function getFunnelMailer() {
      })
    ============================================================ */
 const SITE_URL  = process.env.PUBLIC_SITE_URL || 'https://1coastmedia.com';
-const LOGO_URL  = `${SITE_URL}/assets/1coast-lockup-cream-2x.png`;
+const LOGO_URL  = `${SITE_URL}/assets/1coast-lockup-charcoal-2x.png`;
+
+// Email theme tokens. Centralized so they're easy to tune in one spot.
+const EMAIL_BG       = '#1a1a1c';   // page background (slightly darker than card)
+const EMAIL_CARD     = '#1f1f22';   // card surface (matches site charcoal)
+const EMAIL_TEXT     = '#e6e1d3';   // primary cream text
+const EMAIL_MUTED    = '#9a9483';   // muted gray-cream for secondary lines
+const EMAIL_GOLD     = '#c8a96b';   // accent gold (links, eyebrow, brand)
+const EMAIL_GOLD_DIM = '#8d7444';   // slightly muted gold for visited / dim
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -1200,11 +1217,11 @@ function bodyToHtml(text) {
   const escaped = escapeHtml(text);
   const linked  = escaped.replace(
     /(https?:\/\/[^\s<]+)/g,
-    '<a href="$1" style="color:#9a7b3a;text-decoration:underline;">$1</a>'
+    `<a href="$1" style="color:${EMAIL_GOLD};text-decoration:underline;text-underline-offset:3px;">$1</a>`
   );
   return linked
     .split(/\n\s*\n/)
-    .map(p => `<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#1f1f22;">${p.replace(/\n/g, '<br>')}</p>`)
+    .map(p => `<p style="margin:0 0 18px;font-size:16px;line-height:1.65;color:${EMAIL_TEXT};">${p.replace(/\n/g, '<br>')}</p>`)
     .join('\n');
 }
 
@@ -1216,57 +1233,60 @@ function wrapEmailHtml({ preheader = '', body = '' } = {}) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
-<meta name="supported-color-schemes" content="light">
+<meta name="color-scheme" content="dark light">
+<meta name="supported-color-schemes" content="dark light">
 <title>1Coast Media</title>
 </head>
-<body style="margin:0;padding:0;background:#f4ecdc;font-family:Georgia,'Times New Roman',serif;color:#1f1f22;-webkit-font-smoothing:antialiased;">
+<body style="margin:0;padding:0;background:${EMAIL_BG};font-family:Georgia,'Times New Roman',serif;color:${EMAIL_TEXT};-webkit-font-smoothing:antialiased;">
 ${pre}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4ecdc;padding:32px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${EMAIL_BG};padding:24px 12px;">
   <tr>
     <td align="center">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border:1px solid #e8d9b6;border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(31,31,34,0.06);">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:${EMAIL_CARD};border:1px solid rgba(200,169,107,0.18);border-radius:16px;overflow:hidden;">
 
         <!-- Header: lockup -->
         <tr>
-          <td align="center" style="padding:36px 40px 12px;background:#f4ecdc;">
+          <td align="center" style="padding:34px 28px 18px;background:${EMAIL_CARD};">
             <a href="${SITE_URL}" style="text-decoration:none;display:inline-block;">
-              <img src="${LOGO_URL}" alt="1Coast Media" width="220" style="display:block;width:220px;max-width:60%;height:auto;border:0;outline:none;" />
+              <img src="${LOGO_URL}" alt="1Coast Media" width="220" style="display:block;width:220px;max-width:70%;height:auto;border:0;outline:none;" />
             </a>
           </td>
         </tr>
 
         <!-- Gold accent line -->
         <tr>
-          <td style="padding:0 40px;background:#f4ecdc;">
-            <div style="height:1px;background:linear-gradient(90deg,transparent,#c8a96b 30%,#c8a96b 70%,transparent);line-height:1px;font-size:1px;">&nbsp;</div>
+          <td style="padding:0 28px 18px;background:${EMAIL_CARD};">
+            <div style="height:1px;background:linear-gradient(90deg,transparent,${EMAIL_GOLD} 30%,${EMAIL_GOLD} 70%,transparent);line-height:1px;font-size:1px;">&nbsp;</div>
           </td>
         </tr>
 
         <!-- Body -->
         <tr>
-          <td style="padding:32px 40px 28px;background:#ffffff;font-family:Georgia,'Times New Roman',serif;color:#1f1f22;">
+          <td style="padding:8px 28px 28px;background:${EMAIL_CARD};font-family:Georgia,'Times New Roman',serif;color:${EMAIL_TEXT};">
             ${bodyHtml}
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr>
+          <td style="padding:0 28px;background:${EMAIL_CARD};">
+            <div style="height:1px;background:rgba(200,169,107,0.18);line-height:1px;font-size:1px;">&nbsp;</div>
           </td>
         </tr>
 
         <!-- Footer -->
         <tr>
-          <td style="padding:24px 40px 32px;background:#1f1f22;color:#e6e1d3;font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td style="vertical-align:top;">
-                  <div style="font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#c8a96b;margin-bottom:8px;">1Coast Media</div>
-                  <div style="color:#e6e1d3;">Blake Daniels &middot; Founder</div>
-                  <div style="color:#a39d8c;margin-top:4px;">Mississippi Gulf Coast</div>
-                </td>
-                <td align="right" style="vertical-align:top;font-size:13px;">
-                  <a href="tel:+12283578505" style="color:#e6e1d3;text-decoration:none;">(228) 357-8505</a><br>
-                  <a href="sms:+12283578505" style="color:#a39d8c;text-decoration:none;">Text Blake direct</a><br>
-                  <a href="${SITE_URL}" style="color:#a39d8c;text-decoration:none;">1coastmedia.com</a>
-                </td>
-              </tr>
-            </table>
+          <td style="padding:22px 28px 28px;background:${EMAIL_CARD};color:${EMAIL_MUTED};font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;">
+            <div style="font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:${EMAIL_GOLD};margin-bottom:10px;">1Coast Media</div>
+            <div style="color:${EMAIL_TEXT};font-weight:600;">Blake Daniels &middot; Founder</div>
+            <div style="color:${EMAIL_MUTED};margin-top:2px;">Built on the Mississippi Gulf Coast</div>
+            <div style="margin-top:14px;font-size:13px;line-height:1.7;">
+              <a href="tel:+12283578505" style="color:${EMAIL_TEXT};text-decoration:none;">(228) 357-8505</a>
+              <span style="color:${EMAIL_MUTED};margin:0 6px;">&middot;</span>
+              <a href="sms:+12283578505" style="color:${EMAIL_GOLD};text-decoration:none;">Text Blake direct</a>
+              <span style="color:${EMAIL_MUTED};margin:0 6px;">&middot;</span>
+              <a href="${SITE_URL}" style="color:${EMAIL_GOLD};text-decoration:none;">1coastmedia.com</a>
+            </div>
           </td>
         </tr>
 
@@ -1528,32 +1548,32 @@ app.post('/api/playbook-signup', async (req, res) => {
       })
     });
 
-    // 2) Thank-you to the prospect (non-fatal if it errors)
+    // 2) Thank-you to the prospect (non-fatal if it errors).
+    // Signature lives in the email footer template, so the body skips
+    // the redundant Blake / 1Coast Media / phone block at the bottom.
     try {
       const thanksBody = [
         `Hey,`,
         '',
-        `Thanks for grabbing the playbook. The full version is here whenever you want to come back to it:`,
+        `Thanks for checking out the playbook. The full version stays right here whenever you want to come back to it:`,
         '',
         `https://1coastmedia.com/playbook`,
         '',
-        `It's the same framework we use with every client. Twelve months, five phases, one system. No upsells in there, just the playbook.`,
+        `It's the same framework we use with every client. Twelve months, five phases, one system. No upsells, no opt-out sequence to manage, just the playbook.`,
         '',
-        `If you want to talk through how any of it would actually work for your business, the fastest path is to text me at (228) 357-8505 or reply to this email.`,
+        `If you want to talk about how any of it actually applies to your business, text me at (228) 357-8505 or hit reply.`,
         '',
-        `Blake`,
-        `1Coast Media`,
-        `(228) 357-8505`
+        `Blake`
       ].join('\n');
 
       await mailer.sendMail({
         from: `"Blake Daniels" <${process.env.GMAIL_USER}>`,
         to: email,
         replyTo: process.env.GMAIL_USER,
-        subject: 'Thanks for grabbing the playbook',
+        subject: 'Thanks for checking out the playbook',
         text: thanksBody,
         html: wrapEmailHtml({
-          preheader: 'Thanks for grabbing the playbook.',
+          preheader: 'The playbook stays here whenever you want to come back to it.',
           body: thanksBody
         })
       });

@@ -2219,9 +2219,28 @@ function bindInlineForms() {
 }
 
 async function submitInlineForm(form) {
+  // Hard guard against double-submit. If the form is already marked sent
+  // (or in flight), bail. Without this the user can hit the button twice
+  // before the fetch resolves and we'd send Blake two notifications.
+  if (form.classList.contains('sent') || form.dataset.submitting === '1') return;
+
   const fd = new FormData(form);
   const email = (fd.get('email') || '').toString().trim();
   if (!email) return;
+
+  // Lock + give instant visual feedback BEFORE the network call. The user
+  // sees the "Sent. Check your inbox." confirmation the moment they click,
+  // not after the fetch round-trips.
+  form.dataset.submitting = '1';
+  form.classList.add('sent');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (submitBtn) submitBtn.disabled = true;
+  showToast('Sent. Check your inbox.');
+
+  // If this is the assessment capture, reveal the results pane immediately.
+  if (form.dataset.includeAssessment === 'true') {
+    revealAssessmentResult();
+  }
 
   const payload = {
     type: 'playbook_signup',
@@ -2248,32 +2267,22 @@ async function submitInlineForm(form) {
   // Save the most recent submission locally (so we can pre-fill if reader returns)
   try { localStorage.setItem('1coast.last_submit', JSON.stringify(payload)); } catch(e) {}
 
-  // POST to Apps Script as URL-encoded form data. avoids CORS preflight
+  // Fire the POST in the background. UI is already updated; this just
+  // ships the data to the server. URL-encoded form post avoids CORS preflight.
   const endpoint = CONFIG.endpoint;
   if (endpoint && endpoint.indexOf('PASTE') === -1) {
     try {
       const params = new URLSearchParams();
       Object.keys(payload).forEach(k => params.append(k, payload[k] == null ? '' : String(payload[k])));
-      // Use no-cors mode + simple form post. Apps Script accepts this
       await fetch(endpoint, {
         method: 'POST',
-        body: params,
-        // headers intentionally omitted. URLSearchParams sets the right one
+        body: params
       });
     } catch(err) {
-      console.warn('Submit failed (will still mark UI as sent):', err);
+      console.warn('Submit failed (UI already marked sent):', err);
     }
   } else {
     console.info('CONFIG.endpoint not set. submission would have included:', payload);
-  }
-
-  // Mark UI as sent
-  form.classList.add('sent');
-  showToast('Sent. Check your inbox.');
-
-  // If this is the assessment capture, reveal results
-  if (form.dataset.includeAssessment === 'true') {
-    revealAssessmentResult();
   }
 }
 
