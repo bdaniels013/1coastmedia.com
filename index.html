@@ -62,36 +62,6 @@
       .vsm-sticky {
         padding: 0;
       }
-      .vsm-scroll-hint {
-        font-size: 9px;
-        letter-spacing: .28em;
-        bottom: 18px;
-      }
-    }
-    /* Small scroll hint in the corner so visitors know to keep scrolling */
-    .vsm-scroll-hint {
-      position: absolute;
-      bottom: 22px; left: 50%;
-      transform: translateX(-50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: .32em;
-      text-transform: uppercase;
-      color: rgba(212, 163, 92, .7);
-      pointer-events: none;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .vsm-scroll-hint .bar {
-      width: 1px; height: 24px;
-      background: linear-gradient(to bottom, rgba(212, 163, 92, .7), transparent);
-      animation: vsmHintPulse 2.2s ease-in-out infinite;
-    }
-    @keyframes vsmHintPulse {
-      0%, 100% { opacity: .3; transform: translateY(0); }
-      50%      { opacity: 1;  transform: translateY(6px); }
     }
   </style>
 </head>
@@ -168,11 +138,6 @@
         allowfullscreen
         scrolling="no"
       ></iframe>
-      <div class="vsm-scroll-hint" aria-hidden="true">
-        <span class="bar"></span>
-        <span>Scroll to play</span>
-        <span class="bar"></span>
-      </div>
     </div>
   </section>
 
@@ -301,116 +266,21 @@
     </div>
   </section>
 
-  <!-- Call CTA -->
-  <section class="section-tight">
-    <div class="wrap center">
-      <a href="tel:+12283578505" class="btn btn-call btn-lg">📞 Call now for a free consultation</a>
-      <p class="muted mt-4" style="font-size:14px">Or dial (228) 357-8505</p>
+  <!-- Browse-the-menu CTA. Quieter alternative to the diagnostic funnel for
+       visitors who want to see what we offer without committing to questions. -->
+  <section style="padding: 72px 24px; text-align: center; border-bottom: 1px solid var(--border); background: #000;">
+    <div style="max-width: 680px; margin: 0 auto;">
+      <span style="display:inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .36em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px;">Or browse the menu</span>
+      <h2 style="font-size: clamp(28px, 4.5vw, 48px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; text-transform: uppercase; margin: 0 0 18px;">
+        See everything we do.
+      </h2>
+      <p style="font-size: clamp(16px, 1.6vw, 19px); line-height: 1.55; color: var(--text-muted); max-width: 50ch; margin: 0 auto 28px;">
+        Eleven service categories. Browse the full menu, no prices, no decision fatigue.
+      </p>
+      <a href="/services" class="btn btn-ghost btn-lg">Explore services →</a>
     </div>
   </section>
 
-  <!-- The Promise (3 features) -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Why 1CoastMedia</div>
-        <h2 class="section-title">The promise</h2>
-      </div>
-      <div class="features">
-        <div class="feature">
-          <img src="/assets/services/promise-no-templates.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
-          <div class="feature-num">01</div>
-          <h4>No templated solutions.</h4>
-          <p>Your business is unique. Every campaign, every creative brief, every execution is built specifically for your goals, your audience, your vision.</p>
-        </div>
-        <div class="feature">
-          <img src="/assets/services/promise-direct-access.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
-          <div class="feature-num">02</div>
-          <h4>Direct access, always.</h4>
-          <p>You work directly with decision-makers. No account coordinators reading scripts. Straight talk, creative collaboration, immediate action.</p>
-        </div>
-        <div class="feature">
-          <img src="/assets/services/promise-results-driven.png" alt="" style="width:72px; height:72px; object-fit:contain; margin-bottom:14px" />
-          <div class="feature-num">03</div>
-          <h4>Results-driven partnership.</h4>
-          <p>We succeed when you succeed. Over a decade of hands-on marketing and creative experience, and the track record to back it up.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why now split -->
-  <section class="section">
-    <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="section-eyebrow">Why Now. Why Us.</div>
-          <h2>The Gulf Coast is moving. Are you?</h2>
-          <p>New energy. New opportunities. New money flowing in. But too many local businesses are still marketing like it's 2010. Competing on price instead of value. Blending in instead of standing out.</p>
-          <p>Years of hands-on work in marketing, content, and brand building. We've seen what separates winners from everyone else, and helped brands go from unknown to unavoidable.</p>
-          <div class="mt-6">
-            <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-primary">Book a free 30-min call</a>
-          </div>
-        </div>
-        <div class="features" style="grid-template-columns:1fr">
-          <div class="feature">
-            <div class="feature-num">The moment</div>
-            <p>Post-2020 growth on the Coast is real. Outside capital is arriving. The window to position is now.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-num">The lens</div>
-            <p>Years of watching what actually converts on the Coast. Local knowledge, national-grade execution.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-num">The stakes</div>
-            <p>The question isn't whether we can deliver. It's whether you're ready for what happens when your business becomes the one everyone's talking about.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Mission -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">Mission</div>
-        <h2 class="section-title">Grow the Coast.</h2>
-      </div>
-      <div class="prose">
-        <p><strong>1 Coast Media exists to grow the Mississippi Gulf Coast by helping the businesses that power it grow.</strong></p>
-        <ul>
-          <li><strong>Help local businesses get more customers</strong> through modern marketing, UGC, AI, and smart content.</li>
-          <li><strong>Empower local creators</strong> with real, paid opportunities to do what they love.</li>
-          <li><strong>Increase tourism and visibility</strong> through authentic storytelling and professional media.</li>
-          <li><strong>Strengthen the entire Coast</strong> by uniting cities, businesses, and creators into one shared ecosystem.</li>
-        </ul>
-        <p>We are not here to compete with the Coast. We are here to elevate it. Every project, every campaign, every collaboration has one goal: to make the Mississippi Gulf Coast stronger, louder, more connected, and more prosperous.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Founder letter -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-eyebrow">From our founder</div>
-        <h2 class="section-title">A letter from Blake.</h2>
-      </div>
-      <div class="prose">
-        <p>Growing up on the Mississippi Gulf Coast shaped everything about who I am. The people, the small businesses, the food, the beaches, the music, the culture. It's all part of my identity. I've always believed the Gulf Coast has more potential than it's ever been given credit for.</p>
-        <p>But I also know how hard it is to grow a business here. I know how much owners struggle with visibility, marketing, content, and keeping up with a world that's changing faster than ever. Too many amazing businesses stay hidden. Too many great ideas never reach the people who would love them.</p>
-        <p>I created 1 Coast Media because I believe that when our businesses grow, <strong>our entire Coast grows</strong>. I don't want to be another agency selling random services. I want to be the engine that helps the Gulf Coast rise together.</p>
-        <p>I also believe in creators. The teenagers, moms, photographers, videographers, and everyday people with talent and a story to tell. When local businesses and local creators work together, something powerful happens.</p>
-        <p>This is more than business for me. This is home. This is purpose. This is legacy.</p>
-        <p><strong>Blake Daniels, Founder</strong></p>
-      </div>
-      <div class="center mt-8">
-        <a href="/services" class="btn btn-primary">Explore services</a>
-        <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="btn btn-ghost">Book a discovery call</a>
-      </div>
-    </div>
-  </section>
 
   <!-- Marquee 2 (below Founder letter) -->
   <div class="marquee" aria-hidden="true">
