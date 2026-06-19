@@ -1319,7 +1319,8 @@ const PATH_LABELS = {
   '2': "Drowning trying to do it all themselves",
   '3': "Specific project they need handled",
   '4': "Ready to scale, needs a real team",
-  '5': "Just looking around"
+  '5': "Just looking around",
+  '6': "Building a personal brand"
 };
 
 // Path-specific auto-reply templates. Each one opens with a question
@@ -1333,7 +1334,8 @@ function autoReplyBody(path, contactName) {
     '2': `${greet}\n\nGot your fit check. Real quick: what's eating the most of your time today? Want to make sure we lead with the right thing on the call.\n\nReply to this email or text me at (228) 357-8505.${sig}`,
     '3': `${greet}\n\nGot the project details. Before I send a quote, one question: is there a hard deadline tied to this, or is the timeline you gave me your ideal?\n\nReply to this email or text me at (228) 357-8505. I'll have a quote back within 24 hours.${sig}`,
     '4': `${greet}\n\nSaw your fit check come through. Before we get on a call, what does dominating the market look like to you specifically? Helps me come prepared with the right plan.\n\nReply to this email or text me at (228) 357-8505.${sig}`,
-    '5': `${greet}\n\nAppreciate you taking the time to fill that out. No pitch from me. If anything specific comes up later, you have my number: (228) 357-8505.\n\nIn the meantime, here's a free resource you might actually use:\n\nThe Integrated Business Growth Playbook\nhttps://1coastmedia.com/playbook\n\nIt's the same framework we use with every client. No opt-in, no upsell. Just the system, written down.${sig}`
+    '5': `${greet}\n\nAppreciate you taking the time to fill that out. No pitch from me. If anything specific comes up later, you have my number: (228) 357-8505.\n\nIn the meantime, here's a free resource you might actually use:\n\nThe Integrated Business Growth Playbook\nhttps://1coastmedia.com/playbook\n\nIt's the same framework we use with every client. No opt-in, no upsell. Just the system, written down.${sig}`,
+    '6': `${greet}\n\nSaw your fit check come through. Personal brand work is the work I love most, so I want to get this right. One question before we talk: who already follows you or knows your work, even a little, that we'd be building on?\n\nReply to this email or text me at (228) 357-8505. Building a brand around a real person is a trust thing, and I'd rather start with a real conversation than a pitch.${sig}`
   };
   return bodies[path] || bodies['5'];
 }
@@ -1343,7 +1345,8 @@ const SUBJECT_BY_PATH = {
   '2': 'Quick question before we talk',
   '3': 'On your project',
   '4': 'Before our call',
-  '5': 'Thanks for stopping by 1Coast Media'
+  '5': 'Thanks for stopping by 1Coast Media',
+  '6': 'About building your brand'
 };
 
 app.post('/api/funnel-submit', async (req, res) => {

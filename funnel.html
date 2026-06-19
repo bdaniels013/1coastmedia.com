@@ -691,6 +691,29 @@
           { id:'businessType', kind:'text', q:"What kind of business are you in?", placeholder:"e.g., real estate, restaurant, agency" },
           { id:'whyHere',      kind:'text', q:"What got you here today? Curious, comparing, or something specific on your mind?", placeholder:"No wrong answer." },
           { id:'contact',      kind:'contactOptional', q:"Want us to follow up?", requirePhone:false, requireEmail:false }
+        ],
+        '6': [
+          { id:'pbWho', kind:'single', q:"Who is the brand built around?", options:[
+            "Me. I'm the face of it.",
+            "A founder or exec on our team",
+            "A creator, artist, or public figure",
+            "Still figuring that out"
+          ]},
+          { id:'pbMessage', kind:'text', q:"What do you want to be known for?", placeholder:"The one message or expertise you want to own." },
+          { id:'pbAudience', kind:'single', q:"What do you already have to build on?", options:[
+            "Starting from scratch",
+            "A small but engaged following",
+            "A solid following, ready to grow it",
+            "An established platform and audience"
+          ]},
+          { id:'pbVision', kind:'text', q:"What does winning look like 12 months from now?", placeholder:"e.g., the go-to name in my space, booked solid, a real audience." },
+          { id:'timeline', kind:'single', q:"When do you want to start?", options:[
+            "Immediately",
+            "In the next 30 days",
+            "This quarter",
+            "Just exploring"
+          ]},
+          { id:'contact', kind:'contact', q:"Last step. How do we reach you?" }
         ]
       };
 
@@ -698,6 +721,7 @@
       const diagnosticOptions = [
         { path:'1', label:"My marketing isn't bringing in business" },
         { path:'2', label:"I'm drowning trying to do it all myself" },
+        { path:'6', label:"I want to build my personal brand and become known" },
         { path:'3', label:"I've got a specific project I need handled" },
         { path:'4', label:"I'm ready to scale and need a real team behind me" },
         { path:'5', label:"Honestly, I'm just looking around" }
@@ -823,6 +847,16 @@
           const isHotTime    = HOT_TIMELINES.includes(t);
           const isWarmTime   = WARM_TIMELINES.includes(t);
 
+          // Personal brand path has no budget question. Segment on timeline +
+          // how much audience they already have to build on.
+          if (p === '6') {
+            const aud = this.answers.pbAudience || '';
+            const established = /solid following|established/i.test(aud);
+            if (isHotTime) { this.temperature = established ? 'HOT' : 'WARM'; return; }
+            if (t === 'Just exploring') { this.temperature = 'COOL'; return; }
+            this.temperature = 'WARM'; return;
+          }
+
           if ((p === '1' || p === '4') && isHotBudget && isHotTime) {
             this.temperature = 'HOT';
           } else if (noBudget) {
@@ -895,6 +929,7 @@
           if (p === '3') return `Project: ${a.projectType || 'TBD'}. Need by: ${a.deadline || 'TBD'}. Budget: ${a.budget || 'TBD'}.`;
           if (p === '4') return `Ready to scale. Size: ${a.companySize || 'TBD'}. Pace: ${a.aggression || 'TBD'}. Budget: ${a.budget || 'TBD'}.`;
           if (p === '5') return `Just looking around. Wanted to introduce myself.`;
+          if (p === '6') return `Building a personal brand. Want to be known for: ${a.pbMessage || 'TBD'}. Audience now: ${a.pbAudience || 'TBD'}. Timeline: ${a.timeline || 'TBD'}.`;
           return '';
         },
 
@@ -905,6 +940,7 @@
         // String matches read against the budget option text (now "$X to $Y" form).
         get recommendedPackage() {
           if (this.temperature !== 'WARM') return null;
+          if (this.path === '6') return 'Personal Brand Authority';
           const b = this.answers.budget || '';
           if (this.path === '4') {
             if (b.includes('15,000') || b.includes('7,000 to $15')) return 'Growth Partner';
