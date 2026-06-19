@@ -269,13 +269,22 @@
                   <option value="youtube">YouTube / long-form</option>
                   <option value="commercial">Commercial / brand film</option>
                   <option value="drone">Drone job (standalone)</option>
+                  <option value="production">Full production (crew + gear)</option>
+                </select>
+              </div>
+              <div class="scope-row" x-show="p.video.kind === 'production'">
+                <label>Crew tier <span class="hint">(crew + gear; talent / location / travel separate)</span></label>
+                <select x-model="p.video.crew">
+                  <option value="lean">Lean (you +1, run-and-gun)</option>
+                  <option value="standard">Standard (3 to 4 crew, pro gear)</option>
+                  <option value="full">Full (5+ crew, cinema package)</option>
                 </select>
               </div>
               <div class="scope-row">
                 <label>Shoot days</label>
                 <select x-model.number="p.video.days"><template x-for="n in [1,2,3,4,5]" :key="n"><option :value="n" x-text="n"></option></template></select>
               </div>
-              <div class="scope-row" x-show="p.video.kind !== 'drone'">
+              <div class="scope-row" x-show="p.video.kind !== 'drone' && p.video.kind !== 'production'">
                 <label>Hours of shooting <span class="hint">(total; ~2 baked in)</span></label>
                 <select x-model.number="p.video.hours"><template x-for="n in [1,2,3,4,5,6,7,8,9,10]" :key="n"><option :value="n" x-text="n"></option></template></select>
               </div>
@@ -283,7 +292,7 @@
                 <label>Length</label>
                 <select x-model="p.video.length"><option value="short">Under 60s</option><option value="standard">1 to 3 min</option><option value="long">3 min+</option></select>
               </div>
-              <div class="scope-row" x-show="p.video.kind !== 'drone'">
+              <div class="scope-row" x-show="p.video.kind !== 'drone' && p.video.kind !== 'production'">
                 <label>Add drone coverage <span class="hint">(+$750)</span></label>
                 <select x-model="p.video.drone"><option value="no">No</option><option value="yes">Yes</option></select>
               </div>
@@ -474,7 +483,10 @@
         includedHours: 2,                                    // hours baked into the base
         perHour:       150,                                  // each shooting hour beyond included
         length:        { short:0, standard:300, long:700 },  // <60s / 1–3 min / 3 min+ (youtube/commercial)
-        droneAddon:    750                                   // adding aerials to another deliverable
+        droneAddon:    750,                                  // adding aerials to another deliverable
+        // High-end production day rates (crew + gear bundled). For a fast
+        // ballpark on a call; talent / location / travel are pass-throughs.
+        production:    { lean:3000, standard:6000, full:12000 }
       };
 
       /* UGC / creator campaigns — Blake's MANAGEMENT FEE only (campaign
@@ -509,7 +521,7 @@
         },
         p: {
           type:'website', size:'medium', rush:'no',
-          video: { kind:'commercial', days:1, hours:2, length:'standard', drone:'no' },
+          video: { kind:'commercial', days:1, hours:2, length:'standard', drone:'no', crew:'standard' },
           ugc:   { reach:'mid', geo:'national' },
           inf:   { kind:'influencer', count:1, reach:'mid', geo:'national' }
         },
@@ -588,7 +600,11 @@
 
         videoSubtotal() {
           const v = this.p.video;
-          const extraDays = Math.max(0, (Number(v.days) || 1) - 1);
+          const days = Number(v.days) || 1;
+          const extraDays = Math.max(0, days - 1);
+          if (v.kind === 'production') {
+            return (VIDEO.production[v.crew] || 0) * days;  // crew + gear day rate × days
+          }
           let t = VIDEO.base[v.kind] || 0;
           if (v.kind === 'drone') {
             return t + extraDays * VIDEO.droneExtraDay;   // ~per-day, not the production extra-day rate
@@ -627,11 +643,18 @@
             const v = this.p.video;
             const KIND = { socialBatch:'Social batch', youtube:'YouTube', commercial:'Commercial', drone:'Drone job' };
             const LEN  = { short:'under 60s', standard:'1–3 min', long:'3 min+' };
-            bd.push({ label:`${KIND[v.kind]} base`, amount: usd(VIDEO.base[v.kind] || 0) });
-            const extraDays = Math.max(0, (Number(v.days)||1) - 1);
-            if (v.kind === 'drone') {
+            const days = Number(v.days)||1;
+            const extraDays = Math.max(0, days - 1);
+            if (v.kind === 'production') {
+              const CREW = { lean:'Lean crew', standard:'Standard crew', full:'Full crew' };
+              bd.push({ label:`${CREW[v.crew]} day rate`, amount: usd(VIDEO.production[v.crew]||0) });
+              if (days > 1) bd.push({ label:`× ${days} shoot days`, amount:'' });
+              bd.push({ label:'Talent / location / travel', amount:'pass-through' });
+            } else if (v.kind === 'drone') {
+              bd.push({ label:`${KIND[v.kind]} base`, amount: usd(VIDEO.base[v.kind] || 0) });
               if (extraDays) bd.push({ label:`${extraDays} extra drone day${extraDays>1?'s':''}`, amount:'+'+usd(extraDays*VIDEO.droneExtraDay) });
             } else {
+              bd.push({ label:`${KIND[v.kind]} base`, amount: usd(VIDEO.base[v.kind] || 0) });
               if (extraDays) bd.push({ label:`${extraDays} extra shoot day${extraDays>1?'s':''}`, amount:'+'+usd(extraDays*VIDEO.perExtraDay) });
               const extraHrs = Math.max(0, (Number(v.hours)||0) - VIDEO.includedHours);
               if (extraHrs) bd.push({ label:`${extraHrs} extra shoot hour${extraHrs>1?'s':''}`, amount:'+'+usd(extraHrs*VIDEO.perHour) });
