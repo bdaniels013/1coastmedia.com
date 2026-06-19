@@ -1652,6 +1652,66 @@ app.get('/content-manager', (req, res) => {
   }
 });
 
+/* ============================================================
+   /scope — internal pricing tool, gated by an env-var passcode.
+
+   Set SCOPE_ACCESS_CODE in the environment (Render dashboard). Falls
+   back to "1coast" if unset so the tool still works out of the box,
+   but set it for real privacy. The calculator HTML is only served to
+   authenticated requests, so the pricing logic never appears in public
+   page source. Changing SCOPE_ACCESS_CODE logs everyone out.
+   ============================================================ */
+function scopeCode()  { return process.env.SCOPE_ACCESS_CODE || '1coast'; }
+function scopeToken() { return crypto.createHash('sha256').update('1cm-scope::' + scopeCode()).digest('hex'); }
+function scopeAuthed(req) { return req.cookies && req.cookies.scope_auth === scopeToken(); }
+function scopeLoginPage(error) {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Internal · 1Coast Media</title>
+<link rel="icon" type="image/png" href="/assets/1coast-seal-cream-2x.png">
+<link rel="stylesheet" href="/assets/boring.css">
+<style>body{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;margin:0}
+.c{max-width:380px;width:100%;text-align:center}.c img{height:40px;width:auto;margin:0 auto 24px;display:block}
+.c h2{font-size:22px;font-weight:700;margin:0 0 6px}.c p{color:var(--text-muted);font-size:14px;margin:0 0 20px}
+.c input{width:100%;padding:14px 16px;border-radius:12px;box-sizing:border-box;background:#141414;border:1.5px solid var(--border-strong);color:var(--text);font-size:16px;text-align:center;letter-spacing:.1em;font-family:inherit}
+.c input:focus{outline:none;border-color:var(--accent-warm)}.c button{margin-top:12px;width:100%}
+.err{color:#ff8573;font-size:13px;margin-top:10px;min-height:18px}</style></head>
+<body><div class="c"><img src="/assets/1coast-lockup-charcoal-2x.png" alt="1Coast Media">
+<h2>Internal tool</h2><p>Scope &amp; pricing calculator. Enter the access code.</p>
+<form method="POST" action="/api/scope-login">
+<input type="password" name="code" placeholder="Access code" autocomplete="off" autofocus>
+<div class="err">${error || ''}</div>
+<button type="submit" class="btn btn-primary">Unlock</button></form></div></body></html>`;
+}
+
+app.post('/api/scope-login', express.urlencoded({ extended: false }), (req, res) => {
+  const code = ((req.body && req.body.code) || '').trim();
+  if (code && code.toLowerCase() === scopeCode().toLowerCase()) {
+    res.cookie('scope_auth', scopeToken(), {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 30 * 24 * 60 * 60 * 1000   // 30 days
+    });
+    return res.redirect('/scope');
+  }
+  return res.status(401).send(scopeLoginPage('Wrong code.'));
+});
+
+app.post('/api/scope-logout', (req, res) => {
+  res.clearCookie('scope_auth');
+  res.redirect('/scope');
+});
+
+// Intercept both /scope and /scope.html so the static middleware can never
+// serve the calculator file to an unauthenticated request.
+app.get(['/scope', '/scope.html'], (req, res) => {
+  if (!scopeAuthed(req)) return res.status(401).send(scopeLoginPage(''));
+  const f = path.join(__dirname, '..', 'scope.html');
+  if (fs.existsSync(f)) return res.sendFile(f);
+  return res.status(404).json({ error: 'scope tool not found' });
+});
+
 // Root endpoint - serve index.html
 app.get('/', (req, res) => {
   const indexPath = path.join(__dirname, '..', 'index.html');

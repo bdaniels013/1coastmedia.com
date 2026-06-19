@@ -111,24 +111,11 @@
     .gate-err { color: #ff8573; font-size: 13px; margin-top: 10px; min-height: 18px; }
   </style>
 </head>
-<body x-data="scopeTool()" x-init="init()" x-cloak>
+<body x-data="scopeTool()" x-cloak>
 
-  <!-- ============ Passcode gate ============ -->
-  <div class="gate" x-show="!unlocked">
-    <div class="gate-card">
-      <img src="./assets/1coast-lockup-charcoal-2x.png" alt="1Coast Media" style="height:40px;width:auto;margin:0 auto 24px;display:block;" />
-      <h2>Internal tool</h2>
-      <p>Scope &amp; pricing calculator. Enter the access code.</p>
-      <form @submit.prevent="tryUnlock()">
-        <input type="password" x-model="codeInput" placeholder="Access code" autocomplete="off" />
-        <div class="gate-err" x-text="gateError"></div>
-        <button type="submit" class="btn btn-primary">Unlock</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============ The tool ============ -->
-  <div x-show="unlocked">
+  <!-- Access is gated server-side (env-var passcode) before this page is
+       ever served, so there's no client-side gate here. -->
+  <div>
     <div class="scope-wrap">
       <div class="scope-head">
         <div class="eyebrow">Internal · Package-detection model v2</div>
@@ -377,11 +364,9 @@
         rushMultiplier: 1.35
       };
 
-      const ACCESS_CODE = '1coast';   // change to whatever you want the gate code to be
-
       return {
         PACKAGES, ADDONS, PROJECTS,
-        unlocked:false, codeInput:'', gateError:'', copied:false,
+        copied:false,
         mode:'retainer',
 
         r: {
@@ -391,16 +376,6 @@
           ads:'no', pr:'no', websiteMgmt:'no', storefront:'no'
         },
         p: { type:'website', size:'medium', rush:'no' },
-
-        init() {
-          try { if (sessionStorage.getItem('1cm-scope-unlocked') === '1') this.unlocked = true; } catch(e) {}
-        },
-        tryUnlock() {
-          if (this.codeInput.trim().toLowerCase() === ACCESS_CODE.toLowerCase()) {
-            this.unlocked = true; this.gateError = '';
-            try { sessionStorage.setItem('1cm-scope-unlocked','1'); } catch(e) {}
-          } else { this.gateError = 'Wrong code.'; }
-        },
 
         // ===== tier detection (mirrors the pseudocode in the v2 doc) =====
         detectTier(track, s) {
