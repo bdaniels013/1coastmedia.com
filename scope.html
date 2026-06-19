@@ -190,7 +190,7 @@
             <select x-model="r.leadCapture"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
-            <label>Email + SMS nurture</label>
+            <label>Email + SMS management <span class="hint">(managed; client pays the platform)</span></label>
             <select x-model="r.emailSms"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
         </div>
@@ -221,6 +221,9 @@
         </div>
         <div class="flag info" x-show="r.storefront === 'yes'">
           Storefront / e-commerce ops → <strong>scope and quote separately</strong> based on the build. Not included in the numbers below.
+        </div>
+        <div class="flag info" x-show="r.emailSms === 'yes'">
+          Email + SMS is the <strong>management fee only</strong>. The client pays the platform and sending costs (Klaviyo, Twilio, etc.) directly.
         </div>
         <div class="flag info">
           Want UGC / creator or influencer campaigns? Quote those <strong>per campaign</strong> in Project mode, on top of the retainer. Creator / talent budget is the client's separate cost.
@@ -436,7 +439,7 @@
         ads: 750,                 // mgmt only; spend separate (or 15% of spend)
         pr: 800,
         websiteMgmt: 400,         // includes hosting + care for retainer clients
-        emailSms: 500             // only if the detected tier doesn't already include it
+        emailSms: 500             // MANAGEMENT fee only; client pays the platform + sends (Klaviyo, Twilio, etc.). Charged unless the tier already includes it.
       };
       // UGC and influencer/celebrity campaigns are PER-CAMPAIGN, not flat monthly.
       // Priced in Project mode (reach + geography). Retainer clients who want a
@@ -455,8 +458,8 @@
         P2:'weekly long-form + cutdowns across 2+ platforms',
         P3:'P2 plus podcast, ads, multi-platform, or storefront',
         B1:'light presence: ≈1 day, 30+ pieces (video/photo/graphics), 1 platform',
-        B2:'1–2 days, 30+ pieces, more video, 2 platforms',
-        B3:'weekly content (≈4 days), full social, landing + lead capture',
+        B2:'building: ~2 days, or weekly long-form + cutdowns, more content',
+        B3:'engine: heavy content — weekly shoots and/or long-form, full social',
         B4:'full funnel + ads + PR, fully managed / multi-property'
       };
 
@@ -533,15 +536,20 @@
             if (s.weeklyLongForm && s.cutdowns && s.platforms >= 2) return 'P2';
             return 'P1';
           }
-          // Weekly shooting (≈4 days/mo) is the NORM for $3k+ clients, so shoot
-          // count alone never triggers B4. What separates B4 is service breadth:
-          // the full funnel plus paid ads plus PR, fully managed.
+          // B4 is the only tier set by service BREADTH (full funnel + ads + PR,
+          // fully managed). Everything below is driven by PRODUCTION / CONTENT
+          // intensity — that's the main lever. Shoot days, content volume,
+          // weekly long-form, and cutdowns push the tier up; the funnel
+          // (landing + lead capture) is only a minor nudge.
           const fullFunnel = s.landing && s.leadCapture && s.emailSms;
           if (fullFunnel && s.ads && s.pr) return 'B4';
-          // B3 = the standard engine: weekly content, OR the full marketing system
-          // (landing + lead capture) at any production level.
-          if (s.shootDays >= 3 || (s.landing && s.leadCapture)) return 'B3';
-          if (s.shootDays >= 1 && s.platforms >= 2) return 'B2';
+          let prod = s.shootDays
+            + (s.shortForm === 'max' ? 2 : s.shortForm === 'heavy' ? 1 : 0)
+            + (s.weeklyLongForm ? 2 : 0)
+            + (s.cutdowns ? 1 : 0)
+            + (s.landing ? 0.5 : 0) + (s.leadCapture ? 0.5 : 0);
+          if (prod >= 4) return 'B3';
+          if (prod >= 2) return 'B2';
           return 'B1';
         },
 
@@ -578,7 +586,7 @@
           if (s.ads && !inc.includes('ads'))                 { addons += ADDONS.ads; bd.push({ label:'Paid ads management', amount:'+$'+ADDONS.ads.toLocaleString() }); }
           if (s.pr && !inc.includes('pr'))                   { addons += ADDONS.pr;  bd.push({ label:'PR / media', amount:'+$'+ADDONS.pr.toLocaleString() }); }
           if (s.websiteMgmt && !inc.includes('websiteMgmt')) { addons += ADDONS.websiteMgmt; bd.push({ label:'Website management', amount:'+$'+ADDONS.websiteMgmt.toLocaleString() }); }
-          if (s.emailSms && !inc.includes('emailSms'))       { addons += ADDONS.emailSms; bd.push({ label:'Email + SMS nurture', amount:'+$'+ADDONS.emailSms.toLocaleString() }); }
+          if (s.emailSms && !inc.includes('emailSms'))       { addons += ADDONS.emailSms; bd.push({ label:'Email + SMS management', amount:'+$'+ADDONS.emailSms.toLocaleString() }); }
 
           // "project-sized" hint: essentially no recurring activity
           const projectSized = track === 'business' && s.shootDays === 0 && s.platforms === 0 && !s.weeklyLongForm;
