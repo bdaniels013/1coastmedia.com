@@ -312,32 +312,37 @@
          Seeded by reverse-engineering the old retainer tiers + one-time
          project rates. Tune until the outputs match your gut.
          ================================================================== */
+      // Tuned 2026 from market research (national SMB/boutique benchmarks +
+      // Mississippi Gulf Coast adjustment) cross-checked against 1Coast's own
+      // history (Michael West $3k/mo signed; old tiers; D'Iberville/website
+      // invoices). Posture: hold a premium $3k retainer floor (self-selects
+      // for clients who can pay), use projects as the trust-building on-ramp.
       const PRICING = {
         retainer: {
-          base: 400,            // strategy, account management, the relationship
-          minimum: 3000,        // your retainer floor — never suggest below this
-          shootDayRate: 350,    // per shoot day per month
-          shortForm:   { none:0, light:150, standard:300, heavy:500 },
-          graphics:    { none:0, light:100, standard:175, heavy:300 },
-          socialMgmt:  { none:0, one:500, two:850, three:1200 },
-          longForm:    { none:0, weekly:1500 },     // weekly YouTube or podcast production
+          base: 500,            // strategy, account management, the relationship
+          minimum: 3000,        // retainer floor — never suggest below this
+          shootDayRate: 600,    // per shoot day/mo (market $600-2,000; bundle-discounted)
+          shortForm:   { none:0, light:250, standard:450, heavy:700 },   // ~15 / ~30 / 40+ videos
+          graphics:    { none:0, light:100, standard:200, heavy:350 },
+          socialMgmt:  { none:0, one:600, two:1000, three:1400 },        // platforms managed
+          longForm:    { none:0, weekly:1800 },     // weekly YouTube or podcast production
           cutdowns:    { none:0, yes:500 },
-          landing:     { none:0, occasional:250, ongoing:500 },
-          leadCapture: { none:0, setup:175, managed:400 },
-          emailSms:    { none:0, yes:500 },
-          ads:         { none:0, yes:600 },          // management only, ad spend separate
+          landing:     { none:0, occasional:300, ongoing:600 },
+          leadCapture: { none:0, setup:250, managed:500 },
+          emailSms:    { none:0, yes:600 },
+          ads:         { none:0, yes:750 },          // management only, ad spend separate
           pr:          { none:0, yes:800 },
           websiteMgmt: { none:0, yes:400 },
-          personalBrand: { none:0, yes:1000 }        // founder-as-brand premium layer
+          personalBrand: { none:0, yes:1200 }        // founder-as-brand premium layer
         },
         project: {
-          website:     { small:3500, medium:7500, large:14000 },
+          website:     { small:3500, medium:7500, large:13000 },
           landing:     { small:1200, medium:2500, large:4500 },
-          videoSingle: { small:1500, medium:3000, large:6000 },
-          videoSeries: { small:5000, medium:9000, large:16000 },
+          videoSingle: { small:1500, medium:3500, large:7000 },
+          videoSeries: { small:5000, medium:9500, large:16000 },
           photo:       { small:600,  medium:1200, large:2500 },
-          branding:    { small:2500, medium:5000, large:9000 },
-          adCampaign:  { small:1500, medium:3500, large:7500 },
+          branding:    { small:2000, medium:4500, large:8500 },
+          adCampaign:  { small:1200, medium:2500, large:5000 },
           other:       { small:1000, medium:3000, large:6000 },
           rushMultiplier: 1.35   // applied when rush = yes
         }
