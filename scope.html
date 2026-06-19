@@ -469,7 +469,8 @@
          tune as real jobs come in. Base covers 1 shoot day + ~2 hours. */
       const VIDEO = {
         base:          { socialBatch:1500, youtube:1800, commercial:2500, drone:750 },
-        perExtraDay:   300,                                  // each shoot day beyond the first
+        perExtraDay:   300,                                  // each production shoot day beyond the first
+        droneExtraDay: 650,                                  // drone is ~per-day: day 1 $750, each more +$650 (2 days ≈ $1,400)
         includedHours: 2,                                    // hours baked into the base
         perHour:       150,                                  // each shooting hour beyond included
         length:        { short:0, standard:300, long:700 },  // <60s / 1–3 min / 3 min+ (youtube/commercial)
@@ -587,13 +588,15 @@
 
         videoSubtotal() {
           const v = this.p.video;
+          const extraDays = Math.max(0, (Number(v.days) || 1) - 1);
           let t = VIDEO.base[v.kind] || 0;
-          t += Math.max(0, (Number(v.days) || 1) - 1) * VIDEO.perExtraDay;
-          if (v.kind !== 'drone') {
-            t += Math.max(0, (Number(v.hours) || 0) - VIDEO.includedHours) * VIDEO.perHour;
-            if (v.kind === 'youtube' || v.kind === 'commercial') t += VIDEO.length[v.length] || 0;
-            if (v.drone === 'yes') t += VIDEO.droneAddon;
+          if (v.kind === 'drone') {
+            return t + extraDays * VIDEO.droneExtraDay;   // ~per-day, not the production extra-day rate
           }
+          t += extraDays * VIDEO.perExtraDay;
+          t += Math.max(0, (Number(v.hours) || 0) - VIDEO.includedHours) * VIDEO.perHour;
+          if (v.kind === 'youtube' || v.kind === 'commercial') t += VIDEO.length[v.length] || 0;
+          if (v.drone === 'yes') t += VIDEO.droneAddon;
           return t;
         },
         ugcSubtotal() {
@@ -626,8 +629,10 @@
             const LEN  = { short:'under 60s', standard:'1–3 min', long:'3 min+' };
             bd.push({ label:`${KIND[v.kind]} base`, amount: usd(VIDEO.base[v.kind] || 0) });
             const extraDays = Math.max(0, (Number(v.days)||1) - 1);
-            if (extraDays) bd.push({ label:`${extraDays} extra shoot day${extraDays>1?'s':''}`, amount:'+'+usd(extraDays*VIDEO.perExtraDay) });
-            if (v.kind !== 'drone') {
+            if (v.kind === 'drone') {
+              if (extraDays) bd.push({ label:`${extraDays} extra drone day${extraDays>1?'s':''}`, amount:'+'+usd(extraDays*VIDEO.droneExtraDay) });
+            } else {
+              if (extraDays) bd.push({ label:`${extraDays} extra shoot day${extraDays>1?'s':''}`, amount:'+'+usd(extraDays*VIDEO.perExtraDay) });
               const extraHrs = Math.max(0, (Number(v.hours)||0) - VIDEO.includedHours);
               if (extraHrs) bd.push({ label:`${extraHrs} extra shoot hour${extraHrs>1?'s':''}`, amount:'+'+usd(extraHrs*VIDEO.perHour) });
               if ((v.kind==='youtube'||v.kind==='commercial') && VIDEO.length[v.length]) bd.push({ label:`Length (${LEN[v.length]})`, amount:'+'+usd(VIDEO.length[v.length]) });
