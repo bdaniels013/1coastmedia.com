@@ -42,7 +42,11 @@
 </style>
 <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Pinned to Babel 7. Babel 8 flipped @babel/preset-react to the automatic
+     JSX runtime, which emits `import` statements that can't run in a plain
+     <script> tag, blanking the whole module. v7 keeps the classic
+     React.createElement runtime this module relies on. Do not unpin. -->
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
