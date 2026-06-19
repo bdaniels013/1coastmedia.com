@@ -11,15 +11,19 @@
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     /* =====================================================================
-       INTERNAL SCOPING & PRICING TOOL  (/scope)
+       INTERNAL SCOPE & PRICING TOOL  (/scope)
        Private: noindex, unlinked, light passcode gate. Not customer-facing.
 
-       HOW TO TUNE PRICES: every dollar value lives in the PRICING object in
-       the <script> below, clearly grouped. Change a number, save, done.
-       The retainer total is clamped to PRICING.retainer.minimum.
+       MODEL: Pricing Logic v2 (package-detection), per
+       audit/PRICING-LOGIC-2026-06.md. Detect the nearest package from the
+       scope, then add only genuinely separable add-ons. Output grounded +
+       stretch. Package prices are ALREADY bundle-discounted (post-discount).
+
+       HOW TO TUNE: every number lives in PACKAGES / ADDONS / PROJECTS /
+       INCLUDED_DAYS / TIER_INCLUDES_EMAIL in the <script> below.
        ===================================================================== */
-    .scope-wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 120px; }
-    .scope-head { text-align: center; margin: 24px 0 32px; }
+    .scope-wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 200px; }
+    .scope-head { text-align: center; margin: 24px 0 28px; }
     .scope-head .eyebrow {
       font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .32em;
       text-transform: uppercase; color: var(--accent-warm);
@@ -27,19 +31,21 @@
     .scope-head h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; margin: 10px 0 0; }
     .scope-head p { color: var(--text-muted); font-size: 15px; margin: 10px 0 0; }
 
-    .mode-toggle { display: flex; gap: 10px; justify-content: center; margin: 0 0 28px; }
-    .mode-toggle button {
-      flex: 0 0 auto; padding: 12px 26px; border-radius: 999px; cursor: pointer;
+    .toggle-row { display: flex; gap: 10px; justify-content: center; margin: 0 0 14px; flex-wrap: wrap; }
+    .toggle-row button {
+      flex: 0 0 auto; padding: 11px 24px; border-radius: 999px; cursor: pointer;
       font-family: inherit; font-size: 15px; font-weight: 600;
       border: 1.5px solid var(--border-strong); background: transparent; color: var(--text-muted);
       transition: all .15s ease;
     }
-    .mode-toggle button.active { background: var(--accent-warm); color: #000; border-color: var(--accent-warm); }
+    .toggle-row button.active { background: var(--accent-warm); color: #000; border-color: var(--accent-warm); }
+    .track-row button.active { background: var(--text); color: #000; border-color: var(--text); }
+    .track-label { text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:var(--text-dim); margin: 8px 0 6px; }
 
-    .scope-section { margin-bottom: 24px; }
+    .scope-section { margin-bottom: 22px; }
     .scope-section h3 {
       font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .26em;
-      text-transform: uppercase; color: var(--accent-warm); margin: 0 0 12px;
+      text-transform: uppercase; color: var(--accent-warm); margin: 18px 0 10px;
       border-bottom: 1px solid var(--border); padding-bottom: 8px;
     }
     .scope-row {
@@ -47,41 +53,50 @@
       padding: 10px 0; border-bottom: 1px solid var(--border);
     }
     .scope-row label { font-size: 15px; color: var(--text); font-weight: 500; }
+    .scope-row label .hint { color: var(--text-dim); font-size: 12px; }
     .scope-row select {
-      flex: 0 0 auto; min-width: 200px;
+      flex: 0 0 auto; min-width: 190px;
       padding: 10px 14px; border-radius: 10px;
       background: var(--bg-elev, #141414); color: var(--text);
-      border: 1.5px solid var(--border-strong); font-family: inherit; font-size: 14px;
-      cursor: pointer;
+      border: 1.5px solid var(--border-strong); font-family: inherit; font-size: 14px; cursor: pointer;
     }
     .scope-row select:focus { outline: none; border-color: var(--accent-warm); }
 
-    /* Sticky price bar */
+    /* Sticky result */
     .price-bar {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-      background: rgba(10,10,10,.94); backdrop-filter: blur(12px);
-      border-top: 1px solid var(--accent-warm);
-      padding: 16px 20px;
+      background: rgba(10,10,10,.95); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--accent-warm); padding: 14px 20px;
     }
-    .price-bar-inner {
-      max-width: 920px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    .price-bar-inner { max-width: 920px; margin: 0 auto; }
+    .price-tier {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent-warm); margin-bottom: 8px;
     }
-    .price-bar .label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--text-muted); }
-    .price-bar .amount { font-size: clamp(34px, 6vw, 52px); font-weight: 800; letter-spacing: -0.03em; color: var(--accent-warm); line-height: 1; }
-    .price-bar .amount small { font-size: 16px; color: var(--text-muted); font-weight: 500; letter-spacing: 0; }
-    .price-bar .floor-note { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: .12em; }
-    .price-bar .copy-btn {
-      padding: 10px 18px; border-radius: 999px; border: 1.5px solid var(--border-strong);
-      background: transparent; color: var(--text); cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600;
+    .price-tier .why { color: var(--text-dim); letter-spacing: .04em; text-transform: none; font-size: 12px; }
+    .price-cols { display: flex; align-items: flex-end; gap: 28px; flex-wrap: wrap; }
+    .price-col .lbl { font-family:'JetBrains Mono',monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+    .price-col .amt { font-size: clamp(30px, 5vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+    .price-col.grounded .amt { color: var(--text); }
+    .price-col.stretch .amt { color: var(--accent-warm); }
+    .price-col .amt small { font-size: 15px; color: var(--text-muted); font-weight: 500; letter-spacing: 0; }
+    .price-note { margin-top: 8px; font-family:'JetBrains Mono',monospace; font-size: 11px; color: var(--text-dim); letter-spacing: .04em; }
+    .price-actions { margin-left: auto; display: flex; gap: 8px; align-self: center; }
+    .price-actions button {
+      padding: 9px 16px; border-radius: 999px; border: 1.5px solid var(--border-strong);
+      background: transparent; color: var(--text); cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600;
     }
-    .price-bar .copy-btn:hover { border-color: var(--accent-warm); }
+    .price-actions button:hover { border-color: var(--accent-warm); }
 
-    .breakdown { margin-top: 18px; font-size: 13px; color: var(--text-muted); }
+    .flag { margin-top: 16px; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+    .flag.warn { background: rgba(255,74,58,.06); border: 1px solid rgba(255,74,58,.3); color: #ff8573; }
+    .flag.info { background: rgba(212,163,92,.06); border: 1px solid rgba(212,163,92,.3); color: var(--accent-warm); }
+
+    .breakdown { margin-top: 16px; font-size: 13px; color: var(--text-muted); }
     .breakdown .bd-row { display: flex; justify-content: space-between; padding: 4px 0; }
     .breakdown .bd-row span:last-child { font-family: 'JetBrains Mono', monospace; color: var(--text); }
 
-    /* Passcode gate */
+    /* Gate */
     .gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
     .gate-card { max-width: 380px; width: 100%; text-align: center; }
     .gate-card h2 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
@@ -116,18 +131,24 @@
   <div x-show="unlocked">
     <div class="scope-wrap">
       <div class="scope-head">
-        <div class="eyebrow">Internal · Not customer-facing</div>
+        <div class="eyebrow">Internal · Package-detection model v2</div>
         <h1>Scope &amp; Price</h1>
-        <p>Pick the scope. The number updates live. Adjust before you quote.</p>
+        <p>Set the scope. It detects the package and shows grounded vs stretch. Adjust before you quote.</p>
       </div>
 
-      <div class="mode-toggle">
+      <div class="toggle-row">
         <button :class="{ active: mode === 'retainer' }" @click="mode = 'retainer'">Ongoing retainer</button>
         <button :class="{ active: mode === 'project' }" @click="mode = 'project'">One-time project</button>
       </div>
 
       <!-- ============ RETAINER ============ -->
       <div x-show="mode === 'retainer'">
+        <div class="track-label">Who is this built around?</div>
+        <div class="toggle-row track-row">
+          <button :class="{ active: r.track === 'business' }" @click="r.track = 'business'">A business</button>
+          <button :class="{ active: r.track === 'personal' }" @click="r.track = 'personal'">A person (personal brand)</button>
+        </div>
+
         <div class="scope-section">
           <h3>Production</h3>
           <div class="scope-row">
@@ -140,115 +161,86 @@
             <label>Short-form videos / month</label>
             <select x-model="r.shortForm">
               <option value="none">None</option>
-              <option value="light">~15 videos</option>
-              <option value="standard">~30 videos</option>
-              <option value="heavy">40+ videos</option>
+              <option value="light">~15 (light)</option>
+              <option value="standard">~30 (standard)</option>
+              <option value="heavy">40+ (heavy)</option>
             </select>
           </div>
           <div class="scope-row">
-            <label>Photos &amp; graphics</label>
-            <select x-model="r.graphics">
-              <option value="none">None</option>
-              <option value="light">Light</option>
-              <option value="standard">Standard</option>
-              <option value="heavy">Heavy</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="scope-section">
-          <h3>Distribution &amp; management</h3>
-          <div class="scope-row">
-            <label>Social media management</label>
-            <select x-model="r.socialMgmt">
-              <option value="none">None (we deliver, they post)</option>
-              <option value="one">1 platform</option>
-              <option value="two">2 platforms</option>
-              <option value="three">3+ platforms</option>
-            </select>
-          </div>
-          <div class="scope-row">
-            <label>Weekly long-form (YouTube / podcast)</label>
-            <select x-model="r.longForm">
-              <option value="none">No</option>
-              <option value="weekly">Yes, weekly</option>
-            </select>
+            <label>Weekly long-form <span class="hint">(YouTube / podcast)</span></label>
+            <select x-model="r.weeklyLongForm"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
             <label>Cutdowns from long-form</label>
-            <select x-model="r.cutdowns">
-              <option value="none">No</option>
-              <option value="yes">Yes</option>
+            <select x-model="r.cutdowns"><option value="no">No</option><option value="yes">Yes</option></select>
+          </div>
+          <div class="scope-row" x-show="r.track === 'personal'">
+            <label>Podcast / guest format</label>
+            <select x-model="r.podcast"><option value="no">No</option><option value="yes">Yes</option></select>
+          </div>
+        </div>
+
+        <div class="scope-section">
+          <h3>Distribution</h3>
+          <div class="scope-row">
+            <label>Platforms managed</label>
+            <select x-model.number="r.platforms">
+              <option :value="0">0 (we deliver, they post)</option>
+              <option :value="1">1</option>
+              <option :value="2">2</option>
+              <option :value="3">3+</option>
             </select>
           </div>
         </div>
 
         <div class="scope-section">
-          <h3>Conversion &amp; nurture</h3>
+          <h3>Funnel &amp; nurture</h3>
           <div class="scope-row">
             <label>Landing pages / funnels</label>
-            <select x-model="r.landing">
-              <option value="none">None</option>
-              <option value="occasional">Occasional</option>
-              <option value="ongoing">Ongoing</option>
-            </select>
+            <select x-model="r.landing"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
             <label>Lead capture + CRM</label>
-            <select x-model="r.leadCapture">
-              <option value="none">None</option>
-              <option value="setup">Setup only</option>
-              <option value="managed">Managed</option>
-            </select>
+            <select x-model="r.leadCapture"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
             <label>Email + SMS nurture</label>
-            <select x-model="r.emailSms">
-              <option value="none">No</option>
-              <option value="yes">Yes</option>
-            </select>
+            <select x-model="r.emailSms"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
         </div>
 
         <div class="scope-section">
-          <h3>Growth add-ons</h3>
+          <h3>Add-ons &amp; growth</h3>
           <div class="scope-row">
-            <label>Paid ads management <span style="color:var(--text-dim);font-size:12px">(spend billed separately)</span></label>
-            <select x-model="r.ads">
-              <option value="none">No</option>
-              <option value="yes">Yes</option>
-            </select>
+            <label>Paid ads management <span class="hint">(spend separate)</span></label>
+            <select x-model="r.ads"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
             <label>PR / media outreach</label>
-            <select x-model="r.pr">
-              <option value="none">No</option>
-              <option value="yes">Yes</option>
-            </select>
+            <select x-model="r.pr"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
             <label>Website management</label>
-            <select x-model="r.websiteMgmt">
-              <option value="none">No</option>
-              <option value="yes">Yes</option>
-            </select>
+            <select x-model="r.websiteMgmt"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
-        </div>
-
-        <div class="scope-section">
-          <h3>Personal brand</h3>
           <div class="scope-row">
-            <label>Founder-as-brand authority layer</label>
-            <select x-model="r.personalBrand">
-              <option value="none">No</option>
-              <option value="yes">Yes</option>
-            </select>
+            <label>Storefront / e-commerce ops</label>
+            <select x-model="r.storefront"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
         </div>
 
+        <!-- flags -->
+        <div class="flag warn" x-show="retainer().projectSized">
+          This scope is below a real retainer. Consider <strong>Project mode</strong>, or a productized short-form sub ($300–$800/mo) kept off the main ladder.
+        </div>
+        <div class="flag info" x-show="r.storefront === 'yes'">
+          Storefront / e-commerce ops → quote a <strong>rev-share (15–30%)</strong> separately (the Marty Wilson structure). Not included in the numbers below.
+        </div>
+
+        <!-- breakdown -->
         <div class="breakdown">
-          <template x-for="line in retainerBreakdown()" :key="line.label">
-            <div class="bd-row"><span x-text="line.label"></span><span x-text="'$' + line.amount.toLocaleString()"></span></div>
+          <template x-for="line in retainer().breakdown" :key="line.label">
+            <div class="bd-row"><span x-text="line.label"></span><span x-text="line.amount"></span></div>
           </template>
         </div>
       </div>
@@ -267,40 +259,63 @@
               <option value="photo">Photo shoot</option>
               <option value="branding">Branding / identity</option>
               <option value="adCampaign">Ad campaign setup</option>
-              <option value="other">Other</option>
             </select>
           </div>
           <div class="scope-row">
             <label>Scope</label>
-            <select x-model="p.size">
-              <option value="small">Small</option>
-              <option value="medium">Medium</option>
-              <option value="large">Large</option>
-            </select>
+            <select x-model="p.size"><option value="small">Small</option><option value="medium">Medium</option><option value="large">Large</option></select>
           </div>
           <div class="scope-row">
-            <label>Rush timeline</label>
-            <select x-model="p.rush">
-              <option value="no">No</option>
-              <option value="yes">Yes (rush)</option>
-            </select>
+            <label>Rush timeline <span class="hint">(×1.35)</span></label>
+            <select x-model="p.rush"><option value="no">No</option><option value="yes">Yes (rush)</option></select>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- Sticky price -->
+    <!-- Sticky result -->
     <div class="price-bar">
       <div class="price-bar-inner">
-        <div>
-          <div class="label" x-text="mode === 'retainer' ? 'Suggested retainer' : 'Suggested project price'"></div>
-          <div class="floor-note" x-show="mode === 'retainer' && hitFloor" x-text="'(at the $' + PRICING.retainer.minimum.toLocaleString() + '/mo floor)'"></div>
-        </div>
-        <div class="amount">
-          $<span x-text="total().toLocaleString()"></span><small x-show="mode === 'retainer'">/mo</small>
-        </div>
-        <button class="copy-btn" @click="copyQuote()" x-text="copied ? 'Copied ✓' : 'Copy'"></button>
+        <!-- RETAINER result -->
+        <template x-if="mode === 'retainer'">
+          <div>
+            <div class="price-tier">
+              <span x-text="retainer().tierName"></span>
+              <span class="why" x-text="' · ' + retainer().why"></span>
+            </div>
+            <div class="price-cols">
+              <div class="price-col grounded">
+                <div class="lbl">Grounded ask</div>
+                <div class="amt">$<span x-text="retainer().grounded.toLocaleString()"></span><small>/mo</small></div>
+              </div>
+              <div class="price-col stretch">
+                <div class="lbl">Stretch ask</div>
+                <div class="amt">$<span x-text="retainer().stretch.toLocaleString()"></span><small>/mo</small></div>
+              </div>
+              <div class="price-actions">
+                <button @click="copyRetainer()" x-text="copied ? 'Copied ✓' : 'Copy'"></button>
+              </div>
+            </div>
+            <div class="price-note" x-text="retainer().quoteWhich"></div>
+          </div>
+        </template>
+        <!-- PROJECT result -->
+        <template x-if="mode === 'project'">
+          <div>
+            <div class="price-tier">One-time project<span class="why" x-text="p.rush==='yes' ? ' · rush ×1.35' : ' · no floor, no bundle discount'"></span></div>
+            <div class="price-cols">
+              <div class="price-col grounded">
+                <div class="lbl">Suggested price</div>
+                <div class="amt">$<span x-text="projectTotal().toLocaleString()"></span></div>
+              </div>
+              <div class="price-actions">
+                <button @click="copyProject()" x-text="copied ? 'Copied ✓' : 'Copy'"></button>
+              </div>
+            </div>
+            <div class="price-note">Projects are the trust on-ramp. Convert to a retainer after.</div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -308,66 +323,73 @@
   <script>
     function scopeTool() {
       /* ==================================================================
-         PRICING MODEL — EDIT THESE NUMBERS TO TUNE.
-         Seeded by reverse-engineering the old retainer tiers + one-time
-         project rates. Tune until the outputs match your gut.
+         PRICING MODEL v2 — package detection (audit/PRICING-LOGIC-2026-06.md)
+         Package prices are ALREADY bundle-discounted. Add-ons are the only
+         additive items. Each tier has { grounded, stretch }. EDIT TO TUNE.
          ================================================================== */
-      // Tuned 2026 from market research (national SMB/boutique benchmarks +
-      // Mississippi Gulf Coast adjustment) cross-checked against 1Coast's own
-      // history (Michael West $3k/mo signed; old tiers; D'Iberville/website
-      // invoices). Posture: hold a premium $3k retainer floor (self-selects
-      // for clients who can pay), use projects as the trust-building on-ramp.
-      const PRICING = {
-        retainer: {
-          base: 500,            // strategy, account management, the relationship
-          minimum: 3000,        // retainer floor — never suggest below this
-          shootDayRate: 600,    // per shoot day/mo (market $600-2,000; bundle-discounted)
-          shortForm:   { none:0, light:250, standard:450, heavy:700 },   // ~15 / ~30 / 40+ videos
-          graphics:    { none:0, light:100, standard:200, heavy:350 },
-          socialMgmt:  { none:0, one:600, two:1000, three:1400 },        // platforms managed
-          longForm:    { none:0, weekly:1800 },     // weekly YouTube or podcast production
-          cutdowns:    { none:0, yes:500 },
-          landing:     { none:0, occasional:300, ongoing:600 },
-          leadCapture: { none:0, setup:250, managed:500 },
-          emailSms:    { none:0, yes:600 },
-          ads:         { none:0, yes:750 },          // management only, ad spend separate
-          pr:          { none:0, yes:800 },
-          websiteMgmt: { none:0, yes:400 },
-          personalBrand: { none:0, yes:1200 }        // founder-as-brand premium layer
+      const PACKAGES = {
+        personal: {
+          P1: { grounded:2000, stretch:2750, name:'P1 — Spark' },
+          P2: { grounded:3000, stretch:4500, name:'P2 — Authority System' },   // Michael West (signed 3000)
+          P3: { grounded:4500, stretch:6500, name:'P3 — Authority+' }
         },
-        project: {
-          website:     { small:3500, medium:7500, large:13000 },
-          landing:     { small:1200, medium:2500, large:4500 },
-          videoSingle: { small:1500, medium:3500, large:7000 },
-          videoSeries: { small:5000, medium:9500, large:16000 },
-          photo:       { small:600,  medium:1200, large:2500 },
-          branding:    { small:2000, medium:4500, large:8500 },
-          adCampaign:  { small:1200, medium:2500, large:5000 },
-          other:       { small:1000, medium:3000, large:6000 },
-          rushMultiplier: 1.35   // applied when rush = yes
+        business: {
+          B1: { grounded:1500, stretch:1750, name:'B1 — Presence' },           // floor; no retainer below this
+          B2: { grounded:2250, stretch:2750, name:'B2 — Growth' },
+          B3: { grounded:3250, stretch:3750, name:'B3 — Engine' },             // Pier 15 (pitched 3250)
+          B4: { grounded:5000, stretch:6500, name:'B4 — Full' }                // Bridgewater B (pitched 5000)
         }
       };
+      const ADDONS = {            // added to BOTH columns
+        extraShootDay: 500,       // per day beyond tier-included
+        ads: 750,                 // mgmt only; spend separate (or 15% of spend)
+        pr: 800,
+        websiteMgmt: 400,
+        emailSms: 500             // only if the detected tier doesn't already include it
+      };
+      const INCLUDED_DAYS    = { B1:1, B2:2, B3:4, B4:5, P1:1, P2:2, P3:3 };
+      // What each package already bakes in, so we never re-charge it as an
+      // à-la-carte add-on (that double-count is the bug this model fixes).
+      // B4 is the "full" tier (funnel + ads + PR + web). P2/P3 include SMS;
+      // P3 also bakes in the premium trigger (ads/podcast/storefront).
+      const TIER_INCLUDES = {
+        P1:[], P2:['emailSms'], P3:['emailSms','ads','pr'],
+        B1:[], B2:[], B3:[], B4:['emailSms','ads','pr','websiteMgmt']
+      };
+      const WHY = {
+        P1:'1 platform, short-form or bi-weekly long-form',
+        P2:'weekly long-form + cutdowns across 2+ platforms',
+        P3:'P2 plus podcast, ads, multi-platform, or storefront',
+        B1:'light presence: ≤1 day, ~15 shorts, 1 platform',
+        B2:'1–2 days, ~30 shorts, 2 platforms',
+        B3:'3+ days, full social, landing + lead capture',
+        B4:'4+ days, full funnel + ads + PR / multi-property'
+      };
 
-      // Change this to whatever you want the access code to be.
-      const ACCESS_CODE = '1coast';
+      const PROJECTS = {
+        website:     { small:2500, medium:6000, large:13000 },
+        landing:     { small:1200, medium:2500, large:4500 },
+        videoSingle: { small:1500, medium:3500, large:7000 },
+        videoSeries: { small:5000, medium:9500, large:16000 },
+        photo:       { small:600,  medium:1200, large:2500 },
+        branding:    { small:2000, medium:4500, large:8000 },
+        adCampaign:  { small:1200, medium:2500, large:5000 },
+        rushMultiplier: 1.35
+      };
+
+      const ACCESS_CODE = '1coast';   // change to whatever you want the gate code to be
 
       return {
-        PRICING,
-        unlocked: false,
-        codeInput: '',
-        gateError: '',
-        copied: false,
-        mode: 'retainer',
-        hitFloor: false,
+        PACKAGES, ADDONS, PROJECTS,
+        unlocked:false, codeInput:'', gateError:'', copied:false,
+        mode:'retainer',
 
-        // Retainer selections
         r: {
-          shootDays: 2, shortForm:'standard', graphics:'standard',
-          socialMgmt:'none', longForm:'none', cutdowns:'none',
-          landing:'none', leadCapture:'none', emailSms:'none',
-          ads:'none', pr:'none', websiteMgmt:'none', personalBrand:'none'
+          track:'business', shootDays:2, shortForm:'standard', platforms:2,
+          weeklyLongForm:'no', cutdowns:'no', podcast:'no',
+          landing:'no', leadCapture:'no', emailSms:'no',
+          ads:'no', pr:'no', websiteMgmt:'no', storefront:'no'
         },
-        // Project selections
         p: { type:'website', size:'medium', rush:'no' },
 
         init() {
@@ -377,72 +399,87 @@
           if (this.codeInput.trim().toLowerCase() === ACCESS_CODE.toLowerCase()) {
             this.unlocked = true; this.gateError = '';
             try { sessionStorage.setItem('1cm-scope-unlocked','1'); } catch(e) {}
-          } else {
-            this.gateError = 'Wrong code.';
+          } else { this.gateError = 'Wrong code.'; }
+        },
+
+        // ===== tier detection (mirrors the pseudocode in the v2 doc) =====
+        detectTier(track, s) {
+          if (track === 'personal') {
+            if (s.weeklyLongForm && (s.ads || s.podcast || s.storefront)) return 'P3';
+            if (s.weeklyLongForm && s.cutdowns && s.platforms >= 2) return 'P2';
+            return 'P1';
           }
+          const fullFunnel = s.landing && s.leadCapture && s.emailSms;
+          if (s.shootDays >= 4 || (fullFunnel && s.ads && s.pr)) return 'B4';
+          if (s.shootDays >= 3 && s.landing && s.leadCapture && s.platforms >= 2) return 'B3';
+          if (s.shootDays >= 1 && (s.shortForm === 'standard' || s.shortForm === 'heavy') && s.platforms >= 2) return 'B2';
+          return 'B1';
         },
 
-        // ===== retainer math =====
-        retainerRaw() {
-          const P = PRICING.retainer, r = this.r;
-          let t = P.base;
-          t += (Number(r.shootDays) || 0) * P.shootDayRate;
-          t += P.shortForm[r.shortForm]   || 0;
-          t += P.graphics[r.graphics]     || 0;
-          t += P.socialMgmt[r.socialMgmt] || 0;
-          t += P.longForm[r.longForm]     || 0;
-          t += P.cutdowns[r.cutdowns]     || 0;
-          t += P.landing[r.landing]       || 0;
-          t += P.leadCapture[r.leadCapture] || 0;
-          t += P.emailSms[r.emailSms]     || 0;
-          t += P.ads[r.ads]               || 0;
-          t += P.pr[r.pr]                 || 0;
-          t += P.websiteMgmt[r.websiteMgmt] || 0;
-          t += P.personalBrand[r.personalBrand] || 0;
-          return t;
-        },
-        retainerBreakdown() {
-          const P = PRICING.retainer, r = this.r, out = [];
-          out.push({ label:'Base engagement', amount:P.base });
-          if (r.shootDays > 0) out.push({ label:`Shoot days (${r.shootDays})`, amount:r.shootDays*P.shootDayRate });
-          const add = (label, v) => { if (v) out.push({ label, amount:v }); };
-          add('Short-form video', P.shortForm[r.shortForm]);
-          add('Photos & graphics', P.graphics[r.graphics]);
-          add('Social management', P.socialMgmt[r.socialMgmt]);
-          add('Weekly long-form', P.longForm[r.longForm]);
-          add('Cutdowns', P.cutdowns[r.cutdowns]);
-          add('Landing pages', P.landing[r.landing]);
-          add('Lead capture + CRM', P.leadCapture[r.leadCapture]);
-          add('Email + SMS', P.emailSms[r.emailSms]);
-          add('Ads management', P.ads[r.ads]);
-          add('PR / media', P.pr[r.pr]);
-          add('Website management', P.websiteMgmt[r.websiteMgmt]);
-          add('Personal brand layer', P.personalBrand[r.personalBrand]);
-          return out;
+        // ===== retainer pricing =====
+        retainer() {
+          const r = this.r;
+          const s = {
+            shootDays: Number(r.shootDays) || 0,
+            shortForm: r.shortForm,
+            platforms: Number(r.platforms) || 0,
+            weeklyLongForm: r.weeklyLongForm === 'yes',
+            cutdowns: r.cutdowns === 'yes',
+            podcast: r.podcast === 'yes',
+            landing: r.landing === 'yes',
+            leadCapture: r.leadCapture === 'yes',
+            emailSms: r.emailSms === 'yes',
+            ads: r.ads === 'yes',
+            pr: r.pr === 'yes',
+            websiteMgmt: r.websiteMgmt === 'yes',
+            storefront: r.storefront === 'yes'
+          };
+          const track = r.track;
+          const tier  = this.detectTier(track, s);
+          const pkg   = PACKAGES[track][tier];
+
+          // add-ons (added to both grounded + stretch)
+          const bd = [];
+          let addons = 0;
+          const included = INCLUDED_DAYS[tier] || 0;
+          const overage = Math.max(0, s.shootDays - included);
+          bd.push({ label:`Package ${tier} (grounded)`, amount:'$' + pkg.grounded.toLocaleString() });
+          if (overage > 0) { const v = overage*ADDONS.extraShootDay; addons += v; bd.push({ label:`Extra shoot days (${overage} over ${included})`, amount:'+$'+v.toLocaleString() }); }
+          const inc = TIER_INCLUDES[tier] || [];
+          if (s.ads && !inc.includes('ads'))                 { addons += ADDONS.ads; bd.push({ label:'Paid ads management', amount:'+$'+ADDONS.ads.toLocaleString() }); }
+          if (s.pr && !inc.includes('pr'))                   { addons += ADDONS.pr;  bd.push({ label:'PR / media', amount:'+$'+ADDONS.pr.toLocaleString() }); }
+          if (s.websiteMgmt && !inc.includes('websiteMgmt')) { addons += ADDONS.websiteMgmt; bd.push({ label:'Website management', amount:'+$'+ADDONS.websiteMgmt.toLocaleString() }); }
+          if (s.emailSms && !inc.includes('emailSms'))       { addons += ADDONS.emailSms; bd.push({ label:'Email + SMS nurture', amount:'+$'+ADDONS.emailSms.toLocaleString() }); }
+
+          // "project-sized" hint: essentially no recurring activity
+          const projectSized = track === 'business' && s.shootDays === 0 && s.platforms === 0 && !s.weeklyLongForm && s.shortForm === 'none';
+
+          const quoteWhich = track === 'personal'
+            ? 'Personal brand: lean STRETCH (not region-locked, esp. remote clients).'
+            : 'Business: default GROUNDED; quote STRETCH on real budget signals (tourism, hospitality, casino, healthcare, real estate, or out-of-market).';
+
+          return {
+            tier, tierName: pkg.name, why: WHY[tier],
+            grounded: pkg.grounded + addons,
+            stretch:  pkg.stretch  + addons,
+            breakdown: bd, projectSized, quoteWhich
+          };
         },
 
-        // ===== project math =====
+        // ===== project pricing =====
         projectTotal() {
-          const P = PRICING.project, p = this.p;
-          const base = (P[p.type] && P[p.type][p.size]) || 0;
-          return Math.round(p.rush === 'yes' ? base * P.rushMultiplier : base);
+          const base = (PROJECTS[this.p.type] && PROJECTS[this.p.type][this.p.size]) || 0;
+          return Math.round(this.p.rush === 'yes' ? base * PROJECTS.rushMultiplier : base);
         },
 
-        // ===== unified total =====
-        total() {
-          if (this.mode === 'retainer') {
-            const raw = this.retainerRaw();
-            const floored = Math.max(raw, PRICING.retainer.minimum);
-            this.hitFloor = floored > raw;
-            return floored;
-          }
-          return this.projectTotal();
-        },
-
-        copyQuote() {
-          const amt = this.total().toLocaleString();
-          const txt = this.mode === 'retainer' ? `$${amt}/mo` : `$${amt}`;
+        copyRetainer() {
+          const x = this.retainer();
+          const txt = `${x.tierName} — Grounded $${x.grounded.toLocaleString()}/mo · Stretch $${x.stretch.toLocaleString()}/mo`;
           try { navigator.clipboard.writeText(txt); } catch(e) {}
+          this.copied = true; setTimeout(() => this.copied = false, 1500);
+        },
+        copyProject() {
+          try { navigator.clipboard.writeText('$' + this.projectTotal().toLocaleString()); } catch(e) {}
           this.copied = true; setTimeout(() => this.copied = false, 1500);
         }
       };
