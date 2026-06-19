@@ -145,12 +145,11 @@
             </select>
           </div>
           <div class="scope-row">
-            <label>Short-form videos / month</label>
+            <label>Content pieces / month <span class="hint">(floor is 30 — daily posting)</span></label>
             <select x-model="r.shortForm">
-              <option value="none">None</option>
-              <option value="light">~15 (light)</option>
-              <option value="standard">~30 (standard)</option>
-              <option value="heavy">40+ (heavy)</option>
+              <option value="standard">~30 (floor: video + photo + graphics)</option>
+              <option value="heavy">~45 (video-forward)</option>
+              <option value="max">60+ (heavy)</option>
             </select>
           </div>
           <div class="scope-row">
@@ -350,8 +349,8 @@
         P1:'1 platform, short-form or bi-weekly long-form',
         P2:'weekly long-form + cutdowns across 2+ platforms',
         P3:'P2 plus podcast, ads, multi-platform, or storefront',
-        B1:'light presence: ≤1 day, ~15 shorts, 1 platform',
-        B2:'1–2 days, ~30 shorts, 2 platforms',
+        B1:'light presence: ≈1 day, 30+ pieces (video/photo/graphics), 1 platform',
+        B2:'1–2 days, 30+ pieces, more video, 2 platforms',
         B3:'weekly content (≈4 days), full social, landing + lead capture',
         B4:'full funnel + ads + PR, fully managed / multi-property'
       };
@@ -359,7 +358,9 @@
       const PROJECTS = {
         // Website / landing page: simple few-pager → extensive backend.
         website:     { small:600,  medium:1000, large:1500 },
-        videoSingle: { small:1500, medium:3500, large:7000 },
+        // Single video: $1,500 sweet spot (rodeo $1,400, boat giveaway $1,500),
+        // $2,500 multi-element w/ drone (CCA reef launch), $5,000 high-end ceiling.
+        videoSingle: { small:1500, medium:2500, large:5000 },
         photo:       { small:600,  medium:1200, large:2500 },
         branding:    { small:2000, medium:4500, large:8000 },
         adCampaign:  { small:1200, medium:2500, large:5000 },
@@ -436,7 +437,7 @@
           if (s.emailSms && !inc.includes('emailSms'))       { addons += ADDONS.emailSms; bd.push({ label:'Email + SMS nurture', amount:'+$'+ADDONS.emailSms.toLocaleString() }); }
 
           // "project-sized" hint: essentially no recurring activity
-          const projectSized = track === 'business' && s.shootDays === 0 && s.platforms === 0 && !s.weeklyLongForm && s.shortForm === 'none';
+          const projectSized = track === 'business' && s.shootDays === 0 && s.platforms === 0 && !s.weeklyLongForm;
 
           const quoteWhich = track === 'personal'
             ? 'Personal brand: lean STRETCH (not region-locked, esp. remote clients).'
