@@ -199,7 +199,11 @@
         <div class="scope-section">
           <h3>Add-ons &amp; growth</h3>
           <div class="scope-row">
-            <label>Paid ads management <span class="hint">(spend separate)</span></label>
+            <label>UGC / creator campaigns <span class="hint">(creator coordination + campaign creation)</span></label>
+            <select x-model="r.ugc"><option value="no">No</option><option value="yes">Yes</option></select>
+          </div>
+          <div class="scope-row">
+            <label>Paid ads management <span class="hint">(ad buying / optimization; spend separate)</span></label>
             <select x-model="r.ads"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
@@ -221,7 +225,7 @@
           This scope is below a real retainer. Consider <strong>Project mode</strong>, or a productized short-form sub ($300–$800/mo) kept off the main ladder.
         </div>
         <div class="flag info" x-show="r.storefront === 'yes'">
-          Storefront / e-commerce ops → quote a <strong>rev-share (15–30%)</strong> separately (the Marty Wilson structure). Not included in the numbers below.
+          Storefront / e-commerce ops → <strong>scope and quote separately</strong> based on the build. Not included in the numbers below.
         </div>
 
         <!-- breakdown -->
@@ -239,10 +243,8 @@
           <div class="scope-row">
             <label>Type</label>
             <select x-model="p.type">
-              <option value="website">Website build</option>
-              <option value="landing">Landing page / funnel</option>
+              <option value="website">Website / landing page</option>
               <option value="videoSingle">Single video</option>
-              <option value="videoSeries">Video series</option>
               <option value="photo">Photo shoot</option>
               <option value="branding">Branding / identity</option>
               <option value="adCampaign">Ad campaign setup</option>
@@ -329,6 +331,7 @@
       };
       const ADDONS = {            // added to BOTH columns
         extraShootDay: 500,       // per day beyond tier-included
+        ugc: 1200,                // PLACEHOLDER — creator coordination + campaign creation (more work than ads). Confirm.
         ads: 750,                 // mgmt only; spend separate (or 15% of spend)
         pr: 800,
         websiteMgmt: 400,
@@ -349,15 +352,14 @@
         P3:'P2 plus podcast, ads, multi-platform, or storefront',
         B1:'light presence: ≤1 day, ~15 shorts, 1 platform',
         B2:'1–2 days, ~30 shorts, 2 platforms',
-        B3:'3+ days, full social, landing + lead capture',
-        B4:'4+ days, full funnel + ads + PR / multi-property'
+        B3:'weekly content (≈4 days), full social, landing + lead capture',
+        B4:'full funnel + ads + PR, fully managed / multi-property'
       };
 
       const PROJECTS = {
-        website:     { small:2500, medium:6000, large:13000 },
-        landing:     { small:1200, medium:2500, large:4500 },
+        // Website / landing page: simple few-pager → extensive backend.
+        website:     { small:600,  medium:1000, large:1500 },
         videoSingle: { small:1500, medium:3500, large:7000 },
-        videoSeries: { small:5000, medium:9500, large:16000 },
         photo:       { small:600,  medium:1200, large:2500 },
         branding:    { small:2000, medium:4500, large:8000 },
         adCampaign:  { small:1200, medium:2500, large:5000 },
@@ -373,7 +375,7 @@
           track:'business', shootDays:2, shortForm:'standard', platforms:2,
           weeklyLongForm:'no', cutdowns:'no', podcast:'no',
           landing:'no', leadCapture:'no', emailSms:'no',
-          ads:'no', pr:'no', websiteMgmt:'no', storefront:'no'
+          ugc:'no', ads:'no', pr:'no', websiteMgmt:'no', storefront:'no'
         },
         p: { type:'website', size:'medium', rush:'no' },
 
@@ -384,10 +386,15 @@
             if (s.weeklyLongForm && s.cutdowns && s.platforms >= 2) return 'P2';
             return 'P1';
           }
+          // Weekly shooting (≈4 days/mo) is the NORM for $3k+ clients, so shoot
+          // count alone never triggers B4. What separates B4 is service breadth:
+          // the full funnel plus paid ads plus PR, fully managed.
           const fullFunnel = s.landing && s.leadCapture && s.emailSms;
-          if (s.shootDays >= 4 || (fullFunnel && s.ads && s.pr)) return 'B4';
-          if (s.shootDays >= 3 && s.landing && s.leadCapture && s.platforms >= 2) return 'B3';
-          if (s.shootDays >= 1 && (s.shortForm === 'standard' || s.shortForm === 'heavy') && s.platforms >= 2) return 'B2';
+          if (fullFunnel && s.ads && s.pr) return 'B4';
+          // B3 = the standard engine: weekly content, OR the full marketing system
+          // (landing + lead capture) at any production level.
+          if (s.shootDays >= 3 || (s.landing && s.leadCapture)) return 'B3';
+          if (s.shootDays >= 1 && s.platforms >= 2) return 'B2';
           return 'B1';
         },
 
@@ -407,6 +414,7 @@
             ads: r.ads === 'yes',
             pr: r.pr === 'yes',
             websiteMgmt: r.websiteMgmt === 'yes',
+            ugc: r.ugc === 'yes',
             storefront: r.storefront === 'yes'
           };
           const track = r.track;
@@ -421,6 +429,7 @@
           bd.push({ label:`Package ${tier} (grounded)`, amount:'$' + pkg.grounded.toLocaleString() });
           if (overage > 0) { const v = overage*ADDONS.extraShootDay; addons += v; bd.push({ label:`Extra shoot days (${overage} over ${included})`, amount:'+$'+v.toLocaleString() }); }
           const inc = TIER_INCLUDES[tier] || [];
+          if (s.ugc && !inc.includes('ugc'))                 { addons += ADDONS.ugc; bd.push({ label:'UGC / creator campaigns', amount:'+$'+ADDONS.ugc.toLocaleString() }); }
           if (s.ads && !inc.includes('ads'))                 { addons += ADDONS.ads; bd.push({ label:'Paid ads management', amount:'+$'+ADDONS.ads.toLocaleString() }); }
           if (s.pr && !inc.includes('pr'))                   { addons += ADDONS.pr;  bd.push({ label:'PR / media', amount:'+$'+ADDONS.pr.toLocaleString() }); }
           if (s.websiteMgmt && !inc.includes('websiteMgmt')) { addons += ADDONS.websiteMgmt; bd.push({ label:'Website management', amount:'+$'+ADDONS.websiteMgmt.toLocaleString() }); }
