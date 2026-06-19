@@ -198,10 +198,6 @@
         <div class="scope-section">
           <h3>Add-ons &amp; growth</h3>
           <div class="scope-row">
-            <label>UGC / creator campaigns <span class="hint">(creator coordination + campaign creation)</span></label>
-            <select x-model="r.ugc"><option value="no">No</option><option value="yes">Yes</option></select>
-          </div>
-          <div class="scope-row">
             <label>Paid ads management <span class="hint">(ad buying / optimization; spend separate)</span></label>
             <select x-model="r.ads"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
@@ -210,7 +206,7 @@
             <select x-model="r.pr"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
-            <label>Website management</label>
+            <label>Website management <span class="hint">(includes hosting + care)</span></label>
             <select x-model="r.websiteMgmt"><option value="no">No</option><option value="yes">Yes</option></select>
           </div>
           <div class="scope-row">
@@ -225,6 +221,9 @@
         </div>
         <div class="flag info" x-show="r.storefront === 'yes'">
           Storefront / e-commerce ops → <strong>scope and quote separately</strong> based on the build. Not included in the numbers below.
+        </div>
+        <div class="flag info">
+          Want UGC / creator or influencer campaigns? Quote those <strong>per campaign</strong> in Project mode, on top of the retainer. Creator / talent budget is the client's separate cost.
         </div>
 
         <!-- breakdown -->
@@ -247,16 +246,103 @@
               <option value="photo">Photo shoot</option>
               <option value="branding">Branding / identity</option>
               <option value="adCampaign">Ad campaign setup</option>
+              <option value="ugc">UGC / creator campaign</option>
+              <option value="influencer">Influencer / celebrity (high-end)</option>
             </select>
           </div>
-          <div class="scope-row">
-            <label>Scope</label>
-            <select x-model="p.size"><option value="small">Small</option><option value="medium">Medium</option><option value="large">Large</option></select>
-          </div>
-          <div class="scope-row">
-            <label>Rush timeline <span class="hint">(×1.35)</span></label>
-            <select x-model="p.rush"><option value="no">No</option><option value="yes">Yes (rush)</option></select>
-          </div>
+
+          <!-- generic scope: website / photo / branding / ad campaign -->
+          <template x-if="['website','photo','branding','adCampaign'].includes(p.type)">
+            <div class="scope-row">
+              <label>Scope</label>
+              <select x-model="p.size"><option value="small">Small</option><option value="medium">Medium</option><option value="large">Large</option></select>
+            </div>
+          </template>
+
+          <!-- single-video builder -->
+          <template x-if="p.type === 'videoSingle'">
+            <div>
+              <div class="scope-row">
+                <label>Video type</label>
+                <select x-model="p.video.kind"><option value="social">Social media</option><option value="youtube">YouTube</option><option value="commercial">Commercial</option></select>
+              </div>
+              <div class="scope-row">
+                <label>Shoot days</label>
+                <select x-model.number="p.video.days"><template x-for="n in [1,2,3,4,5]" :key="n"><option :value="n" x-text="n"></option></template></select>
+              </div>
+              <div class="scope-row">
+                <label>Length</label>
+                <select x-model="p.video.length"><option value="short">Under 60s</option><option value="standard">1 to 3 min</option><option value="long">3 min+</option></select>
+              </div>
+              <div class="scope-row">
+                <label>Drone coverage</label>
+                <select x-model="p.video.drone"><option value="no">No</option><option value="yes">Yes</option></select>
+              </div>
+              <div class="scope-row">
+                <label>Extra cutdowns <span class="hint">(short clips, same shoot)</span></label>
+                <select x-model.number="p.video.cutdowns"><template x-for="n in [0,1,2,3,4,5,6,7,8]" :key="n"><option :value="n" x-text="n"></option></template></select>
+              </div>
+            </div>
+          </template>
+
+          <!-- UGC builder -->
+          <template x-if="p.type === 'ugc'">
+            <div>
+              <div class="scope-row">
+                <label>Desired reach</label>
+                <select x-model="p.ugc.reach"><option value="small">10k to 100k</option><option value="mid">100k to 1M</option><option value="large">1M to 10M</option><option value="huge">10M+</option></select>
+              </div>
+              <div class="scope-row">
+                <label>Geography <span class="hint">(more local = harder = more)</span></label>
+                <select x-model="p.ugc.geo"><option value="local">Local</option><option value="regional">Regional</option><option value="national">National</option><option value="global">Global</option></select>
+              </div>
+            </div>
+          </template>
+
+          <!-- influencer / celebrity builder -->
+          <template x-if="p.type === 'influencer'">
+            <div>
+              <div class="scope-row">
+                <label>Tier</label>
+                <select x-model="p.inf.kind"><option value="influencer">Influencer</option><option value="celebrity">Celebrity</option></select>
+              </div>
+              <div class="scope-row">
+                <label>How many</label>
+                <select x-model.number="p.inf.count"><template x-for="n in [1,2,3,4,5]" :key="n"><option :value="n" x-text="n"></option></template></select>
+              </div>
+              <div class="scope-row">
+                <label>Desired reach</label>
+                <select x-model="p.inf.reach"><option value="small">10k to 100k</option><option value="mid">100k to 1M</option><option value="large">1M to 10M</option><option value="huge">10M+</option></select>
+              </div>
+              <div class="scope-row">
+                <label>Geography <span class="hint">(more local = harder = more)</span></label>
+                <select x-model="p.inf.geo"><option value="local">Local</option><option value="regional">Regional</option><option value="national">National</option><option value="global">Global</option></select>
+              </div>
+            </div>
+          </template>
+
+          <!-- rush: production types only -->
+          <template x-if="['website','videoSingle','photo','branding','adCampaign'].includes(p.type)">
+            <div class="scope-row">
+              <label>Rush timeline <span class="hint">(×1.35)</span></label>
+              <select x-model="p.rush"><option value="no">No</option><option value="yes">Yes (rush)</option></select>
+            </div>
+          </template>
+        </div>
+
+        <!-- campaign notes -->
+        <div class="flag info" x-show="p.type === 'ugc'">
+          Your <strong>management fee</strong> only (campaign creation + coordination + management). The client pays the creator budget separately.
+        </div>
+        <div class="flag info" x-show="p.type === 'influencer'">
+          High-end offering. Your <strong>management fee per engagement</strong>. Talent fees are the client's separate cost.
+        </div>
+
+        <!-- breakdown -->
+        <div class="breakdown">
+          <template x-for="line in projectBreakdown()" :key="line.label">
+            <div class="bd-row"><span x-text="line.label"></span><span x-text="line.amount"></span></div>
+          </template>
         </div>
       </div>
 
@@ -291,17 +377,20 @@
         <!-- PROJECT result -->
         <template x-if="mode === 'project'">
           <div>
-            <div class="price-tier">One-time project<span class="why" x-text="p.rush==='yes' ? ' · rush ×1.35' : ' · no floor, no bundle discount'"></span></div>
+            <div class="price-tier">
+              <span x-text="(p.type==='ugc'||p.type==='influencer') ? 'Per-campaign fee' : 'One-time project'"></span>
+              <span class="why" x-text="(p.type==='ugc'||p.type==='influencer') ? ' · your management fee' : (p.rush==='yes' ? ' · rush ×1.35' : ' · no floor, no bundle discount')"></span>
+            </div>
             <div class="price-cols">
               <div class="price-col grounded">
-                <div class="lbl">Suggested price</div>
+                <div class="lbl" x-text="(p.type==='ugc'||p.type==='influencer') ? 'Management fee' : 'Suggested price'"></div>
                 <div class="amt">$<span x-text="projectTotal().toLocaleString()"></span></div>
               </div>
               <div class="price-actions">
                 <button @click="copyProject()" x-text="copied ? 'Copied ✓' : 'Copy'"></button>
               </div>
             </div>
-            <div class="price-note">Projects are the trust on-ramp. Convert to a retainer after.</div>
+            <div class="price-note" x-text="(p.type==='ugc'||p.type==='influencer') ? 'Your fee only. Creator / talent budget is the client\'s separate cost.' : 'Projects are the trust on-ramp. Convert to a retainer after.'"></div>
           </div>
         </template>
       </div>
@@ -330,12 +419,14 @@
       };
       const ADDONS = {            // added to BOTH columns
         extraShootDay: 500,       // per day beyond tier-included
-        ugc: 1200,                // PLACEHOLDER — creator coordination + campaign creation (more work than ads). Confirm.
         ads: 750,                 // mgmt only; spend separate (or 15% of spend)
         pr: 800,
-        websiteMgmt: 400,
+        websiteMgmt: 400,         // includes hosting + care for retainer clients
         emailSms: 500             // only if the detected tier doesn't already include it
       };
+      // UGC and influencer/celebrity campaigns are PER-CAMPAIGN, not flat monthly.
+      // Priced in Project mode (reach + geography). Retainer clients who want a
+      // campaign get it quoted on top of the retainer.
       const INCLUDED_DAYS    = { B1:1, B2:2, B3:4, B4:5, P1:1, P2:2, P3:3 };
       // What each package already bakes in, so we never re-charge it as an
       // à-la-carte add-on (that double-count is the bug this model fixes).
@@ -357,14 +448,43 @@
 
       const PROJECTS = {
         // Website / landing page: simple few-pager → extensive backend.
-        website:     { small:600,  medium:1000, large:1500 },
-        // Single video: $1,500 sweet spot (rodeo $1,400, boat giveaway $1,500),
-        // $2,500 multi-element w/ drone (CCA reef launch), $5,000 high-end ceiling.
-        videoSingle: { small:1500, medium:2500, large:5000 },
-        photo:       { small:600,  medium:1200, large:2500 },
-        branding:    { small:2000, medium:4500, large:8000 },
-        adCampaign:  { small:1200, medium:2500, large:5000 },
+        // Project clients host on their own account; retainer clients get
+        // hosting folded into website management.
+        website:    { small:600,  medium:1000, large:1500 },
+        photo:      { small:600,  medium:1200, large:2500 },
+        branding:   { small:2000, medium:4500, large:8000 },
+        adCampaign: { small:1200, medium:2500, large:5000 },
         rushMultiplier: 1.35
+      };
+
+      /* Single video — built from real factors, not a size tier.
+         Anchors: D'Iberville rodeo commercial $1,400; CCA reef launch
+         (commercial + drone + recap) ≈ $2,500; high-end brand film ≈ $5,000. */
+      const VIDEO = {
+        base:        { social:1000, youtube:1200, commercial:1400 },
+        perExtraDay: 250,                                  // shoot days beyond the first
+        length:      { short:0, standard:300, long:700 },  // <60s / 1–3 min / 3 min+
+        drone:       500,
+        perCutdown:  150                                   // extra short clips from the same shoot
+      };
+
+      /* UGC / creator campaigns — Blake's MANAGEMENT FEE only (campaign
+         creation + coordination + management). The client pays the creator
+         budget separately. Per campaign. More local/niche = harder to source
+         creators = costs more. PLACEHOLDER numbers — tune against real campaigns. */
+      const UGC = {
+        reach:   { small:750, mid:1500, large:3000, huge:6000 },   // 10–100k / 100k–1M / 1–10M / 10M+
+        geoMult: { local:1.30, regional:1.15, national:1.0, global:1.10 }
+      };
+
+      /* Influencer / celebrity — the high-end offering. Management fee per
+         engagement; talent fees are the client's separate cost. Higher entry,
+         more per talent. PLACEHOLDER numbers — tune as real deals come in. */
+      const INFLUENCER = {
+        base:      { influencer:2500, celebrity:6000 },            // entry per campaign by tier
+        perTalent: { influencer:1000, celebrity:3500 },            // each talent beyond the first
+        reachMult: { small:0.8, mid:1.0, large:1.3, huge:1.7 },
+        geoMult:   { local:1.30, regional:1.15, national:1.0, global:1.10 }
       };
 
       return {
@@ -376,9 +496,14 @@
           track:'business', shootDays:2, shortForm:'standard', platforms:2,
           weeklyLongForm:'no', cutdowns:'no', podcast:'no',
           landing:'no', leadCapture:'no', emailSms:'no',
-          ugc:'no', ads:'no', pr:'no', websiteMgmt:'no', storefront:'no'
+          ads:'no', pr:'no', websiteMgmt:'no', storefront:'no'
         },
-        p: { type:'website', size:'medium', rush:'no' },
+        p: {
+          type:'website', size:'medium', rush:'no',
+          video: { kind:'commercial', days:1, length:'short', drone:'no', cutdowns:0 },
+          ugc:   { reach:'mid', geo:'national' },
+          inf:   { kind:'influencer', count:1, reach:'mid', geo:'national' }
+        },
 
         // ===== tier detection (mirrors the pseudocode in the v2 doc) =====
         detectTier(track, s) {
@@ -415,7 +540,6 @@
             ads: r.ads === 'yes',
             pr: r.pr === 'yes',
             websiteMgmt: r.websiteMgmt === 'yes',
-            ugc: r.ugc === 'yes',
             storefront: r.storefront === 'yes'
           };
           const track = r.track;
@@ -430,7 +554,6 @@
           bd.push({ label:`Package ${tier} (grounded)`, amount:'$' + pkg.grounded.toLocaleString() });
           if (overage > 0) { const v = overage*ADDONS.extraShootDay; addons += v; bd.push({ label:`Extra shoot days (${overage} over ${included})`, amount:'+$'+v.toLocaleString() }); }
           const inc = TIER_INCLUDES[tier] || [];
-          if (s.ugc && !inc.includes('ugc'))                 { addons += ADDONS.ugc; bd.push({ label:'UGC / creator campaigns', amount:'+$'+ADDONS.ugc.toLocaleString() }); }
           if (s.ads && !inc.includes('ads'))                 { addons += ADDONS.ads; bd.push({ label:'Paid ads management', amount:'+$'+ADDONS.ads.toLocaleString() }); }
           if (s.pr && !inc.includes('pr'))                   { addons += ADDONS.pr;  bd.push({ label:'PR / media', amount:'+$'+ADDONS.pr.toLocaleString() }); }
           if (s.websiteMgmt && !inc.includes('websiteMgmt')) { addons += ADDONS.websiteMgmt; bd.push({ label:'Website management', amount:'+$'+ADDONS.websiteMgmt.toLocaleString() }); }
@@ -452,9 +575,72 @@
         },
 
         // ===== project pricing =====
+        rushApplies() { return ['website','videoSingle','photo','branding','adCampaign'].includes(this.p.type); },
+
+        videoSubtotal() {
+          const v = this.p.video;
+          let t = VIDEO.base[v.kind] || 0;
+          t += Math.max(0, (Number(v.days) || 1) - 1) * VIDEO.perExtraDay;
+          t += VIDEO.length[v.length] || 0;
+          t += v.drone === 'yes' ? VIDEO.drone : 0;
+          t += (Number(v.cutdowns) || 0) * VIDEO.perCutdown;
+          return t;
+        },
+        ugcSubtotal() {
+          const u = this.p.ugc;
+          return (UGC.reach[u.reach] || 0) * (UGC.geoMult[u.geo] || 1);
+        },
+        influencerSubtotal() {
+          const i = this.p.inf;
+          const base  = INFLUENCER.base[i.kind] || 0;
+          const extra = Math.max(0, (Number(i.count) || 1) - 1) * (INFLUENCER.perTalent[i.kind] || 0);
+          return (base + extra) * (INFLUENCER.reachMult[i.reach] || 1) * (INFLUENCER.geoMult[i.geo] || 1);
+        },
+        projectSubtotal() {
+          const t = this.p.type;
+          if (t === 'videoSingle') return this.videoSubtotal();
+          if (t === 'ugc')         return this.ugcSubtotal();
+          if (t === 'influencer')  return this.influencerSubtotal();
+          return (PROJECTS[t] && PROJECTS[t][this.p.size]) || 0;
+        },
         projectTotal() {
-          const base = (PROJECTS[this.p.type] && PROJECTS[this.p.type][this.p.size]) || 0;
-          return Math.round(this.p.rush === 'yes' ? base * PROJECTS.rushMultiplier : base);
+          let t = this.projectSubtotal();
+          if (this.rushApplies() && this.p.rush === 'yes') t *= PROJECTS.rushMultiplier;
+          return Math.round(t);
+        },
+        projectBreakdown() {
+          const bd = []; const t = this.p.type; const usd = n => '$' + Math.round(n).toLocaleString();
+          if (t === 'videoSingle') {
+            const v = this.p.video;
+            const KIND = { social:'Social media', youtube:'YouTube', commercial:'Commercial' };
+            const LEN  = { short:'under 60s', standard:'1–3 min', long:'3 min+' };
+            bd.push({ label:`${KIND[v.kind]} base`, amount: usd(VIDEO.base[v.kind] || 0) });
+            const extraDays = Math.max(0, (Number(v.days)||1) - 1);
+            if (extraDays) bd.push({ label:`${extraDays} extra shoot day${extraDays>1?'s':''}`, amount:'+'+usd(extraDays*VIDEO.perExtraDay) });
+            if (VIDEO.length[v.length]) bd.push({ label:`Length (${LEN[v.length]})`, amount:'+'+usd(VIDEO.length[v.length]) });
+            if (v.drone === 'yes') bd.push({ label:'Drone coverage', amount:'+'+usd(VIDEO.drone) });
+            const cd = Number(v.cutdowns)||0;
+            if (cd) bd.push({ label:`${cd} extra cutdown${cd>1?'s':''}`, amount:'+'+usd(cd*VIDEO.perCutdown) });
+          } else if (t === 'ugc') {
+            const u = this.p.ugc;
+            const REACH = { small:'10–100k', mid:'100k–1M', large:'1–10M', huge:'10M+' };
+            const GEO = { local:'local', regional:'regional', national:'national', global:'global' };
+            bd.push({ label:`Reach ${REACH[u.reach]}`, amount: usd(UGC.reach[u.reach] || 0) });
+            if ((UGC.geoMult[u.geo]||1) !== 1) bd.push({ label:`Geography (${GEO[u.geo]} ×${UGC.geoMult[u.geo]})`, amount:'' });
+          } else if (t === 'influencer') {
+            const i = this.p.inf;
+            const KIND = { influencer:'Influencer', celebrity:'Celebrity' };
+            bd.push({ label:`${KIND[i.kind]} base`, amount: usd(INFLUENCER.base[i.kind] || 0) });
+            const extra = Math.max(0,(Number(i.count)||1)-1);
+            if (extra) bd.push({ label:`${extra} more ${KIND[i.kind].toLowerCase()}${extra>1?'s':''}`, amount:'+'+usd(extra*(INFLUENCER.perTalent[i.kind]||0)) });
+            if ((INFLUENCER.reachMult[i.reach]||1) !== 1) bd.push({ label:`Reach ×${INFLUENCER.reachMult[i.reach]}`, amount:'' });
+            if ((INFLUENCER.geoMult[i.geo]||1) !== 1) bd.push({ label:`Geography ×${INFLUENCER.geoMult[i.geo]}`, amount:'' });
+          } else {
+            const SIZE = { small:'Small', medium:'Medium', large:'Large' };
+            bd.push({ label:`${SIZE[this.p.size]} scope`, amount: usd(this.projectSubtotal()) });
+          }
+          if (this.rushApplies() && this.p.rush === 'yes') bd.push({ label:'Rush ×1.35', amount:'' });
+          return bd;
         },
 
         copyRetainer() {
