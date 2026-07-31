@@ -444,7 +444,7 @@
         </form>
       </template>
 
-      <!-- CONTACT FORM (last step of every path except 5) -->
+      <!-- CONTACT FORM (last step of every path) -->
       <template x-if="currentQuestion?.kind === 'contact'">
         <form @submit.prevent="next()" style="width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center">
           <div class="fnl-field">
@@ -454,35 +454,17 @@
           </div>
           <div class="fnl-field">
             <label for="fnl-email">Email</label>
-            <input id="fnl-email" type="email" class="fnl-input"
-                   :required="currentQuestion.requireEmail !== false"
+            <input id="fnl-email" type="email" class="fnl-input" required
                    x-model="contact.email" placeholder="you@business.com">
           </div>
-          <template x-if="currentQuestion.requirePhone !== false">
-            <div class="fnl-field">
-              <label for="fnl-phone">Phone (text-friendly)</label>
-              <input id="fnl-phone" type="tel" class="fnl-input"
-                     x-model="contact.phone" placeholder="(228) 555-0101">
-            </div>
-          </template>
+          <div class="fnl-field">
+            <label for="fnl-phone">Phone (text-friendly)</label>
+            <input id="fnl-phone" type="tel" class="fnl-input" required
+                   x-model="contact.phone" placeholder="(228) 555-0101">
+          </div>
           <div class="fnl-actions">
             <button type="button" class="fnl-back" @click="back()">Back</button>
             <button type="submit" class="fnl-cta">Get my recommendation →</button>
-          </div>
-        </form>
-      </template>
-
-      <!-- OPTIONAL CONTACT (Path 5) -->
-      <template x-if="currentQuestion?.kind === 'contactOptional'">
-        <form @submit.prevent="next()" style="width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center">
-          <div class="fnl-field">
-            <label for="fnl-email-opt">Email (optional)</label>
-            <input id="fnl-email-opt" type="email" class="fnl-input"
-                   x-model="contact.email" placeholder="Only if you'd like a follow-up">
-          </div>
-          <div class="fnl-actions">
-            <button type="button" class="fnl-back" @click="back()">Back</button>
-            <button type="submit" class="fnl-cta">Done</button>
           </div>
         </form>
       </template>
@@ -690,7 +672,7 @@
         '5': [
           { id:'businessType', kind:'text', q:"What kind of business are you in?", placeholder:"e.g., real estate, restaurant, agency" },
           { id:'whyHere',      kind:'text', q:"What got you here today? Curious, comparing, or something specific on your mind?", placeholder:"No wrong answer." },
-          { id:'contact',      kind:'contactOptional', q:"Want us to follow up?", requirePhone:false, requireEmail:false }
+          { id:'contact',      kind:'contact', q:"Last step. How do we reach you?" }
         ],
         '6': [
           { id:'pbWho', kind:'single', q:"Who is the brand built around?", options:[
@@ -789,7 +771,7 @@
         next() {
           // If we just answered the contact step, save it onto answers
           const cur = this.currentQuestion;
-          if (cur && (cur.kind === 'contact' || cur.kind === 'contactOptional')) {
+          if (cur && cur.kind === 'contact') {
             this.answers.contact = { ...this.contact };
           }
           const list = paths[this.path] || [];
