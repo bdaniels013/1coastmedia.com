@@ -185,6 +185,40 @@
       letter-spacing: .04em;
       text-transform: uppercase;
     }
+    .fnl-consent {
+      width: 100%;
+      max-width: 540px;
+      margin: 4px 0 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-align: left;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+    }
+    .fnl-consent input[type="checkbox"] {
+      flex: 0 0 auto;
+      width: 20px; height: 20px;
+      margin: 2px 0 0;
+      accent-color: var(--accent-warm);
+      cursor: pointer;
+    }
+    .fnl-consent label {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .fnl-consent a { color: var(--accent-warm); text-decoration: underline; }
+    .fnl-consent-fine {
+      display: block;
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-dim);
+    }
     .fnl-input, .fnl-textarea {
       width: 100%;
       padding: 16px 18px;
@@ -467,6 +501,13 @@
             <input id="fnl-phone" type="tel" class="fnl-input" required
                    x-model="contact.phone" placeholder="(228) 555-0101">
           </div>
+          <div class="fnl-consent">
+            <input id="fnl-sms-consent" type="checkbox" x-model="contact.smsConsent">
+            <label for="fnl-sms-consent">
+              Yes, text me at this number. I agree to receive text messages from 1Coast Media about my request, including appointment reminders, follow-up, and account updates.
+              <span class="fnl-consent-fine">Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of purchase. See our <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a>.</span>
+            </label>
+          </div>
           <div class="fnl-actions">
             <button type="button" class="fnl-back" @click="back()">Back</button>
             <button type="submit" class="fnl-cta">Get my recommendation →</button>
@@ -719,6 +760,9 @@
       const CAL_LONG  = 'https://calendar.app.google/Ju7YT3cHtrb3ev2A7';
       const CAL_SHORT = 'https://calendar.app.google/Ju7YT3cHtrb3ev2A7';
       const PHONE     = '+12283578505';
+      // Exact opt-in language shown next to the SMS consent checkbox. Stored
+      // with every submission so we have a record of what the person agreed to.
+      const SMS_CONSENT_TEXT = 'Yes, text me at this number. I agree to receive text messages from 1Coast Media about my request, including appointment reminders, follow-up, and account updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of purchase.';
 
       return {
         // ===== state =====
@@ -726,7 +770,7 @@
         path: null,            // '1'..'5' once chosen
         qIndex: 0,
         answers: {},
-        contact: { name:'', email:'', phone:'' },
+        contact: { name:'', email:'', phone:'', smsConsent:false },
         temperature: null,     // 'HOT' | 'WARM' | 'COOL' | 'PROJECT'
         submitState: null,     // null | 'pending' | 'ok' | 'err'
 
@@ -870,6 +914,12 @@
                 recommendedPackage: this.recommendedPackage,
                 answers: this.answers,
                 contact: this.contact,
+                smsConsent: {
+                  granted: !!this.contact.smsConsent,
+                  text: SMS_CONSENT_TEXT,
+                  capturedAt: new Date().toISOString(),
+                  source: 'funnel form (1coastmedia.com/funnel)'
+                },
                 submittedAt: new Date().toISOString(),
                 userAgent: navigator.userAgent
               })
