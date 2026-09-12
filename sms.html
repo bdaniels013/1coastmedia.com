@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Updates · 1Coast Media</title>
+  <meta name="description" content="Sign up to receive text message updates from 1Coast." />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Text Updates · 1Coast Media" />
+  <meta property="og:url" content="https://1coastmedia.com/sms" />
+  <meta property="og:image" content="https://1coastmedia.com/assets/1coast-og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://1coastmedia.com/assets/1coast-og.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/boring.css" />
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+
+  <nav class="nav" x-data="{ menuOpen: false }">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand" aria-label="1Coast Media home">
+        <img src="./assets/1coast-lockup-charcoal-2x.png"
+             srcset="./assets/1coast-lockup-charcoal-2x.png 1x, ./assets/1coast-lockup-charcoal-2x.png 2x"
+             alt="1Coast Media" />
+      </a>
+      <div class="nav-links">
+        <a href="/services">Services</a>
+        <a href="/about-us">About</a>
+        <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" class="nav-cta">Book a call</a>
+      </div>
+      <button class="nav-toggle" @click="menuOpen = !menuOpen">Menu</button>
+      <div x-show="menuOpen" @click.outside="menuOpen = false" x-transition class="menu-dropdown" x-cloak>
+        <a href="/services">Services</a>
+        <a href="/about-us">About</a>
+        <a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank">Book a call</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="legal" x-data="smsSignup()">
+    <div class="wrap">
+
+      <div class="legal-head">
+        <h1>Get text updates from 1Coast</h1>
+        <p class="sms-lede">Appointment reminders, project updates, and follow-up on your inquiry, sent by text so you are not digging through email.</p>
+      </div>
+
+      <div class="legal-body">
+
+        <!-- Success state -->
+        <div class="sms-thanks" x-show="state === 'ok'" x-cloak x-transition>
+          <p><strong>You're signed up.</strong> We'll text you from (228) 357-8505. Reply STOP at any time to opt out.</p>
+        </div>
+
+        <!-- Form -->
+        <form class="sms-form" x-show="state !== 'ok'" @submit.prevent="submit()">
+
+          <div class="sms-field">
+            <label for="sms-name">Name</label>
+            <input type="text" id="sms-name" name="name" class="sms-input"
+                   autocomplete="name" required x-model="form.name">
+          </div>
+
+          <div class="sms-field">
+            <label for="sms-phone">Mobile phone number</label>
+            <input type="tel" id="sms-phone" name="phone" class="sms-input"
+                   autocomplete="tel" placeholder="(228) 555-0123" required x-model="form.phone">
+          </div>
+
+          <div class="sms-field">
+            <label for="sms-email">Email (optional)</label>
+            <input type="email" id="sms-email" name="email" class="sms-input"
+                   autocomplete="email" x-model="form.email">
+          </div>
+
+          <div class="sms-consent">
+            <input type="checkbox" id="sms-consent" name="sms_consent" required x-model="form.consent">
+            <label for="sms-consent">
+              I agree to receive text messages from 1Coast at the phone number provided,
+              including appointment reminders, project and account updates, and follow-up
+              about my inquiry. Consent is not a condition of purchase. Message frequency
+              varies. Msg &amp; data rates may apply. Reply STOP to opt out or HELP for help.
+              See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms and Conditions</a>.
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-call btn-lg sms-submit" :disabled="state === 'sending'">
+            <span x-show="state !== 'sending'">Sign up for text updates</span>
+            <span x-show="state === 'sending'" x-cloak>Sending...</span>
+          </button>
+
+          <p class="sms-error" x-show="state === 'err'" x-cloak>
+            Something went wrong on our end. Text us directly at
+            <a href="sms:+12283578505">(228) 357-8505</a> and we'll get you added.
+          </p>
+        </form>
+
+        <h2>Text messaging program details</h2>
+        <ul>
+          <li><strong>Program:</strong> 1Coast sends appointment reminders, project and account updates, follow-up about requests you submitted, and customer service replies.</li>
+          <li><strong>Message frequency:</strong> Message frequency varies depending on your activity and the nature of your request.</li>
+          <li><strong>Cost:</strong> Msg &amp; data rates may apply. Check with your mobile carrier for details about your plan.</li>
+          <li><strong>To opt out:</strong> Reply <strong>STOP</strong> to any message from us and you will receive no further texts.</li>
+          <li><strong>For help:</strong> Reply <strong>HELP</strong> to any message, or contact us at <a href="mailto:1coastmedia@gmail.com">1coastmedia@gmail.com</a> or <a href="tel:+12283578505">(228) 357-8505</a>.</li>
+          <li><strong>Privacy:</strong> We do not sell or share mobile phone numbers or SMS consent with third parties for marketing purposes.</li>
+          <li><strong>Carriers:</strong> Carriers are not liable for delayed or undelivered messages.</li>
+        </ul>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" x-data>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a href="/" class="nav-brand" style="margin-bottom:14px" aria-label="1Coast Media home">
+            <img src="./assets/1coast-mascot.png" alt="1Coast Media" style="height:96px; width:auto;" />
+          </a>
+          <p style="max-width:36ch; margin:14px 0 0; line-height:1.55;">Your Gulf Coast growth partner. Content, marketing, and growth systems built to elevate the Coast.</p>
+          <a href="/funnel" class="footer-cta">Take the fit check &rarr;</a>
+        </div>
+        <div>
+          <h5>Site</h5>
+          <ul>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/about-us">About</a></li>
+            <li><a href="/funnel">Take the fit check</a></li>
+            <li><a href="/playbook" target="_blank" rel="noopener">Read the playbook</a></li>
+            <li><a href="/sms">Get text updates</a></li>
+            <li><a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" rel="noopener">Book a call</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="tel:+12283578505">(228) 357-8505</a></li>
+            <li><a href="sms:+12283578505?body=Hey%20Blake%2C%20I%20saw%20your%20site%20and%20I%27d%20like%20to%20talk%20about%20">Text Blake direct</a></li>
+            <li><a href="mailto:1coastmedia@gmail.com">1coastmedia@gmail.com</a></li>
+            <li>Mississippi Gulf Coast</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span x-text="new Date().getFullYear()">2026</span> 1Coast Media. All rights reserved.</span>
+        <span><a href="/privacy">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms">Terms and Conditions</a></span>
+        <span>Built on the Coast.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Exact opt-in language shown beside the checkbox. Sent with every
+    // signup so there is a record of what the person actually agreed to.
+    const SMS_CONSENT_TEXT = 'I agree to receive text messages from 1Coast at the phone number provided, including appointment reminders, project and account updates, and follow-up about my inquiry. Consent is not a condition of purchase. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help.';
+
+    function smsSignup() {
+      return {
+        state: 'idle',                       // idle | sending | ok | err
+        form: { name: '', phone: '', email: '', consent: false },
+
+        async submit() {
+          if (this.state === 'sending') return;
+          if (!this.form.consent) return;
+          this.state = 'sending';
+          try {
+            const res = await fetch('/api/sms-signup', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: this.form.name,
+                phone: this.form.phone,
+                email: this.form.email,
+                consent: {
+                  granted: true,
+                  text: SMS_CONSENT_TEXT,
+                  capturedAt: new Date().toISOString(),
+                  source: 'sms opt-in page (1coastmedia.com/sms)'
+                },
+                userAgent: navigator.userAgent
+              })
+            });
+            if (!res.ok) throw new Error('bad status');
+            this.state = 'ok';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } catch (_) {
+            this.state = 'err';
+          }
+        }
+      };
+    }
+  </script>
+</body>
+</html>

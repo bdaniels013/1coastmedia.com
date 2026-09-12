@@ -1593,6 +1593,90 @@ app.post('/api/playbook-signup', async (req, res) => {
   }
 });
 
+/* ============================================================
+   SMS OPT-IN SIGNUPS ─ /api/sms-signup
+
+   The hosted opt-in page at /sms POSTs here. This is the page
+   carriers look at during A2P 10DLC review, so the job here is
+   to preserve a durable record of consent: who, what number,
+   the exact wording they agreed to, when, and from where.
+
+   Emails the record to Blake using the same transport as the
+   funnel (Gmail SMTP). Env vars:
+     GMAIL_USER / GMAIL_APP_PASSWORD  ─ required
+     FUNNEL_NOTIFY_TO                 ─ optional, defaults to GMAIL_USER
+   ============================================================ */
+app.post('/api/sms-signup', async (req, res) => {
+  try {
+    const { name, phone, email, consent, userAgent } = req.body || {};
+
+    // Consent is the whole point of this endpoint. Refuse anything
+    // that arrives without it rather than recording a weak opt-in.
+    if (!consent || consent.granted !== true) {
+      return res.status(400).json({ ok: false, error: 'consent-required' });
+    }
+    if (!phone || !String(phone).trim()) {
+      return res.status(400).json({ ok: false, error: 'phone-required' });
+    }
+
+    // Behind Cloudflare and Render, the visitor's real IP arrives in a
+    // forwarded header. First entry in x-forwarded-for is the client.
+    const fwd = req.get('x-forwarded-for') || '';
+    const ip = (req.get('cf-connecting-ip') || fwd.split(',')[0] || req.socket?.remoteAddress || '').trim();
+
+    const capturedAt = consent.capturedAt || new Date().toISOString();
+
+    const body = [
+      'New SMS opt-in from the /sms page.',
+      '',
+      '--- Contact ---',
+      `Name:  ${name || '(not given)'}`,
+      `Phone: ${phone}`,
+      `Email: ${email || '(not given)'}`,
+      '',
+      '--- Consent record ---',
+      `Granted:  yes`,
+      `When:     ${capturedAt}`,
+      `Source:   ${consent.source || '/sms'}`,
+      `IP:       ${ip || '(unknown)'}`,
+      `Agent:    ${userAgent || '(unknown)'}`,
+      '',
+      'Exact language agreed to:',
+      consent.text || '(not recorded)',
+      '',
+      'Keep this email. It is the proof of opt-in if a carrier or',
+      'the messaging provider ever asks how this number was collected.'
+    ].join('\n');
+
+    const mailer = getFunnelMailer();
+    if (!mailer) {
+      // Log the full record so the signup is not lost when mail is down.
+      console.error('[sms] GMAIL_USER / GMAIL_APP_PASSWORD not set. Consent record follows:\n' + body);
+      return res.status(503).json({ ok: false, error: 'mail-transport-unavailable' });
+    }
+
+    const fromName = process.env.FUNNEL_FROM_NAME || '1Coast Funnel';
+    const notifyTo = process.env.FUNNEL_NOTIFY_TO || process.env.GMAIL_USER;
+
+    await mailer.sendMail({
+      from: `"${fromName}" <${process.env.GMAIL_USER}>`,
+      to: notifyTo,
+      replyTo: email || undefined,
+      subject: `[SMS opt-in] ${name || phone}`,
+      text: body,
+      html: wrapEmailHtml({
+        preheader: `New SMS opt-in: ${name || phone}`,
+        body
+      })
+    });
+
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error('[sms] signup failed:', err);
+    return res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
