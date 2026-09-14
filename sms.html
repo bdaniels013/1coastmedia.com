@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Text Updates · 1Coast Media</title>
-  <meta name="description" content="Sign up to receive text message updates from 1Coast." />
+  <title>Contact 1Coast · Text Updates Optional</title>
+  <meta name="description" content="Send 1Coast your request. Text message updates are available if you want them, and entirely optional." />
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Text Updates · 1Coast Media" />
+  <meta property="og:title" content="Contact 1Coast" />
   <meta property="og:url" content="https://1coastmedia.com/sms" />
   <meta property="og:image" content="https://1coastmedia.com/assets/1coast-og.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -40,65 +40,92 @@
     </div>
   </nav>
 
-  <main class="legal" x-data="smsSignup()">
+  <main class="legal" x-data="contactForm()">
     <div class="wrap">
 
       <div class="legal-head">
-        <h1>Get text updates from 1Coast</h1>
-        <p class="sms-lede">Appointment reminders, project updates, and follow-up on your inquiry, sent by text so you are not digging through email.</p>
+        <h1>Get in touch with 1Coast</h1>
+        <p class="sms-lede">Tell us what you are working on and Blake will get back to you. If you also want updates by text, you can opt in below. That part is optional and your request is handled the same either way.</p>
       </div>
 
       <div class="legal-body">
 
         <!-- Success state -->
         <div class="sms-thanks" x-show="state === 'ok'" x-cloak x-transition>
-          <p><strong>You're signed up.</strong> We'll text you from (228) 357-8505. Reply STOP at any time to opt out.</p>
+          <p><strong>Got it, we'll be in touch.</strong></p>
+          <p x-show="sentWithConsent" x-cloak style="margin-top:10px;">You also opted in to text updates, so we may text you from (228) 357-8505. Reply STOP at any time to opt out.</p>
+          <p x-show="!sentWithConsent" x-cloak style="margin-top:10px;">You did not opt in to text messages, so we will reply by email only.</p>
         </div>
 
         <!-- Form -->
         <form class="sms-form" x-show="state !== 'ok'" @submit.prevent="submit()">
 
           <div class="sms-field">
-            <label for="sms-name">Name</label>
-            <input type="text" id="sms-name" name="name" class="sms-input"
+            <label for="c-name">Name</label>
+            <input type="text" id="c-name" name="name" class="sms-input"
                    autocomplete="name" required x-model="form.name">
           </div>
 
           <div class="sms-field">
-            <label for="sms-phone">Mobile phone number</label>
-            <input type="tel" id="sms-phone" name="phone" class="sms-input"
-                   autocomplete="tel" placeholder="(228) 555-0123" required x-model="form.phone">
+            <label for="c-email">Email</label>
+            <input type="email" id="c-email" name="email" class="sms-input"
+                   autocomplete="email" required x-model="form.email">
+            <p class="sms-hint">This is how we reply. We do not need your phone number to help you.</p>
           </div>
 
           <div class="sms-field">
-            <label for="sms-email">Email (optional)</label>
-            <input type="email" id="sms-email" name="email" class="sms-input"
-                   autocomplete="email" x-model="form.email">
+            <label for="c-message">What do you need?</label>
+            <textarea id="c-message" name="message" class="sms-input sms-textarea"
+                      rows="4" x-model="form.message"
+                      placeholder="A few lines about your business and what you're after."></textarea>
           </div>
 
-          <div class="sms-consent">
-            <input type="checkbox" id="sms-consent" name="sms_consent" required x-model="form.consent">
-            <label for="sms-consent">
-              I agree to receive text messages from 1Coast at the phone number provided,
-              including appointment reminders, project and account updates, and follow-up
-              about my inquiry. Consent is not a condition of purchase. Message frequency
-              varies. Msg &amp; data rates may apply. Reply STOP to opt out or HELP for help.
-              See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms and Conditions</a>.
+          <div class="sms-field">
+            <label for="c-phone">
+              Phone <span class="sms-optional" x-text="form.consent ? '(required for text updates)' : '(optional)'">(optional)</span>
             </label>
+            <input type="tel" id="c-phone" name="phone" class="sms-input"
+                   autocomplete="tel" placeholder="(228) 555-0123"
+                   :required="form.consent" x-model="form.phone">
+          </div>
+
+          <!-- Optional SMS opt-in. Separate from the request itself. -->
+          <div class="sms-optin">
+            <h3 class="sms-optin-title">Text updates <span>optional</span></h3>
+
+            <div class="sms-consent">
+              <input type="checkbox" id="sms-consent" name="sms_consent" x-model="form.consent">
+              <label for="sms-consent">
+                Yes, text me at the number above. I agree to receive text messages from 1Coast,
+                including appointment reminders, project and account updates, and follow-up
+                about my inquiry. Consent is not a condition of purchase or of using any 1Coast
+                service. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to
+                opt out or HELP for help.
+                See our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms and Conditions</a>.
+              </label>
+            </div>
+
+            <p class="sms-skip">
+              <strong>You can skip this.</strong> Leave the box unchecked and submit the form as normal.
+              You will not receive any text messages, we will reply by email, and you can still work
+              with 1Coast exactly the same way.
+            </p>
           </div>
 
           <button type="submit" class="btn btn-call btn-lg sms-submit" :disabled="state === 'sending'">
-            <span x-show="state !== 'sending'">Sign up for text updates</span>
+            <span x-show="state !== 'sending'">Send my request</span>
             <span x-show="state === 'sending'" x-cloak>Sending...</span>
           </button>
 
           <p class="sms-error" x-show="state === 'err'" x-cloak>
-            Something went wrong on our end. Text us directly at
-            <a href="sms:+12283578505">(228) 357-8505</a> and we'll get you added.
+            Something went wrong on our end. Email
+            <a href="mailto:1coastmedia@gmail.com">1coastmedia@gmail.com</a> or call
+            <a href="tel:+12283578505">(228) 357-8505</a> and we'll pick it up from there.
           </p>
         </form>
 
         <h2>Text messaging program details</h2>
+        <p>These terms apply only if you choose to opt in to text messages above. Opting in is never required to contact 1Coast, to get a quote, or to become a client.</p>
         <ul>
           <li><strong>Program:</strong> 1Coast sends appointment reminders, project and account updates, follow-up about requests you submitted, and customer service replies.</li>
           <li><strong>Message frequency:</strong> Message frequency varies depending on your activity and the nature of your request.</li>
@@ -130,7 +157,7 @@
             <li><a href="/about-us">About</a></li>
             <li><a href="/funnel">Take the fit check</a></li>
             <li><a href="/playbook" target="_blank" rel="noopener">Read the playbook</a></li>
-            <li><a href="/sms">Get text updates</a></li>
+            <li><a href="/sms">Contact us</a></li>
             <li><a href="https://calendar.app.google/Ju7YT3cHtrb3ev2A7" target="_blank" rel="noopener">Book a call</a></li>
           </ul>
         </div>
@@ -154,17 +181,18 @@
 
   <script>
     // Exact opt-in language shown beside the checkbox. Sent with every
-    // signup so there is a record of what the person actually agreed to.
-    const SMS_CONSENT_TEXT = 'I agree to receive text messages from 1Coast at the phone number provided, including appointment reminders, project and account updates, and follow-up about my inquiry. Consent is not a condition of purchase. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help.';
+    // submission so there is a record of what the person agreed to.
+    const SMS_CONSENT_TEXT = 'Yes, text me at the number above. I agree to receive text messages from 1Coast, including appointment reminders, project and account updates, and follow-up about my inquiry. Consent is not a condition of purchase or of using any 1Coast service. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help.';
 
-    function smsSignup() {
+    function contactForm() {
       return {
         state: 'idle',                       // idle | sending | ok | err
-        form: { name: '', phone: '', email: '', consent: false },
+        sentWithConsent: false,
+        form: { name: '', email: '', message: '', phone: '', consent: false },
 
         async submit() {
           if (this.state === 'sending') return;
-          if (!this.form.consent) return;
+          const granted = !!this.form.consent;
           this.state = 'sending';
           try {
             const res = await fetch('/api/sms-signup', {
@@ -172,18 +200,22 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 name: this.form.name,
-                phone: this.form.phone,
                 email: this.form.email,
+                message: this.form.message,
+                phone: this.form.phone,
                 consent: {
-                  granted: true,
-                  text: SMS_CONSENT_TEXT,
+                  granted: granted,
+                  // Only meaningful when granted. Recorded either way so a
+                  // decline is on the record too.
+                  text: granted ? SMS_CONSENT_TEXT : '',
                   capturedAt: new Date().toISOString(),
-                  source: 'sms opt-in page (1coastmedia.com/sms)'
+                  source: 'contact form (1coastmedia.com/sms)'
                 },
                 userAgent: navigator.userAgent
               })
             });
             if (!res.ok) throw new Error('bad status');
+            this.sentWithConsent = granted;
             this.state = 'ok';
             window.scrollTo({ top: 0, behavior: 'smooth' });
           } catch (_) {

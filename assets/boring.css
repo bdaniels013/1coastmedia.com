@@ -642,3 +642,34 @@ img { max-width: 100%; display: block; }
   .sms-lede { font-size: 17px; }
   .sms-consent { padding: 16px 18px; }
 }
+
+/* -------- Contact form additions (/sms) -------- */
+.sms-textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
+.sms-hint { margin: 8px 0 0; font-size: 13px; color: var(--text-dim); }
+.sms-optional { font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--text-dim); }
+.sms-optin {
+  margin: 30px 0 26px;
+  padding: 22px 24px 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg-card);
+}
+.sms-optin-title {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 14px;
+  font-size: 16px; font-weight: 700; color: var(--text);
+}
+.sms-optin-title span {
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); border: 1px solid var(--border-strong);
+}
+.sms-optin .sms-consent { margin: 0; }
+.sms-skip {
+  margin: 14px 0 0;
+  font-size: 13.5px; line-height: 1.6; color: var(--text-muted);
+}
+.sms-skip strong { color: var(--text); }
+@media (max-width: 600px) {
+  .sms-optin { padding: 18px 18px 16px; }
+}

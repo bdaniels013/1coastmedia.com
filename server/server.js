@@ -1594,29 +1594,40 @@ app.post('/api/playbook-signup', async (req, res) => {
 });
 
 /* ============================================================
-   SMS OPT-IN SIGNUPS ─ /api/sms-signup
+   CONTACT + OPTIONAL SMS OPT-IN ─ /api/sms-signup
 
-   The hosted opt-in page at /sms POSTs here. This is the page
-   carriers look at during A2P 10DLC review, so the job here is
-   to preserve a durable record of consent: who, what number,
-   the exact wording they agreed to, when, and from where.
+   Backs the form at /sms. That page is the opt-in URL carriers
+   review for A2P 10DLC, and the rule they enforce (error 30923)
+   is that SMS consent must never be a condition of using the
+   business. So this endpoint accepts the request either way and
+   records which choice was made.
 
-   Emails the record to Blake using the same transport as the
-   funnel (Gmail SMTP). Env vars:
+   A decline is recorded, not discarded. If someone later claims
+   they never agreed to texts, the absence of a granted record is
+   the answer.
+
+   Emails Blake using the same transport as the funnel. Env vars:
      GMAIL_USER / GMAIL_APP_PASSWORD  ─ required
      FUNNEL_NOTIFY_TO                 ─ optional, defaults to GMAIL_USER
    ============================================================ */
 app.post('/api/sms-signup', async (req, res) => {
   try {
-    const { name, phone, email, consent, userAgent } = req.body || {};
+    const { name, email, message, phone, consent, userAgent } = req.body || {};
 
-    // Consent is the whole point of this endpoint. Refuse anything
-    // that arrives without it rather than recording a weak opt-in.
-    if (!consent || consent.granted !== true) {
-      return res.status(400).json({ ok: false, error: 'consent-required' });
+    // Name and email are the business minimum. Phone is required only
+    // when the person opted in to texts, because that is the only case
+    // where we actually need a number.
+    if (!name || !String(name).trim()) {
+      return res.status(400).json({ ok: false, error: 'name-required' });
     }
-    if (!phone || !String(phone).trim()) {
-      return res.status(400).json({ ok: false, error: 'phone-required' });
+    if (!email || !String(email).trim()) {
+      return res.status(400).json({ ok: false, error: 'email-required' });
+    }
+
+    const granted = consent && consent.granted === true;
+
+    if (granted && (!phone || !String(phone).trim())) {
+      return res.status(400).json({ ok: false, error: 'phone-required-for-sms' });
     }
 
     // Behind Cloudflare and Render, the visitor's real IP arrives in a
@@ -1624,34 +1635,52 @@ app.post('/api/sms-signup', async (req, res) => {
     const fwd = req.get('x-forwarded-for') || '';
     const ip = (req.get('cf-connecting-ip') || fwd.split(',')[0] || req.socket?.remoteAddress || '').trim();
 
-    const capturedAt = consent.capturedAt || new Date().toISOString();
+    const capturedAt = (consent && consent.capturedAt) || new Date().toISOString();
+
+    const consentBlock = granted
+      ? [
+          'OPTED IN to text messages.',
+          `When:   ${capturedAt}`,
+          `Source: ${(consent && consent.source) || '/sms'}`,
+          `IP:     ${ip || '(unknown)'}`,
+          `Agent:  ${userAgent || '(unknown)'}`,
+          '',
+          'Exact language agreed to:',
+          (consent && consent.text) || '(not recorded)',
+          '',
+          'Keep this email. It is the proof of opt-in if a carrier or the',
+          'messaging provider ever asks how this number was collected.'
+        ]
+      : [
+          'DID NOT opt in to text messages.',
+          `When:   ${capturedAt}`,
+          `Source: ${(consent && consent.source) || '/sms'}`,
+          `IP:     ${ip || '(unknown)'}`,
+          '',
+          'Do not text this person. Reply by email.'
+        ];
 
     const body = [
-      'New SMS opt-in from the /sms page.',
+      granted
+        ? 'New contact request from /sms, with text updates opted in.'
+        : 'New contact request from /sms. Text updates declined.',
       '',
       '--- Contact ---',
-      `Name:  ${name || '(not given)'}`,
-      `Phone: ${phone}`,
-      `Email: ${email || '(not given)'}`,
+      `Name:  ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone || '(not given)'}`,
       '',
-      '--- Consent record ---',
-      `Granted:  yes`,
-      `When:     ${capturedAt}`,
-      `Source:   ${consent.source || '/sms'}`,
-      `IP:       ${ip || '(unknown)'}`,
-      `Agent:    ${userAgent || '(unknown)'}`,
+      '--- What they need ---',
+      (message && String(message).trim()) || '(nothing written)',
       '',
-      'Exact language agreed to:',
-      consent.text || '(not recorded)',
-      '',
-      'Keep this email. It is the proof of opt-in if a carrier or',
-      'the messaging provider ever asks how this number was collected.'
+      '--- SMS consent ---',
+      ...consentBlock
     ].join('\n');
 
     const mailer = getFunnelMailer();
     if (!mailer) {
-      // Log the full record so the signup is not lost when mail is down.
-      console.error('[sms] GMAIL_USER / GMAIL_APP_PASSWORD not set. Consent record follows:\n' + body);
+      // Log the full record so the submission is not lost when mail is down.
+      console.error('[sms] GMAIL_USER / GMAIL_APP_PASSWORD not set. Record follows:\n' + body);
       return res.status(503).json({ ok: false, error: 'mail-transport-unavailable' });
     }
 
@@ -1662,17 +1691,19 @@ app.post('/api/sms-signup', async (req, res) => {
       from: `"${fromName}" <${process.env.GMAIL_USER}>`,
       to: notifyTo,
       replyTo: email || undefined,
-      subject: `[SMS opt-in] ${name || phone}`,
+      subject: `[Contact${granted ? ' + SMS opt-in' : ''}] ${name}`,
       text: body,
       html: wrapEmailHtml({
-        preheader: `New SMS opt-in: ${name || phone}`,
+        preheader: granted
+          ? `Contact request with SMS opt-in: ${name}`
+          : `Contact request (no SMS): ${name}`,
         body
       })
     });
 
-    return res.json({ ok: true });
+    return res.json({ ok: true, smsConsent: granted });
   } catch (err) {
-    console.error('[sms] signup failed:', err);
+    console.error('[sms] submission failed:', err);
     return res.status(500).json({ ok: false, error: err.message });
   }
 });
